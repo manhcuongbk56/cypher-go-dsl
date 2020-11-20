@@ -1,12 +1,17 @@
 package expression
 
 import (
-	v "../visitable"
+	v "cypher-go-dsl/visitable"
 )
 
 type EntryExpression struct {
+	Expression
 	Key string
-	Value Expression
+	Value HasExpression
+}
+
+func (e EntryExpression) GetExpression() Expression {
+	return Expression{}
 }
 
 func (e EntryExpression) Accept(visitor v.Visitor) {

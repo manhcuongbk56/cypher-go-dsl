@@ -3,7 +3,7 @@ package expression
 import errors "golang.org/x/xerrors"
 
 type MapExpression struct {
-	Expressions []Expression
+	Expressions []HasExpression
 }
 
 func NewMapExpression(objects ...interface{}) (MapExpression, error) {
@@ -11,6 +11,7 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 		err := errors.Errorf("number of object input should be product of 2 but it is %d", len(objects))
 		return MapExpression{}, err
 	}
+	var newContents = make([]HasExpression, len(objects)/2)
 	var knownKeys = make(map[string]int)
 	for i := 0; i < len(objects); i+=2 {
 		key, isString := objects[i].(string)
@@ -18,16 +19,20 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 			err := errors.Errorf("key must be string")
 			return MapExpression{}, err
 		}
-		value, isExpression := objects[i + 1].(IExpression)
+		value, isExpression := objects[i + 1].(HasExpression)
 		if !isExpression{
 			err := errors.Errorf("object must be expression")
 			return MapExpression{}, err
 		}
-		if knownKeys[key] {
-
+		if knownKeys[key] == 0  {
+			err := errors.Errorf("duplicate key")
+			return MapExpression{}, err
 		}
+		newContents = append(newContents, EntryExpression{
+			Value: value,
+			Key: key,
+		})
 	}
-	return MapExpression{}, err
+	return MapExpression{newContents}, nil
 }
 
-func

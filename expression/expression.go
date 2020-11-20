@@ -1,26 +1,27 @@
 package expression
 
 import (
-	v  "../visitable"
+	v "cypher-go-dsl/visitable"
 )
 
-type IExpression interface {
-	IsEqualTo(rhs IExpression) Comparison
+type HasExpression interface {
+	GetExpression() Expression
+	Accept(visitor v.Visitor)
 }
 
 type Expression struct {
 }
 
 type Condition struct {
-	IExpression
+	expression Expression
 }
 
-type ICondition interface {
-	IExpression
-}
+//type ICondition interface {
+//	IExpression
+//}
 
-func (lhs Expression) IsEqualTo(rhs IExpression) Comparison {
-	panic("implement me")
+func (lhs Expression) IsEqualTo(rhs Expression) Comparison {
+	return Comparison{left: lhs, operator: EQUALITY, right: rhs}
 }
 
 func (lhs Expression) Accept(visitor v.Visitor) {
@@ -31,11 +32,27 @@ func (lhs Condition) And(rhs Condition)  {
 
 }
 
-func isEqualTo(lhs Expression, rhs Expression) Comparison {
-return Comparison{
-	Left: lhs,
-	Operator: EQUALITY,
-	Right: rhs,
+
+type Operator string
+
+const (
+	EQUALITY = "equality"
+)
+
+type Comparison struct {
+	Expression
+	left Expression
+	operator Operator
+	right Expression
 }
+
+func (c Comparison) GetExpression() Expression {
+	return Expression{}
 }
+
+func (c Comparison) Accept(visitor v.Visitor) {
+	panic("implement me")
+}
+
+
 
