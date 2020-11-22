@@ -1,15 +1,14 @@
-package expression
+package cypher_go_dsl
 
 import (
-	v "cypher-go-dsl/visitable"
 	"fmt"
 	"testing"
 )
 
 func TestType(t *testing.T) {
 	var got interface{} = Comparison{}
-	visitable, ok := got.(v.Visitable)
-	hasexpression, ok1 := got.(HasExpression)
+	visitable, ok := got.(Visitable)
+	hasexpression, ok1 := got.(IsExpression)
 	fmt.Print(ok)
 	fmt.Print(ok1)
 	fmt.Print(visitable)

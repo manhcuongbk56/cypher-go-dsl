@@ -1,12 +1,8 @@
-package expression
+package cypher_go_dsl
 
-import (
-	v "cypher-go-dsl/visitable"
-)
-
-type HasExpression interface {
-	GetExpression() Expression
-	Accept(visitor v.Visitor)
+type IsExpression interface {
+	IsExpression() bool
+	Accept(visitor Visitor)
 }
 
 type Expression struct {
@@ -24,7 +20,7 @@ func (lhs Expression) IsEqualTo(rhs Expression) Comparison {
 	return Comparison{left: lhs, operator: EQUALITY, right: rhs}
 }
 
-func (lhs Expression) Accept(visitor v.Visitor) {
+func (lhs Expression) Accept(visitor Visitor) {
 	panic("implement me")
 }
 
@@ -41,16 +37,16 @@ const (
 
 type Comparison struct {
 	Expression
-	left Expression
+	left     Expression
 	operator Operator
-	right Expression
+	right    Expression
 }
 
-func (c Comparison) GetExpression() Expression {
-	return Expression{}
+func (c Comparison) IsExpression() bool {
+	return true
 }
 
-func (c Comparison) Accept(visitor v.Visitor) {
+func (c Comparison) Accept(visitor Visitor) {
 	panic("implement me")
 }
 

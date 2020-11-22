@@ -1,36 +1,46 @@
 package cypher_go_dsl
 
 import (
-	"cypher-go-dsl/expression"
-	v "cypher-go-dsl/visitable"
+	"fmt"
 )
 
 type Node struct {
-	symbolicName string
+	symbolicName SymbolicName
 	labels       []string
 	properties   Properties
 }
 
-func (node Node) Accept(visitor v.Visitor) {
+type NodeLabel struct {
+	value string
 }
 
-func (node Node) RelationshipTo(nodeDest Node, types ...string) RelationshipPattern {
+func (n NodeLabel) Accept(visitor Visitor) {
+	visitor.Enter(n)
+	visitor.Leave(n)
+}
+
+func (node Node) Accept(visitor Visitor) {
+	visitor.Enter(node)
+	visitor.Leave(node)
+}
+
+func (node Node) RelationshipTo(nodeDest Node, types ...string) Relationship {
 	panic("implement me")
 }
 
-func (node Node) RelationshipFrom(nodeDest Node, types ...string) RelationshipPattern {
-	panic("implement me")
+func (node Node) RelationshipFrom(other Node, types ...string) Relationship {
+	return CreateLTR(node, RTL(), other, types...)
 }
 
-func (node Node) RelationshipBetween(nodeDest Node, types ...string) RelationshipPattern {
+func (node Node) RelationshipBetween(nodeDest Node, types ...string) Relationship {
 	panic("implement me")
 }
 
 func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
-	var properties = &expression.MapExpression{}
+	var properties = &MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
 		var err error
-		*properties, err = expression.NewMapExpression(keysAndValues)
+		*properties, err = NewMapExpression(keysAndValues)
 		if err != nil {
 			return Node{}, err
 		}
@@ -38,12 +48,17 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
 	return node.WithProperties(*properties), nil
 }
 
-func (node Node) WithProperties(newProperties expression.MapExpression) Node {
+func (node Node) WithProperties(newProperties MapExpression) Node {
 	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: Properties{newProperties}}
 }
 
 func (node Node) Property(name string) {
-	panic("implement me")
+	fmt.Print(name)
+}
+
+func (node Node) Named(name string) Node {
+	node.symbolicName = SymbolicName{Value: name}
+	return node
 }
 
 

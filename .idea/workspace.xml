@@ -20,10 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13e0375c-aa01-44f2-89ac-dc06b3388322" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relationship_pattern.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/expose_properties.go" beforeDir="false" afterPath="$PROJECT_DIR$/expose_properties.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/AliasExpression.go" beforeDir="false" afterPath="$PROJECT_DIR$/AliasExpression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/entry_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/entry_expression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/expression_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/map_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/map_expression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression/type.go" beforeDir="false" afterPath="$PROJECT_DIR$/type.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.go" beforeDir="false" afterPath="$PROJECT_DIR$/properties.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/relationship.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/visitable/visitable.go" beforeDir="false" afterPath="$PROJECT_DIR$/visitable.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +51,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1kTESUjK2nlEUv6lzAQJ2ox9RDF" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -64,18 +76,20 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/expression" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/relation" />
       <recent name="$PROJECT_DIR$/visitable" />
       <recent name="$PROJECT_DIR$/expression" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestType in expression_test.go">
+  <component name="RunManager" selected="Go Test.TestWhereType in cypher-go-dsl">
     <configuration name="go build expression.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="cypher-go-dsl" />
       <working_directory value="$PROJECT_DIR$" />
@@ -102,6 +116,17 @@
       <pattern value="^\QTestType\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestWhereType in cypher-go-dsl" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="cypher-go-dsl" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="cypher-go-dsl" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestWhereType\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="expression_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="cypher-go-dsl" />
       <working_directory value="$PROJECT_DIR$/expression" />
@@ -114,6 +139,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestWhereType in cypher-go-dsl" />
         <item itemvalue="Go Test.TestType in expression_test.go" />
         <item itemvalue="Go Test.expression_test.go" />
         <item itemvalue="Go Build.go build test_expression.go" />
@@ -158,25 +184,41 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="705" y="459" width="510" height="168" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1605888290929" />
-    <state width="1864" height="290" key="GridCell.Tab.0.bottom" timestamp="1605892626533">
+    <state x="838" y="378" width="567" height="331" key="#Vim_Emulation" timestamp="1606036967361">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1864" height="290" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1605892626533" />
-    <state width="1864" height="290" key="GridCell.Tab.0.center" timestamp="1605892626533">
+    <state x="838" y="378" width="567" height="331" key="#Vim_Emulation/0.0.1920.1080@0.0.1920.1080" timestamp="1606036967361" />
+    <state x="671" y="180" width="567" height="727" key="#com.intellij.ide.util.MemberChooser" timestamp="1606061257957">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1864" height="290" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1605892626533" />
-    <state width="1864" height="290" key="GridCell.Tab.0.left" timestamp="1605892626533">
+    <state x="671" y="180" width="567" height="727" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1606061257957" />
+    <state width="1864" height="260" key="GridCell.Tab.0.bottom" timestamp="1606060321264">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1864" height="290" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1605892626533" />
-    <state width="1864" height="290" key="GridCell.Tab.0.right" timestamp="1605892626533">
+    <state width="1864" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321264" />
+    <state width="1864" height="260" key="GridCell.Tab.0.center" timestamp="1606060321262">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1864" height="290" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1605892626533" />
-    <state x="324" y="69" width="1271" height="912" key="SettingsEditor" timestamp="1605957076755">
+    <state width="1864" height="260" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321262" />
+    <state width="1864" height="260" key="GridCell.Tab.0.left" timestamp="1606060321260">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="324" y="69" width="1271" height="912" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605957076755" />
+    <state width="1864" height="260" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321260" />
+    <state width="1864" height="260" key="GridCell.Tab.0.right" timestamp="1606060321263">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1864" height="260" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321263" />
+    <state x="324" y="69" width="1271" height="912" key="SettingsEditor" timestamp="1606058120162">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="324" y="69" width="1271" height="912" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1606058120162" />
+    <state x="580" y="223" width="759" height="634" key="find.popup" timestamp="1606059946116">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="580" y="223" width="759" height="634" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1606059946116" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1606061116572">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1606061116572" />
   </component>
 </project>
