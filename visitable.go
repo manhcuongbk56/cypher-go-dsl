@@ -16,7 +16,6 @@ func VisitIfNotNull(dest interface{}, visitor Visitor) {
 
 type Visitable interface {
 	Accept(visitor Visitor)
-
 }
 
 type SubVisitable interface {

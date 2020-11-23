@@ -1,8 +1,8 @@
 package cypher_go_dsl
 
 type IsExpression interface {
+	Visitable
 	IsExpression() bool
-	Accept(visitor Visitor)
 }
 
 type Expression struct {
@@ -24,10 +24,9 @@ func (lhs Expression) Accept(visitor Visitor) {
 	panic("implement me")
 }
 
-func (lhs Condition) And(rhs Condition)  {
+func (lhs Condition) And(rhs Condition) {
 
 }
-
 
 type Operator string
 
@@ -49,6 +48,3 @@ func (c Comparison) IsExpression() bool {
 func (c Comparison) Accept(visitor Visitor) {
 	panic("implement me")
 }
-
-
-
