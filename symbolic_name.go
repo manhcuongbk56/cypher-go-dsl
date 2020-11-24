@@ -12,3 +12,7 @@ func (s SymbolicName) Accept(visitor Visitor) {
 	visitor.Enter(s)
 	visitor.Leave(s)
 }
+
+func (s SymbolicName) GetType() VisitableType {
+	return SymbolicNameVisitable
+}

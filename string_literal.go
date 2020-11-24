@@ -21,3 +21,8 @@ func (n StringLiteral) Accept(visitor Visitor) {
 	visitor.Enter(n)
 	visitor.Leave(n)
 }
+
+func (n StringLiteral) GetType() VisitableType {
+	return StringLiteralVisitable
+}
+

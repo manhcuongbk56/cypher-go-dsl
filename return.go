@@ -12,6 +12,10 @@ func (r Return) Accept(visitor Visitor) {
 	visitor.Leave(r)
 }
 
+func (r Return) GetType() VisitableType {
+	return ReturnVisitable
+}
+
 func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Order, skip *Skip, limit *Limit) *Return {
 	var distinctInstance *Distinct
 	if distinct {

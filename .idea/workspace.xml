@@ -21,14 +21,16 @@
   <component name="ChangeListManager">
     <list default="true" id="13e0375c-aa01-44f2-89ac-dc06b3388322" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypher.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/default_statement_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/default_statement_builder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match.go" beforeDir="false" afterPath="$PROJECT_DIR$/match.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/named.go" beforeDir="false" afterPath="$PROJECT_DIR$/named.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/number_literal.go" beforeDir="false" afterPath="$PROJECT_DIR$/number_literal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/return.go" beforeDir="false" afterPath="$PROJECT_DIR$/return.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/return_body.go" beforeDir="false" afterPath="$PROJECT_DIR$/return_body.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skip.go" beforeDir="false" afterPath="$PROJECT_DIR$/skip.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sort_item.go" beforeDir="false" afterPath="$PROJECT_DIR$/sort_item.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/string_literal.go" beforeDir="false" afterPath="$PROJECT_DIR$/string_literal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symbolic_name.go" beforeDir="false" afterPath="$PROJECT_DIR$/symbolic_name.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visitable.go" beforeDir="false" afterPath="$PROJECT_DIR$/visitable.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/where.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +74,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -170,5 +172,15 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="324" y="69" width="1271" height="912" key="SettingsEditor" timestamp="1606197908059">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="324" y="69" width="1271" height="912" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1606197908059" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1606197914661">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1606197914661" />
   </component>
 </project>

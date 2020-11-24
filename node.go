@@ -24,6 +24,14 @@ func (node Node) Accept(visitor Visitor) {
 	visitor.Leave(node)
 }
 
+func (node Node) GetType() VisitableType {
+	return NodeVisitable
+}
+
+func (n NodeLabel) GetType() VisitableType {
+	return NodeLabelVisitable
+}
+
 func (node Node) RelationshipTo(nodeDest Node, types ...string) Relationship {
 	panic("implement me")
 }

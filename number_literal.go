@@ -23,3 +23,7 @@ func (n NumberLiteral) Accept(visitor Visitor) {
 	visitor.Enter(n)
 	visitor.Leave(n)
 }
+
+func (n NumberLiteral) GetType() VisitableType {
+	return NumberLiteralVisitable
+}

@@ -10,3 +10,8 @@ func (w Where) Accept(visitor Visitor) {
 	visitor.Leave(w)
 }
 
+func (w Where) GetType() VisitableType {
+	return WhereVisitable
+}
+
+

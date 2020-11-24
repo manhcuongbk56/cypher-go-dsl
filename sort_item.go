@@ -52,5 +52,15 @@ func (s SortDirection) Accept(visitor Visitor) {
 	visitor.Leave(s)
 }
 
+func (item SortItem) GetType() VisitableType {
+	return SortItemVisitable
+}
+
+func (s SortDirection) GetType() VisitableType {
+	return SortDirectionVisitable
+}
+
+
+
 
 

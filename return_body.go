@@ -14,3 +14,10 @@ func (r ReturnBody) Accept(visitor Visitor) {
 	VisitIfNotNull(r.limit, visitor)
 }
 
+func (r ReturnBody) GetType() VisitableType {
+	return ReturnBodyVisitable
+}
+
+
+
+
