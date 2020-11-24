@@ -48,3 +48,14 @@ func (c Comparison) IsExpression() bool {
 func (c Comparison) Accept(visitor Visitor) {
 	panic("implement me")
 }
+
+func NameOrExpression(expression IsExpression) IsExpression  {
+	named, isNamed := expression.(Named)
+	if isNamed && named.getSymbolicName() !=  nil {
+		return named.getSymbolicName()
+	}
+	return expression
+}
+
+
+

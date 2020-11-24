@@ -20,19 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13e0375c-aa01-44f2-89ac-dc06b3388322" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/relationship_pattern.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expose_properties.go" beforeDir="false" afterPath="$PROJECT_DIR$/expose_properties.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/AliasExpression.go" beforeDir="false" afterPath="$PROJECT_DIR$/AliasExpression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/entry_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/entry_expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/expression_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/map_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/map_expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression/type.go" beforeDir="false" afterPath="$PROJECT_DIR$/type.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cypher.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cypher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/default_statement_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/default_statement_builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match.go" beforeDir="false" afterPath="$PROJECT_DIR$/match.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/named.go" beforeDir="false" afterPath="$PROJECT_DIR$/named.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/properties.go" beforeDir="false" afterPath="$PROJECT_DIR$/properties.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/relationship.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/visitable/visitable.go" beforeDir="false" afterPath="$PROJECT_DIR$/visitable.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visitable.go" beforeDir="false" afterPath="$PROJECT_DIR$/visitable.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,51 +170,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="705" y="102" width="500" height="846" key="#GOPATH" timestamp="1605889433481">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="705" y="102" width="500" height="846" key="#GOPATH/0.0.1920.1080@0.0.1920.1080" timestamp="1605889433480" />
-    <state x="705" y="459" width="510" height="168" key="#GOROOT" timestamp="1605888290929">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="705" y="459" width="510" height="168" key="#GOROOT/0.0.1920.1080@0.0.1920.1080" timestamp="1605888290929" />
-    <state x="838" y="378" width="567" height="331" key="#Vim_Emulation" timestamp="1606036967361">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="838" y="378" width="567" height="331" key="#Vim_Emulation/0.0.1920.1080@0.0.1920.1080" timestamp="1606036967361" />
-    <state x="671" y="180" width="567" height="727" key="#com.intellij.ide.util.MemberChooser" timestamp="1606061257957">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="671" y="180" width="567" height="727" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1606061257957" />
-    <state width="1864" height="260" key="GridCell.Tab.0.bottom" timestamp="1606060321264">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1864" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321264" />
-    <state width="1864" height="260" key="GridCell.Tab.0.center" timestamp="1606060321262">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1864" height="260" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321262" />
-    <state width="1864" height="260" key="GridCell.Tab.0.left" timestamp="1606060321260">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1864" height="260" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321260" />
-    <state width="1864" height="260" key="GridCell.Tab.0.right" timestamp="1606060321263">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state width="1864" height="260" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1606060321263" />
-    <state x="324" y="69" width="1271" height="912" key="SettingsEditor" timestamp="1606058120162">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="324" y="69" width="1271" height="912" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1606058120162" />
-    <state x="580" y="223" width="759" height="634" key="find.popup" timestamp="1606059946116">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="580" y="223" width="759" height="634" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1606059946116" />
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1606061116572">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1606061116572" />
   </component>
 </project>

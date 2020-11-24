@@ -5,6 +5,18 @@ type Visitor interface {
 	Leave(visitable Visitable)
 }
 
+type ExampleVisitor struct {
+
+}
+
+func (e ExampleVisitor) Enter(visitable Visitable) {
+	panic("implement me")
+}
+
+func (e ExampleVisitor) Leave(visitable Visitable) {
+	panic("implement me")
+}
+
 func VisitIfNotNull(dest interface{}, visitor Visitor) {
 	if dest != nil {
 		visitable, isVisitable := dest.(Visitable)
@@ -14,11 +26,21 @@ func VisitIfNotNull(dest interface{}, visitor Visitor) {
 	}
 }
 
+type VisitableType int;
+
+const (
+	MatchVisitable VisitableType = 1
+
+)
+
 type Visitable interface {
 	Accept(visitor Visitor)
+	GetType() VisitableType
 }
 
+
 type SubVisitable interface {
+	Visitable
 	PrepareVisit(visitable Visitable) Visitable
 }
 

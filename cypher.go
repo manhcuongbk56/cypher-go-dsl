@@ -9,6 +9,13 @@ func NewNode(primaryLabel string, additionalLabel ...string) Node  {
 		labels: labels,
 	}
 }
-func MatchCondition(element ...PatternElement ) OngoingReadingWithoutWhere {
+func Matchs(element ...PatternElement ) (OngoingReadingWithoutWhere) {
 	return NewDefaultBuilder().Match(element...)
+}
+
+func Sort(expression IsExpression) *SortItem {
+	return &SortItem{
+		expression: expression,
+		direction:  SortDirection{UNDEFINED},
+	}
 }

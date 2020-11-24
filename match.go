@@ -17,3 +17,8 @@ func (match Match) Accept(visitor Visitor) {
 	visitor.Leave(match)
 }
 
+func (match Match) GetType() VisitableType {
+	return MatchVisitable
+}
+
+

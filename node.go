@@ -5,9 +5,9 @@ import (
 )
 
 type Node struct {
-	symbolicName SymbolicName
+	symbolicName *SymbolicName
 	labels       []string
-	properties   Properties
+	properties   *Properties
 }
 
 type NodeLabel struct {
@@ -49,7 +49,7 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
 }
 
 func (node Node) WithProperties(newProperties MapExpression) Node {
-	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: Properties{newProperties}}
+	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: &Properties{newProperties}}
 }
 
 func (node Node) Property(name string) {
@@ -57,9 +57,14 @@ func (node Node) Property(name string) {
 }
 
 func (node Node) Named(name string) Node {
-	node.symbolicName = SymbolicName{Value: name}
+	node.symbolicName = &SymbolicName{Value: name}
 	return node
 }
+
+func (node Node) getSymbolicName() *SymbolicName {
+	return node.symbolicName
+}
+
 
 
 
