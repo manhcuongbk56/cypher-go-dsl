@@ -3,15 +3,15 @@ package cypher_go_dsl
 import errors "golang.org/x/xerrors"
 
 type MapExpression struct {
-	Expressions []IsExpression
+	Expressions []Expression
 }
 
 func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 	if len(objects) %2 != 0 {
-		err := errors.Errorf("number of object input should be product of 2 but it is %d", len(objects))
+		err := errors.Errorf("number of object input should be product of 2 but it is %defaultStatementBuilder", len(objects))
 		return MapExpression{}, err
 	}
-	var newContents = make([]IsExpression, len(objects)/2)
+	var newContents = make([]Expression, len(objects)/2)
 	var knownKeys = make(map[string]int)
 	for i := 0; i < len(objects); i+=2 {
 		key, isString := objects[i].(string)
@@ -19,7 +19,7 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 			err := errors.Errorf("key must be string")
 			return MapExpression{}, err
 		}
-		value, isExpression := objects[i + 1].(IsExpression)
+		value, isExpression := objects[i + 1].(Expression)
 		if !isExpression{
 			err := errors.Errorf("object must be expression")
 			return MapExpression{}, err

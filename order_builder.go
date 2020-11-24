@@ -11,11 +11,11 @@ func (o OrderBuilder) OrderByItem(item ...SortItem)  {
 	o.sortItemList = append(o.sortItemList, item...)
 }
 
-func (o OrderBuilder) OrderByExpression(expression IsExpression)  {
+func (o OrderBuilder) OrderByExpression(expression Expression)  {
 	o.lastSortItem = Sort(expression)
 }
 
-func (o OrderBuilder) And(expression IsExpression)  {
+func (o OrderBuilder) And(expression Expression)  {
 	o.OrderByExpression(expression)
 }
 

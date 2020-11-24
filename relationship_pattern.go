@@ -19,6 +19,10 @@ func (r RelationshipTypes) Accept(visitor Visitor) {
 	visitor.Leave(r)
 }
 
+func (r RelationshipTypes) GetType() VisitableType {
+	return RelationshipTypesVisitable
+}
+
 /**
 Relationship length
  */

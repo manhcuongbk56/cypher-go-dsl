@@ -1,7 +1,7 @@
 package cypher_go_dsl
 
 type StringLiteral struct {
-	Expression
+	ExpressionStruct
 	content string
 }
 

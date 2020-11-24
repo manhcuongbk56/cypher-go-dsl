@@ -41,6 +41,17 @@ const (
 	SkipVisitable = 10
 	ReturnBodyVisitable = 11
 	ReturnVisitable = 12
+	RelationshipTypesVisitable = 13
+	PatternVisitable = 14
+	OrderVisitable = 15
+	EntryExpressionVisitable = 16
+	DistinctVisitable = 17
+	SinglePartQueryVisitable = 18
+	RelationshipVisitable = 19
+	RelationshipChainVisitable = 20
+	LimitVisitable = 21
+	ExpressionListVisitable = 22
+	AliasedExpressionVisitable = 23
 )
 
 type Visitable interface {

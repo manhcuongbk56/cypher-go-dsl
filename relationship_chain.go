@@ -36,3 +36,8 @@ func (r RelationshipChain) Add(relationship Relationship) RelationshipChain {
 func (r RelationshipChain) IsPatternElement() bool {
 	return true
 }
+
+func (r RelationshipChain) GetType() VisitableType {
+	return RelationshipChainVisitable
+}
+

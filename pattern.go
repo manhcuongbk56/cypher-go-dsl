@@ -16,4 +16,9 @@ func (p Pattern) Accept(visitor Visitor) {
 	visitor.Leave(p)
 }
 
+func (p Pattern) GetType() VisitableType {
+	return PatternVisitable
+}
+
+
 

@@ -17,3 +17,8 @@ func CreateLimit(number int) Limit {
 	return Limit{limitAmount: literal}
 }
 
+func (l Limit) GetType() VisitableType {
+	return LimitVisitable
+}
+
+

@@ -3,7 +3,7 @@ package cypher_go_dsl
 import "strconv"
 
 type NumberLiteral struct {
-	Expression
+	ExpressionStruct
 	content int
 }
 

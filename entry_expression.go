@@ -1,9 +1,9 @@
 package cypher_go_dsl
 
 type EntryExpression struct {
-	Expression
+	ExpressionStruct
 	Key   string
-	Value IsExpression
+	Value Expression
 }
 
 func (e EntryExpression) IsExpression() bool {
@@ -14,5 +14,9 @@ func (e EntryExpression) Accept(visitor Visitor) {
 	visitor.Enter(e)
 	e.Value.Accept(visitor)
 	visitor.Leave(e)
+}
+
+func (e EntryExpression) GetType() VisitableType {
+	return EntryExpressionVisitable
 }
 

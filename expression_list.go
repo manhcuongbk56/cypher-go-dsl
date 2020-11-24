@@ -1,11 +1,11 @@
 package cypher_go_dsl
 
 type ExpressionList struct {
-	expressions []IsExpression
+	expressions []Expression
 }
 
 func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
-	expression, isExpression := child.(IsExpression)
+	expression, isExpression := child.(Expression)
 	if !isExpression {
 		panic("Can not prepare un expression type in expression list")
 	}
@@ -20,8 +20,12 @@ func (e ExpressionList) Accept(visitor Visitor) {
 	visitor.Leave(e)
 }
 
-func NewExpressionList(expression ...IsExpression) ExpressionList {
-	expressions := make([]IsExpression, len(expression))
+func (e ExpressionList) GetType() VisitableType {
+	return ExpressionListVisitable
+}
+
+func NewExpressionList(expression ...Expression) ExpressionList {
+	expressions := make([]Expression, len(expression))
 	expressions = append(expressions, expression...)
 	return ExpressionList{expressions: expressions}
 }

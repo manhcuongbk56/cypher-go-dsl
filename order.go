@@ -12,6 +12,10 @@ func (o Order) Accept(visitor Visitor) {
 	visitor.Leave(o)
 }
 
+func (o Order) GetType() VisitableType {
+	return OrderVisitable
+}
+
 func (o Order) PrepareVisit(visitable Visitable) Visitable {
 	return visitable
 }

@@ -1,6 +1,5 @@
 package cypher_go_dsl
 
-import "errors"
 
 type DefaultStatementBuilder struct {
 	invalidReason string
@@ -36,44 +35,42 @@ func (d DefaultStatementBuilder) closeCurrentOngoingMatch()  {
 	
 }
 
-func (d DefaultStatementBuilder) returning(expression ...IsExpression) OngoingReadingAndReturn {
+func (d DefaultStatementBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
 	return d.returningDefault(false, expression...)
 }
 
-func (d DefaultStatementBuilder) returningDistinct(expression ...IsExpression) OngoingReadingAndReturn {
-	panic("implement me")
+func (d DefaultStatementBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
+	return d.returningDefault(true, expression...)
 }
 
-func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...IsExpression) OngoingReadingAndReturn {
+func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...Expression) OngoingReadingAndReturn {
 	withReturnBuilder := DefaultStatementWithReturnBuilder{
-		distinct: distinct,
+		distinct:                distinct,
+		defaultStatementBuilder: d,
 	}
 	withReturnBuilder.AddExpression(expression...)
+	return withReturnBuilder
 }
 
-func (builder DefaultStatementWithReturnBuilder) AddExpression(expression ...IsExpression)  {
+func (builder DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression)  {
 	builder.returnList = append(builder.returnList, expression...)
 }
 
 type DefaultStatementWithReturnBuilder struct {
-	d DefaultStatementBuilder
-	distinct bool
-	returnList []IsExpression
-	orderBuilder OrderBuilder
+	defaultStatementBuilder DefaultStatementBuilder
+	distinct                bool
+	returnList              []Expression
+	orderBuilder            OrderBuilder
 }
 
 func (b DefaultStatementWithReturnBuilder) Build() Statement {
 	var returning *Return
 	if len(b.returnList) > 0 {
 		returnItems := ExpressionList{b.returnList}
-		var distinctInstance *Distinct
-		if b.distinct {
-			distinctInstance = &Distinct{}
-		}
 		returning = ReturnByMultiVariable(b.distinct, returnItems, b.orderBuilder.BuildOrder(), &b.orderBuilder.skip,
 			&b.orderBuilder.limit)
 	}
-	return b.d.BuildImpl(returning)
+	return b.defaultStatementBuilder.BuildImpl(returning)
 }
 
 func (d DefaultStatementBuilder) Build() Statement {
@@ -82,7 +79,7 @@ func (d DefaultStatementBuilder) Build() Statement {
 
 func (d DefaultStatementBuilder) BuildImpl(returning *Return) Statement {
 	singlePartQuery, _ := NewSinglePartQuery(d.BuildListOfVisitable(), returning)
-	return singlePartQuery
+	return *singlePartQuery
 }
 
 func (d DefaultStatementBuilder) BuildListOfVisitable() []Visitable  {

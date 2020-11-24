@@ -1,7 +1,7 @@
 package cypher_go_dsl
 
 type ExposesMatch interface {
-	Match(pattern ...c.PatternElement) OngoingReadingWithoutWhere
+	Match(pattern ...PatternElement) OngoingReadingWithoutWhere
 
-	OptionalMatch(pattern ...c.PatternElement)
+	OptionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere
 }

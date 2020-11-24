@@ -1,8 +1,8 @@
 package cypher_go_dsl
 
 type SortItem struct {
-	expression IsExpression
-	direction SortDirection
+	expression Expression
+	direction  SortDirection
 }
 
 type SortDirection struct {
@@ -17,7 +17,7 @@ const (
 	DESC = "DESC"
 )
 
-func CreateSortItem(expression IsExpression, direction SortDirectionRaw) SortItem{
+func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem{
 	return SortItem{
 		expression: expression,
 		direction:  SortDirection{value: direction},

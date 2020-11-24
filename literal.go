@@ -1,7 +1,7 @@
 package cypher_go_dsl
 
 type Literal interface {
-	IsExpression
+	Expression
 	GetContent() interface{}
 	AsString() string
 }

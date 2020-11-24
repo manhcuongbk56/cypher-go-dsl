@@ -6,11 +6,14 @@ import (
 )
 
 func testCreateTree(t *testing.T) {
-	device, _ := NewNode("Devices").Named("d").WithRawProperties("entity.id", "7d729555-0d61-46ae-ab79-ce43e72f751b")
+	device, _ := NewNode("Devices").Named("defaultStatementBuilder").WithRawProperties("entity.id", "7d729555-0d61-46ae-ab79-ce43e72f751b")
 	customer := NewNode("Customer").Named("c")
 	relation := device.RelationshipFrom(customer, "HAS")
 	statement := Matchs(relation).
-		returning(customer.symbolicName).Build()
+					returning(customer.symbolicName).
+					Build()
+	query := NewRenderer().Render(statement)
+	fmt.Println(query)
 }
 
 func TestWhereType(t *testing.T) {

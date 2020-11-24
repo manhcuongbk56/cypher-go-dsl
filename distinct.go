@@ -9,3 +9,8 @@ func (d Distinct) Accept(visitor Visitor) {
 	visitor.Leave(d)
 }
 
+func (d Distinct) GetType() VisitableType {
+	return DistinctVisitable
+}
+
+

@@ -29,3 +29,8 @@ func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery,
 	}, nil
 }
 
+func (s SinglePartQuery) GetType() VisitableType {
+	return SinglePartQueryVisitable
+}
+
+

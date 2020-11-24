@@ -27,3 +27,8 @@ func (r Relationship) IsPatternElement() bool {
 func (r Relationship) Accept(visitor Visitor) {
 	panic("implement me")
 }
+
+func (r Relationship) GetType() VisitableType {
+	return RelationshipVisitable
+}
+
