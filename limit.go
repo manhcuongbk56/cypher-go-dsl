@@ -4,10 +4,10 @@ type Limit struct {
 	limitAmount NumberLiteral
 }
 
-func (l Limit) Accept(visitor Visitor) {
-	visitor.Enter(l)
+func (l Limit) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(l)
 	l.limitAmount.Accept(visitor)
-	visitor.Leave(l)
+	(*visitor).Leave(l)
 }
 
 func CreateLimit(number int) Limit {
@@ -20,5 +20,12 @@ func CreateLimit(number int) Limit {
 func (l Limit) GetType() VisitableType {
 	return LimitVisitable
 }
+
+func (l Limit) Enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString(" LIMIT ")}
+
+func (l Limit) Leave(renderer *CypherRenderer) {
+}
+
 
 

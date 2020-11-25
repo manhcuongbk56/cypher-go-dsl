@@ -18,7 +18,7 @@ func (r RelationshipChain) RelationshipBetween(node Node, types ...string) Relat
 	panic("implement me")
 }
 
-func (r RelationshipChain) Accept(visitor Visitor) {
+func (r RelationshipChain) Accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 
@@ -40,4 +40,13 @@ func (r RelationshipChain) IsPatternElement() bool {
 func (r RelationshipChain) GetType() VisitableType {
 	return RelationshipChainVisitable
 }
+
+func (r RelationshipChain) Enter(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+func (r RelationshipChain) Leave(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
 

@@ -3,7 +3,7 @@ package cypher_go_dsl
 import errors "golang.org/x/xerrors"
 
 type MapExpression struct {
-	Expressions []Expression
+	expressions []Expression
 }
 
 func NewMapExpression(objects ...interface{}) (MapExpression, error) {
@@ -24,15 +24,41 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 			err := errors.Errorf("object must be expression")
 			return MapExpression{}, err
 		}
-		if knownKeys[key] == 0  {
+		if knownKeys[key] == 1  {
 			err := errors.Errorf("duplicate key")
 			return MapExpression{}, err
 		}
-		newContents = append(newContents, EntryExpression{
+		knownKeys[key] = 1
+		newContents[i/2] = EntryExpression{
 			Value: value,
 			Key: key,
-		})
+		}
 	}
 	return MapExpression{newContents}, nil
 }
+
+func (m MapExpression) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(m)
+	for _, child := range m.expressions {
+		m.PrepareVisit(child).Accept(visitor)
+	}
+	(*visitor).Leave(m)
+}
+
+func (m MapExpression) GetType() VisitableType {
+	return MapExpressionVisitable
+}
+
+func (m MapExpression) Enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString("{")
+}
+
+func (m MapExpression) Leave(renderer *CypherRenderer) {
+}
+
+func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {
+	expression := visitable.(Expression)
+	return NameOrExpression(expression)
+}
+
 

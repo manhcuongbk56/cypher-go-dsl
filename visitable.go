@@ -1,30 +1,36 @@
 package cypher_go_dsl
 
-type Visitor interface {
-	Enter(visitable Visitable)
-	Leave(visitable Visitable)
-}
+import (
+	"fmt"
+	"reflect"
+)
 
-type ExampleVisitor struct {
 
-}
 
-func (e ExampleVisitor) Enter(visitable Visitable) {
-	panic("implement me")
-}
-
-func (e ExampleVisitor) Leave(visitable Visitable) {
-	panic("implement me")
-}
-
-func VisitIfNotNull(dest interface{}, visitor Visitor) {
-	if dest != nil {
+func VisitIfNotNull(dest interface{}, visitor *CypherRenderer) {
+	if  !reflect.ValueOf(dest).IsNil() {
 		visitable, isVisitable := dest.(Visitable)
 		if isVisitable {
+			if visitable == nil {
+				 fmt.Print("io")
+			}
 			visitable.Accept(visitor)
 		}
 	}
 }
+
+func VisitIfNotNullA(dest Visitable, visitor *CypherRenderer) {
+	if  reflect.ValueOf(dest).IsNil() {
+		visitable, isVisitable := dest.(Visitable)
+		if isVisitable {
+			if visitable == nil {
+				fmt.Print("io")
+			}
+			visitable.Accept(visitor)
+		}
+	}
+}
+
 
 type VisitableType int;
 
@@ -52,10 +58,16 @@ const (
 	LimitVisitable = 21
 	ExpressionListVisitable = 22
 	AliasedExpressionVisitable = 23
+	PropertiesVisitable = 24
+	MapExpressionVisitable = 24
+	RelationshipDetailsVisitable = 25
+	LiteralVisitable = 26
 )
 
 type Visitable interface {
-	Accept(visitor Visitor)
+	Accept(visitor *CypherRenderer)
+	Enter(renderer *CypherRenderer)
+	Leave(renderer *CypherRenderer)
 	GetType() VisitableType
 }
 

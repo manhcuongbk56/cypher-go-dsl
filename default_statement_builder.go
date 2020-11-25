@@ -52,7 +52,7 @@ func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...E
 	return withReturnBuilder
 }
 
-func (builder DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression)  {
+func (builder *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression)  {
 	builder.returnList = append(builder.returnList, expression...)
 }
 

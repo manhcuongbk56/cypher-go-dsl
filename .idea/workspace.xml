@@ -21,37 +21,36 @@
   <component name="ChangeListManager">
     <list default="true" id="13e0375c-aa01-44f2-89ac-dc06b3388322" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AliasExpression.go" beforeDir="false" afterPath="$PROJECT_DIR$/alias_expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/condition_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/condition_builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alias_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/alias_expression.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aliased.go" beforeDir="false" afterPath="$PROJECT_DIR$/aliased.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cypher.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cypher_renderer.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher_renderer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cypher_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/cypher_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/default_statement_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/default_statement_builder.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/distinct.go" beforeDir="false" afterPath="$PROJECT_DIR$/distinct.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/entry_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/entry_expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exposes_match.go" beforeDir="false" afterPath="$PROJECT_DIR$/exposes_match.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exposes_returning.go" beforeDir="false" afterPath="$PROJECT_DIR$/exposes_returning.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/expression_list.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression_list.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/expression_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/expression_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/literal.go" beforeDir="false" afterPath="$PROJECT_DIR$/literal.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map_expression.go" beforeDir="false" afterPath="$PROJECT_DIR$/map_expression.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map_type_visitor.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/match_builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match.go" beforeDir="false" afterPath="$PROJECT_DIR$/match.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/node.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/number_literal.go" beforeDir="false" afterPath="$PROJECT_DIR$/number_literal.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/order.go" beforeDir="false" afterPath="$PROJECT_DIR$/order.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/order_builder.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pattern.go" beforeDir="false" afterPath="$PROJECT_DIR$/pattern.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/properties.go" beforeDir="false" afterPath="$PROJECT_DIR$/properties.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/relationship.go" beforeDir="false" afterPath="$PROJECT_DIR$/relationship.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/relationship_chain.go" beforeDir="false" afterPath="$PROJECT_DIR$/relationship_chain.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/relationship_pattern.go" beforeDir="false" afterPath="$PROJECT_DIR$/relationship_pattern.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/return.go" beforeDir="false" afterPath="$PROJECT_DIR$/return.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/return_body.go" beforeDir="false" afterPath="$PROJECT_DIR$/return_body.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/single_part_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/single_part_query.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skip.go" beforeDir="false" afterPath="$PROJECT_DIR$/skip.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sort_item.go" beforeDir="false" afterPath="$PROJECT_DIR$/sort_item.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/string_literal.go" beforeDir="false" afterPath="$PROJECT_DIR$/string_literal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symbolic_name.go" beforeDir="false" afterPath="$PROJECT_DIR$/symbolic_name.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visitable.go" beforeDir="false" afterPath="$PROJECT_DIR$/visitable.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/where.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,13 +107,16 @@
       <recent name="$PROJECT_DIR$/expression" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.cypher_test.go">
-    <configuration name="go build test_expression.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestCreateTree in cypher-go-dsl">
+    <configuration name="TestCreateTree in cypher-go-dsl" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="cypher-go-dsl" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/expression/test_expression.go" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="cypher-go-dsl" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestCreateTree\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestType in expression_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -160,11 +162,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestCreateTree in cypher-go-dsl" />
         <item itemvalue="Go Test.cypher_test.go" />
         <item itemvalue="Go Test.TestWhereType in cypher-go-dsl" />
         <item itemvalue="Go Test.TestType in expression_test.go" />
         <item itemvalue="Go Test.expression_test.go" />
-        <item itemvalue="Go Build.go build test_expression.go" />
       </list>
     </recent_temporary>
   </component>
@@ -199,17 +201,202 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+        <line-breakpoint type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/expression_list.go</url>
-          <line>26</line>
+          <line>32</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>78</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/node.go</url>
+          <line>39</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/relationship_pattern.go</url>
+          <line>78</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/map_expression.go</url>
+          <line>10</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_test.go</url>
+          <line>11</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/single_part_query.go</url>
+          <line>12</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>144</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/relationship_details.go</url>
+          <line>11</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/relationship_details.go</url>
+          <line>19</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/visitable.go</url>
+          <line>22</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>226</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>234</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>238</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>242</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>246</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>253</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>266</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>271</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>278</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>291</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>305</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>314</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>323</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>327</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>331</line>
+          <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>109</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/map_expression.go</url>
           <line>59</line>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/map_expression.go</url>
+          <line>40</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/node.go</url>
+          <line>23</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>153</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>158</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/match.go</url>
+          <line>16</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/node.go</url>
+          <line>17</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>143</line>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/match.go</url>
+          <line>13</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cypher_renderer.go</url>
+          <line>147</line>
+          <option name="timeStamp" value="97" />
         </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="DlvErrorBreakpoint" />
+      </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GoTestRunConfiguration">
+        <watch expression="peek(renderer.currentVisitedElements) == used " />
+        <watch expression="peek(renderer.currentVisitedElements) " />
+        <watch expression="renderer.currentVisitedElements" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -12,16 +12,22 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 	return NameOrExpression(expression)
 }
 
-func (e ExpressionList) Accept(visitor Visitor) {
-	visitor.Enter(e)
+func (e ExpressionList) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(e)
 	for _, expression := range e.expressions{
 		e.PrepareVisit(expression).Accept(visitor)
 	}
-	visitor.Leave(e)
+	(*visitor).Leave(e)
 }
 
 func (e ExpressionList) GetType() VisitableType {
 	return ExpressionListVisitable
+}
+
+func (e ExpressionList) Enter(renderer *CypherRenderer) {
+}
+
+func (e ExpressionList) Leave(renderer *CypherRenderer) {
 }
 
 func NewExpressionList(expression ...Expression) ExpressionList {

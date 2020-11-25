@@ -7,7 +7,7 @@ type ReturnBody struct {
 	limit *Limit
 }
 
-func (r ReturnBody) Accept(visitor Visitor) {
+func (r ReturnBody) Accept(visitor *CypherRenderer) {
 	r.returnItems.Accept(visitor)
 	VisitIfNotNull(r.order, visitor)
 	VisitIfNotNull(r.skip, visitor)

@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "strings"
+
 type RelationshipPattern interface {
 	ExposesRelationship
 	PatternElement
@@ -14,13 +16,28 @@ type RelationshipTypes struct {
 	values []string
 }
 
-func (r RelationshipTypes) Accept(visitor Visitor) {
-	visitor.Enter(r)
-	visitor.Leave(r)
+func (r RelationshipTypes) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(r)
+	(*visitor).Leave(r)
 }
 
 func (r RelationshipTypes) GetType() VisitableType {
 	return RelationshipTypesVisitable
+}
+
+func (r RelationshipTypes) Enter(renderer *CypherRenderer) {
+	typeWithPrefix := make([]string, 0)
+	for _, typeRaw := range r.values {
+		if typeRaw == ""{
+			continue
+		}
+		typeWithPrefix = append(typeWithPrefix, REL_TYPE_START + typeRaw)
+	}
+	renderer.builder.WriteString(strings.Join(typeWithPrefix, REL_TYP_SEPARATOR))
+}
+
+func (r RelationshipTypes) Leave(renderer *CypherRenderer) {
+	panic("implement me")
 }
 
 /**
@@ -57,27 +74,12 @@ func UNI() Direction {
 	return Direction{symbolLeft: "-", symbolRight: "-"}
 }
 
-type Details struct {
-	direction *Direction
-	symbolicName *SymbolicName
-	types *RelationshipTypes
-	length *RelationshipLength
-	properties *Properties
-}
-
-func Create(direction Direction, name SymbolicName, types RelationshipTypes) Details {
-	return Details{
-		direction: &direction,
-		symbolicName: &name,
-		types: &types,
-	}
-}
 
 func CreateLTR(left Node, direction Direction, right Node, types ...string) Relationship {
 	typeSlice := make([]string, 0)
 	typeSlice = append(typeSlice, types...)
 	relationshipTypes := RelationshipTypes{values: typeSlice}
-	details := Details{
+	details := RelationshipDetails{
 		direction:    &direction,
 		symbolicName: nil,
 		types:        &relationshipTypes,
@@ -90,10 +92,4 @@ func CreateLTR(left Node, direction Direction, right Node, types ...string) Rela
 }
 
 
-func (detail Details) hasContent() bool {
-	return detail.types != nil ||
-		detail.direction != nil ||
-		detail.symbolicName != nil || 
-		detail.properties != nil
-}
 

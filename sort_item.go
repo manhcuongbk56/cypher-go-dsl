@@ -38,18 +38,18 @@ func (item SortItem) Descending() SortItem  {
 	}
 }
 
-func (item SortItem) Accept(visitor Visitor) {
-	visitor.Enter(item)
+func (item SortItem) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(item)
 	NameOrExpression(item.expression).Accept(visitor)
 	if item.direction.value == ASC || item.direction.value == DESC {
 		item.direction.Accept(visitor)
 	}
-	visitor.Leave(item)
+	(*visitor).Leave(item)
 }
 
-func (s SortDirection) Accept(visitor Visitor) {
-	visitor.Enter(s)
-	visitor.Leave(s)
+func (s SortDirection) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(s)
+	(*visitor).Leave(s)
 }
 
 func (item SortItem) GetType() VisitableType {
@@ -59,6 +59,23 @@ func (item SortItem) GetType() VisitableType {
 func (s SortDirection) GetType() VisitableType {
 	return SortDirectionVisitable
 }
+
+func (item SortItem) Enter(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+func (item SortItem) Leave(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+func (s SortDirection) Enter(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+func (s SortDirection) Leave(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
 
 
 

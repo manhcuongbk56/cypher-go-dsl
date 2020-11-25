@@ -6,22 +6,22 @@ import (
 
 type Node struct {
 	symbolicName *SymbolicName
-	labels       []string
+	labels       []NodeLabel
 	properties   *Properties
 }
 
-type NodeLabel struct {
-	value string
+func (node Node) hasSymbolic() bool {
+	return node.symbolicName != nil
 }
 
-func (n NodeLabel) Accept(visitor Visitor) {
-	visitor.Enter(n)
-	visitor.Leave(n)
-}
-
-func (node Node) Accept(visitor Visitor) {
-	visitor.Enter(node)
-	visitor.Leave(node)
+func (node Node) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(&node)
+	VisitIfNotNull(node.symbolicName, visitor)
+	for _, label := range node.labels {
+		label.Accept(visitor)
+	}
+	VisitIfNotNull(node.properties, visitor)
+	(*visitor).Leave(&node)
 }
 
 func (node Node) GetType() VisitableType {
@@ -48,7 +48,7 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
 	var properties = &MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
 		var err error
-		*properties, err = NewMapExpression(keysAndValues)
+		*properties, err = NewMapExpression(keysAndValues...)
 		if err != nil {
 			return Node{}, err
 		}
@@ -72,6 +72,45 @@ func (node Node) Named(name string) Node {
 func (node Node) getSymbolicName() *SymbolicName {
 	return node.symbolicName
 }
+
+func (node Node) Enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString("(")
+	if !node.hasSymbolic(){
+		return
+	}
+	var named interface{} = &node
+	_, renderer.skipNodeContent = renderer.visitedNamed[named]
+	if renderer.skipNodeContent {
+		renderer.builder.WriteString(node.symbolicName.Value)
+	}
+}
+
+func (node Node) Leave(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+type NodeLabel struct {
+	value string
+}
+
+func (n NodeLabel) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(n)
+	(*visitor).Leave(n)
+}
+
+func (n NodeLabel) Enter(renderer *CypherRenderer) {
+	if n.value == "" {
+		return
+	}
+	renderer.builder.WriteString(NODE_LABEL_START)
+	renderer.builder.WriteString(escapeName(n.value))
+}
+
+func (n NodeLabel) Leave(renderer *CypherRenderer) {
+}
+
+
+
 
 
 

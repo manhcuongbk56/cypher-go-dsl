@@ -7,7 +7,7 @@ type SinglePartQuery struct {
 	aReturn *Return
 }
 
-func (s SinglePartQuery) Accept(visitor Visitor) {
+func (s SinglePartQuery) Accept(visitor *CypherRenderer) {
 	for _, clause := range s.precedingClauses{
 		clause.Accept(visitor)
 		VisitIfNotNull(s.aReturn, visitor)
@@ -32,5 +32,14 @@ func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery,
 func (s SinglePartQuery) GetType() VisitableType {
 	return SinglePartQueryVisitable
 }
+
+func (s SinglePartQuery) Enter(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
+func (s SinglePartQuery) Leave(renderer *CypherRenderer) {
+	panic("implement me")
+}
+
 
 

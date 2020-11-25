@@ -5,24 +5,30 @@ type StringLiteral struct {
 	content string
 }
 
-func (n StringLiteral) IsExpression() bool {
+func (s StringLiteral) IsExpression() bool {
 	return true
 }
 
-func (n StringLiteral) GetContent() interface{} {
-	return n.content
+func (s StringLiteral) GetContent() interface{} {
+	return s.content
 }
 
-func (n StringLiteral) AsString() string {
-	return n.content
+func (s StringLiteral) AsString() string {
+	return s.content
 }
 
-func (n StringLiteral) Accept(visitor Visitor) {
-	visitor.Enter(n)
-	visitor.Leave(n)
+func (s StringLiteral) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(s)
+	(*visitor).Leave(s)
 }
 
-func (n StringLiteral) GetType() VisitableType {
+func (s StringLiteral) GetType() VisitableType {
 	return StringLiteralVisitable
+}
+
+func (s StringLiteral) Enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString(s.AsString())}
+
+func (s StringLiteral) Leave(renderer *CypherRenderer) {
 }
 

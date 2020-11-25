@@ -20,7 +20,7 @@ func (lhs ExpressionStruct) IsEqualTo(rhs ExpressionStruct) Comparison {
 	return Comparison{left: lhs, operator: EQUALITY, right: rhs}
 }
 
-func (lhs ExpressionStruct) Accept(visitor Visitor) {
+func (lhs ExpressionStruct) Accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 
@@ -37,7 +37,7 @@ func (lhs Condition) Or(rhd Condition) Condition  {
 
 type Operator string
 
-func (o Operator) Accept(visitor Visitor) {
+func (o Operator) Accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 
@@ -60,7 +60,7 @@ func (c Comparison) IsExpression() bool {
 	return true
 }
 
-func (c Comparison) Accept(visitor Visitor) {
+func (c Comparison) Accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 

@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func testCreateTree(t *testing.T) {
-	device, _ := NewNode("Devices").Named("defaultStatementBuilder").WithRawProperties("entity.id", "7d729555-0d61-46ae-ab79-ce43e72f751b")
+func TestCreateTree(t *testing.T) {
+	device, _ := NewNode("Devices").Named("d").WithRawProperties("entity.id", StringLiteral{content: "7d729555-0d61-46ae-ab79-ce43e72f751b"})
 	customer := NewNode("Customer").Named("c")
 	relation := device.RelationshipFrom(customer, "HAS")
 	statement := Matchs(relation).

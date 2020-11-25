@@ -5,11 +5,11 @@ type Return struct {
 	body *ReturnBody
 }
 
-func (r Return) Accept(visitor Visitor) {
-	visitor.Enter(r)
+func (r Return) Accept(visitor *CypherRenderer) {
+	(*visitor).Enter(r)
 	VisitIfNotNull(r.distinct, visitor)
 	r.body.Accept(visitor)
-	visitor.Leave(r)
+	(*visitor).Leave(r)
 }
 
 func (r Return) GetType() VisitableType {
@@ -31,5 +31,11 @@ func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Ord
 		distinct: distinctInstance,
 		body:     &body,
 	}
+}
+
+func (r Return) Enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString("RETURN  ")}
+
+func (r Return) Leave(renderer *CypherRenderer) {
 }
 
