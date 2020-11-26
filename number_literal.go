@@ -1,10 +1,18 @@
 package cypher_go_dsl
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 type NumberLiteral struct {
 	ExpressionStruct
 	content int
+	key     string
+}
+
+func (n NumberLiteral) getKey() string {
+	return n.key
 }
 
 func (n NumberLiteral) IsExpression() bool {
@@ -19,18 +27,15 @@ func (n NumberLiteral) AsString() string {
 	return strconv.Itoa(n.content)
 }
 
-func (n NumberLiteral) Accept(visitor *CypherRenderer) {
+func (n NumberLiteral) accept(visitor *CypherRenderer) {
+	n.key = fmt.Sprint(&n)
 	(*visitor).Enter(n)
 	(*visitor).Leave(n)
 }
 
-func (n NumberLiteral) GetType() VisitableType {
-	return LiteralVisitable
+func (n NumberLiteral) enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString(n.AsString())
 }
 
-func (n NumberLiteral) Enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(n.AsString())}
-
-func (n NumberLiteral) Leave(renderer *CypherRenderer) {
+func (n NumberLiteral) leave(renderer *CypherRenderer) {
 }
-

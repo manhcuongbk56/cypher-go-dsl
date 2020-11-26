@@ -1,8 +1,7 @@
 package cypher_go_dsl
 
-
 type DefaultStatementBuilder struct {
-	invalidReason string
+	invalidReason             string
 	currentSinglePartElements []Visitable
 	currentOngoingMatch       *MatchBuilder
 }
@@ -31,8 +30,8 @@ func (d DefaultStatementBuilder) OptionalMatch(pattern ...PatternElement) {
 	panic("implement me")
 }
 
-func (d DefaultStatementBuilder) closeCurrentOngoingMatch()  {
-	
+func (d DefaultStatementBuilder) closeCurrentOngoingMatch() {
+
 }
 
 func (d DefaultStatementBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
@@ -52,7 +51,7 @@ func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...E
 	return withReturnBuilder
 }
 
-func (builder *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression)  {
+func (builder *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression) {
 	builder.returnList = append(builder.returnList, expression...)
 }
 
@@ -63,14 +62,14 @@ type DefaultStatementWithReturnBuilder struct {
 	orderBuilder            OrderBuilder
 }
 
-func (b DefaultStatementWithReturnBuilder) Build() Statement {
+func (builder DefaultStatementWithReturnBuilder) Build() Statement {
 	var returning *Return
-	if len(b.returnList) > 0 {
-		returnItems := ExpressionList{b.returnList}
-		returning = ReturnByMultiVariable(b.distinct, returnItems, b.orderBuilder.BuildOrder(), &b.orderBuilder.skip,
-			&b.orderBuilder.limit)
+	if len(builder.returnList) > 0 {
+		returnItems := ExpressionList{expressions: builder.returnList}
+		returning = ReturnByMultiVariable(builder.distinct, returnItems, builder.orderBuilder.BuildOrder(), builder.orderBuilder.skip,
+			builder.orderBuilder.limit)
 	}
-	return b.defaultStatementBuilder.BuildImpl(returning)
+	return builder.defaultStatementBuilder.BuildImpl(returning)
 }
 
 func (d DefaultStatementBuilder) Build() Statement {
@@ -82,17 +81,13 @@ func (d DefaultStatementBuilder) BuildImpl(returning *Return) Statement {
 	return *singlePartQuery
 }
 
-func (d DefaultStatementBuilder) BuildListOfVisitable() []Visitable  {
+func (d DefaultStatementBuilder) BuildListOfVisitable() []Visitable {
 	visitables := make([]Visitable, 0)
 	copy(visitables, d.currentSinglePartElements)
 	if d.currentOngoingMatch != nil {
 		visitables = append(visitables, d.currentOngoingMatch.buildMatch())
-		d.currentOngoingMatch = nil;
+		d.currentOngoingMatch = nil
 	}
 	d.currentSinglePartElements = d.currentSinglePartElements[:0]
 	return visitables
 }
-
-
-
-

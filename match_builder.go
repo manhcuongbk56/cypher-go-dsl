@@ -6,7 +6,7 @@ type MatchBuilder struct {
 	optional    bool
 }
 
-func (builder MatchBuilder) buildMatch() Match  {
+func (builder MatchBuilder) buildMatch() Match {
 	pattern := Pattern{PatternElements: builder.patternList}
 	conditionBuilder := builder.condition
 	var optionalWhere *Where = nil
@@ -15,8 +15,8 @@ func (builder MatchBuilder) buildMatch() Match  {
 		optionalWhere = &Where{condition: builtCondition}
 	}
 	return Match{
-		optional: builder.optional,
-		pattern: pattern,
+		optional:      builder.optional,
+		pattern:       pattern,
 		optionalWhere: optionalWhere,
 	}
 }

@@ -8,43 +8,41 @@ type Node struct {
 	symbolicName *SymbolicName
 	labels       []NodeLabel
 	properties   *Properties
+	key          string
+}
+
+func (node Node) getKey() string {
+	return node.key
 }
 
 func (node Node) hasSymbolic() bool {
 	return node.symbolicName != nil
 }
 
-func (node Node) Accept(visitor *CypherRenderer) {
-	(*visitor).Enter(&node)
+func (node Node) accept(visitor *CypherRenderer) {
+	node.key = fmt.Sprint(&node)
+	(*visitor).Enter(node)
 	VisitIfNotNull(node.symbolicName, visitor)
 	for _, label := range node.labels {
-		label.Accept(visitor)
+		label.accept(visitor)
 	}
 	VisitIfNotNull(node.properties, visitor)
-	(*visitor).Leave(&node)
+	(*visitor).Leave(node)
 }
 
-func (node Node) GetType() VisitableType {
-	return NodeVisitable
-}
-
-func (n NodeLabel) GetType() VisitableType {
-	return NodeLabelVisitable
-}
-
-func (node Node) RelationshipTo(nodeDest Node, types ...string) Relationship {
-	panic("implement me")
+func (node Node) RelationshipTo(other Node, types ...string) Relationship {
+	return CreateRelationship(node, LTR(), other, types...)
 }
 
 func (node Node) RelationshipFrom(other Node, types ...string) Relationship {
-	return CreateLTR(node, RTL(), other, types...)
+	return CreateRelationship(node, RTL(), other, types...)
 }
 
 func (node Node) RelationshipBetween(nodeDest Node, types ...string) Relationship {
 	panic("implement me")
 }
 
-func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
+func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error) {
 	var properties = &MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
 		var err error
@@ -57,7 +55,7 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error){
 }
 
 func (node Node) WithProperties(newProperties MapExpression) Node {
-	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: &Properties{newProperties}}
+	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: &Properties{properties: newProperties}}
 }
 
 func (node Node) Property(name string) {
@@ -65,7 +63,7 @@ func (node Node) Property(name string) {
 }
 
 func (node Node) Named(name string) Node {
-	node.symbolicName = &SymbolicName{Value: name}
+	node.symbolicName = &SymbolicName{value: name}
 	return node
 }
 
@@ -73,45 +71,45 @@ func (node Node) getSymbolicName() *SymbolicName {
 	return node.symbolicName
 }
 
-func (node Node) Enter(renderer *CypherRenderer) {
+func (node Node) enter(renderer *CypherRenderer) {
 	renderer.builder.WriteString("(")
-	if !node.hasSymbolic(){
+	if !node.hasSymbolic() {
 		return
 	}
 	var named interface{} = &node
 	_, renderer.skipNodeContent = renderer.visitedNamed[named]
 	if renderer.skipNodeContent {
-		renderer.builder.WriteString(node.symbolicName.Value)
+		renderer.builder.WriteString(node.symbolicName.value)
 	}
 }
 
-func (node Node) Leave(renderer *CypherRenderer) {
-	panic("implement me")
+func (node Node) leave(renderer *CypherRenderer) {
+	renderer.builder.WriteString(")")
+	renderer.skipNodeContent = false
 }
 
 type NodeLabel struct {
 	value string
+	key   string
 }
 
-func (n NodeLabel) Accept(visitor *CypherRenderer) {
+func (n NodeLabel) getKey() string {
+	return n.key
+}
+
+func (n NodeLabel) accept(visitor *CypherRenderer) {
+	n.key = fmt.Sprint(&n)
 	(*visitor).Enter(n)
 	(*visitor).Leave(n)
 }
 
-func (n NodeLabel) Enter(renderer *CypherRenderer) {
+func (n NodeLabel) enter(renderer *CypherRenderer) {
 	if n.value == "" {
 		return
 	}
-	renderer.builder.WriteString(NODE_LABEL_START)
+	renderer.builder.WriteString(NodeLabelStart)
 	renderer.builder.WriteString(escapeName(n.value))
 }
 
-func (n NodeLabel) Leave(renderer *CypherRenderer) {
+func (n NodeLabel) leave(renderer *CypherRenderer) {
 }
-
-
-
-
-
-
-

@@ -1,33 +1,33 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Order struct {
 	sortItems []SortItem
+	key       string
 }
 
-func (o Order) Accept(visitor *CypherRenderer) {
+func (o Order) getKey() string {
+	return o.key
+}
+
+func (o Order) accept(visitor *CypherRenderer) {
+	o.key = fmt.Sprint(&o)
 	(*visitor).Enter(o)
-	for _, sortItem := range o.sortItems{
-		o.PrepareVisit(sortItem).Accept(visitor)
+	for _, sortItem := range o.sortItems {
+		o.PrepareVisit(sortItem).accept(visitor)
 	}
 	(*visitor).Leave(o)
-}
-
-func (o Order) GetType() VisitableType {
-	return OrderVisitable
 }
 
 func (o Order) PrepareVisit(visitable Visitable) Visitable {
 	return visitable
 }
 
-func (o Order) Enter(renderer *CypherRenderer) {
+func (o Order) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (o Order) Leave(renderer *CypherRenderer) {
+func (o Order) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-
-
-

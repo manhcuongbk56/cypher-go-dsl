@@ -1,25 +1,26 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Distinct struct {
 	IsDistinct bool
+	key        string
 }
 
-func (d Distinct) Accept(visitor *CypherRenderer) {
+func (d Distinct) getKey() string {
+	return d.key
+}
+
+func (d Distinct) accept(visitor *CypherRenderer) {
+	d.key = fmt.Sprint(&d)
 	(*visitor).Enter(&d)
 	(*visitor).Leave(&d)
 }
 
-func (d Distinct) GetType() VisitableType {
-	return DistinctVisitable
-}
-
-func (d Distinct) Enter(renderer *CypherRenderer) {
+func (d Distinct) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (d Distinct) Leave(renderer *CypherRenderer) {
+func (d Distinct) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-
-

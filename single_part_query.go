@@ -1,21 +1,30 @@
 package cypher_go_dsl
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type SinglePartQuery struct {
 	precedingClauses []Visitable
-	aReturn *Return
+	aReturn          *Return
+	key              string
 }
 
-func (s SinglePartQuery) Accept(visitor *CypherRenderer) {
-	for _, clause := range s.precedingClauses{
-		clause.Accept(visitor)
+func (s SinglePartQuery) getKey() string {
+	return s.key
+}
+
+func (s SinglePartQuery) accept(visitor *CypherRenderer) {
+	s.key = fmt.Sprint(&s)
+	for _, clause := range s.precedingClauses {
+		clause.accept(visitor)
 		VisitIfNotNull(s.aReturn, visitor)
 	}
 }
 
-func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery, error){
-	if len(clauses) == 0  {
+func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery, error) {
+	if len(clauses) == 0 {
 		_, isMatch := clauses[len(clauses)-1].(Match)
 		if isMatch {
 			if aReturn == nil {
@@ -29,17 +38,10 @@ func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery,
 	}, nil
 }
 
-func (s SinglePartQuery) GetType() VisitableType {
-	return SinglePartQueryVisitable
-}
-
-func (s SinglePartQuery) Enter(renderer *CypherRenderer) {
+func (s SinglePartQuery) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (s SinglePartQuery) Leave(renderer *CypherRenderer) {
+func (s SinglePartQuery) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-
-

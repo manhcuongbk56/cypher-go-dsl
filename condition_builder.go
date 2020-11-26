@@ -4,16 +4,16 @@ type ConditionBuilder struct {
 	condition *Condition
 }
 
-func (b ConditionBuilder) Where(condition *Condition)  {
+func (b ConditionBuilder) Where(condition *Condition) {
 	b.condition = condition
 }
 
-func (b ConditionBuilder) And(condition *Condition)  {
+func (b ConditionBuilder) And(condition *Condition) {
 	newCondition := (*(b.condition)).And(*condition)
 	b.condition = &newCondition
 }
 
-func (b ConditionBuilder) Or(condition *Condition)  {
+func (b ConditionBuilder) Or(condition *Condition) {
 	newCondition := (*(b.condition)).Or(*condition)
 	b.condition = &newCondition
 }

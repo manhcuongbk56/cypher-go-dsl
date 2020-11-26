@@ -1,31 +1,36 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Skip struct {
 	skipAmount NumberLiteral
+	key        string
 }
 
-func (s Skip) Accept(visitor *CypherRenderer) {
+func (s Skip) getKey() string {
+	return s.key
+}
+
+func (s Skip) accept(visitor *CypherRenderer) {
+	s.key = fmt.Sprint(&s)
 	(*visitor).Enter(s)
-	s.skipAmount.Accept(visitor)
+	s.skipAmount.accept(visitor)
 	(*visitor).Leave(s)
 }
 
-func (s Skip) GetType() VisitableType {
-	return SkipVisitable
-}
-
-func CreateSkip(number int)  Skip{
+func CreateSkip(number int) *Skip {
+	if number == 0 {
+		return nil
+	}
 	literal := NumberLiteral{
 		content: number,
 	}
-	return Skip{skipAmount: literal}
+	return &Skip{skipAmount: literal}
 }
 
-func (s Skip) Enter(renderer *CypherRenderer) {
+func (s Skip) enter(renderer *CypherRenderer) {
 	renderer.builder.WriteString(" SKIP ")
 }
 
-func (s Skip) Leave(renderer *CypherRenderer) {
+func (s Skip) leave(renderer *CypherRenderer) {
 }
-
-

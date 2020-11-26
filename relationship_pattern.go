@@ -1,64 +1,63 @@
 package cypher_go_dsl
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type RelationshipPattern interface {
 	ExposesRelationship
 	PatternElement
 }
 
-
-
 /**
 RelationshipTypes
- */
+*/
 type RelationshipTypes struct {
 	values []string
+	key    string
 }
 
-func (r RelationshipTypes) Accept(visitor *CypherRenderer) {
+func (r RelationshipTypes) getKey() string {
+	return r.key
+}
+
+func (r RelationshipTypes) accept(visitor *CypherRenderer) {
+	r.key = fmt.Sprint(&r)
 	(*visitor).Enter(r)
 	(*visitor).Leave(r)
 }
 
-func (r RelationshipTypes) GetType() VisitableType {
-	return RelationshipTypesVisitable
-}
-
-func (r RelationshipTypes) Enter(renderer *CypherRenderer) {
+func (r RelationshipTypes) enter(renderer *CypherRenderer) {
 	typeWithPrefix := make([]string, 0)
 	for _, typeRaw := range r.values {
-		if typeRaw == ""{
+		if typeRaw == "" {
 			continue
 		}
-		typeWithPrefix = append(typeWithPrefix, REL_TYPE_START + typeRaw)
+		typeWithPrefix = append(typeWithPrefix, RelTypeStart+escapeName(typeRaw))
 	}
-	renderer.builder.WriteString(strings.Join(typeWithPrefix, REL_TYP_SEPARATOR))
+	renderer.builder.WriteString(strings.Join(typeWithPrefix, RelTypSeparator))
 }
 
-func (r RelationshipTypes) Leave(renderer *CypherRenderer) {
-	panic("implement me")
+func (r RelationshipTypes) leave(renderer *CypherRenderer) {
 }
 
 /**
 Relationship length
- */
+*/
 
 type RelationshipLength struct {
-	minimum *int8
-	maximum *int8
+	minimum   *int8
+	maximum   *int8
 	unbounded bool
 }
 
-func (relationshipLength RelationshipLength)Unbounded() RelationshipLength {
+func (relationshipLength RelationshipLength) Unbounded() RelationshipLength {
 	return RelationshipLength{nil, nil, true}
 }
 
-
-
-
 type Direction struct {
-	symbolLeft string
+	symbolLeft  string
 	symbolRight string
 }
 
@@ -74,8 +73,7 @@ func UNI() Direction {
 	return Direction{symbolLeft: "-", symbolRight: "-"}
 }
 
-
-func CreateLTR(left Node, direction Direction, right Node, types ...string) Relationship {
+func CreateRelationship(left Node, direction Direction, right Node, types ...string) Relationship {
 	typeSlice := make([]string, 0)
 	typeSlice = append(typeSlice, types...)
 	relationshipTypes := RelationshipTypes{values: typeSlice}
@@ -90,6 +88,3 @@ func CreateLTR(left Node, direction Direction, right Node, types ...string) Rela
 		details: &details,
 	}
 }
-
-
-

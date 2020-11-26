@@ -14,5 +14,3 @@ func TestType(t *testing.T) {
 	fmt.Print(visitable)
 	fmt.Print(hasexpression)
 }
-
-

@@ -1,19 +1,23 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Return struct {
 	distinct *Distinct
-	body *ReturnBody
+	body     *ReturnBody
+	key      string
 }
 
-func (r Return) Accept(visitor *CypherRenderer) {
+func (r Return) getKey() string {
+	return r.key
+}
+
+func (r Return) accept(visitor *CypherRenderer) {
+	r.key = fmt.Sprint(&r)
 	(*visitor).Enter(r)
 	VisitIfNotNull(r.distinct, visitor)
-	r.body.Accept(visitor)
+	r.body.accept(visitor)
 	(*visitor).Leave(r)
-}
-
-func (r Return) GetType() VisitableType {
-	return ReturnVisitable
 }
 
 func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Order, skip *Skip, limit *Limit) *Return {
@@ -33,9 +37,9 @@ func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Ord
 	}
 }
 
-func (r Return) Enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("RETURN  ")}
-
-func (r Return) Leave(renderer *CypherRenderer) {
+func (r Return) enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString("RETURN  ")
 }
 
+func (r Return) leave(renderer *CypherRenderer) {
+}

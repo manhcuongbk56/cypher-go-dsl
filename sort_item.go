@@ -1,83 +1,82 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type SortItem struct {
 	expression Expression
 	direction  SortDirection
+	key        string
+}
+
+func (item SortItem) getKey() string {
+	return item.key
 }
 
 type SortDirection struct {
 	value SortDirectionRaw
+	key   string
 }
 
 type SortDirectionRaw string
 
 const (
 	UNDEFINED SortDirectionRaw = ""
-	ASC = "ASC"
-	DESC = "DESC"
+	ASC                        = "ASC"
+	DESC                       = "DESC"
 )
 
-func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem{
+func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem {
 	return SortItem{
 		expression: expression,
 		direction:  SortDirection{value: direction},
 	}
 }
 
-func (item SortItem) Ascending() SortItem  {
+func (item SortItem) Ascending() SortItem {
 	return SortItem{
 		expression: item.expression,
 		direction:  SortDirection{value: ASC},
 	}
 }
 
-func (item SortItem) Descending() SortItem  {
+func (item SortItem) Descending() SortItem {
 	return SortItem{
 		expression: item.expression,
 		direction:  SortDirection{value: DESC},
 	}
 }
 
-func (item SortItem) Accept(visitor *CypherRenderer) {
+func (item SortItem) accept(visitor *CypherRenderer) {
+	item.key = fmt.Sprint(&item)
 	(*visitor).Enter(item)
-	NameOrExpression(item.expression).Accept(visitor)
+	NameOrExpression(item.expression).accept(visitor)
 	if item.direction.value == ASC || item.direction.value == DESC {
-		item.direction.Accept(visitor)
+		item.direction.accept(visitor)
 	}
 	(*visitor).Leave(item)
 }
 
-func (s SortDirection) Accept(visitor *CypherRenderer) {
+func (s SortDirection) accept(visitor *CypherRenderer) {
 	(*visitor).Enter(s)
 	(*visitor).Leave(s)
 }
 
-func (item SortItem) GetType() VisitableType {
-	return SortItemVisitable
+func (s SortDirection) getKey() string {
+	return s.key
 }
 
-func (s SortDirection) GetType() VisitableType {
-	return SortDirectionVisitable
-}
-
-func (item SortItem) Enter(renderer *CypherRenderer) {
+func (item SortItem) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (item SortItem) Leave(renderer *CypherRenderer) {
+func (item SortItem) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (s SortDirection) Enter(renderer *CypherRenderer) {
+func (s SortDirection) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (s SortDirection) Leave(renderer *CypherRenderer) {
+func (s SortDirection) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-
-
-
-
-

@@ -1,7 +1,14 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type ExpressionList struct {
 	expressions []Expression
+	key         string
+}
+
+func (e ExpressionList) getKey() string {
+	return e.key
 }
 
 func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
@@ -12,22 +19,19 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 	return NameOrExpression(expression)
 }
 
-func (e ExpressionList) Accept(visitor *CypherRenderer) {
+func (e ExpressionList) accept(visitor *CypherRenderer) {
+	e.key = fmt.Sprint(&e)
 	(*visitor).Enter(e)
-	for _, expression := range e.expressions{
-		e.PrepareVisit(expression).Accept(visitor)
+	for _, expression := range e.expressions {
+		e.PrepareVisit(expression).accept(visitor)
 	}
 	(*visitor).Leave(e)
 }
 
-func (e ExpressionList) GetType() VisitableType {
-	return ExpressionListVisitable
+func (e ExpressionList) enter(renderer *CypherRenderer) {
 }
 
-func (e ExpressionList) Enter(renderer *CypherRenderer) {
-}
-
-func (e ExpressionList) Leave(renderer *CypherRenderer) {
+func (e ExpressionList) leave(renderer *CypherRenderer) {
 }
 
 func NewExpressionList(expression ...Expression) ExpressionList {
@@ -35,4 +39,3 @@ func NewExpressionList(expression ...Expression) ExpressionList {
 	expressions = append(expressions, expression...)
 	return ExpressionList{expressions: expressions}
 }
-

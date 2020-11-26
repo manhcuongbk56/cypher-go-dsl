@@ -1,9 +1,16 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Relationship struct {
 	left    *Node
 	right   *Node
 	details *RelationshipDetails
+	key     string
+}
+
+func (r Relationship) getKey() string {
+	return r.key
 }
 
 func (r Relationship) RelationshipTo(node Node, types ...string) RelationshipPattern {
@@ -24,21 +31,17 @@ func (r Relationship) IsPatternElement() bool {
 	return true
 }
 
-func (r Relationship) Accept(visitor *CypherRenderer) {
+func (r Relationship) accept(visitor *CypherRenderer) {
+	r.key = fmt.Sprint(&r)
 	(*visitor).Enter(r)
-	r.left.Accept(visitor)
-	r.details.Accept(visitor)
-	r.right.Accept(visitor)
+	r.left.accept(visitor)
+	r.details.accept(visitor)
+	r.right.accept(visitor)
 	(*visitor).Leave(r)
 }
 
-func (r Relationship) GetType() VisitableType {
-	return RelationshipVisitable
+func (r Relationship) enter(renderer *CypherRenderer) {
 }
 
-func (r Relationship) Enter(renderer *CypherRenderer) {
+func (r Relationship) leave(renderer *CypherRenderer) {
 }
-
-func (r Relationship) Leave(renderer *CypherRenderer) {
-}
-

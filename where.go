@@ -1,26 +1,27 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type Where struct {
+	key       string
 	condition Condition
 }
 
-func (w Where) Accept(visitor *CypherRenderer) {
+func (w Where) getKey() string {
+	return w.key
+}
+
+func (w Where) accept(visitor *CypherRenderer) {
+	w.key = fmt.Sprint(&w)
 	(*visitor).Enter(w)
-	w.Accept(visitor)
+	w.accept(visitor)
 	(*visitor).Leave(w)
 }
 
-func (w Where) GetType() VisitableType {
-	return WhereVisitable
-}
-
-func (w Where) Enter(renderer *CypherRenderer) {
+func (w Where) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (w Where) Leave(renderer *CypherRenderer) {
+func (w Where) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-
-

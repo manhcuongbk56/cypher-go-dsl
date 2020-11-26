@@ -1,16 +1,23 @@
 package cypher_go_dsl
 
+import "fmt"
+
 type RelationshipDetails struct {
-	direction *Direction
+	direction    *Direction
 	symbolicName *SymbolicName
-	types *RelationshipTypes
-	length *RelationshipLength
-	properties *Properties
+	types        *RelationshipTypes
+	length       *RelationshipLength
+	properties   *Properties
+	key          string
+}
+
+func (r RelationshipDetails) getKey() string {
+	return r.key
 }
 
 func CreateRelationshipDetail(direction Direction, symbolicName SymbolicName, types RelationshipTypes) RelationshipDetails {
 	return RelationshipDetails{
-		direction:   &direction,
+		direction:    &direction,
 		symbolicName: &symbolicName,
 		types:        &types,
 	}
@@ -19,23 +26,24 @@ func CreateRelationshipDetail(direction Direction, symbolicName SymbolicName, ty
 func CreateRelationshipDetailFull(direction Direction, symbolicName SymbolicName,
 	types RelationshipTypes, length RelationshipLength, properties Properties) RelationshipDetails {
 	return RelationshipDetails{
-		direction:   	&direction,
-		symbolicName: 	&symbolicName,
-		types:        	&types,
-		length: 		&length,
-		properties: 	&properties,
+		direction:    &direction,
+		symbolicName: &symbolicName,
+		types:        &types,
+		length:       &length,
+		properties:   &properties,
 	}
 }
 
 func (r RelationshipDetails) hasContent() bool {
-	return r.direction != nil 	||
-		r.symbolicName != nil  	||
-		r.types != nil 			||
-		r.length != nil			||
+	return r.direction != nil ||
+		r.symbolicName != nil ||
+		r.types != nil ||
+		r.length != nil ||
 		r.properties != nil
 }
 
-func (r RelationshipDetails) Accept(visitor *CypherRenderer) {
+func (r RelationshipDetails) accept(visitor *CypherRenderer) {
+	r.key = fmt.Sprint(&r)
 	(*visitor).Enter(r)
 	VisitIfNotNull(r.symbolicName, visitor)
 	VisitIfNotNull(r.types, visitor)
@@ -44,22 +52,18 @@ func (r RelationshipDetails) Accept(visitor *CypherRenderer) {
 	(*visitor).Leave(r)
 }
 
-func (r RelationshipDetails) GetType() VisitableType {
-	return RelationshipDetailsVisitable
-}
-
-func (r RelationshipDetails) Enter(renderer *CypherRenderer) {
+func (r RelationshipDetails) enter(renderer *CypherRenderer) {
 	direction := r.direction
 	renderer.builder.WriteString(direction.symbolLeft)
 	if r.hasContent() {
 		renderer.builder.WriteString("[")
-	}}
+	}
+}
 
-func (r RelationshipDetails) Leave(renderer *CypherRenderer) {
+func (r RelationshipDetails) leave(renderer *CypherRenderer) {
 	direction := r.direction
 	if r.hasContent() {
 		renderer.builder.WriteString("]")
 	}
-	renderer.builder.WriteString(direction.symbolRight)}
-
-
+	renderer.builder.WriteString(direction.symbolRight)
+}

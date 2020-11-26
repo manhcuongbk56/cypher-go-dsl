@@ -1,8 +1,21 @@
 package cypher_go_dsl
 
+import (
+	"fmt"
+)
+
 type StringLiteral struct {
 	ExpressionStruct
 	content string
+	key     string
+}
+
+func escapeStringLiteral(value string) string {
+	return "'" + value + "'"
+}
+
+func (s StringLiteral) getKey() string {
+	return s.key
 }
 
 func (s StringLiteral) IsExpression() bool {
@@ -17,18 +30,15 @@ func (s StringLiteral) AsString() string {
 	return s.content
 }
 
-func (s StringLiteral) Accept(visitor *CypherRenderer) {
+func (s StringLiteral) accept(visitor *CypherRenderer) {
+	s.key = fmt.Sprint(&s)
 	(*visitor).Enter(s)
 	(*visitor).Leave(s)
 }
 
-func (s StringLiteral) GetType() VisitableType {
-	return StringLiteralVisitable
+func (s StringLiteral) enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString(escapeStringLiteral(s.AsString()))
 }
 
-func (s StringLiteral) Enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(s.AsString())}
-
-func (s StringLiteral) Leave(renderer *CypherRenderer) {
+func (s StringLiteral) leave(renderer *CypherRenderer) {
 }
-

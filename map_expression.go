@@ -1,64 +1,67 @@
 package cypher_go_dsl
 
-import errors "golang.org/x/xerrors"
+import (
+	"fmt"
+	errors "golang.org/x/xerrors"
+)
 
 type MapExpression struct {
 	expressions []Expression
+	key         string
+}
+
+func (m MapExpression) getKey() string {
+	return m.key
 }
 
 func NewMapExpression(objects ...interface{}) (MapExpression, error) {
-	if len(objects) %2 != 0 {
+	if len(objects)%2 != 0 {
 		err := errors.Errorf("number of object input should be product of 2 but it is %defaultStatementBuilder", len(objects))
 		return MapExpression{}, err
 	}
 	var newContents = make([]Expression, len(objects)/2)
 	var knownKeys = make(map[string]int)
-	for i := 0; i < len(objects); i+=2 {
+	for i := 0; i < len(objects); i += 2 {
 		key, isString := objects[i].(string)
-		if !isString{
+		if !isString {
 			err := errors.Errorf("key must be string")
 			return MapExpression{}, err
 		}
-		value, isExpression := objects[i + 1].(Expression)
-		if !isExpression{
+		value, isExpression := objects[i+1].(Expression)
+		if !isExpression {
 			err := errors.Errorf("object must be expression")
 			return MapExpression{}, err
 		}
-		if knownKeys[key] == 1  {
+		if knownKeys[key] == 1 {
 			err := errors.Errorf("duplicate key")
 			return MapExpression{}, err
 		}
 		knownKeys[key] = 1
 		newContents[i/2] = EntryExpression{
 			Value: value,
-			Key: key,
+			Key:   key,
 		}
 	}
-	return MapExpression{newContents}, nil
+	return MapExpression{expressions: newContents}, nil
 }
 
-func (m MapExpression) Accept(visitor *CypherRenderer) {
+func (m MapExpression) accept(visitor *CypherRenderer) {
+	m.key = fmt.Sprint(&m)
 	(*visitor).Enter(m)
 	for _, child := range m.expressions {
-		m.PrepareVisit(child).Accept(visitor)
+		m.PrepareVisit(child).accept(visitor)
 	}
 	(*visitor).Leave(m)
 }
 
-func (m MapExpression) GetType() VisitableType {
-	return MapExpressionVisitable
-}
-
-func (m MapExpression) Enter(renderer *CypherRenderer) {
+func (m MapExpression) enter(renderer *CypherRenderer) {
 	renderer.builder.WriteString("{")
 }
 
-func (m MapExpression) Leave(renderer *CypherRenderer) {
+func (m MapExpression) leave(renderer *CypherRenderer) {
 }
 
 func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {
 	expression := visitable.(Expression)
 	return NameOrExpression(expression)
 }
-
-

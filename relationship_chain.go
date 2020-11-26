@@ -2,10 +2,15 @@ package cypher_go_dsl
 
 type RelationshipChain struct {
 	relationships []Relationship
+	key           string
+}
+
+func (r RelationshipChain) getKey() string {
+	return r.key
 }
 
 func (r RelationshipChain) RelationshipTo(node Node, types ...string) RelationshipPattern {
-	newRelation := (*(r.relationships[len(r.relationships) - 1].right)).RelationshipTo(node, types...)
+	newRelation := (*(r.relationships[len(r.relationships)-1].right)).RelationshipTo(node, types...)
 	r.relationships = append(r.relationships, newRelation)
 	return r
 }
@@ -18,7 +23,7 @@ func (r RelationshipChain) RelationshipBetween(node Node, types ...string) Relat
 	panic("implement me")
 }
 
-func (r RelationshipChain) Accept(visitor *CypherRenderer) {
+func (r RelationshipChain) accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 
@@ -37,16 +42,10 @@ func (r RelationshipChain) IsPatternElement() bool {
 	return true
 }
 
-func (r RelationshipChain) GetType() VisitableType {
-	return RelationshipChainVisitable
-}
-
-func (r RelationshipChain) Enter(renderer *CypherRenderer) {
+func (r RelationshipChain) enter(renderer *CypherRenderer) {
 	panic("implement me")
 }
 
-func (r RelationshipChain) Leave(renderer *CypherRenderer) {
+func (r RelationshipChain) leave(renderer *CypherRenderer) {
 	panic("implement me")
 }
-
-

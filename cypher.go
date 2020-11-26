@@ -1,38 +1,37 @@
 package cypher_go_dsl
 
+import "strings"
 
-func NewNode(primaryLabel string) Node  {
+func NewNode(primaryLabel string) Node {
 	var labels = make([]NodeLabel, 0)
-	labels = append(labels, NodeLabel{primaryLabel})
+	labels = append(labels, NodeLabel{value: primaryLabel})
 	return Node{
 		labels: labels,
 	}
 }
 
-func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node  {
+func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 	var labels = make([]NodeLabel, 0)
-	labels = append(labels, NodeLabel{primaryLabel})
-	for _, label := range additionalLabel{
-		labels = append(labels, NodeLabel{label})
+	labels = append(labels, NodeLabel{value: primaryLabel})
+	for _, label := range additionalLabel {
+		labels = append(labels, NodeLabel{value: label})
 	}
 	return Node{
 		labels: labels,
 	}
 }
 
-
-func Matchs(element ...PatternElement ) (OngoingReadingWithoutWhere) {
+func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
 	return NewDefaultBuilder().Match(element...)
 }
 
 func Sort(expression Expression) *SortItem {
 	return &SortItem{
 		expression: expression,
-		direction:  SortDirection{UNDEFINED},
+		direction:  SortDirection{value: UNDEFINED},
 	}
 }
 
-
-func escapeName(name string) string{
-	return "`" + name + "`"
+func escapeName(name string) string {
+	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
 }
