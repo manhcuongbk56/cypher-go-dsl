@@ -33,7 +33,7 @@ func (r Relationship) IsPatternElement() bool {
 
 func (r Relationship) accept(visitor *CypherRenderer) {
 	r.key = fmt.Sprint(&r)
-	(*visitor).Enter(r)
+	(*visitor).enter(r)
 	r.left.accept(visitor)
 	r.details.accept(visitor)
 	r.right.accept(visitor)

@@ -13,7 +13,7 @@ func (w Where) getKey() string {
 
 func (w Where) accept(visitor *CypherRenderer) {
 	w.key = fmt.Sprint(&w)
-	(*visitor).Enter(w)
+	(*visitor).enter(w)
 	w.accept(visitor)
 	(*visitor).Leave(w)
 }

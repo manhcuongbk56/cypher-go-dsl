@@ -32,7 +32,7 @@ func (s StringLiteral) AsString() string {
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
-	(*visitor).Enter(s)
+	(*visitor).enter(s)
 	(*visitor).Leave(s)
 }
 

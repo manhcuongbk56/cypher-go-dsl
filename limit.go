@@ -13,7 +13,7 @@ func (l Limit) getKey() string {
 
 func (l Limit) accept(visitor *CypherRenderer) {
 	l.key = fmt.Sprint(&l)
-	(*visitor).Enter(l)
+	(*visitor).enter(l)
 	l.limitAmount.accept(visitor)
 	(*visitor).Leave(l)
 }

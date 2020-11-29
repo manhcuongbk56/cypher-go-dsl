@@ -17,7 +17,7 @@ func (p Pattern) PrepareVisit(visitable Visitable) Visitable {
 
 func (p Pattern) accept(visitor *CypherRenderer) {
 	p.key = fmt.Sprint(&p)
-	(*visitor).Enter(p)
+	(*visitor).enter(p)
 	for _, pattern := range p.PatternElements {
 		p.PrepareVisit(pattern).accept(visitor)
 	}

@@ -19,7 +19,7 @@ func (e EntryExpression) IsExpression() bool {
 
 func (e EntryExpression) accept(visitor *CypherRenderer) {
 	e.key = fmt.Sprint(&e)
-	(*visitor).Enter(e)
+	(*visitor).enter(e)
 	e.Value.accept(visitor)
 	(*visitor).Leave(e)
 }

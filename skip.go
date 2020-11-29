@@ -13,7 +13,7 @@ func (s Skip) getKey() string {
 
 func (s Skip) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
-	(*visitor).Enter(s)
+	(*visitor).enter(s)
 	s.skipAmount.accept(visitor)
 	(*visitor).Leave(s)
 }

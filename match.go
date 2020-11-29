@@ -15,7 +15,7 @@ func (match Match) isOptional() bool {
 
 func (match Match) accept(visitor *CypherRenderer) {
 	match.key = fmt.Sprint(&match)
-	visitor.Enter(match)
+	visitor.enter(match)
 	match.pattern.accept(visitor)
 	VisitIfNotNull(match.optionalWhere, visitor)
 	visitor.Leave(match)

@@ -21,7 +21,7 @@ func (node Node) hasSymbolic() bool {
 
 func (node Node) accept(visitor *CypherRenderer) {
 	node.key = fmt.Sprint(&node)
-	(*visitor).Enter(node)
+	(*visitor).enter(node)
 	VisitIfNotNull(node.symbolicName, visitor)
 	for _, label := range node.labels {
 		label.accept(visitor)
@@ -99,7 +99,7 @@ func (n NodeLabel) getKey() string {
 
 func (n NodeLabel) accept(visitor *CypherRenderer) {
 	n.key = fmt.Sprint(&n)
-	(*visitor).Enter(n)
+	(*visitor).enter(n)
 	(*visitor).Leave(n)
 }
 

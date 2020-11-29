@@ -16,12 +16,12 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 	if !isExpression {
 		panic("Can not prepare un expression type in expression list")
 	}
-	return NameOrExpression(expression)
+	return NameOrExpression(&expression)
 }
 
 func (e ExpressionList) accept(visitor *CypherRenderer) {
 	e.key = fmt.Sprint(&e)
-	(*visitor).Enter(e)
+	(*visitor).enter(e)
 	for _, expression := range e.expressions {
 		e.PrepareVisit(expression).accept(visitor)
 	}

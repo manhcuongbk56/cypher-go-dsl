@@ -6,7 +6,6 @@ import (
 )
 
 type NumberLiteral struct {
-	ExpressionStruct
 	content int
 	key     string
 }
@@ -29,7 +28,7 @@ func (n NumberLiteral) AsString() string {
 
 func (n NumberLiteral) accept(visitor *CypherRenderer) {
 	n.key = fmt.Sprint(&n)
-	(*visitor).Enter(n)
+	(*visitor).enter(n)
 	(*visitor).Leave(n)
 }
 

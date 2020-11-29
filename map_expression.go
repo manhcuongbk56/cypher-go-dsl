@@ -47,7 +47,7 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 
 func (m MapExpression) accept(visitor *CypherRenderer) {
 	m.key = fmt.Sprint(&m)
-	(*visitor).Enter(m)
+	(*visitor).enter(m)
 	for _, child := range m.expressions {
 		m.PrepareVisit(child).accept(visitor)
 	}
@@ -63,5 +63,5 @@ func (m MapExpression) leave(renderer *CypherRenderer) {
 
 func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {
 	expression := visitable.(Expression)
-	return NameOrExpression(expression)
+	return NameOrExpression(&expression)
 }

@@ -13,7 +13,7 @@ func (o Order) getKey() string {
 
 func (o Order) accept(visitor *CypherRenderer) {
 	o.key = fmt.Sprint(&o)
-	(*visitor).Enter(o)
+	(*visitor).enter(o)
 	for _, sortItem := range o.sortItems {
 		o.PrepareVisit(sortItem).accept(visitor)
 	}

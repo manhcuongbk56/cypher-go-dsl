@@ -66,7 +66,7 @@ func (renderer *CypherRenderer) resolve(name SymbolicName) string {
 	return renderer.resolvedSymbolicNames[name]
 }
 
-func (renderer *CypherRenderer) Enter(visitable Visitable) {
+func (renderer *CypherRenderer) enter(visitable Visitable) {
 	used := renderer.getAliasedIfSeen(visitable)
 	if renderer.PreEnter(&used) {
 		renderer.currentVisitedElements = push(renderer.currentVisitedElements, visitable.getKey())

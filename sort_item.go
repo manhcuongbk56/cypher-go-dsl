@@ -48,7 +48,7 @@ func (item SortItem) Descending() SortItem {
 
 func (item SortItem) accept(visitor *CypherRenderer) {
 	item.key = fmt.Sprint(&item)
-	(*visitor).Enter(item)
+	(*visitor).enter(item)
 	NameOrExpression(item.expression).accept(visitor)
 	if item.direction.value == ASC || item.direction.value == DESC {
 		item.direction.accept(visitor)
@@ -57,7 +57,7 @@ func (item SortItem) accept(visitor *CypherRenderer) {
 }
 
 func (s SortDirection) accept(visitor *CypherRenderer) {
-	(*visitor).Enter(s)
+	(*visitor).enter(s)
 	(*visitor).Leave(s)
 }
 

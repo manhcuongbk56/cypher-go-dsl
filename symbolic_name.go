@@ -17,7 +17,7 @@ func (s SymbolicName) IsExpression() bool {
 
 func (s SymbolicName) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
-	(*visitor).Enter(s)
+	(*visitor).enter(s)
 	(*visitor).Leave(s)
 }
 

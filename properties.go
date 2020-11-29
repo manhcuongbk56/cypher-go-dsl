@@ -13,7 +13,7 @@ func (p Properties) getKey() string {
 
 func (p Properties) accept(visitor *CypherRenderer) {
 	p.key = fmt.Sprint(&p)
-	(*visitor).Enter(p)
+	(*visitor).enter(p)
 	p.properties.accept(visitor)
 	(*visitor).Leave(p)
 }
