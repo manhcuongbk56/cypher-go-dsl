@@ -32,6 +32,24 @@ func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem 
 	}
 }
 
+func CreateAscendingSortItem(expression Expression) SortItem {
+	return SortItem{
+		expression: expression,
+		direction:  SortDirection{
+			value: ASC,
+		},
+	}
+}
+
+func CreateDescendingSortItem(expression Expression) SortItem {
+	return SortItem{
+		expression: expression,
+		direction:  SortDirection{
+			value: ASC,
+		},
+	}
+}
+
 func (item SortItem) Ascending() SortItem {
 	return SortItem{
 		expression: item.expression,
