@@ -49,7 +49,7 @@ func (r RelationshipDetails) accept(visitor *CypherRenderer) {
 	VisitIfNotNull(r.types, visitor)
 	VisitIfNotNull(r.length, visitor)
 	VisitIfNotNull(r.properties, visitor)
-	(*visitor).Leave(r)
+	(*visitor).leave(r)
 }
 
 func (r RelationshipDetails) enter(renderer *CypherRenderer) {

@@ -1,23 +1,23 @@
 package cypher_go_dsl
 
-type ConditionBuilder struct {
-	condition *Expression
+type ConditionContainer struct {
+	ExpressionContainer
 }
 
-func (b ConditionBuilder) Where(condition *Expression) {
+func (b ConditionContainer) Where(condition *Expression) {
 	b.condition = condition
 }
 
-func (b ConditionBuilder) And(condition *Expression) {
+func (b ConditionContainer) And(condition *Expression) {
 	newCondition := (*(b.condition)).And(*condition)
 	b.condition = &newCondition
 }
 
-func (b ConditionBuilder) Or(condition *Expression) {
+func (b ConditionContainer) Or(condition *Expression) {
 	newCondition := (*(b.condition)).Or(*condition)
 	b.condition = &newCondition
 }
 
-func (b ConditionBuilder) BuildCondition() *Condition {
+func (b ConditionContainer) BuildCondition() *Expression {
 	return b.condition
 }

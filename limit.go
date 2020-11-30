@@ -15,7 +15,7 @@ func (l Limit) accept(visitor *CypherRenderer) {
 	l.key = fmt.Sprint(&l)
 	(*visitor).enter(l)
 	l.limitAmount.accept(visitor)
-	(*visitor).Leave(l)
+	(*visitor).leave(l)
 }
 
 func CreateLimit(number int) *Limit {

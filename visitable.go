@@ -41,30 +41,3 @@ type SubVisitable interface {
 	PrepareVisit(visitable Visitable) Visitable
 }
 
-type SubsVisitable struct {
-	subs []Visitable
-	key string
-}
-
-func (s SubsVisitable) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&n)
-	visitor.enter(s)
-	for _, visitable := range s.subs {
-
-	}
-}
-
-func (s SubsVisitable) enter(renderer *CypherRenderer) {
-	panic("implement me")
-}
-
-func (s SubsVisitable) leave(renderer *CypherRenderer) {
-	panic("implement me")
-}
-
-func (s SubsVisitable) getKey() string {
-	panic("implement me")
-}
-
-
-

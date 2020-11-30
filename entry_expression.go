@@ -3,7 +3,6 @@ package cypher_go_dsl
 import "fmt"
 
 type EntryExpression struct {
-	ExpressionStruct
 	Key   string
 	Value Expression
 	key   string
@@ -13,15 +12,15 @@ func (e EntryExpression) getKey() string {
 	return e.key
 }
 
-func (e EntryExpression) IsExpression() bool {
-	return true
+func (e EntryExpression) GetExpressionType() ExpressionType {
+	return EXPRESSION
 }
 
 func (e EntryExpression) accept(visitor *CypherRenderer) {
 	e.key = fmt.Sprint(&e)
 	(*visitor).enter(e)
 	e.Value.accept(visitor)
-	(*visitor).Leave(e)
+	(*visitor).leave(e)
 }
 
 func (e EntryExpression) enter(renderer *CypherRenderer) {

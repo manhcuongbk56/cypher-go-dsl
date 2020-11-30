@@ -15,7 +15,7 @@ func (s Skip) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
 	(*visitor).enter(s)
 	s.skipAmount.accept(visitor)
-	(*visitor).Leave(s)
+	(*visitor).leave(s)
 }
 
 func CreateSkip(number int) *Skip {

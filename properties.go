@@ -15,7 +15,7 @@ func (p Properties) accept(visitor *CypherRenderer) {
 	p.key = fmt.Sprint(&p)
 	(*visitor).enter(p)
 	p.properties.accept(visitor)
-	(*visitor).Leave(p)
+	(*visitor).leave(p)
 }
 
 func (p Properties) enter(renderer *CypherRenderer) {

@@ -14,8 +14,8 @@ func (n NumberLiteral) getKey() string {
 	return n.key
 }
 
-func (n NumberLiteral) IsExpression() bool {
-	return true
+func (n NumberLiteral) GetExpressionType() ExpressionType {
+	return EXPRESSION
 }
 
 func (n NumberLiteral) GetContent() interface{} {
@@ -29,7 +29,7 @@ func (n NumberLiteral) AsString() string {
 func (n NumberLiteral) accept(visitor *CypherRenderer) {
 	n.key = fmt.Sprint(&n)
 	(*visitor).enter(n)
-	(*visitor).Leave(n)
+	(*visitor).leave(n)
 }
 
 func (n NumberLiteral) enter(renderer *CypherRenderer) {

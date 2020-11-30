@@ -5,7 +5,6 @@ import (
 )
 
 type StringLiteral struct {
-	ExpressionStruct
 	content string
 	key     string
 }
@@ -18,8 +17,8 @@ func (s StringLiteral) getKey() string {
 	return s.key
 }
 
-func (s StringLiteral) IsExpression() bool {
-	return true
+func (s StringLiteral) GetExpressionType() ExpressionType {
+	return EXPRESSION
 }
 
 func (s StringLiteral) GetContent() interface{} {
@@ -33,7 +32,7 @@ func (s StringLiteral) AsString() string {
 func (s StringLiteral) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
 	(*visitor).enter(s)
-	(*visitor).Leave(s)
+	(*visitor).leave(s)
 }
 
 func (s StringLiteral) enter(renderer *CypherRenderer) {

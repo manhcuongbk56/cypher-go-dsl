@@ -25,7 +25,7 @@ func (r RelationshipTypes) getKey() string {
 func (r RelationshipTypes) accept(visitor *CypherRenderer) {
 	r.key = fmt.Sprint(&r)
 	(*visitor).enter(r)
-	(*visitor).Leave(r)
+	(*visitor).leave(r)
 }
 
 func (r RelationshipTypes) enter(renderer *CypherRenderer) {

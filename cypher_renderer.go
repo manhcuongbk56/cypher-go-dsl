@@ -74,7 +74,7 @@ func (renderer *CypherRenderer) enter(visitable Visitable) {
 	}
 }
 
-func (renderer *CypherRenderer) Leave(visitable Visitable) {
+func (renderer *CypherRenderer) leave(visitable Visitable) {
 	used := renderer.getAliasedIfSeen(visitable)
 	current := peek(renderer.currentVisitedElements)
 	if current == (used).getKey() {

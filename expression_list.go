@@ -25,7 +25,7 @@ func (e ExpressionList) accept(visitor *CypherRenderer) {
 	for _, expression := range e.expressions {
 		e.PrepareVisit(expression).accept(visitor)
 	}
-	(*visitor).Leave(e)
+	(*visitor).leave(e)
 }
 
 func (e ExpressionList) enter(renderer *CypherRenderer) {

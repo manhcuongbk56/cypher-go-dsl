@@ -9,6 +9,10 @@ type Relationship struct {
 	key     string
 }
 
+func (r Relationship) getSymbolicName() *SymbolicName {
+	return r.details.symbolicName
+}
+
 func (r Relationship) getKey() string {
 	return r.key
 }
@@ -37,7 +41,7 @@ func (r Relationship) accept(visitor *CypherRenderer) {
 	r.left.accept(visitor)
 	r.details.accept(visitor)
 	r.right.accept(visitor)
-	(*visitor).Leave(r)
+	(*visitor).leave(r)
 }
 
 func (r Relationship) enter(renderer *CypherRenderer) {

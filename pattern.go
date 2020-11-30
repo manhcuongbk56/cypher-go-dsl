@@ -3,7 +3,7 @@ package cypher_go_dsl
 import "fmt"
 
 type Pattern struct {
-	PatternElements []PatternElement
+	patternElements []PatternElement
 	key             string
 }
 
@@ -18,10 +18,10 @@ func (p Pattern) PrepareVisit(visitable Visitable) Visitable {
 func (p Pattern) accept(visitor *CypherRenderer) {
 	p.key = fmt.Sprint(&p)
 	(*visitor).enter(p)
-	for _, pattern := range p.PatternElements {
+	for _, pattern := range p.patternElements {
 		p.PrepareVisit(pattern).accept(visitor)
 	}
-	(*visitor).Leave(p)
+	(*visitor).leave(p)
 }
 
 func (p Pattern) enter(renderer *CypherRenderer) {

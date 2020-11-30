@@ -18,7 +18,7 @@ func (match Match) accept(visitor *CypherRenderer) {
 	visitor.enter(match)
 	match.pattern.accept(visitor)
 	VisitIfNotNull(match.optionalWhere, visitor)
-	visitor.Leave(match)
+	visitor.leave(match)
 }
 
 func (match Match) getKey() string {

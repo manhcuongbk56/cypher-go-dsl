@@ -17,7 +17,7 @@ func (o Order) accept(visitor *CypherRenderer) {
 	for _, sortItem := range o.sortItems {
 		o.PrepareVisit(sortItem).accept(visitor)
 	}
-	(*visitor).Leave(o)
+	(*visitor).leave(o)
 }
 
 func (o Order) PrepareVisit(visitable Visitable) Visitable {

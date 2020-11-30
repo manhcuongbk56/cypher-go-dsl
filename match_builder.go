@@ -2,12 +2,12 @@ package cypher_go_dsl
 
 type MatchBuilder struct {
 	patternList []PatternElement
-	condition   ConditionBuilder
+	condition   ConditionContainer
 	optional    bool
 }
 
 func (builder MatchBuilder) buildMatch() Match {
-	pattern := Pattern{PatternElements: builder.patternList}
+	pattern := Pattern{patternElements: builder.patternList}
 	conditionBuilder := builder.condition
 	var optionalWhere *Where = nil
 	if conditionBuilder.condition != nil {

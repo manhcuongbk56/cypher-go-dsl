@@ -17,7 +17,7 @@ func (r Return) accept(visitor *CypherRenderer) {
 	(*visitor).enter(r)
 	VisitIfNotNull(r.distinct, visitor)
 	r.body.accept(visitor)
-	(*visitor).Leave(r)
+	(*visitor).leave(r)
 }
 
 func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Order, skip *Skip, limit *Limit) *Return {

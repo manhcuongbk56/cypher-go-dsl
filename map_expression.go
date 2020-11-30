@@ -51,7 +51,7 @@ func (m MapExpression) accept(visitor *CypherRenderer) {
 	for _, child := range m.expressions {
 		m.PrepareVisit(child).accept(visitor)
 	}
-	(*visitor).Leave(m)
+	(*visitor).leave(m)
 }
 
 func (m MapExpression) enter(renderer *CypherRenderer) {

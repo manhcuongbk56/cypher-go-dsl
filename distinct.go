@@ -14,7 +14,7 @@ func (d Distinct) getKey() string {
 func (d Distinct) accept(visitor *CypherRenderer) {
 	d.key = fmt.Sprint(&d)
 	(*visitor).enter(&d)
-	(*visitor).Leave(&d)
+	(*visitor).leave(&d)
 }
 
 func (d Distinct) enter(renderer *CypherRenderer) {

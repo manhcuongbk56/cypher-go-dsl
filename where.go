@@ -15,7 +15,7 @@ func (w Where) accept(visitor *CypherRenderer) {
 	w.key = fmt.Sprint(&w)
 	(*visitor).enter(w)
 	w.accept(visitor)
-	(*visitor).Leave(w)
+	(*visitor).leave(w)
 }
 
 func (w Where) enter(renderer *CypherRenderer) {

@@ -8,6 +8,8 @@ type SortItem struct {
 	key        string
 }
 
+
+
 func (item SortItem) getKey() string {
 	return item.key
 }
@@ -35,7 +37,7 @@ func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem 
 func CreateAscendingSortItem(expression Expression) SortItem {
 	return SortItem{
 		expression: expression,
-		direction:  SortDirection{
+		direction: SortDirection{
 			value: ASC,
 		},
 	}
@@ -44,7 +46,7 @@ func CreateAscendingSortItem(expression Expression) SortItem {
 func CreateDescendingSortItem(expression Expression) SortItem {
 	return SortItem{
 		expression: expression,
-		direction:  SortDirection{
+		direction: SortDirection{
 			value: ASC,
 		},
 	}
@@ -71,12 +73,12 @@ func (item SortItem) accept(visitor *CypherRenderer) {
 	if item.direction.value == ASC || item.direction.value == DESC {
 		item.direction.accept(visitor)
 	}
-	(*visitor).Leave(item)
+	(*visitor).leave(item)
 }
 
 func (s SortDirection) accept(visitor *CypherRenderer) {
 	(*visitor).enter(s)
-	(*visitor).Leave(s)
+	(*visitor).leave(s)
 }
 
 func (s SortDirection) getKey() string {

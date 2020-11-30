@@ -27,7 +27,7 @@ func (node Node) accept(visitor *CypherRenderer) {
 		label.accept(visitor)
 	}
 	VisitIfNotNull(node.properties, visitor)
-	(*visitor).Leave(node)
+	(*visitor).leave(node)
 }
 
 func (node Node) RelationshipTo(other Node, types ...string) Relationship {
@@ -100,7 +100,7 @@ func (n NodeLabel) getKey() string {
 func (n NodeLabel) accept(visitor *CypherRenderer) {
 	n.key = fmt.Sprint(&n)
 	(*visitor).enter(n)
-	(*visitor).Leave(n)
+	(*visitor).leave(n)
 }
 
 func (n NodeLabel) enter(renderer *CypherRenderer) {
