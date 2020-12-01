@@ -4,12 +4,12 @@ type BuildableStatement interface {
 	Build() Statement
 }
 
-type OngoingReadingWithoutWhere interface {
-	OngoingReading
+type OngoingReadingWithoutWhere struct {
+	ExposesReturningStruct
 }
 
-type OngoingReading interface {
-	ExposesReturning
+type OngoingReading struct {
+	ExposesReturningStruct
 }
 
 type OngoingReadingAndReturn interface {

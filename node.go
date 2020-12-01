@@ -11,6 +11,10 @@ type Node struct {
 	key          string
 }
 
+func (node Node) IsPatternElement() bool {
+	return true
+}
+
 func (node Node) getKey() string {
 	return node.key
 }

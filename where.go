@@ -4,7 +4,7 @@ import "fmt"
 
 type Where struct {
 	key       string
-	condition Condition
+	condition Expression
 }
 
 func (w Where) getKey() string {

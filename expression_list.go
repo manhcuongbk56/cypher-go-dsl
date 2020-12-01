@@ -16,7 +16,7 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 	if !isExpression {
 		panic("Can not prepare un expression type in expression list")
 	}
-	return NameOrExpression(&expression)
+	return NameOrExpression(expression)
 }
 
 func (e ExpressionList) accept(visitor *CypherRenderer) {

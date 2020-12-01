@@ -16,7 +16,7 @@ func (v FunctionArgumentList) PrepareVisit(child Visitable) Visitable {
 	if !isExpression {
 		return child
 	}
-	return NameOrExpression(&expression)
+	return NameOrExpression(expression)
 }
 
 func (v FunctionArgumentList) accept(visitor *CypherRenderer) {

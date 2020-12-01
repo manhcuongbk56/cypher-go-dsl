@@ -63,5 +63,5 @@ func (m MapExpression) leave(renderer *CypherRenderer) {
 
 func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {
 	expression := visitable.(Expression)
-	return NameOrExpression(&expression)
+	return NameOrExpression(expression)
 }

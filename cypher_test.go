@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestCreateTree(t *testing.T) {
+func TestRenderSimpleQuery(t *testing.T) {
 	device, _ := NewNode("Device").Named("d").WithRawProperties("entity.id", StringLiteral{content: "7d729555-0d61-46ae-ab79-ce43e72f751b"})
 	customer := NewNode("Customer").Named("c")
 	relation := device.RelationshipTo(customer, "HAS")
@@ -15,6 +15,19 @@ func TestCreateTree(t *testing.T) {
 	query := NewRenderer().Render(statement)
 	fmt.Println(query)
 }
+
+func TestRenderComplexQuery(t *testing.T) {
+	device := NewNode("Farm").Named("b")
+	customer := NewNode("Customer").Named("c")
+	relation := device.RelationshipTo(customer, "HAS")
+	statement := Matchs(relation).
+		returning(customer.symbolicName).
+		Build()
+	query := NewRenderer().Render(statement)
+	fmt.Println(query)
+}
+
+
 
 func TestWhereType(t *testing.T) {
 	var where interface{} = Where{}

@@ -1,6 +1,7 @@
 package cypher_go_dsl
 
 type DefaultStatementBuilder struct {
+	OngoingReading
 	invalidReason             string
 	currentSinglePartElements []Visitable
 	currentOngoingMatch       *MatchBuilder

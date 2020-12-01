@@ -2,7 +2,7 @@ package cypher_go_dsl
 
 type MatchBuilder struct {
 	patternList []PatternElement
-	condition   ConditionContainer
+	condition   ConditionBuilder
 	optional    bool
 }
 
@@ -11,7 +11,7 @@ func (builder MatchBuilder) buildMatch() Match {
 	conditionBuilder := builder.condition
 	var optionalWhere *Where = nil
 	if conditionBuilder.condition != nil {
-		builtCondition := *conditionBuilder.BuildCondition()
+		builtCondition := conditionBuilder.buildCondition()
 		optionalWhere = &Where{condition: builtCondition}
 	}
 	return Match{

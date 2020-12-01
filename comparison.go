@@ -66,10 +66,3 @@ func (c Comparison) GetExpressionType() ExpressionType {
 	return CONDITION
 }
 
-func NameOrExpression(expression Expression) Expression {
-	named, isNamed := (expression).(Named)
-	if isNamed && named.getSymbolicName() != nil {
-		return named.getSymbolicName()
-	}
-	return expression
-}
