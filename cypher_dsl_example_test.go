@@ -14,7 +14,7 @@ func TestFindAllMovies(t *testing.T) {
 	fmt.Println(query)
 }
 
-func TestExposesReturning(t *testing.T)  {
-	exposesStruct := ExposesReturningStruct{}
-	exposesStruct.returning("a", "b", "c")
-}
+//func TestExposesReturning(t *testing.T)  {
+//	exposesStruct := ExposesReturningStruct{}
+//	exposesStruct.returning("a", "b", "c")
+//}

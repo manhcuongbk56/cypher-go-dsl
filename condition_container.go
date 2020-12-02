@@ -4,17 +4,17 @@ type ConditionContainer struct {
 	ExpressionContainer
 }
 
-func (b *ConditionContainer) And(condition Expression) *ConditionContainer {
+func (b *ConditionContainer) And(condition Condition) *ConditionContainer {
 	b.expression = CompoundConditionCreate(b.expression, AND, condition)
 	return b
 }
 
-func (b *ConditionContainer) Or(condition Expression) *ConditionContainer{
+func (b *ConditionContainer) Or(condition Condition) *ConditionContainer{
 	b.expression = CompoundConditionCreate(b.expression, OR, condition)
 	return b
 }
 
-func (b *ConditionContainer) Xor(condition Expression) *ConditionContainer {
+func (b *ConditionContainer) Xor(condition Condition) *ConditionContainer {
 	b.expression = CompoundConditionCreate(b.expression, XOR, condition)
 	return b
 }

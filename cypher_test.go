@@ -29,9 +29,10 @@ func TestRenderComplexQuery(t *testing.T) {
 
 
 
-func TestWhereType(t *testing.T) {
-	var where interface{} = Where{}
-	visitable, ok := where.(Visitable)
-	fmt.Print(visitable)
-	fmt.Print(ok)
+func TestExpressionContainer_Add(t *testing.T) {
+	var property = PropertyLookup{
+		propertyKeyName: "test",
+	}
+	a := property.EndsWith(property)
+	fmt.Print(a)
 }
