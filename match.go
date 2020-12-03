@@ -5,8 +5,13 @@ import "fmt"
 type Match struct {
 	optional      bool
 	pattern       Pattern
-	optionalWhere *Where
+	optionalWhere Where
 	key           string
+	notNil        bool
+}
+
+func (match Match) isNotNil() bool {
+	return match.notNil
 }
 
 func (match Match) isOptional() bool {

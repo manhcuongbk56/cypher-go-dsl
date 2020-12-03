@@ -1,9 +1,14 @@
 package cypher_go_dsl
 
 type CompoundCondition struct {
-	operator Operator
-	conditions []Expression
+	operator      Operator
+	conditions    []Expression
 	conditionType ExpressionType
+	notNil        bool
+}
+
+func (c CompoundCondition) isNotNil() bool {
+	return c.notNil
 }
 
 func (c CompoundCondition) accept(visitor *CypherRenderer) {
@@ -27,7 +32,7 @@ func (c CompoundCondition) GetExpressionType() ExpressionType {
 }
 
 var EMPTY_CONDITION = CompoundCondition{
-	conditions: make([]Expression, 0),
+	conditions:    make([]Expression, 0),
 	conditionType: EMPTY_CONDITION_EXPRESSION,
 }
 
@@ -39,11 +44,10 @@ func CompoundConditionCreate(left Expression, operator Operator, right Expressio
 
 func CompoundConditionCreateWithOperator(operator Operator) CompoundCondition {
 	return CompoundCondition{
-		operator: operator,
+		operator:   operator,
 		conditions: make([]Expression, 0),
 	}
 }
-
 
 func (c *CompoundCondition) add(chainingOperator Operator, expression Expression) CompoundCondition {
 	if c.GetExpressionType() == EMPTY_CONDITION_EXPRESSION {
@@ -52,17 +56,17 @@ func (c *CompoundCondition) add(chainingOperator Operator, expression Expression
 		}
 		return newCompound.add(chainingOperator, expression)
 	}
-	if compoundCondition, isCompound := expression.(CompoundCondition); isCompound  {
+	if compoundCondition, isCompound := expression.(CompoundCondition); isCompound {
 		if !compoundCondition.hasCondition() {
 			return *c
 		}
 		if c.operator == chainingOperator && chainingOperator == compoundCondition.operator {
 			if c.canBeFlattenedWith(chainingOperator) {
 				c.conditions = append(c.conditions, compoundCondition.conditions...)
-			}else{
+			} else {
 				c.conditions = append(c.conditions, compoundCondition)
 			}
-		}else {
+		} else {
 			inner := CompoundConditionCreateWithOperator(chainingOperator)
 			inner.conditions = append(inner.conditions, compoundCondition)
 			c.conditions = append(c.conditions, inner)
@@ -83,8 +87,8 @@ func (c CompoundCondition) hasCondition() bool {
 }
 
 func (c CompoundCondition) canBeFlattenedWith(operator Operator) bool {
-	for _, c := range c.conditions{
-		if compound, isCompound := c.(CompoundCondition); isCompound && compound.operator == operator  {
+	for _, c := range c.conditions {
+		if compound, isCompound := c.(CompoundCondition); isCompound && compound.operator == operator {
 			return false
 		}
 	}

@@ -6,6 +6,11 @@ type AliasedExpression struct {
 	delegate Expression
 	alias    string
 	key      string
+	notNil   bool
+}
+
+func (aliased AliasedExpression) isNotNil() bool {
+	return aliased.notNil
 }
 
 func (aliased AliasedExpression) GetExpressionType() ExpressionType {

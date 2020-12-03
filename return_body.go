@@ -4,10 +4,25 @@ import "fmt"
 
 type ReturnBody struct {
 	returnItems ExpressionList
-	order       *Order
-	skip        *Skip
-	limit       *Limit
+	order       Order
+	skip        Skip
+	limit       Limit
 	key         string
+	notNil      bool
+}
+
+func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit Limit) ReturnBody {
+	return ReturnBody{
+		returnItems: returnItems,
+		order:       order,
+		skip:        skip,
+		limit:       limit,
+		notNil:      true,
+	}
+}
+
+func (r ReturnBody) isNotNil() bool {
+	return r.notNil
 }
 
 func (r ReturnBody) enter(renderer *CypherRenderer) {

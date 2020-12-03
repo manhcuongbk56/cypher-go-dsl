@@ -7,8 +7,13 @@ import (
 
 type SinglePartQuery struct {
 	precedingClauses []Visitable
-	aReturn          *Return
+	aReturn          Return
 	key              string
+	notNil           bool
+}
+
+func (s SinglePartQuery) isNotNil() bool {
+	return s.notNil
 }
 
 func (s SinglePartQuery) getKey() string {
@@ -23,16 +28,16 @@ func (s SinglePartQuery) accept(visitor *CypherRenderer) {
 	}
 }
 
-func NewSinglePartQuery(clauses []Visitable, aReturn *Return) (*SinglePartQuery, error) {
-	if len(clauses) == 0 {
+func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery, error) {
+	if len(clauses) > 0 {
 		_, isMatch := clauses[len(clauses)-1].(Match)
 		if isMatch {
-			if aReturn == nil {
-				return nil, errors.New("Required return clause")
+			if !aReturn.isNotNil() {
+				return SinglePartQuery{}, errors.New("Required return clause")
 			}
 		}
 	}
-	return &SinglePartQuery{
+	return SinglePartQuery{
 		precedingClauses: clauses,
 		aReturn:          aReturn,
 	}, nil

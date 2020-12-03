@@ -6,17 +6,25 @@ type SortItem struct {
 	expression Expression
 	direction  SortDirection
 	key        string
+	notNil     bool
 }
 
-
+func (item SortItem) isNotNil() bool {
+	return item.notNil
+}
 
 func (item SortItem) getKey() string {
 	return item.key
 }
 
 type SortDirection struct {
-	value SortDirectionRaw
-	key   string
+	value  SortDirectionRaw
+	key    string
+	notNil bool
+}
+
+func (s SortDirection) isNotNil() bool {
+	return s.notNil
 }
 
 type SortDirectionRaw string

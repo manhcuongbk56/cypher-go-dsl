@@ -5,6 +5,11 @@ import "fmt"
 type FunctionArgumentList struct {
 	expressions []Visitable
 	key         string
+	notNil      bool
+}
+
+func (v FunctionArgumentList) isNotNil() bool {
+	return v.notNil
 }
 
 func (v FunctionArgumentList) getKey() string {

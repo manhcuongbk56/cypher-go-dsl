@@ -9,6 +9,11 @@ type FunctionInvocation struct {
 	functionName string
 	arguments    FunctionArgumentList
 	key          string
+	notNil       bool
+}
+
+func (f FunctionInvocation) isNotNil() bool {
+	return f.notNil
 }
 
 func (f FunctionInvocation) accept(visitor *CypherRenderer) {

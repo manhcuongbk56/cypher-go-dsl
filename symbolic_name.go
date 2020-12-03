@@ -3,8 +3,20 @@ package cypher_go_dsl
 import "fmt"
 
 type SymbolicName struct {
-	value string
-	key   string
+	value  string
+	key    string
+	notNil bool
+}
+
+func SymbolicNameCreate(value string) SymbolicName {
+	return SymbolicName{
+		value:  value,
+		notNil: true,
+	}
+}
+
+func (s SymbolicName) isNotNil() bool {
+	return s.notNil
 }
 
 func (s SymbolicName) getKey() string {

@@ -22,8 +22,6 @@ func (e ExpressionContainer) getKey() string {
 	panic("Expression container have no key")
 }
 
-
-
 func (e *ExpressionContainer) As(alias string) ExpressionContainer {
 	e.expression = AliasedExpression{
 		delegate: e.expression,
@@ -163,13 +161,18 @@ func (e *ExpressionContainer) Descending() SortItem {
 }
 
 func (e *ExpressionContainer) Ascending() SortItem {
-	 return CreateAscendingSortItem(e.expression)
+	return CreateAscendingSortItem(e.expression)
 }
 
 type Operator struct {
 	representation string
 	operatorType   OperatorType
 	key            string
+	notNil         bool
+}
+
+func (o Operator) isNotNil() bool {
+	return o.notNil
 }
 
 func (o Operator) accept(visitor *CypherRenderer) {

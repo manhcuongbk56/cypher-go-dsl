@@ -9,7 +9,7 @@ func (b *ConditionContainer) And(condition Condition) *ConditionContainer {
 	return b
 }
 
-func (b *ConditionContainer) Or(condition Condition) *ConditionContainer{
+func (b *ConditionContainer) Or(condition Condition) *ConditionContainer {
 	b.expression = CompoundConditionCreate(b.expression, OR, condition)
 	return b
 }
@@ -44,5 +44,3 @@ func (b *ConditionContainer) Not(pathPattern RelationshipPattern) *ConditionCont
 	b.expression = NewComparisonWithConstant(NOT, b.expression)
 	return b
 }
-
-

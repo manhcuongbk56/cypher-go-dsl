@@ -8,6 +8,11 @@ import (
 type MapExpression struct {
 	expressions []Expression
 	key         string
+	notNil      bool
+}
+
+func (m MapExpression) isNotNil() bool {
+	return m.notNil
 }
 
 func (m MapExpression) getKey() string {

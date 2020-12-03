@@ -5,6 +5,11 @@ import "fmt"
 type Skip struct {
 	skipAmount NumberLiteral
 	key        string
+	notNil     bool
+}
+
+func (s Skip) isNotNil() bool {
+	return s.notNil
 }
 
 func (s Skip) getKey() string {
@@ -18,14 +23,14 @@ func (s Skip) accept(visitor *CypherRenderer) {
 	(*visitor).leave(s)
 }
 
-func CreateSkip(number int) *Skip {
+func CreateSkip(number int) Skip {
 	if number == 0 {
-		return nil
+		return Skip{}
 	}
 	literal := NumberLiteral{
 		content: number,
 	}
-	return &Skip{skipAmount: literal}
+	return Skip{skipAmount: literal}
 }
 
 func (s Skip) enter(renderer *CypherRenderer) {

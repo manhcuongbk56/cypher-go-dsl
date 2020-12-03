@@ -5,6 +5,11 @@ import "fmt"
 type Pattern struct {
 	patternElements []PatternElement
 	key             string
+	notNil          bool
+}
+
+func (p Pattern) isNotNil() bool {
+	return p.notNil
 }
 
 func (p Pattern) getKey() string {

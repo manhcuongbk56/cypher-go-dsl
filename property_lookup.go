@@ -5,7 +5,12 @@ import "fmt"
 type PropertyLookup struct {
 	ExpressionContainer
 	propertyKeyName string
-	key string
+	key             string
+	notNil          bool
+}
+
+func (p PropertyLookup) isNotNil() bool {
+	return p.notNil
 }
 
 func (p PropertyLookup) accept(visitor *CypherRenderer) {
@@ -30,10 +35,10 @@ func (p PropertyLookup) GetExpressionType() ExpressionType {
 	panic("implement me")
 }
 
-func (p PropertyLookup) GetPropertyKeyName() string  {
+func (p PropertyLookup) GetPropertyKeyName() string {
 	return p.propertyKeyName
 }
 
-func (p *PropertyLookup) Wrap()  {
+func (p *PropertyLookup) Wrap() {
 	p.expression = p
 }

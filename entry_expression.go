@@ -3,9 +3,14 @@ package cypher_go_dsl
 import "fmt"
 
 type EntryExpression struct {
-	Key   string
-	Value Expression
-	key   string
+	Key    string
+	Value  Expression
+	key    string
+	notNil bool
+}
+
+func (e EntryExpression) isNotNil() bool {
+	return e.notNil
 }
 
 func (e EntryExpression) getKey() string {

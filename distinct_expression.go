@@ -3,6 +3,11 @@ package cypher_go_dsl
 type DistinctExpression struct {
 	delegate Expression
 	key      string
+	notNil   bool
+}
+
+func (d DistinctExpression) isNotNil() bool {
+	return d.notNil
 }
 
 func (d DistinctExpression) accept(visitor *CypherRenderer) {

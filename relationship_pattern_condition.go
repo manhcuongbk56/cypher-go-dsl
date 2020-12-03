@@ -4,7 +4,12 @@ import "fmt"
 
 type RelationshipPatternCondition struct {
 	pathPattern RelationshipPattern
-	key string
+	key         string
+	notNil      bool
+}
+
+func (r RelationshipPatternCondition) isNotNil() bool {
+	return r.notNil
 }
 
 func (r RelationshipPatternCondition) accept(visitor *CypherRenderer) {
@@ -27,4 +32,3 @@ func (r RelationshipPatternCondition) getKey() string {
 func (r RelationshipPatternCondition) GetExpressionType() ExpressionType {
 	panic("implement me")
 }
-

@@ -3,9 +3,22 @@ package cypher_go_dsl
 import "fmt"
 
 type Return struct {
-	distinct *Distinct
-	body     *ReturnBody
+	distinct Distinct
+	body     ReturnBody
 	key      string
+	notNil   bool
+}
+
+func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
+	return Return{
+		distinct: distinctInstance,
+		body:     body,
+		notNil:   true,
+	}
+}
+
+func (r Return) isNotNil() bool {
+	return r.notNil
 }
 
 func (r Return) getKey() string {
@@ -20,21 +33,13 @@ func (r Return) accept(visitor *CypherRenderer) {
 	(*visitor).leave(r)
 }
 
-func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order *Order, skip *Skip, limit *Limit) *Return {
-	var distinctInstance *Distinct
+func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit) Return {
+	var distinctInstance Distinct
 	if distinct {
-		distinctInstance = &Distinct{}
+		distinctInstance = DISTINCT_INSTANCE
 	}
-	body := ReturnBody{
-		returnItems: returnItems,
-		order:       order,
-		skip:        skip,
-		limit:       limit,
-	}
-	return &Return{
-		distinct: distinctInstance,
-		body:     &body,
-	}
+	body := ReturnBodyCreate(returnItems, order, skip, limit)
+	return ReturnCreate(distinctInstance, body)
 }
 
 func (r Return) enter(renderer *CypherRenderer) {

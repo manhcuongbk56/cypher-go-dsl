@@ -5,6 +5,16 @@ import "fmt"
 type Distinct struct {
 	IsDistinct bool
 	key        string
+	notNil     bool
+}
+
+func (d Distinct) isNotNil() bool {
+	return d.notNil
+}
+
+var DISTINCT_INSTANCE = Distinct{
+	IsDistinct: true,
+	key:        "DISTINCT_INSTANCE",
 }
 
 func (d Distinct) getKey() string {

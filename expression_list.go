@@ -5,6 +5,11 @@ import "fmt"
 type ExpressionList struct {
 	expressions []Expression
 	key         string
+	notNil      bool
+}
+
+func (e ExpressionList) isNotNil() bool {
+	return e.notNil
 }
 
 func (e ExpressionList) getKey() string {

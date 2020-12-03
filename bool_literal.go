@@ -7,6 +7,11 @@ import (
 type BooleanLiteral struct {
 	content bool
 	key     string
+	notNil  bool
+}
+
+func (b BooleanLiteral) isNotNil() bool {
+	return b.notNil
 }
 
 func (b BooleanLiteral) getKey() string {

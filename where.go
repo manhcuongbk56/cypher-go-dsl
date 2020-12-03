@@ -4,7 +4,19 @@ import "fmt"
 
 type Where struct {
 	key       string
-	condition Expression
+	condition Condition
+	notNil    bool
+}
+
+func WhereCreate(condition Condition) Where {
+	return Where{
+		condition: condition,
+		notNil:    true,
+	}
+}
+
+func (w Where) isNotNil() bool {
+	return w.notNil
 }
 
 func (w Where) getKey() string {

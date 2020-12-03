@@ -5,6 +5,11 @@ import "fmt"
 type Properties struct {
 	properties MapExpression
 	key        string
+	notNil     bool
+}
+
+func (p Properties) isNotNil() bool {
+	return p.notNil
 }
 
 func (p Properties) getKey() string {

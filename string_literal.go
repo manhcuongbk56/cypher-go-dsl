@@ -7,6 +7,18 @@ import (
 type StringLiteral struct {
 	content string
 	key     string
+	notNil  bool
+}
+
+func StringLiteralCreate(content string) StringLiteral {
+	return StringLiteral{
+		content: content,
+		notNil:  true,
+	}
+}
+
+func (s StringLiteral) isNotNil() bool {
+	return s.notNil
 }
 
 func escapeStringLiteral(value string) string {

@@ -9,6 +9,11 @@ type Comparison struct {
 	operator Operator
 	right    Expression
 	key      string
+	notNil   bool
+}
+
+func (c Comparison) isNotNil() bool {
+	return c.notNil
 }
 
 func NewComparison(left Expression, operator Operator, right Expression) Comparison {
@@ -65,4 +70,3 @@ func (c Comparison) getKey() string {
 func (c Comparison) GetExpressionType() ExpressionType {
 	return CONDITION
 }
-

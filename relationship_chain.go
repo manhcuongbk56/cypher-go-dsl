@@ -3,6 +3,11 @@ package cypher_go_dsl
 type RelationshipChain struct {
 	relationships []Relationship
 	key           string
+	notNil        bool
+}
+
+func (r RelationshipChain) isNotNil() bool {
+	return r.notNil
 }
 
 func (r RelationshipChain) getKey() string {

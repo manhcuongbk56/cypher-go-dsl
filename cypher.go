@@ -7,6 +7,7 @@ func NewNode(primaryLabel string) Node {
 	labels = append(labels, NodeLabel{value: primaryLabel})
 	return Node{
 		labels: labels,
+		notNil: true,
 	}
 }
 
@@ -25,8 +26,8 @@ func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
 	return NewDefaultBuilder().Match(element...)
 }
 
-func Sort(expression Expression) *SortItem {
-	return &SortItem{
+func Sort(expression Expression) SortItem {
+	return SortItem{
 		expression: expression,
 		direction:  SortDirection{value: UNDEFINED},
 	}

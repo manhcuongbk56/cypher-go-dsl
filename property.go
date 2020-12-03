@@ -4,8 +4,13 @@ import "fmt"
 
 type Property struct {
 	container Expression
-	name PropertyLookup
-	key string
+	name      PropertyLookup
+	key       string
+	notNil    bool
+}
+
+func (p Property) isNotNil() bool {
+	return p.notNil
 }
 
 func (p Property) accept(visitor *CypherRenderer) {

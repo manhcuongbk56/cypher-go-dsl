@@ -5,6 +5,11 @@ import "fmt"
 type Limit struct {
 	limitAmount NumberLiteral
 	key         string
+	notNil      bool
+}
+
+func (l Limit) isNotNil() bool {
+	return l.notNil
 }
 
 func (l Limit) getKey() string {
@@ -18,14 +23,14 @@ func (l Limit) accept(visitor *CypherRenderer) {
 	(*visitor).leave(l)
 }
 
-func CreateLimit(number int) *Limit {
+func CreateLimit(number int) Limit {
 	if number == 0 {
-		return nil
+		return Limit{}
 	}
 	literal := NumberLiteral{
 		content: number,
 	}
-	return &Limit{limitAmount: literal}
+	return Limit{limitAmount: literal}
 }
 
 func (l Limit) enter(renderer *CypherRenderer) {

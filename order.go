@@ -5,6 +5,11 @@ import "fmt"
 type Order struct {
 	sortItems []SortItem
 	key       string
+	notNil    bool
+}
+
+func (o Order) isNotNil() bool {
+	return o.notNil
 }
 
 func (o Order) getKey() string {

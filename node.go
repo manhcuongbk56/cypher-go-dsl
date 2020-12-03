@@ -5,10 +5,15 @@ import (
 )
 
 type Node struct {
-	symbolicName *SymbolicName
+	symbolicName SymbolicName
 	labels       []NodeLabel
-	properties   *Properties
+	properties   Properties
 	key          string
+	notNil       bool
+}
+
+func (node Node) isNotNil() bool {
+	return node.notNil
 }
 
 func (node Node) IsPatternElement() bool {
@@ -20,7 +25,7 @@ func (node Node) getKey() string {
 }
 
 func (node Node) hasSymbolic() bool {
-	return node.symbolicName != nil
+	return node.symbolicName.isNotNil()
 }
 
 func (node Node) accept(visitor *CypherRenderer) {
@@ -59,7 +64,7 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error) {
 }
 
 func (node Node) WithProperties(newProperties MapExpression) Node {
-	return Node{symbolicName: node.symbolicName, labels: node.labels, properties: &Properties{properties: newProperties}}
+	return Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: Properties{properties: newProperties, notNil: true}}
 }
 
 func (node Node) Property(name string) {
@@ -67,11 +72,11 @@ func (node Node) Property(name string) {
 }
 
 func (node Node) Named(name string) Node {
-	node.symbolicName = &SymbolicName{value: name}
+	node.symbolicName = SymbolicNameCreate(name)
 	return node
 }
 
-func (node Node) getSymbolicName() *SymbolicName {
+func (node Node) getSymbolicName() SymbolicName {
 	return node.symbolicName
 }
 
@@ -93,8 +98,13 @@ func (node Node) leave(renderer *CypherRenderer) {
 }
 
 type NodeLabel struct {
-	value string
-	key   string
+	value  string
+	key    string
+	notNil bool
+}
+
+func (n NodeLabel) isNotNil() bool {
+	return n.notNil
 }
 
 func (n NodeLabel) getKey() string {
@@ -103,8 +113,8 @@ func (n NodeLabel) getKey() string {
 
 func (n NodeLabel) accept(visitor *CypherRenderer) {
 	n.key = fmt.Sprint(&n)
-	(*visitor).enter(n)
-	(*visitor).leave(n)
+	visitor.enter(n)
+	visitor.leave(n)
 }
 
 func (n NodeLabel) enter(renderer *CypherRenderer) {

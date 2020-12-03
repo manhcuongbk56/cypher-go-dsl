@@ -7,9 +7,14 @@ type Relationship struct {
 	right   *Node
 	details *RelationshipDetails
 	key     string
+	notNil  bool
 }
 
-func (r Relationship) getSymbolicName() *SymbolicName {
+func (r Relationship) isNotNil() bool {
+	return r.notNil
+}
+
+func (r Relationship) getSymbolicName() SymbolicName {
 	return r.details.symbolicName
 }
 
@@ -37,11 +42,11 @@ func (r Relationship) IsPatternElement() bool {
 
 func (r Relationship) accept(visitor *CypherRenderer) {
 	r.key = fmt.Sprint(&r)
-	(*visitor).enter(r)
+	visitor.enter(r)
 	r.left.accept(visitor)
 	r.details.accept(visitor)
 	r.right.accept(visitor)
-	(*visitor).leave(r)
+	visitor.leave(r)
 }
 
 func (r Relationship) enter(renderer *CypherRenderer) {

@@ -8,7 +8,7 @@ type Expression interface {
 type ExpressionType string
 
 const (
-	EXPRESSION ExpressionType = "expression"
-	CONDITION = "condition"
-	EMPTY_CONDITION_EXPRESSION = "emptyCondition"
+	EXPRESSION                 ExpressionType = "expression"
+	CONDITION                                 = "condition"
+	EMPTY_CONDITION_EXPRESSION                = "emptyCondition"
 )

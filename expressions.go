@@ -13,9 +13,7 @@ func CreateSymbolicNames(namedOrString interface{}) Expression {
 		return named.getSymbolicName()
 	}
 	if stringArg, isString := namedOrString.(string); isString {
-		return SymbolicName{
-			value: stringArg,
-		}
+		return SymbolicNameCreate(stringArg)
 	}
 	return nil
 }

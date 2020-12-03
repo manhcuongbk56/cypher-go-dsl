@@ -6,14 +6,9 @@ import (
 )
 
 func VisitIfNotNull(dest interface{}, visitor *CypherRenderer) {
-	if !reflect.ValueOf(dest).IsNil() {
-		visitable, isVisitable := dest.(Visitable)
-		if isVisitable {
-			if visitable == nil {
-				fmt.Print("io")
-			}
-			visitable.accept(visitor)
-		}
+	visitable, isVisitable := dest.(Visitable)
+	if isVisitable && visitable.isNotNil() {
+		visitable.accept(visitor)
 	}
 }
 
@@ -34,10 +29,10 @@ type Visitable interface {
 	enter(renderer *CypherRenderer)
 	leave(renderer *CypherRenderer)
 	getKey() string
+	isNotNil() bool
 }
 
 type SubVisitable interface {
 	Visitable
 	PrepareVisit(visitable Visitable) Visitable
 }
-

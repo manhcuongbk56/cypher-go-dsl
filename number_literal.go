@@ -8,6 +8,11 @@ import (
 type NumberLiteral struct {
 	content int
 	key     string
+	notNil  bool
+}
+
+func (n NumberLiteral) isNotNil() bool {
+	return n.notNil
 }
 
 func (n NumberLiteral) getKey() string {

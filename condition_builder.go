@@ -1,29 +1,29 @@
 package cypher_go_dsl
 
 type ConditionBuilder struct {
-	condition Expression
+	condition Condition
 }
 
-func (c *ConditionBuilder) Where(newCondition Expression)  {
-	c.condition =  newCondition
+func (c *ConditionBuilder) Where(newCondition Condition) {
+	c.condition = newCondition
 }
 
-func (c *ConditionBuilder) And(additionalCondition Expression)  {
+func (c *ConditionBuilder) And(additionalCondition Condition) {
 	conditionContainer := ConditionContainer{ExpressionContainer{expression: additionalCondition}}
 	conditionContainer.And(additionalCondition)
-	c.condition = conditionContainer.expression
+	c.condition = conditionContainer.expression.(Condition)
 }
 
-func (c *ConditionBuilder) Or(additionalCondition Expression)  {
+func (c *ConditionBuilder) Or(additionalCondition Condition) {
 	conditionContainer := ConditionContainer{ExpressionContainer{expression: additionalCondition}}
 	conditionContainer.Or(additionalCondition)
-	c.condition = conditionContainer.expression
+	c.condition = conditionContainer.expression.(Condition)
 }
 
 func (c *ConditionBuilder) hasCondition() bool {
 	return true
 }
 
-func (c *ConditionBuilder) buildCondition() Expression {
+func (c *ConditionBuilder) buildCondition() Condition {
 	return c.condition
 }
