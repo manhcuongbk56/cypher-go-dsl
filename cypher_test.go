@@ -34,3 +34,10 @@ func TestExpressionContainer_Add(t *testing.T) {
 	a := property.EndsWith(property)
 	fmt.Print(a)
 }
+
+func TestNodeAsNamedType(t *testing.T) {
+	var node interface{} = Node{}
+	a, b := node.(Named)
+	fmt.Print(a)
+	fmt.Print(b)
+}

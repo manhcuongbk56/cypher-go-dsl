@@ -40,6 +40,7 @@ func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery
 	return SinglePartQuery{
 		precedingClauses: clauses,
 		aReturn:          aReturn,
+		notNil:           true,
 	}, nil
 }
 

@@ -1,20 +1,32 @@
 package cypher_go_dsl
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestFindAllMovies(t *testing.T) {
-	movie := NewNode("Device").Named("d")
+	movie := NewNode("Movie").Named("m")
 	statement := Matchs(movie).
-		returning(nil).
+		returningByNamed(movie).
 		Build()
 	query := NewRenderer().Render(statement)
-	fmt.Println(query)
+	expect := "MATCH (m:`Movie`) RETURN m"
+	if query != expect {
+		t.Errorf("%s is incorrect \n %s", query, expect)
+	}
 }
 
-//func TestExposesReturning(t *testing.T)  {
-//	exposesStruct := ExposesReturningStruct{}
-//	exposesStruct.returning("a", "b", "c")
-//}
+func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
+	farm := NewNode("Farm").Named("b")
+	statement := Matchs(farm).
+		where(ConditionsNot(farm.RelationshipFrom(AnyNode(), "HAS"))).
+		withByString("b").
+		OptionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
+		returningByString("b", "p").
+		Build()
+	query := NewRenderer().Render(statement)
+	expect := "MATCH (m:`Movie`) RETURN m"
+	if query != expect {
+		t.Errorf("%s is incorrect \n %s", query, expect)
+	}
+}

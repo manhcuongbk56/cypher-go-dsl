@@ -12,6 +12,23 @@ type Node struct {
 	notNil       bool
 }
 
+func NodeCreate() Node {
+	return Node{
+		notNil: true,
+	}
+}
+
+func NodeCreate1(symbolicName string) Node {
+	node := Node{
+		notNil: true,
+	}
+	return node.Named(symbolicName)
+}
+
+func (node Node) getSymbolicName() SymbolicName {
+	return node.symbolicName
+}
+
 func (node Node) isNotNil() bool {
 	return node.notNil
 }
@@ -74,10 +91,6 @@ func (node Node) Property(name string) {
 func (node Node) Named(name string) Node {
 	node.symbolicName = SymbolicNameCreate(name)
 	return node
-}
-
-func (node Node) getSymbolicName() SymbolicName {
-	return node.symbolicName
 }
 
 func (node Node) enter(renderer *CypherRenderer) {

@@ -43,7 +43,7 @@ func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order Orde
 }
 
 func (r Return) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("RETURN  ")
+	renderer.builder.WriteString("RETURN ")
 }
 
 func (r Return) leave(renderer *CypherRenderer) {

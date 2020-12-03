@@ -16,19 +16,19 @@ func (d DefaultStatementBuilder) wherePattern(pattern RelationshipPattern) Ongoi
 }
 
 func (d DefaultStatementBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
