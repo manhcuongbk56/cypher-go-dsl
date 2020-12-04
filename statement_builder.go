@@ -30,7 +30,6 @@ type OngoingReading interface {
 	ExposesSubqueryCall
 
 	callExposes(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments
-
 }
 
 type OngoingReadingAndReturn interface {
@@ -90,7 +89,6 @@ type OngoingUpdate interface {
 }
 
 type ExposesLimitAndOngoingReadingAndWith interface {
-
 }
 
 type OrderableOngoingReadingAndWithWithoutWhere interface {
@@ -118,12 +116,11 @@ type OrderableOngoingReadingAndWith interface {
 	OngoingReadingAndWith
 }
 
-
 type OngoingReadingAndWithWithWhereAndOrder interface {
 	ExposesSkip
 	ExposesLimit
 	OngoingReadingAndWith
-	and(expression Expression) OngoingOrderDefinition
+	and1(expression Expression) OngoingOrderDefinition
 }
 
 type OngoingOrderDefinition interface {
@@ -175,7 +172,6 @@ type ExposesSet interface {
 	setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate
 }
 
-
 type ExposesSetAndRemove interface {
 	ExposesSet
 	setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate
@@ -207,14 +203,18 @@ type OngoingMergeAction interface {
 }
 
 type OngoingMatchAndReturnWithOrder interface {
-		TerminalExposesSkip
-		TerminalExposesLimit
-		BuildableStatement
-		and(expression Expression) TerminalOngoingOrderDefinition
+	TerminalExposesSkip
+	TerminalExposesLimit
+	BuildableStatement
+	and(expression Expression) TerminalOngoingOrderDefinition
 }
 
 type TerminalExposesLimit interface {
 	limit(number int) BuildableStatement
+}
+
+type UpdatingClauseBuilder interface {
+	build() UpdatingClause
 }
 
 type TerminalOngoingOrderDefinition interface {
@@ -227,7 +227,7 @@ type TerminalOngoingOrderDefinition interface {
 
 type TerminalExposesOrderBy interface {
 	orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder
-	orderBy(expression Expression)
+	orderBy(expression Expression) TerminalOngoingOrderDefinition
 }
 
 type TerminalExposesLimitAndBuildableStatement interface {

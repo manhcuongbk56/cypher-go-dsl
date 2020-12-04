@@ -5,10 +5,19 @@ type DefaultStatementBuilder struct {
 	currentSinglePartElements []Visitable
 	multipartElements         []MultiPartElement
 	currentOngoingMatch       MatchBuilder
+	currentOngoingUpdate      DefaultStatementWithUpdateBuilder
+	currentOngoingCall        DefaultStatementWithUpdateBuilder
 }
 
 func (d DefaultStatementBuilder) where(condition Condition) OngoingReadingWithWhere {
-	panic("implement me")
+	d.currentOngoingMatch.conditionBuilder.Where(condition)
+	return d
+}
+
+func (d DefaultStatementBuilder) addWith(with With) {
+	if with.isNotNil() {
+		d.multipartElements = append(d.multipartElements, MultiPartElementCreate(d.BuildListOfVisitable(true), with))
+	}
 }
 
 func (d DefaultStatementBuilder) wherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
@@ -52,6 +61,10 @@ func (d DefaultStatementBuilder) withDistinctByNamed(variables ...Named) Orderab
 }
 
 func (d DefaultStatementBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	panic("implement me")
+}
+
+func (d DefaultStatementBuilder) withDefault(distinct bool, expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	panic("implement me")
 }
 
@@ -186,28 +199,36 @@ func (d DefaultStatementBuilder) returningDistinct(expression ...Expression) Ong
 
 func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...Expression) OngoingReadingAndReturn {
 	withReturnBuilder := DefaultStatementWithReturnBuilder{
-		distinct:                distinct,
-		defaultStatementBuilder: d,
+		distinct:       distinct,
+		defaultBuilder: d,
 	}
 	withReturnBuilder.AddExpression(expression...)
 	return withReturnBuilder
 }
 
 func (d DefaultStatementBuilder) Build() Statement {
-	return d.BuildImpl(Return{})
+	return d.BuildImpl(false, Return{})
 }
 
-func (d DefaultStatementBuilder) BuildImpl(returning Return) Statement {
-	singlePartQuery, _ := SinglePartQueryCreate(d.BuildListOfVisitable(), returning)
-	return singlePartQuery
+func (d DefaultStatementBuilder) BuildImpl(clearCurrentBuildSteps bool, returning Return) Statement {
+	singlePartQuery, _ := SinglePartQueryCreate(d.BuildListOfVisitable(clearCurrentBuildSteps), returning)
+	if len(d.multipartElements) == 0 {
+		return singlePartQuery
+	}
+	return MultiPartQueryCreate(d.multipartElements, singlePartQuery)
 }
 
-func (d DefaultStatementBuilder) BuildListOfVisitable() []Visitable {
+func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visitable {
 	visitables := make([]Visitable, 0)
 	copy(visitables, d.currentSinglePartElements)
 	if d.currentOngoingMatch.notNil {
 		visitables = append(visitables, d.currentOngoingMatch.buildMatch())
-		d.currentOngoingMatch = MatchBuilder{}
+	}
+	if d.currentOngoingUpdate.isNotNil() {
+		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
+	}
+	if d.cu {
+
 	}
 	d.currentSinglePartElements = d.currentSinglePartElements[:0]
 	return visitables

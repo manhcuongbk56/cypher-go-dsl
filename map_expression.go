@@ -21,7 +21,7 @@ func (m MapExpression) getKey() string {
 
 func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 	if len(objects)%2 != 0 {
-		err := errors.Errorf("number of object input should be product of 2 but it is %defaultStatementBuilder", len(objects))
+		err := errors.Errorf("number of object input should be product of 2 but it is %defaultBuilder", len(objects))
 		return MapExpression{}, err
 	}
 	var newContents = make([]Expression, len(objects)/2)

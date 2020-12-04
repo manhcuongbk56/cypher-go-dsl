@@ -33,7 +33,7 @@ func (r Return) accept(visitor *CypherRenderer) {
 	(*visitor).leave(r)
 }
 
-func ReturnByMultiVariable(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit) Return {
+func ReturnCreate1(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit) Return {
 	var distinctInstance Distinct
 	if distinct {
 		distinctInstance = DISTINCT_INSTANCE

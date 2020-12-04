@@ -24,8 +24,8 @@ func (s SinglePartQuery) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
 	for _, clause := range s.precedingClauses {
 		clause.accept(visitor)
-		VisitIfNotNull(s.aReturn, visitor)
 	}
+	VisitIfNotNull(s.aReturn, visitor)
 }
 
 func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery, error) {
@@ -45,9 +45,11 @@ func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery
 }
 
 func (s SinglePartQuery) enter(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (s SinglePartQuery) leave(renderer *CypherRenderer) {
-	panic("implement me")
+}
+
+func (s SinglePartQuery) doesReturnElements() bool {
+	return s.aReturn.isNotNil()
 }

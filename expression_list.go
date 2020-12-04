@@ -8,6 +8,13 @@ type ExpressionList struct {
 	notNil      bool
 }
 
+func ExpressionListCreate(expression []Expression) ExpressionList {
+	return ExpressionList{
+		expressions: expression,
+		notNil:      true,
+	}
+}
+
 func (e ExpressionList) isNotNil() bool {
 	return e.notNil
 }

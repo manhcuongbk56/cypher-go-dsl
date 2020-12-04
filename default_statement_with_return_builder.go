@@ -1,50 +1,57 @@
 package cypher_go_dsl
 
 type DefaultStatementWithReturnBuilder struct {
-	defaultStatementBuilder DefaultStatementBuilder
-	distinct                bool
-	returnList              []Expression
-	orderBuilder            OrderBuilder
+	defaultBuilder DefaultStatementBuilder
+	distinct       bool
+	returnList     []Expression
+	orderBuilder   OrderBuilder
 }
 
-func (builder *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression) {
-	builder.returnList = append(builder.returnList, expression...)
+func (d *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression) {
+	d.returnList = append(d.returnList, expression...)
 }
 
-func (builder DefaultStatementWithReturnBuilder) Build() Statement {
+func (d DefaultStatementWithReturnBuilder) Build() Statement {
 	var returning Return
-	if len(builder.returnList) > 0 {
-		returnItems := ExpressionList{expressions: builder.returnList}
-		returning = ReturnByMultiVariable(builder.distinct, returnItems, builder.orderBuilder.BuildOrder(), builder.orderBuilder.skip,
-			builder.orderBuilder.limit)
+	if len(d.returnList) > 0 {
+		returnItems := ExpressionList{expressions: d.returnList}
+		returning = ReturnCreate1(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
+			d.orderBuilder.limit)
 	}
-	return builder.defaultStatementBuilder.BuildImpl(returning)
+	return d.defaultBuilder.BuildImpl(false, returning)
 }
 
-func (builder DefaultStatementWithReturnBuilder) and(expression Expression) TerminalOngoingOrderDefinition {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) and(expression Expression) TerminalOngoingOrderDefinition {
+	d.orderBuilder.And(expression)
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) descending() OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) descending() OngoingMatchAndReturnWithOrder {
+	d.orderBuilder.Descending()
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) ascending() OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) ascending() OngoingMatchAndReturnWithOrder {
+	d.orderBuilder.Ascending()
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
+	d.orderBuilder.OrderBySortItem(sortItem...)
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) orderBy(expression Expression) {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) orderBy(expression Expression) TerminalOngoingOrderDefinition {
+	d.orderBuilder.OrderByExpression(expression)
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) skip(number int) TerminalExposesLimitAndBuildableStatement {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) skip(number int) TerminalExposesLimitAndBuildableStatement {
+	d.orderBuilder.Skip(number)
+	return d
 }
 
-func (builder DefaultStatementWithReturnBuilder) limit(number int) BuildableStatement {
-	panic("implement me")
+func (d DefaultStatementWithReturnBuilder) limit(number int) BuildableStatement {
+	d.orderBuilder.Limit(number)
+	return d
 }

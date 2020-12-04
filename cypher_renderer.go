@@ -17,6 +17,10 @@ type CypherRenderer struct {
 	builder                strings.Builder
 }
 
+func (c *CypherRenderer) append(content string) {
+	c.builder.WriteString(content)
+}
+
 func NewRenderer() *CypherRenderer {
 	return &CypherRenderer{
 		visitableToAliased:     make(map[string]AliasedExpression),

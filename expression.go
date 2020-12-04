@@ -9,6 +9,7 @@ type ExpressionType string
 
 const (
 	EXPRESSION                 ExpressionType = "expression"
-	CONDITION                                 = "condition"
+	CONDITION                                 = "conditionBuilder"
 	EMPTY_CONDITION_EXPRESSION                = "emptyCondition"
+	LITERAL                                   = "literal"
 )

@@ -9,7 +9,7 @@ type OrderBuilder struct {
 	notNil       bool
 }
 
-func (o OrderBuilder) OrderByItem(item ...SortItem) {
+func (o OrderBuilder) OrderBySortItem(item ...SortItem) {
 	o.sortItemList = append(o.sortItemList, item...)
 }
 
@@ -47,4 +47,11 @@ func (o OrderBuilder) BuildOrder() Order {
 		return Order{sortItems: o.sortItemList}
 	}
 	return Order{}
+}
+
+func (o *OrderBuilder) reset() {
+	o.sortItemList = nil
+	o.lastSortItem = SortItem{}
+	o.skip = Skip{}
+	o.limit = Limit{}
 }
