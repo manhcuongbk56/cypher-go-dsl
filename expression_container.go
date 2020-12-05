@@ -23,10 +23,7 @@ func (e ExpressionContainer) getKey() string {
 }
 
 func (e *ExpressionContainer) As(alias string) ExpressionContainer {
-	e.expression = AliasedExpression{
-		delegate: e.expression,
-		alias:    alias,
-	}
+	e.expression = AliasedExpressionCreate(e.expression, alias)
 	return *e
 }
 

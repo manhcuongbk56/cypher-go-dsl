@@ -17,8 +17,8 @@ type CypherRenderer struct {
 	builder                strings.Builder
 }
 
-func (c *CypherRenderer) append(content string) {
-	c.builder.WriteString(content)
+func (renderer *CypherRenderer) append(content string) {
+	renderer.builder.WriteString(content)
 }
 
 func NewRenderer() *CypherRenderer {
@@ -33,9 +33,6 @@ func NewRenderer() *CypherRenderer {
 		builder:                strings.Builder{},
 	}
 }
-
-type enter func(visitor *CypherRenderer, visitable Visitable)
-type leave func(visitor *CypherRenderer, visitable Visitable)
 
 func (renderer CypherRenderer) Render(statement Statement) string {
 	statement.accept(&renderer)

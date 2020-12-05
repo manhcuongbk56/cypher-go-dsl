@@ -10,10 +10,6 @@ type Relationship struct {
 	notNil  bool
 }
 
-func (r Relationship) wrappe() {
-
-}
-
 func (r Relationship) isNotNil() bool {
 	return r.notNil
 }

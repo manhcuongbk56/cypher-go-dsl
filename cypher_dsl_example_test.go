@@ -8,7 +8,7 @@ func TestFindAllMovies(t *testing.T) {
 	movie := NewNode("Movie").Named("m")
 	statement := Matchs(movie).
 		returningByNamed(movie).
-		Build()
+		build()
 	query := NewRenderer().Render(statement)
 	expect := "MATCH (m:`Movie`) RETURN m"
 	if query != expect {
@@ -23,7 +23,7 @@ func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 		withByString("b").
 		OptionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
 		returningByString("b", "p").
-		Build()
+		build()
 	query := NewRenderer().Render(statement)
 	expect := "MATCH (m:`Movie`) RETURN m"
 	if query != expect {

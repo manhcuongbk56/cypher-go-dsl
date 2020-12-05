@@ -9,6 +9,14 @@ type AliasedExpression struct {
 	notNil   bool
 }
 
+func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpression {
+	return AliasedExpression{
+		delegate: delegate,
+		alias:    alias,
+		notNil:   true,
+	}
+}
+
 func (aliased AliasedExpression) isNotNil() bool {
 	return aliased.notNil
 }
@@ -18,8 +26,7 @@ func (aliased AliasedExpression) GetExpressionType() ExpressionType {
 }
 
 func (aliased AliasedExpression) As(newAlias string) AliasedExpression {
-	return AliasedExpression{delegate: aliased.delegate,
-		alias: newAlias}
+	return AliasedExpressionCreate(aliased.delegate, newAlias)
 }
 
 func (aliased AliasedExpression) accept(visitor *CypherRenderer) {

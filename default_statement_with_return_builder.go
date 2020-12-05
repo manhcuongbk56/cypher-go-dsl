@@ -11,7 +11,7 @@ func (d *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expressi
 	d.returnList = append(d.returnList, expression...)
 }
 
-func (d DefaultStatementWithReturnBuilder) Build() Statement {
+func (d DefaultStatementWithReturnBuilder) build() Statement {
 	var returning Return
 	if len(d.returnList) > 0 {
 		returnItems := ExpressionList{expressions: d.returnList}

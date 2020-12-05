@@ -14,10 +14,11 @@ func (d DefaultStatementBuilder) where(condition Condition) OngoingReadingWithWh
 	return d
 }
 
-func (d DefaultStatementBuilder) addWith(with With) {
+func (d DefaultStatementBuilder) addWith(with With) DefaultStatementBuilder {
 	if with.isNotNil() {
 		d.multipartElements = append(d.multipartElements, MultiPartElementCreate(d.BuildListOfVisitable(true), with))
 	}
+	return d
 }
 
 func (d DefaultStatementBuilder) wherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
@@ -160,7 +161,7 @@ func (d DefaultStatementBuilder) OptionalMatch(pattern ...PatternElement) Ongoin
 	panic("implement me")
 }
 
-func (d DefaultStatementBuilder) create(element ...PatternElement) {
+func (d DefaultStatementBuilder) create(element ...PatternElement) OngoingUpdate {
 	panic("implement me")
 }
 
@@ -185,8 +186,36 @@ func (d DefaultStatementBuilder) Match(pattern ...PatternElement) OngoingReading
 	return d
 }
 
-func (d DefaultStatementBuilder) closeCurrentOngoingMatch() {
+func (d DefaultStatementBuilder) MatchDefault(optional bool, pattern ...PatternElement) OngoingReadingWithoutWhere {
+	d.closeCurrentOngoingMatch()
+	d.closeCurrentOngoingCall()
+	d.currentOngoingMatch = MatchBuilderCreate(optional)
+	d.currentOngoingMatch.patternList = append(d.currentOngoingMatch.patternList, pattern...)
+	return d
+}
 
+func (d *DefaultStatementBuilder) closeCurrentOngoingMatch() {
+	if !d.currentOngoingMatch.notNil {
+		return
+	}
+	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingMatch.buildMatch())
+	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+}
+
+func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
+	if !d.currentOngoingCall.notNil {
+		return
+	}
+	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingCall.build())
+	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+}
+
+func (d *DefaultStatementBuilder) closeCurrentOngoingUpdate() {
+	if !d.currentOngoingUpdate.notNil {
+		return
+	}
+	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingUpdate.builder.build())
+	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
 }
 
 func (d DefaultStatementBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
@@ -206,7 +235,7 @@ func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...E
 	return withReturnBuilder
 }
 
-func (d DefaultStatementBuilder) Build() Statement {
+func (d DefaultStatementBuilder) build() Statement {
 	return d.BuildImpl(false, Return{})
 }
 
@@ -227,9 +256,14 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 	if d.currentOngoingUpdate.isNotNil() {
 		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
 	}
-	if d.cu {
-
+	if d.currentOngoingCall.notNil {
+		visitables = append(visitables, d.currentOngoingCall.build())
 	}
-	d.currentSinglePartElements = d.currentSinglePartElements[:0]
+	if clearAfter {
+		d.currentOngoingMatch = MatchBuilder{}
+		d.currentOngoingUpdate = DefaultStatementWithUpdateBuilder{}
+		d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+		d.currentSinglePartElements = make([]Visitable, 0)
+	}
 	return visitables
 }

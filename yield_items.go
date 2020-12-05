@@ -1,0 +1,44 @@
+package cypher_go_dsl
+
+import "fmt"
+
+type YieldItems struct {
+	expressions []Expression
+	key         string
+	notNil      bool
+}
+
+func YieldItemsCreate(expression []Expression) YieldItems {
+	return YieldItems{
+		expressions: expression,
+		notNil:      true,
+	}
+}
+
+func (e YieldItems) isNotNil() bool {
+	return e.notNil
+}
+
+func (e YieldItems) getKey() string {
+	return e.key
+}
+
+func (e YieldItems) PrepareVisit(child Visitable) Visitable {
+	return child
+}
+
+func (e YieldItems) accept(visitor *CypherRenderer) {
+	e.key = fmt.Sprint(&e)
+	(*visitor).enter(e)
+	for _, expression := range e.expressions {
+		e.PrepareVisit(expression).accept(visitor)
+	}
+	(*visitor).leave(e)
+}
+
+func (e YieldItems) enter(renderer *CypherRenderer) {
+	renderer.append(" YIELD ")
+}
+
+func (e YieldItems) leave(renderer *CypherRenderer) {
+}
