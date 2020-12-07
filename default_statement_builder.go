@@ -267,3 +267,62 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 	}
 	return visitables
 }
+
+func getUpdatingClauseBuilder(updateType UpdateType, patternOrExpression ...Visitable) UpdatingClauseBuilder {
+	mergeOrCreate := updateType == UPDATE_TYPE_MERGE || updateType == UPDATE_TYPE_CREATE
+	if mergeOrCreate {
+		patternElements := make([]PatternElement, 0)
+		for _, visitable := range patternOrExpression {
+			patternElements := append(patternElements, visitable.(PatternElement))
+			if updateType == UPDATE_TYPE_CREATE {
+				return CreateBuilderCreate(patternElements)
+			} else {
+				return MergeBuilderCreate(patternElements)
+			}
+		}
+	} else {
+		expressions := make([]Expression, 0)
+		for _, visitable := range patternOrExpression {
+			expressions = append(expressions, visitable.(Expression))
+		}
+		var expressionList ExpressionList
+		if updateType == UPDATE_TYPE_SET {
+			expressionList = ExpressionListCreate(prepareSetExpression(expressions))
+		} else {
+			expressionList = ExpressionListCreate(expressions)
+		}
+		switch updateType {
+		case UPDATE_TYPE_DETACH_DELETE:
+			return DeleteBuilderCreate(expressionList, true)
+		case UPDATE_TYPE_DELETE:
+			return DeleteBuilderCreate(expressionList, false)
+		case UPDATE_TYPE_SET:
+			return SetBuilderCreate(expressionList)
+		case UPDATE_TYPE_REMOVE:
+			return RemoveBuilderCreate(expressionList)
+		default:
+			panic("unsupported update type")
+		}
+	}
+	//Just return to make compiler happy
+	return RemoveBuilder{}
+}
+
+func prepareSetExpression(possibleSetOperations []Expression) []Expression {
+	propertyOperations := make([]Expression, 0)
+	listOfExpressions := make([]Expression, 0)
+	for _, possibleSetOperation := range possibleSetOperations {
+		if operation, isOperation := possibleSetOperation.(Operation); isOperation {
+			propertyOperations = append(propertyOperations, operation)
+		} else {
+			listOfExpressions = append(listOfExpressions, possibleSetOperation)
+		}
+	}
+	if len(listOfExpressions)%2 != 0 {
+		panic("the list of expression to set must be even")
+	}
+	for i := 0; i < len(listOfExpressions); i += 2 {
+		propertyOperations = append(propertyOperations, set(listOfExpressions[i], listOfExpressions[i+1]))
+	}
+	return propertyOperations
+}

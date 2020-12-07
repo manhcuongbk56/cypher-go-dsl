@@ -213,10 +213,6 @@ type TerminalExposesLimit interface {
 	limit(number int) BuildableStatement
 }
 
-type UpdatingClauseBuilder interface {
-	build() UpdatingClause
-}
-
 type TerminalOngoingOrderDefinition interface {
 	TerminalExposesSkip
 	TerminalExposesLimit

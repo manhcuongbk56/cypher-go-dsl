@@ -8,36 +8,49 @@ type DefaultStatementWithUpdateBuilder struct {
 	notNil       bool
 }
 
+func DefaultStatementWithUpdateBuilderCreate(updateType UpdateType, pattern ...PatternElement) DefaultStatementWithUpdateBuilder {
+	return DefaultStatementWithUpdateBuilder{
+		distinct: false,
+	}
+}
+
 func (d DefaultStatementWithUpdateBuilder) isNotNil() bool {
 	return d.notNil
 }
 
 func (d DefaultStatementWithUpdateBuilder) and(expression Expression) TerminalOngoingOrderDefinition {
-	panic("implement me")
+	d.orderBuilder.And(expression)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) descending() OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+	d.orderBuilder.Descending()
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) ascending() OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+	d.orderBuilder.Ascending()
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
-	panic("implement me")
+	d.orderBuilder.OrderBySortItem(sortItem...)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) orderBy(expression Expression) TerminalOngoingOrderDefinition {
-	panic("implement me")
+	d.orderBuilder.OrderByExpression(expression)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) skip(number int) TerminalExposesLimitAndBuildableStatement {
-	panic("implement me")
+	d.orderBuilder.Skip(number)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) limit(number int) BuildableStatement {
-	panic("implement me")
+	d.orderBuilder.Limit(number)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) build() Statement {

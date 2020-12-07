@@ -8,6 +8,13 @@ type Create struct {
 	notNil  bool
 }
 
+func CreateCreate(pattern Pattern) Create {
+	return Create{
+		pattern: pattern,
+		notNil:  true,
+	}
+}
+
 func (c Create) accept(visitor *CypherRenderer) {
 	c.key = fmt.Sprint(&c)
 	visitor.enter(c)

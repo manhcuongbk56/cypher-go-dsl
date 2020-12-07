@@ -9,6 +9,14 @@ type MergeAction struct {
 	notNil    bool
 }
 
+func MergeActionCreate(mergeType MERGE_TYPE, set Set) MergeAction {
+	return MergeAction{
+		mergeType: mergeType,
+		set:       set,
+		notNil:    true,
+	}
+}
+
 func (m MergeAction) accept(visitor *CypherRenderer) {
 	m.key = fmt.Sprint(&m)
 	visitor.enter(m)

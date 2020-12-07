@@ -8,6 +8,10 @@ type Set struct {
 	notNil   bool
 }
 
+func (s Set) isUpdatingClause() bool {
+	return true
+}
+
 func SetCreate(setItems ExpressionList) Set {
 	return Set{
 		setItems: setItems,
@@ -23,9 +27,11 @@ func (s Set) accept(visitor *CypherRenderer) {
 }
 
 func (s Set) enter(renderer *CypherRenderer) {
+	renderer.append("SET ")
 }
 
 func (s Set) leave(renderer *CypherRenderer) {
+	renderer.append(" ")
 }
 
 func (s Set) getKey() string {

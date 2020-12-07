@@ -8,6 +8,13 @@ type Pattern struct {
 	notNil          bool
 }
 
+func PatternCreate(patternElements []PatternElement) Pattern {
+	return Pattern{
+		patternElements: patternElements,
+		notNil:          true,
+	}
+}
+
 func (p Pattern) isNotNil() bool {
 	return p.notNil
 }

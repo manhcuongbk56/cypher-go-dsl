@@ -116,6 +116,13 @@ type NodeLabel struct {
 	notNil bool
 }
 
+func NodeLabelCreate(value string) NodeLabel {
+	return NodeLabel{
+		value:  value,
+		notNil: true,
+	}
+}
+
 func (n NodeLabel) isNotNil() bool {
 	return n.notNil
 }
