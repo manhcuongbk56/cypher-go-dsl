@@ -165,6 +165,14 @@ func (d DefaultStatementBuilder) create(element ...PatternElement) OngoingUpdate
 	panic("implement me")
 }
 
+func (d DefaultStatementBuilder) onCreate() OngoingMergeAction {
+	panic("implement me")
+}
+
+func (d DefaultStatementBuilder) onMatch() OngoingMergeAction {
+	panic("implement me")
+}
+
 func NewDefaultBuilder() DefaultStatementBuilder {
 	return DefaultStatementBuilder{
 		currentSinglePartElements: make([]Visitable, 0),
@@ -229,7 +237,7 @@ func (d DefaultStatementBuilder) returningDistinct(expression ...Expression) Ong
 func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...Expression) OngoingReadingAndReturn {
 	withReturnBuilder := DefaultStatementWithReturnBuilder{
 		distinct:       distinct,
-		defaultBuilder: d,
+		defaultBuilder: &d,
 	}
 	withReturnBuilder.AddExpression(expression...)
 	return withReturnBuilder
@@ -266,6 +274,17 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 		d.currentSinglePartElements = make([]Visitable, 0)
 	}
 	return visitables
+}
+
+func (d *DefaultStatementBuilder) addUpdatingClause(clause UpdatingClause) DefaultStatementBuilder {
+	d.closeCurrentOngoingMatch()
+	d.currentSinglePartElements = append(d.currentSinglePartElements, clause)
+	return *d
+}
+
+func (d *DefaultStatementBuilder) update(updateType UpdateType, pattern []Visitable) DefaultStatementBuilder {
+	d.currentOngoingUpdate = DefaultStatementWithUpdateBuilderCreate1(d, updateType, pattern)
+	return *d
 }
 
 func getUpdatingClauseBuilder(updateType UpdateType, patternOrExpression ...Visitable) UpdatingClauseBuilder {

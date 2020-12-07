@@ -1,7 +1,7 @@
 package cypher_go_dsl
 
 type DefaultStatementWithReturnBuilder struct {
-	defaultBuilder DefaultStatementBuilder
+	defaultBuilder *DefaultStatementBuilder
 	distinct       bool
 	returnList     []Expression
 	orderBuilder   OrderBuilder

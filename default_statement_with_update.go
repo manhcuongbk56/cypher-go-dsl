@@ -1,16 +1,38 @@
 package cypher_go_dsl
 
 type DefaultStatementWithUpdateBuilder struct {
-	returnList   []Expression
-	orderBuilder OrderBuilder
-	distinct     bool
-	builder      UpdatingClauseBuilder
-	notNil       bool
+	defaultBuilder *DefaultStatementBuilder
+	returnList     []Expression
+	orderBuilder   OrderBuilder
+	distinct       bool
+	builder        UpdatingClauseBuilder
+	notNil         bool
 }
 
-func DefaultStatementWithUpdateBuilderCreate(updateType UpdateType, pattern ...PatternElement) DefaultStatementWithUpdateBuilder {
+func DefaultStatementWithUpdateBuilderCreate(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, pattern ...PatternElement) DefaultStatementWithUpdateBuilder {
 	return DefaultStatementWithUpdateBuilder{
-		distinct: false,
+		defaultBuilder: defaultBuilder,
+		distinct:       false,
+	}
+}
+
+func DefaultStatementWithUpdateBuilderCreate1(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, patternOrExpression []Visitable) DefaultStatementWithUpdateBuilder {
+	return DefaultStatementWithUpdateBuilder{
+		defaultBuilder: defaultBuilder,
+		distinct:       false,
+		builder:        getUpdatingClauseBuilder(updateType, patternOrExpression...),
+	}
+}
+
+func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, expressions ...Expression) DefaultStatementWithUpdateBuilder {
+	visitables := make([]Visitable, len(expressions))
+	for i := range expressions {
+		visitables[i] = expressions[i]
+	}
+	return DefaultStatementWithUpdateBuilder{
+		defaultBuilder: defaultBuilder,
+		distinct:       false,
+		builder:        getUpdatingClauseBuilder(updateType, visitables...),
 	}
 }
 
@@ -54,105 +76,145 @@ func (d DefaultStatementWithUpdateBuilder) limit(number int) BuildableStatement 
 }
 
 func (d DefaultStatementWithUpdateBuilder) build() Statement {
-	panic("implement me")
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	var returning Return
+	if len(d.returnList) > 0 {
+		returnItems := ExpressionList{expressions: d.returnList}
+		returning = ReturnCreate1(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
+			d.orderBuilder.limit)
+	}
+	return d.defaultBuilder.BuildImpl(false, returning)
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
-	panic("implement me")
+	d.returnList = append(d.returnList, expression...)
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
-	panic("implement me")
+	d.returning(expression...)
+	d.distinct = true
+	return d
 }
 
 func (d DefaultStatementWithUpdateBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDefault(false, expressions...)
+}
+
+func (d DefaultStatementWithUpdateBuilder) withDefault(distinct bool, returnedExpressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return d.defaultBuilder.withDefault(distinct, returnedExpressions...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDefault(true, expressions...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) deleteByString(variables ...string) OngoingUpdate {
-	panic("implement me")
+	return d.delete(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) deleteByNamed(variables ...Named) OngoingUpdate {
-	panic("implement me")
+	return d.delete(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) delete(expressions ...Expression) OngoingUpdate {
-	panic("implement me")
+	return d.deleteDefault(false, expressions...)
+}
+
+func (d DefaultStatementWithUpdateBuilder) deleteDefault(nextDetach bool, deletedExpressions ...Expression) OngoingUpdate {
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	var deleteType UpdateType
+	if nextDetach {
+		deleteType = UPDATE_TYPE_DETACH_DELETE
+	} else {
+		deleteType = UPDATE_TYPE_DELETE
+	}
+	visitables := make([]Visitable, len(deletedExpressions))
+	for i := range deletedExpressions {
+		visitables[i] = deletedExpressions[i]
+	}
+	return d.defaultBuilder.update(deleteType, visitables)
 }
 
 func (d DefaultStatementWithUpdateBuilder) detachDeleteByString(variables ...string) OngoingUpdate {
-	panic("implement me")
+	return d.detachDelete(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) detachDeleteByNamed(variables ...Named) OngoingUpdate {
-	panic("implement me")
+	return d.detachDelete(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) detachDelete(expressions ...Expression) OngoingUpdate {
-	panic("implement me")
+	return d.deleteDefault(true, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) merge(pattern ...PatternElement) {
-	panic("implement me")
+func (d DefaultStatementWithUpdateBuilder) merge(pattern ...PatternElement) OngoingUpdate {
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return d.defaultBuilder.merge(pattern...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, expressions...)
 }
 
 func (d DefaultStatementWithUpdateBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	return d.set(variable.getSymbolicName(), expression)
 }
 
 func (d DefaultStatementWithUpdateBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, set1(node, labels...))
 }
 
 func (d DefaultStatementWithUpdateBuilder) removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, set1(node, labels...))
 }
 
 func (d DefaultStatementWithUpdateBuilder) remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	expressions := make([]Expression, len(properties))
+	for i := range properties {
+		expressions[i] = properties[i]
+	}
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) create(element ...PatternElement) {
-	panic("implement me")
+func (d DefaultStatementWithUpdateBuilder) create(element ...PatternElement) OngoingUpdate {
+	d.defaultBuilder.addUpdatingClause(d.builder.build())
+	return d.defaultBuilder.create(element...)
 }
