@@ -15,6 +15,10 @@ func ExpressionListCreate(expression []Expression) ExpressionList {
 	}
 }
 
+func (e ExpressionList) GetExpressionType() ExpressionType {
+	panic("implement me")
+}
+
 func (e ExpressionList) isNotNil() bool {
 	return e.notNil
 }

@@ -21,7 +21,7 @@ func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 	statement := Matchs(farm).
 		where(ConditionsNot(farm.RelationshipFrom(AnyNode(), "HAS"))).
 		withByString("b").
-		OptionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
+		optionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
 		returningByString("b", "p").
 		build()
 	query := NewRenderer().Render(statement)

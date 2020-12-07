@@ -93,7 +93,7 @@ func (d DefaultStatementBuilder) detachDelete(expressions ...Expression) Ongoing
 	panic("implement me")
 }
 
-func (d DefaultStatementBuilder) merge(pattern ...PatternElement) {
+func (d DefaultStatementBuilder) merge(pattern ...PatternElement) OngoingUpdate {
 	panic("implement me")
 }
 
@@ -133,7 +133,7 @@ func (d DefaultStatementBuilder) call(statement Statement) OngoingReadingWithout
 	panic("implement me")
 }
 
-func (d DefaultStatementBuilder) callExposes(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
+func (d DefaultStatementBuilder) call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
 	panic("implement me")
 }
 
@@ -157,7 +157,7 @@ func (d DefaultStatementBuilder) orPattern(pattern RelationshipPattern) OngoingR
 	panic("implement me")
 }
 
-func (d DefaultStatementBuilder) OptionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	panic("implement me")
 }
 
@@ -171,7 +171,7 @@ func NewDefaultBuilder() DefaultStatementBuilder {
 	}
 }
 
-func (d DefaultStatementBuilder) Match(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	if pattern == nil || len(pattern) == 0 {
 		return DefaultStatementBuilder{invalidReason: "patterns to match is required"}
 	}

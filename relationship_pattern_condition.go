@@ -8,6 +8,17 @@ type RelationshipPatternCondition struct {
 	notNil      bool
 }
 
+func (r RelationshipPatternCondition) getConditionType() string {
+	return "RelationshipPatternCondition"
+}
+
+func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) RelationshipPatternCondition {
+	return RelationshipPatternCondition{
+		pathPattern: pathPattern,
+		notNil:      true,
+	}
+}
+
 func (r RelationshipPatternCondition) isNotNil() bool {
 	return r.notNil
 }

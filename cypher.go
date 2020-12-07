@@ -30,7 +30,7 @@ func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 }
 
 func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
-	return NewDefaultBuilder().Match(element...)
+	return NewDefaultBuilder().match(element...)
 }
 
 func Sort(expression Expression) SortItem {
@@ -42,4 +42,12 @@ func Sort(expression Expression) SortItem {
 
 func escapeName(name string) string {
 	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
+}
+
+func ListOf(expressions ...Expression) ExpressionList {
+	return ExpressionListCreate(expressions)
+}
+
+func Name(value string) SymbolicName {
+	return SymbolicNameCreate(value)
 }

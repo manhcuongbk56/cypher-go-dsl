@@ -32,35 +32,41 @@ func (d *DefaultStatementWithWithBuilder) addExpression(expressions ...Expressio
 }
 
 func (d DefaultStatementWithWithBuilder) skip(number int) ExposesLimitAndOngoingReadingAndWith {
-	panic("implement me")
+	d.orderBuilder.Skip(number)
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) limit(number int) OngoingReadingAndWith {
-	panic("implement me")
+	d.orderBuilder.Limit(number)
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) descending() OngoingReadingAndWithWithWhereAndOrder {
-	panic("implement me")
+	d.orderBuilder.Descending()
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) ascending() OngoingReadingAndWithWithWhereAndOrder {
-	panic("implement me")
+	d.orderBuilder.Ascending()
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) orderBySortItem(sortItem ...SortItem) OrderableOngoingReadingAndWithWithWhere {
-	panic("implement me")
+	d.orderBuilder.OrderBySortItem(sortItem...)
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) orderByExpression(expression Expression) OngoingOrderDefinition {
-	panic("implement me")
+	d.orderBuilder.OrderByExpression(expression)
+	return d
 }
 
 func (d DefaultStatementWithWithBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
@@ -69,11 +75,11 @@ func (d DefaultStatementWithWithBuilder) returning(expression ...Expression) Ong
 }
 
 func (d DefaultStatementWithWithBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	panic("implement me")
+	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
@@ -82,11 +88,11 @@ func (d DefaultStatementWithWithBuilder) returningDistinct(expression ...Express
 }
 
 func (d DefaultStatementWithWithBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
@@ -95,11 +101,11 @@ func (d DefaultStatementWithWithBuilder) with(expressions ...Expression) Orderab
 }
 
 func (d DefaultStatementWithWithBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementWithWithBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
@@ -133,8 +139,9 @@ func (d DefaultStatementWithWithBuilder) detachDelete(expressions ...Expression)
 		delete(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) merge(pattern ...PatternElement) {
-	panic("implement me")
+func (d DefaultStatementWithWithBuilder) merge(pattern ...PatternElement) OngoingUpdate {
+	return d.defaultBuilder.addWith(d.buildWith()).
+		merge(pattern...)
 }
 
 func (d DefaultStatementWithWithBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
@@ -143,7 +150,7 @@ func (d DefaultStatementWithWithBuilder) set(expressions ...Expression) Buildabl
 }
 
 func (d DefaultStatementWithWithBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	return d.set(variable.getSymbolicName(), expression)
 }
 
 func (d DefaultStatementWithWithBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
@@ -162,15 +169,16 @@ func (d DefaultStatementWithWithBuilder) remove(properties ...Property) Buildabl
 }
 
 func (d DefaultStatementWithWithBuilder) unwinds(expression ...Expression) OngoingUnwind {
-	panic("implement me")
+	return d.unwind(ListOf(expression...))
 }
 
 func (d DefaultStatementWithWithBuilder) unwindByString(variable string) OngoingUnwind {
-	panic("implement me")
+	return d.unwind(Name(variable))
 }
 
 func (d DefaultStatementWithWithBuilder) unwind(expression Expression) OngoingUnwind {
-	panic("implement me")
+	return d.defaultBuilder.addWith(d.buildWith()).
+		unwind(expression)
 }
 
 func (d DefaultStatementWithWithBuilder) create(element ...PatternElement) OngoingUpdate {
@@ -179,19 +187,21 @@ func (d DefaultStatementWithWithBuilder) create(element ...PatternElement) Ongoi
 }
 
 func (d DefaultStatementWithWithBuilder) call(statement Statement) OngoingReadingWithoutWhere {
-	panic("implement me")
+	return d.defaultBuilder.addWith(d.buildWith()).
+		call(statement)
 }
 
-func (d DefaultStatementWithWithBuilder) callExposes(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
-	panic("implement me")
+func (d DefaultStatementWithWithBuilder) call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
+	return d.defaultBuilder.addWith(d.buildWith()).
+		call1(namespaceAndProcedure...)
 }
 
-func (d DefaultStatementWithWithBuilder) Match(pattern ...PatternElement) OngoingReadingWithoutWhere {
-	panic("implement me")
+func (d DefaultStatementWithWithBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
+	return d.MatchDefault(false, pattern...)
 }
 
-func (d DefaultStatementWithWithBuilder) OptionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
-	panic("implement me")
+func (d DefaultStatementWithWithBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
+	return d.MatchDefault(true, pattern...)
 }
 
 func (d DefaultStatementWithWithBuilder) MatchDefault(optional bool, pattern ...PatternElement) OngoingReadingWithoutWhere {
@@ -205,7 +215,7 @@ func (d DefaultStatementWithWithBuilder) where(condition Condition) OrderableOng
 }
 
 func (d DefaultStatementWithWithBuilder) wherePattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	panic("implement me")
+	return d.where(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementWithWithBuilder) and(condition Condition) OrderableOngoingReadingAndWithWithWhere {
@@ -214,7 +224,7 @@ func (d DefaultStatementWithWithBuilder) and(condition Condition) OrderableOngoi
 }
 
 func (d DefaultStatementWithWithBuilder) andPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	panic("implement me")
+	return d.and(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementWithWithBuilder) or(condition Condition) OrderableOngoingReadingAndWithWithWhere {
@@ -223,9 +233,10 @@ func (d DefaultStatementWithWithBuilder) or(condition Condition) OrderableOngoin
 }
 
 func (d DefaultStatementWithWithBuilder) orPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	panic("implement me")
+	return d.or(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementWithWithBuilder) and1(expression Expression) OngoingOrderDefinition {
-	panic("implement me")
+	d.orderBuilder.And(expression)
+	return d
 }

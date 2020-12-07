@@ -29,7 +29,7 @@ type OngoingReading interface {
 	ExposesCreate
 	ExposesSubqueryCall
 
-	callExposes(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments
+	call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments
 }
 
 type OngoingReadingAndReturn interface {
