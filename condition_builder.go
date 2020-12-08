@@ -4,6 +4,10 @@ type ConditionBuilder struct {
 	condition Condition
 }
 
+func ConditionBuilderCreate() ConditionBuilder {
+	return ConditionBuilder{}
+}
+
 func (c *ConditionBuilder) Where(newCondition Condition) {
 	c.condition = newCondition
 }

@@ -42,3 +42,7 @@ func (e YieldItems) enter(renderer *CypherRenderer) {
 
 func (e YieldItems) leave(renderer *CypherRenderer) {
 }
+
+func yieldAllOf(c ...Expression) YieldItems {
+	return YieldItemsCreate(c)
+}

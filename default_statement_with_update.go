@@ -7,9 +7,10 @@ type DefaultStatementWithUpdateBuilder struct {
 	distinct       bool
 	builder        UpdatingClauseBuilder
 	notNil         bool
+	err            error
 }
 
-func DefaultStatementWithUpdateBuilderCreate(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, pattern ...PatternElement) DefaultStatementWithUpdateBuilder {
+func DefaultStatementWithUpdateBuilderCreate(defaultBuilder *DefaultStatementBuilder) DefaultStatementWithUpdateBuilder {
 	return DefaultStatementWithUpdateBuilder{
 		defaultBuilder: defaultBuilder,
 		distinct:       false,
@@ -17,10 +18,16 @@ func DefaultStatementWithUpdateBuilderCreate(defaultBuilder *DefaultStatementBui
 }
 
 func DefaultStatementWithUpdateBuilderCreate1(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, patternOrExpression []Visitable) DefaultStatementWithUpdateBuilder {
+	builder, err := getUpdatingClauseBuilder(updateType, patternOrExpression...)
+	if err != nil {
+		return DefaultStatementWithUpdateBuilder{
+			err: err,
+		}
+	}
 	return DefaultStatementWithUpdateBuilder{
 		defaultBuilder: defaultBuilder,
 		distinct:       false,
-		builder:        getUpdatingClauseBuilder(updateType, patternOrExpression...),
+		builder:        builder,
 	}
 }
 
@@ -29,10 +36,16 @@ func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBu
 	for i := range expressions {
 		visitables[i] = expressions[i]
 	}
+	builder, err := getUpdatingClauseBuilder(updateType, visitables...)
+	if err != nil {
+		return DefaultStatementWithUpdateBuilder{
+			err: err,
+		}
+	}
 	return DefaultStatementWithUpdateBuilder{
 		defaultBuilder: defaultBuilder,
 		distinct:       false,
-		builder:        getUpdatingClauseBuilder(updateType, visitables...),
+		builder:        builder,
 	}
 }
 

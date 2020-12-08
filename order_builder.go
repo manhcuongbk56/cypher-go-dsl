@@ -9,6 +9,12 @@ type OrderBuilder struct {
 	notNil       bool
 }
 
+func OrderBuilderCreate() OrderBuilder {
+	return OrderBuilder{
+		sortItemList: make([]SortItem, 0),
+	}
+}
+
 func (o OrderBuilder) OrderBySortItem(item ...SortItem) {
 	o.sortItemList = append(o.sortItemList, item...)
 }

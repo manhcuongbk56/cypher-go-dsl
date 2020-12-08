@@ -1,11 +1,21 @@
 package cypher_go_dsl
 
 type DefaultStatementWithWithBuilder struct {
-	defaultBuilder   DefaultStatementBuilder
+	defaultBuilder   *DefaultStatementBuilder
 	conditionBuilder ConditionBuilder
 	returnList       []Expression
 	orderBuilder     OrderBuilder
 	distinct         bool
+}
+
+func DefaultStatementWithWithBuilderCreate(defaultBuilder *DefaultStatementBuilder, distinct bool) DefaultStatementWithWithBuilder {
+	return DefaultStatementWithWithBuilder{
+		defaultBuilder:   defaultBuilder,
+		distinct:         distinct,
+		conditionBuilder: ConditionBuilderCreate(),
+		returnList:       make([]Expression, 0),
+		orderBuilder:     OrderBuilderCreate(),
+	}
 }
 
 func (d *DefaultStatementWithWithBuilder) buildWith() With {

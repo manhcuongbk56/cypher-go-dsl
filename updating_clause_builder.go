@@ -19,10 +19,14 @@ func MergeBuilderCreate(patternElements []PatternElement) MergeBuilder {
 	}
 }
 
-func (c MergeBuilder) on(mergeType MERGE_TYPE, expressions ...Expression) SupportsActionsOnTheUpdatingClause {
-	expressionList := ExpressionListCreate(prepareSetExpression(expressions))
+func (c MergeBuilder) on(mergeType MERGE_TYPE, expressions ...Expression) (SupportsActionsOnTheUpdatingClause, error) {
+	expression, err := prepareSetExpression(expressions)
+	if err != nil {
+		return MergeBuilder{}, err
+	}
+	expressionList := ExpressionListCreate(expression)
 	c.mergeActions = append(c.mergeActions, MergeActionCreate(mergeType, SetCreate(expressionList)))
-	return c
+	return c, nil
 }
 
 func (c MergeBuilder) build() UpdatingClause {

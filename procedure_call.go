@@ -2,6 +2,13 @@ package cypher_go_dsl
 
 import "fmt"
 
+type ProcedureCallBuilder interface {
+	ExposesWhere
+	ExposesReturning
+	BuildableStatement
+	isNotNil() bool
+}
+
 type ProcedureCall struct {
 	name          ProcedureName
 	arguments     Arguments
@@ -36,17 +43,21 @@ func (p ProcedureCall) accept(visitor *CypherRenderer) {
 }
 
 func (p ProcedureCall) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append("CALL ")
 }
 
 func (p ProcedureCall) leave(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append(".")
 }
 
 func (p ProcedureCall) getKey() string {
-	panic("implement me")
+	return p.key
 }
 
 func (p ProcedureCall) isNotNil() bool {
 	return p.notNil
+}
+
+func (p ProcedureCall) doesReturnElements() bool {
+	return p.yieldItems.isNotNil()
 }

@@ -1,12 +1,17 @@
 package cypher_go_dsl
 
+import (
+	"errors"
+	"golang.org/x/xerrors"
+)
+
 type DefaultStatementBuilder struct {
-	invalidReason             string
+	err                       error
 	currentSinglePartElements []Visitable
 	multipartElements         []MultiPartElement
 	currentOngoingMatch       MatchBuilder
 	currentOngoingUpdate      DefaultStatementWithUpdateBuilder
-	currentOngoingCall        DefaultStatementWithUpdateBuilder
+	currentOngoingCall        ProcedureCallBuilder
 }
 
 func (d DefaultStatementBuilder) where(condition Condition) OngoingReadingWithWhere {
@@ -22,7 +27,7 @@ func (d DefaultStatementBuilder) addWith(with With) DefaultStatementBuilder {
 }
 
 func (d DefaultStatementBuilder) wherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	panic("implement me")
+	return d.where(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
@@ -42,119 +47,145 @@ func (d DefaultStatementBuilder) returningDistinctByNamed(variables ...Named) On
 }
 
 func (d DefaultStatementBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.with(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDefault(false, expressions...)
 }
 
 func (d DefaultStatementBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	return d.withDefault(true, expressions...)
 }
 
 func (d DefaultStatementBuilder) withDefault(distinct bool, expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	panic("implement me")
+	ongoingMatchAndWith := DefaultStatementWithWithBuilderCreate(&d, distinct)
+	ongoingMatchAndWith.addExpression(expressions...)
+	return ongoingMatchAndWith
 }
 
 func (d DefaultStatementBuilder) deleteByString(variables ...string) OngoingUpdate {
-	panic("implement me")
+	return d.delete(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) deleteByNamed(variables ...Named) OngoingUpdate {
-	panic("implement me")
+	return d.delete(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) delete(expressions ...Expression) OngoingUpdate {
-	panic("implement me")
+	return d.update(UPDATE_TYPE_DELETE, ExpressionsToVisitables(expressions))
 }
 
 func (d DefaultStatementBuilder) detachDeleteByString(variables ...string) OngoingUpdate {
-	panic("implement me")
+	return d.detachDelete(CreateSymbolicNameByString(variables...)...)
 }
 
 func (d DefaultStatementBuilder) detachDeleteByNamed(variables ...Named) OngoingUpdate {
-	panic("implement me")
+	return d.detachDelete(CreateSymbolicNameByNamed(variables...)...)
 }
 
 func (d DefaultStatementBuilder) detachDelete(expressions ...Expression) OngoingUpdate {
-	panic("implement me")
+	return d.update(UPDATE_TYPE_DETACH_DELETE, ExpressionsToVisitables(expressions))
 }
 
 func (d DefaultStatementBuilder) merge(pattern ...PatternElement) OngoingUpdate {
-	panic("implement me")
+	return d.update(UPDATE_TYPE_MERGE, PatternElementsToVisitables(pattern))
 }
 
 func (d DefaultStatementBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	d.closeCurrentOngoingUpdate()
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, expressions...)
 }
 
 func (d DefaultStatementBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	return d.set(variable.getSymbolicName(), expression)
 }
 
 func (d DefaultStatementBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, set1(node, labels...))
 }
 
 func (d DefaultStatementBuilder) removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, remove(node, labels...))
 }
 
 func (d DefaultStatementBuilder) remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
-	panic("implement me")
+	expressions := make([]Expression, len(properties))
+	for i := range properties {
+		expressions[i] = properties[i]
+	}
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, expressions...)
 }
 
 func (d DefaultStatementBuilder) unwinds(expression ...Expression) OngoingUnwind {
-	panic("implement me")
+	return d.unwind(ListOf(expression...))
 }
 
 func (d DefaultStatementBuilder) unwindByString(variable string) OngoingUnwind {
-	panic("implement me")
+	return d.unwind(Name(variable))
 }
 
 func (d DefaultStatementBuilder) unwind(expression Expression) OngoingUnwind {
-	panic("implement me")
+	d.closeCurrentOngoingMatch()
+	return DefaultOngoingUnwindCreate(&d, expression)
 }
 
 func (d DefaultStatementBuilder) call(statement Statement) OngoingReadingWithoutWhere {
-	panic("implement me")
+	d.closeCurrentOngoingCall()
+	d.closeCurrentOngoingMatch()
+	d.closeCurrentOngoingUpdate()
+	singlePart, err := SubqueryCall(statement)
+	if err != nil {
+		d.err = err
+		return d
+	}
+	d.currentSinglePartElements = append(d.currentSinglePartElements, singlePart)
+	return d
 }
 
 func (d DefaultStatementBuilder) call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
-	panic("implement me")
+	d.closeCurrentOngoingMatch()
+	d.closeCurrentOngoingCall()
+	inQueryCallBuilder := InQueryCallBuilderCreate(&d, ProcedureNameCreate(namespaceAndProcedure...))
+	d.currentOngoingCall = inQueryCallBuilder
+	return inQueryCallBuilder
 }
 
-func (d DefaultStatementBuilder) asCondition() Expression {
-	panic("implement me")
+func (d DefaultStatementBuilder) asCondition() Condition {
+	if !d.currentOngoingMatch.notNil || len(d.currentSinglePartElements) > 0 {
+		panic("only simple MATCH statements can be used as existential subqueries")
+	}
+	return ExistentialSubqueryExists(d.currentOngoingMatch.buildMatch())
 }
 
 func (d DefaultStatementBuilder) and(condition Condition) OngoingReadingWithWhere {
-	panic("implement me")
+	d.currentOngoingMatch.conditionBuilder.And(condition)
+	return d
 }
 
 func (d DefaultStatementBuilder) andPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	panic("implement me")
+	return d.and(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementBuilder) or(condition Condition) OngoingReadingWithWhere {
-	panic("implement me")
+	d.currentOngoingMatch.conditionBuilder.Or(condition)
+	return d
 }
 
 func (d DefaultStatementBuilder) orPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	panic("implement me")
+	return d.or(RelationshipPatternConditionCreate(pattern))
 }
 
 func (d DefaultStatementBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
@@ -181,7 +212,7 @@ func NewDefaultBuilder() DefaultStatementBuilder {
 
 func (d DefaultStatementBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	if pattern == nil || len(pattern) == 0 {
-		return DefaultStatementBuilder{invalidReason: "patterns to match is required"}
+		return DefaultStatementBuilder{err: errors.New("patterns to match is required")}
 	}
 	if d.currentOngoingMatch.notNil {
 		d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingMatch.buildMatch())
@@ -207,15 +238,15 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingMatch() {
 		return
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingMatch.buildMatch())
-	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+	d.currentOngoingMatch = MatchBuilder{}
 }
 
 func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
-	if !d.currentOngoingCall.notNil {
+	if !d.currentOngoingCall.isNotNil() {
 		return
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingCall.build())
-	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+	d.currentOngoingCall = InQueryCallBuilder{}
 }
 
 func (d *DefaultStatementBuilder) closeCurrentOngoingUpdate() {
@@ -223,7 +254,7 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingUpdate() {
 		return
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingUpdate.builder.build())
-	d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+	d.currentOngoingUpdate = DefaultStatementWithUpdateBuilder{}
 }
 
 func (d DefaultStatementBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
@@ -264,13 +295,13 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 	if d.currentOngoingUpdate.isNotNil() {
 		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
 	}
-	if d.currentOngoingCall.notNil {
+	if d.currentOngoingCall.isNotNil() {
 		visitables = append(visitables, d.currentOngoingCall.build())
 	}
 	if clearAfter {
 		d.currentOngoingMatch = MatchBuilder{}
 		d.currentOngoingUpdate = DefaultStatementWithUpdateBuilder{}
-		d.currentOngoingCall = DefaultStatementWithUpdateBuilder{}
+		d.currentOngoingCall = InQueryCallBuilder{}
 		d.currentSinglePartElements = make([]Visitable, 0)
 	}
 	return visitables
@@ -283,20 +314,23 @@ func (d *DefaultStatementBuilder) addUpdatingClause(clause UpdatingClause) Defau
 }
 
 func (d *DefaultStatementBuilder) update(updateType UpdateType, pattern []Visitable) DefaultStatementBuilder {
+	d.closeCurrentOngoingMatch()
+	d.closeCurrentOngoingCall()
+	d.closeCurrentOngoingUpdate()
 	d.currentOngoingUpdate = DefaultStatementWithUpdateBuilderCreate1(d, updateType, pattern)
 	return *d
 }
 
-func getUpdatingClauseBuilder(updateType UpdateType, patternOrExpression ...Visitable) UpdatingClauseBuilder {
+func getUpdatingClauseBuilder(updateType UpdateType, patternOrExpression ...Visitable) (UpdatingClauseBuilder, error) {
 	mergeOrCreate := updateType == UPDATE_TYPE_MERGE || updateType == UPDATE_TYPE_CREATE
 	if mergeOrCreate {
 		patternElements := make([]PatternElement, 0)
 		for _, visitable := range patternOrExpression {
 			patternElements := append(patternElements, visitable.(PatternElement))
 			if updateType == UPDATE_TYPE_CREATE {
-				return CreateBuilderCreate(patternElements)
+				return CreateBuilderCreate(patternElements), nil
 			} else {
-				return MergeBuilderCreate(patternElements)
+				return MergeBuilderCreate(patternElements), nil
 			}
 		}
 	} else {
@@ -306,28 +340,32 @@ func getUpdatingClauseBuilder(updateType UpdateType, patternOrExpression ...Visi
 		}
 		var expressionList ExpressionList
 		if updateType == UPDATE_TYPE_SET {
-			expressionList = ExpressionListCreate(prepareSetExpression(expressions))
+			preparedExpression, err := prepareSetExpression(expressions)
+			if err != nil {
+				return RemoveBuilder{}, err
+			}
+			expressionList = ExpressionListCreate(preparedExpression)
 		} else {
 			expressionList = ExpressionListCreate(expressions)
 		}
 		switch updateType {
 		case UPDATE_TYPE_DETACH_DELETE:
-			return DeleteBuilderCreate(expressionList, true)
+			return DeleteBuilderCreate(expressionList, true), nil
 		case UPDATE_TYPE_DELETE:
-			return DeleteBuilderCreate(expressionList, false)
+			return DeleteBuilderCreate(expressionList, false), nil
 		case UPDATE_TYPE_SET:
-			return SetBuilderCreate(expressionList)
+			return SetBuilderCreate(expressionList), nil
 		case UPDATE_TYPE_REMOVE:
-			return RemoveBuilderCreate(expressionList)
+			return RemoveBuilderCreate(expressionList), nil
 		default:
-			panic("unsupported update type")
+			return RemoveBuilder{}, xerrors.Errorf("unsupported update type %s", updateType)
 		}
 	}
 	//Just return to make compiler happy
-	return RemoveBuilder{}
+	return RemoveBuilder{}, xerrors.Errorf("unexpected behavior")
 }
 
-func prepareSetExpression(possibleSetOperations []Expression) []Expression {
+func prepareSetExpression(possibleSetOperations []Expression) ([]Expression, error) {
 	propertyOperations := make([]Expression, 0)
 	listOfExpressions := make([]Expression, 0)
 	for _, possibleSetOperation := range possibleSetOperations {
@@ -338,10 +376,10 @@ func prepareSetExpression(possibleSetOperations []Expression) []Expression {
 		}
 	}
 	if len(listOfExpressions)%2 != 0 {
-		panic("the list of expression to set must be even")
+		return nil, xerrors.New("the list of expression to set must be even")
 	}
 	for i := 0; i < len(listOfExpressions); i += 2 {
 		propertyOperations = append(propertyOperations, set(listOfExpressions[i], listOfExpressions[i+1]))
 	}
-	return propertyOperations
+	return propertyOperations, nil
 }

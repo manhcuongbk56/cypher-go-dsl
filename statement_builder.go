@@ -41,13 +41,13 @@ type OngoingReadingAndReturn interface {
 
 type OngoingInQueryCallWithoutArguments interface {
 	withArgs(arguments ...Expression) OngoingInQueryCallWithArguments
-	yieldSymbolic(name SymbolicName) OngoingInQueryCallWithReturnFields
+	yieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
 	yieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
 	yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
 }
 
 type OngoingInQueryCallWithArguments interface {
-	yieldSymbolic(name SymbolicName) OngoingInQueryCallWithReturnFields
+	yieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
 	yieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
 	yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
 }
@@ -106,7 +106,7 @@ type OrderableOngoingReadingAndWithWithWhere interface {
 }
 
 type ExposesExistentialSubqueryCall interface {
-	asCondition() Expression
+	asCondition() Condition
 }
 
 type OrderableOngoingReadingAndWith interface {
