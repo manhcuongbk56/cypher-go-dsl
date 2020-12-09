@@ -26,14 +26,13 @@ func (w Where) getKey() string {
 func (w Where) accept(visitor *CypherRenderer) {
 	w.key = fmt.Sprint(&w)
 	(*visitor).enter(w)
-	w.accept(visitor)
+	w.condition.accept(visitor)
 	(*visitor).leave(w)
 }
 
 func (w Where) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append(" WHERE ")
 }
 
 func (w Where) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }

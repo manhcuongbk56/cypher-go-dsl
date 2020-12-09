@@ -25,7 +25,7 @@ func (d *DefaultStatementWithWithBuilder) buildWith() With {
 	returnItems := ExpressionListCreate(d.returnList)
 	condition := d.conditionBuilder.buildCondition()
 	var where Where
-	if condition.isNotNil() {
+	if condition == nil || condition.isNotNil() {
 		where = WhereCreate(condition)
 	} else {
 		where = Where{}

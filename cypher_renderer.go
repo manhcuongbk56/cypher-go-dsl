@@ -9,7 +9,7 @@ type CypherRenderer struct {
 	visitableToAliased     map[string]AliasedExpression
 	separatorOnLevel       map[int]string
 	resolvedSymbolicNames  map[SymbolicName]string
-	visitedNamed           map[interface{}]int
+	visitedNamed           map[string]int
 	currentVisitedElements []string
 	currentAliasedElements []AliasedExpression
 	currentLevel           int
@@ -26,7 +26,7 @@ func NewRenderer() *CypherRenderer {
 		visitableToAliased:     make(map[string]AliasedExpression),
 		separatorOnLevel:       make(map[int]string),
 		resolvedSymbolicNames:  make(map[SymbolicName]string),
-		visitedNamed:           make(map[interface{}]int),
+		visitedNamed:           make(map[string]int),
 		currentVisitedElements: make([]string, 0),
 		currentAliasedElements: make([]AliasedExpression, 0),
 		skipNodeContent:        false,

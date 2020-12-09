@@ -25,7 +25,7 @@ func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 		returningByString("b", "p").
 		build()
 	query := NewRenderer().Render(statement)
-	expect := "MATCH (m:`Movie`) RETURN m"
+	expect := "MATCH (b:`Farm`) WHERE NOT (b)<-[:`HAS`]-() WITH b OPTIONAL MATCH (b)-[:`HAS`]->(p) RETURN b, p"
 	if query != expect {
 		t.Errorf("%s is incorrect \n %s", query, expect)
 	}

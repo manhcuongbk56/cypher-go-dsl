@@ -14,6 +14,13 @@ type DefaultStatementBuilder struct {
 	currentOngoingCall        ProcedureCallBuilder
 }
 
+func DefaultStatementBuilderCreate() DefaultStatementBuilder {
+	return DefaultStatementBuilder{
+		currentSinglePartElements: make([]Visitable, 0),
+		multipartElements:         make([]MultiPartElement, 0),
+	}
+}
+
 func (d DefaultStatementBuilder) where(condition Condition) OngoingReadingWithWhere {
 	d.currentOngoingMatch.conditionBuilder.Where(condition)
 	return d
@@ -189,40 +196,31 @@ func (d DefaultStatementBuilder) orPattern(pattern RelationshipPattern) OngoingR
 }
 
 func (d DefaultStatementBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
-	panic("implement me")
+	return d.MatchDefault(true, pattern...)
 }
 
 func (d DefaultStatementBuilder) create(element ...PatternElement) OngoingUpdate {
-	panic("implement me")
+	return d.update(UPDATE_TYPE_CREATE, PatternElementsToVisitables(element))
 }
 
 func (d DefaultStatementBuilder) onCreate() OngoingMergeAction {
-	panic("implement me")
+	return d.ongoingOnAfterMerge(ON_CREATE)
 }
 
 func (d DefaultStatementBuilder) onMatch() OngoingMergeAction {
-	panic("implement me")
+	return d.ongoingOnAfterMerge(ON_MATCH)
 }
 
-func NewDefaultBuilder() DefaultStatementBuilder {
-	return DefaultStatementBuilder{
-		currentSinglePartElements: make([]Visitable, 0),
+func (d *DefaultStatementBuilder) ongoingOnAfterMerge(mergeType MERGE_TYPE) OngoingMergeAction {
+	if _, isSupports := d.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause); isSupports ||
+		!d.currentOngoingUpdate.notNil {
+		return OngoingMergeActionInBuilderError(errors.New("merge must have been invoked before defining an event"))
 	}
+	return OngoingMergeActionInBuilderCreate(d, mergeType)
 }
 
 func (d DefaultStatementBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
-	if pattern == nil || len(pattern) == 0 {
-		return DefaultStatementBuilder{err: errors.New("patterns to match is required")}
-	}
-	if d.currentOngoingMatch.notNil {
-		d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingMatch.buildMatch())
-	}
-	d.currentOngoingMatch = MatchBuilder{
-		optional: false,
-		notNil:   true,
-	}
-	d.currentOngoingMatch.patternList = append(d.currentOngoingMatch.patternList, pattern...)
-	return d
+	return d.MatchDefault(false, pattern...)
 }
 
 func (d DefaultStatementBuilder) MatchDefault(optional bool, pattern ...PatternElement) OngoingReadingWithoutWhere {
@@ -242,7 +240,7 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingMatch() {
 }
 
 func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
-	if !d.currentOngoingCall.isNotNil() {
+	if d.currentOngoingCall == nil || !d.currentOngoingCall.isNotNil() {
 		return
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingCall.build())
@@ -295,7 +293,7 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 	if d.currentOngoingUpdate.isNotNil() {
 		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
 	}
-	if d.currentOngoingCall.isNotNil() {
+	if d.currentOngoingCall != nil && d.currentOngoingCall.isNotNil() {
 		visitables = append(visitables, d.currentOngoingCall.build())
 	}
 	if clearAfter {
@@ -382,4 +380,44 @@ func prepareSetExpression(possibleSetOperations []Expression) ([]Expression, err
 		propertyOperations = append(propertyOperations, set(listOfExpressions[i], listOfExpressions[i+1]))
 	}
 	return propertyOperations, nil
+}
+
+//Implement OngoingMergeAction
+type OngoingMergeActionInBuilder struct {
+	defaultBuilder *DefaultStatementBuilder
+	mergeType      MERGE_TYPE
+	err            error
+}
+
+func OngoingMergeActionInBuilderCreate(defaultBuilder *DefaultStatementBuilder, mergeType MERGE_TYPE) OngoingMergeActionInBuilder {
+	return OngoingMergeActionInBuilder{
+		defaultBuilder: defaultBuilder,
+		mergeType:      mergeType,
+	}
+}
+
+func OngoingMergeActionInBuilderError(err error) OngoingMergeActionInBuilder {
+	return OngoingMergeActionInBuilder{
+		err: err,
+	}
+}
+
+func (o OngoingMergeActionInBuilder) getErr() error {
+	return o.err
+}
+
+func (o OngoingMergeActionInBuilder) set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
+	support := o.defaultBuilder.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause)
+	newSupport, err := support.on(o.mergeType, expressions...)
+	newMergeBuilder, _ := newSupport.(MergeBuilder)
+	if err != nil {
+		o.defaultBuilder.err = err
+		return o.defaultBuilder
+	}
+	o.defaultBuilder.currentOngoingUpdate.builder = newMergeBuilder
+	return o.defaultBuilder
+}
+
+func (o OngoingMergeActionInBuilder) setWithNamed(variable Named, expression Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
+	return o.set(variable.getSymbolicName(), expression)
 }

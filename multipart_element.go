@@ -9,6 +9,21 @@ type MultiPartElement struct {
 	notNil           bool
 }
 
+func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
+	var clauses []Visitable
+	if precedingClauses == nil || len(precedingClauses) == 0 {
+		clauses = make([]Visitable, 0)
+	} else {
+		clauses = make([]Visitable, 0)
+		clauses = append(clauses, precedingClauses...)
+	}
+	return MultiPartElement{
+		precedingClauses: clauses,
+		with:             with,
+		notNil:           true,
+	}
+}
+
 func (m MultiPartElement) accept(visitor *CypherRenderer) {
 	m.key = fmt.Sprint(&m)
 	visitor.enter(m)
@@ -31,18 +46,4 @@ func (m MultiPartElement) getKey() string {
 
 func (m MultiPartElement) isNotNil() bool {
 	return m.notNil
-}
-
-func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
-	var clauses []Visitable
-	if precedingClauses == nil || len(precedingClauses) == 0 {
-		clauses = make([]Visitable, 0)
-	} else {
-		clauses = make([]Visitable, 0)
-		copy(clauses, precedingClauses)
-	}
-	return MultiPartElement{
-		precedingClauses: clauses,
-		with:             with,
-	}
 }

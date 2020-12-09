@@ -13,16 +13,59 @@ type Node struct {
 }
 
 func NodeCreate() Node {
-	return Node{
-		notNil: true,
-	}
-}
-
-func NodeCreate1(symbolicName string) Node {
 	node := Node{
 		notNil: true,
 	}
-	return node.Named(symbolicName)
+	node.key = fmt.Sprint(&node)
+	return node
+}
+
+func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ...string) Node {
+	labels := make([]NodeLabel, 0)
+	if primaryLabel != "" {
+		labels = append(labels, NodeLabel{value: primaryLabel})
+	}
+	for _, label := range additionalLabels {
+		labels = append(labels, NodeLabelCreate(label))
+	}
+	node := Node{
+		notNil:       true,
+		symbolicName: SymbolicName{},
+		properties:   properties,
+		labels:       labels,
+	}
+	node.key = fmt.Sprint(&node)
+	return node
+}
+
+func NodeCreate2(primaryLabel string) Node {
+	var labels = make([]NodeLabel, 0)
+	labels = append(labels, NodeLabelCreate(primaryLabel))
+	node := Node{
+		labels: labels,
+		notNil: true,
+	}
+	node.key = fmt.Sprint(&node)
+	return node
+}
+
+func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
+	var labels = make([]NodeLabel, 0)
+	labels = append(labels, NodeLabel{value: primaryLabel})
+	for _, label := range additionalLabel {
+		labels = append(labels, NodeLabelCreate(label))
+	}
+	node := Node{
+		labels: labels,
+	}
+	node.key = fmt.Sprint(&node)
+	return node
+}
+
+func NodeCreate4(newProperties MapExpression, node Node) Node {
+	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: Properties{properties: newProperties, notNil: true}}
+	newNode.key = fmt.Sprint(&newNode)
+	return newNode
 }
 
 func (node Node) getSymbolicName() SymbolicName {
@@ -46,7 +89,6 @@ func (node Node) hasSymbolic() bool {
 }
 
 func (node Node) accept(visitor *CypherRenderer) {
-	node.key = fmt.Sprint(&node)
 	(*visitor).enter(node)
 	VisitIfNotNull(node.symbolicName, visitor)
 	for _, label := range node.labels {
@@ -54,6 +96,23 @@ func (node Node) accept(visitor *CypherRenderer) {
 	}
 	VisitIfNotNull(node.properties, visitor)
 	(*visitor).leave(node)
+}
+
+func (node Node) enter(renderer *CypherRenderer) {
+	renderer.builder.WriteString("(")
+	if !node.hasSymbolic() {
+		return
+	}
+	_, renderer.skipNodeContent = renderer.visitedNamed[node.key]
+	renderer.visitedNamed[node.key] = 1
+	if renderer.skipNodeContent {
+		renderer.builder.WriteString(node.symbolicName.value)
+	}
+}
+
+func (node Node) leave(renderer *CypherRenderer) {
+	renderer.builder.WriteString(")")
+	renderer.skipNodeContent = false
 }
 
 func (node Node) RelationshipTo(other Node, types ...string) Relationship {
@@ -81,7 +140,7 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error) {
 }
 
 func (node Node) WithProperties(newProperties MapExpression) Node {
-	return Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: Properties{properties: newProperties, notNil: true}}
+	return NodeCreate4(newProperties, node)
 }
 
 func (node Node) Property(name string) {
@@ -91,23 +150,6 @@ func (node Node) Property(name string) {
 func (node Node) Named(name string) Node {
 	node.symbolicName = SymbolicNameCreate(name)
 	return node
-}
-
-func (node Node) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("(")
-	if !node.hasSymbolic() {
-		return
-	}
-	var named interface{} = &node
-	_, renderer.skipNodeContent = renderer.visitedNamed[named]
-	if renderer.skipNodeContent {
-		renderer.builder.WriteString(node.symbolicName.value)
-	}
-}
-
-func (node Node) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(")")
-	renderer.skipNodeContent = false
 }
 
 type NodeLabel struct {

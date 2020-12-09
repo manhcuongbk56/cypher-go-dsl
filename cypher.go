@@ -3,19 +3,14 @@ package cypher_go_dsl
 import "strings"
 
 func NewNode(primaryLabel string) Node {
-	var labels = make([]NodeLabel, 0)
-	labels = append(labels, NodeLabel{value: primaryLabel})
-	return Node{
-		labels: labels,
-		notNil: true,
-	}
+	return NodeCreate2(primaryLabel)
 }
 
 func AnyNode() Node {
 	return NodeCreate()
 }
 func AnyNode1(symbolicName string) Node {
-	return NodeCreate()
+	return NodeCreate().Named(symbolicName)
 }
 
 func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
@@ -30,7 +25,7 @@ func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 }
 
 func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
-	return NewDefaultBuilder().match(element...)
+	return DefaultStatementBuilderCreate().match(element...)
 }
 
 func Sort(expression Expression) SortItem {

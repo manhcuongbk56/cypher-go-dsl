@@ -10,6 +10,14 @@ type With struct {
 	notNil   bool
 }
 
+func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
+	return With{
+		distinct: DISTINCT_INSTANCE,
+		body:     ReturnBodyCreate(returnItems, order, skip, limit),
+		notNil:   true,
+	}
+}
+
 func (with With) accept(visitor *CypherRenderer) {
 	with.key = fmt.Sprint(&with)
 	visitor.enter(with)
@@ -33,11 +41,4 @@ func (with With) getKey() string {
 
 func (with With) isNotNil() bool {
 	return with.notNil
-}
-
-func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
-	return With{
-		distinct: DISTINCT_INSTANCE,
-		body:     ReturnBodyCreate(returnItems, order, skip, limit),
-	}
 }
