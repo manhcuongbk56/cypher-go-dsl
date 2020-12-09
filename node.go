@@ -20,6 +20,10 @@ func NodeCreate() Node {
 	return node
 }
 
+func (node *Node) injectKey() {
+	node.key = fmt.Sprint(fmt.Sprintf("%p", node))
+}
+
 func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ...string) Node {
 	labels := make([]NodeLabel, 0)
 	if primaryLabel != "" {
@@ -34,7 +38,7 @@ func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ..
 		properties:   properties,
 		labels:       labels,
 	}
-	node.key = fmt.Sprint(&node)
+	node.injectKey()
 	return node
 }
 
@@ -45,7 +49,7 @@ func NodeCreate2(primaryLabel string) Node {
 		labels: labels,
 		notNil: true,
 	}
-	node.key = fmt.Sprint(&node)
+	node.injectKey()
 	return node
 }
 
@@ -58,13 +62,13 @@ func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
 	node := Node{
 		labels: labels,
 	}
-	node.key = fmt.Sprint(&node)
+	node.injectKey()
 	return node
 }
 
 func NodeCreate4(newProperties MapExpression, node Node) Node {
 	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: Properties{properties: newProperties, notNil: true}}
-	newNode.key = fmt.Sprint(&newNode)
+	node.injectKey()
 	return newNode
 }
 
