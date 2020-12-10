@@ -25,6 +25,12 @@ func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpressio
 	}
 }
 
+func AliasedExpressionError(err error) AliasedExpression {
+	return AliasedExpression{
+		err: err,
+	}
+}
+
 func (aliased AliasedExpression) isNotNil() bool {
 	return aliased.notNil
 }
@@ -35,7 +41,7 @@ func (aliased AliasedExpression) GetExpressionType() ExpressionType {
 
 func (aliased AliasedExpression) As(newAlias string) AliasedExpression {
 	if newAlias == "" {
-		return AliasedExpression{err: errors.New("the alias may not be empty")}
+		return AliasedExpressionError(errors.New("the alias may not be empty"))
 	}
 	return AliasedExpressionCreate(aliased.delegate, newAlias)
 }
@@ -52,9 +58,14 @@ func (aliased AliasedExpression) getKey() string {
 }
 
 func (aliased AliasedExpression) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	if _, visited := renderer.visitableToAliased[aliased.key]; visited {
+		renderer.append(escapeName(aliased.alias))
+	}
 }
 
 func (aliased AliasedExpression) leave(renderer *CypherRenderer) {
-	panic("implement me")
+	if _, visited := renderer.visitableToAliased[aliased.key]; !visited {
+		renderer.append(" AS ")
+		renderer.append(escapeName(aliased.alias))
+	}
 }

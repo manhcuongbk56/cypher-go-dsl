@@ -38,23 +38,26 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 			err: errors.New("comparison: right expression must be not nil"),
 		}
 	}
-	return Comparison{
+	comparison := Comparison{
 		left:     left,
 		operator: operator,
 		right:    right,
 	}
+	comparison.key = getAddress(&comparison)
+	return comparison
 }
 
 func ComparisonCreate1(operator Operator, expression Expression) Comparison {
+	var comparision Comparison
 	switch operator.operatorType {
 	case PREFIX:
-		return Comparison{
+		comparision = Comparison{
 			left:     nil,
 			operator: operator,
 			right:    expression,
 		}
 	case POSTFIX:
-		return Comparison{
+		comparision = Comparison{
 			left:     expression,
 			operator: operator,
 			right:    nil,
@@ -62,7 +65,8 @@ func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 	default:
 		return Comparison{}
 	}
-
+	comparision.key = getAddress(&comparision)
+	return comparision
 }
 
 func (c Comparison) accept(visitor *CypherRenderer) {
