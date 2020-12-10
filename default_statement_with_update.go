@@ -88,7 +88,10 @@ func (d DefaultStatementWithUpdateBuilder) limit(number int) BuildableStatement 
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) build() Statement {
+func (d DefaultStatementWithUpdateBuilder) build() (Statement, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	var returning Return
 	if len(d.returnList) > 0 {
@@ -96,7 +99,7 @@ func (d DefaultStatementWithUpdateBuilder) build() Statement {
 		returning = ReturnCreate1(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
 			d.orderBuilder.limit)
 	}
-	return d.defaultBuilder.BuildImpl(false, returning)
+	return d.defaultBuilder.BuildImpl(false, returning), nil
 }
 
 func (d DefaultStatementWithUpdateBuilder) returningByString(variables ...string) OngoingReadingAndReturn {

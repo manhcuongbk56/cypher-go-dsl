@@ -26,32 +26,32 @@ func (e *ExpressionContainer) As(alias string) ExpressionContainer {
 }
 
 func (e *ExpressionContainer) IsEqualTo(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, EQUALITY, rhs)
+	e.expression = ComparisonCreate(e.expression, EQUALITY, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) IsNotEqualTo(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, INEQUALITY, rhs)
+	e.expression = ComparisonCreate(e.expression, INEQUALITY, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Lt(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, LESS_THAN, rhs)
+	e.expression = ComparisonCreate(e.expression, LESS_THAN, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Lte(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, LESS_THAN_OR_EQUAL_TO, rhs)
+	e.expression = ComparisonCreate(e.expression, LESS_THAN_OR_EQUAL_TO, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Gt(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, GREATER_THAN, rhs)
+	e.expression = ComparisonCreate(e.expression, GREATER_THAN, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Gte(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, GREATER_THAN_OR_EQUAL_TO, rhs)
+	e.expression = ComparisonCreate(e.expression, GREATER_THAN_OR_EQUAL_TO, rhs)
 	return ConditionContainer{*e}
 }
 
@@ -68,79 +68,79 @@ func (e *ExpressionContainer) IsFalse() ConditionContainer {
 }
 
 func (e *ExpressionContainer) Matches(expression Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, MATCHES, expression)
+	e.expression = ComparisonCreate(e.expression, MATCHES, expression)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) MatchesPattern(pattern string) ConditionContainer {
-	e.expression = NewComparison(e.expression, MATCHES, StringLiteral{
+	e.expression = ComparisonCreate(e.expression, MATCHES, StringLiteral{
 		content: pattern,
 	})
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) StartWiths(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, STARTS_WITH, rhs)
+	e.expression = ComparisonCreate(e.expression, STARTS_WITH, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Contains(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, CONTAINS, rhs)
+	e.expression = ComparisonCreate(e.expression, CONTAINS, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) EndsWith(rhs Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, ENDS_WITH, rhs)
+	e.expression = ComparisonCreate(e.expression, ENDS_WITH, rhs)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) Concat(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, CONCAT, rhs)
+	e.expression = ComparisonCreate(e.expression, CONCAT, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Add(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, ADDITION, rhs)
+	e.expression = ComparisonCreate(e.expression, ADDITION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Subtract(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, SUBTRACTION, rhs)
+	e.expression = ComparisonCreate(e.expression, SUBTRACTION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Multiply(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, MULTIPLICATION, rhs)
+	e.expression = ComparisonCreate(e.expression, MULTIPLICATION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Divide(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, DIVISION, rhs)
+	e.expression = ComparisonCreate(e.expression, DIVISION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Remainder(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, MODULO_DIVISION, rhs)
+	e.expression = ComparisonCreate(e.expression, MODULO_DIVISION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) Pow(rhs Expression) ExpressionContainer {
-	e.expression = NewComparison(e.expression, EXPONENTIATION, rhs)
+	e.expression = ComparisonCreate(e.expression, EXPONENTIATION, rhs)
 	return *e
 }
 
 func (e *ExpressionContainer) IsNull() ConditionContainer {
-	e.expression = NewComparisonWithConstant(IS_NOT_NULL, e.expression)
+	e.expression = ComparisonCreate1(IS_NOT_NULL, e.expression)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) IsNotNull() ConditionContainer {
-	e.expression = NewComparisonWithConstant(IS_NOT_NULL, e.expression)
+	e.expression = ComparisonCreate1(IS_NOT_NULL, e.expression)
 	return ConditionContainer{*e}
 }
 
 func (e *ExpressionContainer) In(haystack Expression) ConditionContainer {
-	e.expression = NewComparison(e.expression, IN, haystack)
+	e.expression = ComparisonCreate(e.expression, IN, haystack)
 	return ConditionContainer{*e}
 }
 

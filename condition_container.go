@@ -41,6 +41,6 @@ func (b *ConditionContainer) XorRelationshipPattern(pathPattern RelationshipPatt
 }
 
 func (b *ConditionContainer) Not(pathPattern RelationshipPattern) *ConditionContainer {
-	b.expression = NewComparisonWithConstant(NOT, b.expression)
+	b.expression = ComparisonCreate1(NOT, b.expression)
 	return b
 }

@@ -6,7 +6,7 @@ type StatementBuilder interface {
 }
 
 type BuildableStatement interface {
-	build() Statement
+	build() (Statement, error)
 }
 
 type BuildableStatementAndOngoingMatchAndUpdate interface {

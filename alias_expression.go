@@ -1,6 +1,9 @@
 package cypher_go_dsl
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type AliasedExpression struct {
 	delegate Expression
@@ -31,6 +34,9 @@ func (aliased AliasedExpression) GetExpressionType() ExpressionType {
 }
 
 func (aliased AliasedExpression) As(newAlias string) AliasedExpression {
+	if newAlias == "" {
+		return AliasedExpression{err: errors.New("the alias may not be empty")}
+	}
 	return AliasedExpressionCreate(aliased.delegate, newAlias)
 }
 

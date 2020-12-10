@@ -1,6 +1,7 @@
 package cypher_go_dsl
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -10,7 +11,7 @@ type Comparison struct {
 	right    Expression
 	key      string
 	notNil   bool
-	err error
+	err      error
 }
 
 func (c Comparison) getError() error {
@@ -21,7 +22,22 @@ func (c Comparison) isNotNil() bool {
 	return c.notNil
 }
 
-func NewComparison(left Expression, operator Operator, right Expression) Comparison {
+func ComparisonCreate(left Expression, operator Operator, right Expression) Comparison {
+	if !operator.isUnary() {
+		return Comparison{
+			err: errors.New("comparison: operator must be unary"),
+		}
+	}
+	if left == nil || !left.isNotNil() {
+		return Comparison{
+			err: errors.New("comparison: left expression must be not nil"),
+		}
+	}
+	if right == nil || !left.isNotNil() {
+		return Comparison{
+			err: errors.New("comparison: right expression must be not nil"),
+		}
+	}
 	return Comparison{
 		left:     left,
 		operator: operator,
@@ -29,7 +45,7 @@ func NewComparison(left Expression, operator Operator, right Expression) Compari
 	}
 }
 
-func NewComparisonWithConstant(operator Operator, expression Expression) Comparison {
+func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 	switch operator.operatorType {
 	case PREFIX:
 		return Comparison{

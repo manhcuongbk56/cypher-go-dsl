@@ -6,6 +6,7 @@ type DefaultStatementWithWithBuilder struct {
 	returnList       []Expression
 	orderBuilder     OrderBuilder
 	distinct         bool
+	err              error
 }
 
 func DefaultStatementWithWithBuilderCreate(defaultBuilder *DefaultStatementBuilder, distinct bool) DefaultStatementWithWithBuilder {

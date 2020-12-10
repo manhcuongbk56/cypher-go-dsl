@@ -243,7 +243,12 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
 	if d.currentOngoingCall == nil || !d.currentOngoingCall.isNotNil() {
 		return
 	}
-	d.currentSinglePartElements = append(d.currentSinglePartElements, d.currentOngoingCall.build())
+	builtCall, err := d.currentOngoingCall.build()
+	if err != nil {
+		d.err = err
+		return
+	}
+	d.currentSinglePartElements = append(d.currentSinglePartElements, builtCall)
 	d.currentOngoingCall = InQueryCallBuilder{}
 }
 
@@ -272,8 +277,11 @@ func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...E
 	return withReturnBuilder
 }
 
-func (d DefaultStatementBuilder) build() Statement {
-	return d.BuildImpl(false, Return{})
+func (d DefaultStatementBuilder) build() (Statement, error) {
+	if d.err != nil {
+		return nil, d.err
+	}
+	return d.BuildImpl(false, Return{}), nil
 }
 
 func (d DefaultStatementBuilder) BuildImpl(clearCurrentBuildSteps bool, returning Return) Statement {
@@ -294,7 +302,12 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
 	}
 	if d.currentOngoingCall != nil && d.currentOngoingCall.isNotNil() {
-		visitables = append(visitables, d.currentOngoingCall.build())
+		builtCall, err := d.currentOngoingCall.build()
+		if err != nil {
+			d.err = err
+			return nil
+		}
+		visitables = append(visitables, builtCall)
 	}
 	if clearAfter {
 		d.currentOngoingMatch = MatchBuilder{}

@@ -8,7 +8,7 @@ type StringLiteral struct {
 	content string
 	key     string
 	notNil  bool
-	err error
+	err     error
 }
 
 func StringLiteralCreate(content string) StringLiteral {
@@ -35,7 +35,7 @@ func (s StringLiteral) getKey() string {
 }
 
 func (s StringLiteral) GetExpressionType() ExpressionType {
-	return EXPRESSION
+	return "StringLiteral"
 }
 
 func (s StringLiteral) GetContent() interface{} {
@@ -48,8 +48,8 @@ func (s StringLiteral) AsString() string {
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
 	s.key = fmt.Sprint(&s)
-	(*visitor).enter(s)
-	(*visitor).leave(s)
+	visitor.enter(s)
+	visitor.leave(s)
 }
 
 func (s StringLiteral) enter(renderer *CypherRenderer) {

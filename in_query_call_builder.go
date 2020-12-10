@@ -54,7 +54,7 @@ func (i InQueryCallBuilder) returningDistinct(expression ...Expression) OngoingR
 	return i.defaultBuilder.returningDistinct(expression...)
 }
 
-func (i InQueryCallBuilder) build() Statement {
+func (i InQueryCallBuilder) build() (Statement, error) {
 	panic("implement me")
 }
 
