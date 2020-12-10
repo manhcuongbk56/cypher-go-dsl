@@ -9,6 +9,11 @@ type MapExpression struct {
 	expressions []Expression
 	key         string
 	notNil      bool
+	err error
+}
+
+func (m MapExpression) getError() error {
+	return m.err
 }
 
 func (m MapExpression) isNotNil() bool {

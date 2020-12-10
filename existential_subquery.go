@@ -6,6 +6,7 @@ type ExistentialSubquery struct {
 	fragment Match
 	key      string
 	notNil   bool
+	err error
 }
 
 func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
@@ -17,6 +18,10 @@ func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
 
 func ExistentialSubqueryExists(fragment Match) ExistentialSubquery {
 	return ExistentialSubqueryCreate(fragment)
+}
+
+func (e ExistentialSubquery) getError() error {
+	return e.err
 }
 
 func (e ExistentialSubquery) accept(visitor *CypherRenderer) {

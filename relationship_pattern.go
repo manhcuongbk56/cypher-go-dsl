@@ -18,6 +18,7 @@ type RelationshipTypes struct {
 	values []string
 	key    string
 	notNil bool
+	err error
 }
 
 func RelationshipTypesCreate(types []string) RelationshipTypes {
@@ -25,6 +26,10 @@ func RelationshipTypesCreate(types []string) RelationshipTypes {
 		values: types,
 		notNil: true,
 	}
+}
+
+func (r RelationshipTypes) getError() error {
+	return r.err
 }
 
 func (r RelationshipTypes) isNotNil() bool {
@@ -65,6 +70,11 @@ type RelationshipLength struct {
 	unbounded bool
 	key       string
 	notNil    bool
+	err error
+}
+
+func (relationshipLength RelationshipLength) getError() error {
+	return relationshipLength.err
 }
 
 func (relationshipLength RelationshipLength) accept(visitor *CypherRenderer) {

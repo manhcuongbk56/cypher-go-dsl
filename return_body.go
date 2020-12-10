@@ -9,6 +9,7 @@ type ReturnBody struct {
 	limit       Limit
 	key         string
 	notNil      bool
+	err error
 }
 
 func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit Limit) ReturnBody {
@@ -19,6 +20,10 @@ func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit 
 		limit:       limit,
 		notNil:      true,
 	}
+}
+
+func (r ReturnBody) getError() error {
+	return r.err
 }
 
 func (r ReturnBody) isNotNil() bool {

@@ -2,9 +2,36 @@ package cypher_go_dsl
 
 type CompoundCondition struct {
 	operator      Operator
-	conditions    []Expression
+	conditions    []Condition
 	conditionType ExpressionType
+	key string
 	notNil        bool
+	err error
+}
+
+
+func CompoundConditionCreate(left Expression, operator Operator, right Expression) CompoundCondition {
+	condition := CompoundCondition{operator: operator}
+	condition.injectKey()
+	return condition
+}
+
+func CompoundConditionCreate1(operator Operator) CompoundCondition {
+	condition := CompoundCondition{
+		operator:   operator,
+		conditions: make([]Condition, 0),
+	}
+	condition.injectKey()
+	return condition
+}
+
+
+func (c CompoundCondition) getError() error {
+	return c.err
+}
+
+func (c CompoundCondition) getConditionType() string {
+	return "CompoundCondition"
 }
 
 func (c CompoundCondition) isNotNil() bool {
@@ -12,7 +39,28 @@ func (c CompoundCondition) isNotNil() bool {
 }
 
 func (c CompoundCondition) accept(visitor *CypherRenderer) {
-	panic("implement me")
+	if len(c.conditions) == 0 {
+		return
+	}
+	hasManyConditions := len(c.conditions) > 1
+	if hasManyConditions {
+		visitor.enter(c)
+	}
+	acceptVisitorWithOperatorForChildCondition(visitor, Operator{}, c.conditions[0])
+
+	if hasManyConditions {
+		for _, condition := range c.conditions[1:] {
+			var actualOperator Operator
+			compound, isCompount := condition.(CompoundCondition)
+			if isCompount {
+				actualOperator = compound.operator
+			}else {
+				actualOperator = c.operator
+			}
+			acceptVisitorWithOperatorForChildCondition(visitor, actualOperator, condition)
+		}
+		visitor.leave(c)
+	}
 }
 
 func (c CompoundCondition) enter(renderer *CypherRenderer) {
@@ -24,39 +72,34 @@ func (c CompoundCondition) leave(renderer *CypherRenderer) {
 }
 
 func (c CompoundCondition) getKey() string {
-	panic("implement me")
+	return c.key
 }
 
 func (c CompoundCondition) GetExpressionType() ExpressionType {
 	return c.conditionType
 }
 
+func (c *CompoundCondition) injectKey() {
+	c.key = getAddress(c)
+}
+
 var EMPTY_CONDITION = CompoundCondition{
-	conditions:    make([]Expression, 0),
+	conditions:    make([]Condition, 0),
 	conditionType: EMPTY_CONDITION_EXPRESSION,
 }
 
 var VALID_OPERATORS = []Operator{AND, OR, XOR}
 
-func CompoundConditionCreate(left Expression, operator Operator, right Expression) CompoundCondition {
-	return CompoundCondition{operator: operator}
-}
 
-func CompoundConditionCreateWithOperator(operator Operator) CompoundCondition {
-	return CompoundCondition{
-		operator:   operator,
-		conditions: make([]Expression, 0),
-	}
-}
 
-func (c *CompoundCondition) add(chainingOperator Operator, expression Expression) CompoundCondition {
+func (c *CompoundCondition) add(chainingOperator Operator, condition Condition) CompoundCondition {
 	if c.GetExpressionType() == EMPTY_CONDITION_EXPRESSION {
 		newCompound := CompoundCondition{
 			operator: chainingOperator,
 		}
-		return newCompound.add(chainingOperator, expression)
+		return newCompound.add(chainingOperator, condition)
 	}
-	if compoundCondition, isCompound := expression.(CompoundCondition); isCompound {
+	if compoundCondition, isCompound := condition.(CompoundCondition); isCompound {
 		if !compoundCondition.hasCondition() {
 			return *c
 		}
@@ -67,7 +110,7 @@ func (c *CompoundCondition) add(chainingOperator Operator, expression Expression
 				c.conditions = append(c.conditions, compoundCondition)
 			}
 		} else {
-			inner := CompoundConditionCreateWithOperator(chainingOperator)
+			inner := CompoundConditionCreate1(chainingOperator)
 			inner.conditions = append(inner.conditions, compoundCondition)
 			c.conditions = append(c.conditions, inner)
 		}
@@ -75,10 +118,10 @@ func (c *CompoundCondition) add(chainingOperator Operator, expression Expression
 	}
 
 	if c.operator == chainingOperator {
-		c.conditions = append(c.conditions, expression)
+		c.conditions = append(c.conditions, condition)
 		return *c
 	}
-	return CompoundConditionCreate(c, chainingOperator, expression)
+	return CompoundConditionCreate(c, chainingOperator, condition)
 }
 
 func (c CompoundCondition) hasCondition() bool {
@@ -93,4 +136,9 @@ func (c CompoundCondition) canBeFlattenedWith(operator Operator) bool {
 		}
 	}
 	return true
+}
+
+func acceptVisitorWithOperatorForChildCondition(visitor *CypherRenderer, operator Operator, condition Condition) {
+	VisitIfNotNull(operator, visitor)
+	condition.accept(visitor)
 }

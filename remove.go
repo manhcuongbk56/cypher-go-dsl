@@ -6,6 +6,7 @@ type Remove struct {
 	setItems ExpressionList
 	key      string
 	notNil   bool
+	err error
 }
 
 func RemoveCreate(setItems ExpressionList) Remove {
@@ -13,6 +14,10 @@ func RemoveCreate(setItems ExpressionList) Remove {
 		setItems: setItems,
 		notNil:   true,
 	}
+}
+
+func (r Remove) getError() error {
+	return r.err
 }
 
 func (r Remove) accept(visitor *CypherRenderer) {

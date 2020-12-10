@@ -6,6 +6,11 @@ type Skip struct {
 	skipAmount NumberLiteral
 	key        string
 	notNil     bool
+	err error
+}
+
+func (s Skip) getError() error {
+	return s.err
 }
 
 func (s Skip) isNotNil() bool {

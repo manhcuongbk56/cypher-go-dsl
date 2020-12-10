@@ -7,6 +7,11 @@ type SortItem struct {
 	direction  SortDirection
 	key        string
 	notNil     bool
+	err error
+}
+
+func (item SortItem) getError() error {
+	return item.err
 }
 
 func (item SortItem) isNotNil() bool {
@@ -17,10 +22,18 @@ func (item SortItem) getKey() string {
 	return item.key
 }
 
+
+//SORT DIRECTION
+
 type SortDirection struct {
 	value  SortDirectionRaw
 	key    string
 	notNil bool
+	err error
+}
+
+func (s SortDirection) getError() error {
+	return s.err
 }
 
 func (s SortDirection) isNotNil() bool {

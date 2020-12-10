@@ -7,6 +7,7 @@ type Return struct {
 	body     ReturnBody
 	key      string
 	notNil   bool
+	err error
 }
 
 func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
@@ -15,6 +16,10 @@ func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
 		body:     body,
 		notNil:   true,
 	}
+}
+
+func (r Return) getError() error {
+	return r.err
 }
 
 func (r Return) isNotNil() bool {

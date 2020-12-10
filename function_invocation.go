@@ -10,6 +10,11 @@ type FunctionInvocation struct {
 	arguments    FunctionArgumentList
 	key          string
 	notNil       bool
+	err error
+}
+
+func (f FunctionInvocation) getError() error {
+	return f.err
 }
 
 func (f FunctionInvocation) isNotNil() bool {

@@ -4,6 +4,11 @@ type RelationshipChain struct {
 	relationships []Relationship
 	key           string
 	notNil        bool
+	err error
+}
+
+func (r RelationshipChain) getError() error {
+	return r.err
 }
 
 func (r RelationshipChain) isNotNil() bool {

@@ -5,7 +5,6 @@ type OrderBuilder struct {
 	lastSortItem SortItem
 	skip         Skip
 	limit        Limit
-	key          string
 	notNil       bool
 }
 

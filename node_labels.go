@@ -6,6 +6,7 @@ type NodeLabels struct {
 	values []NodeLabel
 	notNil bool
 	key    string
+	err error
 }
 
 func NodeLabelsCreate(values []NodeLabel) NodeLabels {
@@ -13,6 +14,10 @@ func NodeLabelsCreate(values []NodeLabel) NodeLabels {
 		values: values,
 		notNil: true,
 	}
+}
+
+func (n NodeLabels) getError() error {
+	return n.err
 }
 
 func (n NodeLabels) accept(visitor *CypherRenderer) {

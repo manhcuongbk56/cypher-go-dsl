@@ -8,6 +8,11 @@ type Match struct {
 	optionalWhere Where
 	key           string
 	notNil        bool
+	err error
+}
+
+func (match Match) getError() error {
+	return match.err
 }
 
 func (match Match) isNotNil() bool {

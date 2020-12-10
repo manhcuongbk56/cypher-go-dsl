@@ -8,6 +8,11 @@ type BooleanLiteral struct {
 	content bool
 	key     string
 	notNil  bool
+	err error
+}
+
+func (b BooleanLiteral) getError() error {
+	return b.err
 }
 
 func (b BooleanLiteral) isNotNil() bool {

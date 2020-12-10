@@ -16,6 +16,7 @@ type ProcedureCall struct {
 	optionalWhere Where
 	key           string
 	notNil        bool
+	err error
 }
 
 func ProcedureCallCreate(name ProcedureName, arguments Arguments, yieldItems YieldItems, optionalWhere Where) ProcedureCall {
@@ -30,6 +31,10 @@ func ProcedureCallCreate(name ProcedureName, arguments Arguments, yieldItems Yie
 
 func (p ProcedureCall) doesReturnElement() bool {
 	return p.yieldItems.isNotNil()
+}
+
+func (p ProcedureCall) getError() error {
+	return p.err
 }
 
 func (p ProcedureCall) accept(visitor *CypherRenderer) {

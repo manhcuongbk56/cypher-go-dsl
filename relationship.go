@@ -8,6 +8,11 @@ type Relationship struct {
 	details *RelationshipDetails
 	key     string
 	notNil  bool
+	err error
+}
+
+func (r Relationship) getError() error {
+	return r.err
 }
 
 func (r Relationship) isNotNil() bool {

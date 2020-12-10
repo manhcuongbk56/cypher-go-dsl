@@ -7,6 +7,11 @@ type Property struct {
 	name      PropertyLookup
 	key       string
 	notNil    bool
+	err error
+}
+
+func (p Property) getError() error {
+	return p.err
 }
 
 func (p Property) isNotNil() bool {

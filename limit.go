@@ -6,6 +6,11 @@ type Limit struct {
 	limitAmount NumberLiteral
 	key         string
 	notNil      bool
+	err error
+}
+
+func (l Limit) getError() error {
+	return l.err
 }
 
 func (l Limit) isNotNil() bool {

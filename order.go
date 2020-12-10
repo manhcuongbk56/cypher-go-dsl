@@ -6,6 +6,11 @@ type Order struct {
 	sortItems []SortItem
 	key       string
 	notNil    bool
+	err error
+}
+
+func (o Order) getError() error {
+	return o.err
 }
 
 func (o Order) isNotNil() bool {

@@ -6,6 +6,7 @@ type Properties struct {
 	properties MapExpression
 	key        string
 	notNil     bool
+	err error
 }
 
 func (p Properties) isNotNil() bool {
@@ -14,6 +15,10 @@ func (p Properties) isNotNil() bool {
 
 func (p Properties) getKey() string {
 	return p.key
+}
+
+func (p Properties) getError() error {
+	return p.err
 }
 
 func (p Properties) accept(visitor *CypherRenderer) {

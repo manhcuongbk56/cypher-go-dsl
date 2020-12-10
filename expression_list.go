@@ -6,6 +6,7 @@ type ExpressionList struct {
 	expressions []Expression
 	key         string
 	notNil      bool
+	err error
 }
 
 func ExpressionListCreate(expression []Expression) ExpressionList {
@@ -17,6 +18,10 @@ func ExpressionListCreate(expression []Expression) ExpressionList {
 
 func (e ExpressionList) GetExpressionType() ExpressionType {
 	panic("implement me")
+}
+
+func (e ExpressionList) getError() error {
+	return e.err
 }
 
 func (e ExpressionList) isNotNil() bool {

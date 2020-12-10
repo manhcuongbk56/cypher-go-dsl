@@ -6,6 +6,7 @@ type Set struct {
 	setItems ExpressionList
 	key      string
 	notNil   bool
+	err error
 }
 
 func (s Set) isUpdatingClause() bool {
@@ -17,6 +18,10 @@ func SetCreate(setItems ExpressionList) Set {
 		setItems: setItems,
 		notNil:   true,
 	}
+}
+
+func (s Set) getError() error {
+	return s.err
 }
 
 func (s Set) accept(visitor *CypherRenderer) {

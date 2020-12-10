@@ -8,6 +8,7 @@ type Operation struct {
 	right    Visitable
 	key      string
 	notNil   bool
+	err error
 }
 
 func OperationCreate(left Expression, operator Operator, right Expression) Operation {
@@ -36,6 +37,10 @@ func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operati
 		operator: operator,
 		right:    NodeLabelsCreate(labels),
 	}
+}
+
+func (o Operation) getError() error {
+	return o.err
 }
 
 func (o Operation) accept(visitor *CypherRenderer) {

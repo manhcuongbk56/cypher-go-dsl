@@ -11,6 +11,7 @@ type UnionQuery struct {
 	additionalQueries []UnionPart
 	key               string
 	notNil            bool
+	err error
 }
 
 func UnionQueryCreate(all bool, firstQuery SingleQuery, additionalQueries []UnionPart) UnionQuery {
@@ -41,6 +42,10 @@ func (q UnionQuery) addAdditionalQueries(newAdditionalQueries []SingleQuery) (Un
 	}
 	queries = append(queries, newAdditionalQueries...)
 	return UnionQueryCreate1(q.all, queries)
+}
+
+func (q UnionQuery) getError() error {
+	return q.err
 }
 
 func (q UnionQuery) accept(visitor *CypherRenderer) {

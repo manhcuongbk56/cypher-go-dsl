@@ -7,6 +7,7 @@ type MultiPartElement struct {
 	with             With
 	key              string
 	notNil           bool
+	err error
 }
 
 func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
@@ -22,6 +23,10 @@ func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartEl
 		with:             with,
 		notNil:           true,
 	}
+}
+
+func (m MultiPartElement) getError() error {
+	return m.err
 }
 
 func (m MultiPartElement) accept(visitor *CypherRenderer) {

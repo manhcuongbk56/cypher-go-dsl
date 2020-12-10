@@ -10,6 +10,7 @@ type Node struct {
 	properties   Properties
 	key          string
 	notNil       bool
+	err error
 }
 
 func NodeCreate() Node {
@@ -92,6 +93,10 @@ func (node Node) hasSymbolic() bool {
 	return node.symbolicName.isNotNil()
 }
 
+func (node Node) getError() error {
+	return node.err
+}
+
 func (node Node) accept(visitor *CypherRenderer) {
 	(*visitor).enter(node)
 	VisitIfNotNull(node.symbolicName, visitor)
@@ -160,6 +165,7 @@ type NodeLabel struct {
 	value  string
 	key    string
 	notNil bool
+	err error
 }
 
 func NodeLabelCreate(value string) NodeLabel {
@@ -167,6 +173,10 @@ func NodeLabelCreate(value string) NodeLabel {
 		value:  value,
 		notNil: true,
 	}
+}
+
+func (n NodeLabel) getError() error {
+	return n.err
 }
 
 func (n NodeLabel) isNotNil() bool {

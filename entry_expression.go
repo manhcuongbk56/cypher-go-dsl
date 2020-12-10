@@ -7,6 +7,11 @@ type EntryExpression struct {
 	Value  Expression
 	key    string
 	notNil bool
+	err error
+}
+
+func (e EntryExpression) getError() error {
+	return e.err
 }
 
 func (e EntryExpression) isNotNil() bool {

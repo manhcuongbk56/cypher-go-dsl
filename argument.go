@@ -6,6 +6,11 @@ type Arguments struct {
 	expressions []Expression
 	key         string
 	notNil      bool
+	err error
+}
+
+func (a Arguments) getError() error {
+	return a.err
 }
 
 func ArgumentsCreate(expression []Expression) Arguments {

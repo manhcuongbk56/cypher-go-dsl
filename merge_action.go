@@ -7,6 +7,7 @@ type MergeAction struct {
 	set       Set
 	key       string
 	notNil    bool
+	err error
 }
 
 func MergeActionCreate(mergeType MERGE_TYPE, set Set) MergeAction {
@@ -15,6 +16,10 @@ func MergeActionCreate(mergeType MERGE_TYPE, set Set) MergeAction {
 		set:       set,
 		notNil:    true,
 	}
+}
+
+func (m MergeAction) getError() error {
+	return m.err
 }
 
 func (m MergeAction) accept(visitor *CypherRenderer) {

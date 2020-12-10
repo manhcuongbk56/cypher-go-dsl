@@ -7,6 +7,11 @@ type Operator struct {
 	operatorType   OperatorType
 	key            string
 	notNil         bool
+	err error
+}
+
+func (o Operator) getError() error {
+	return o.err
 }
 
 func (o Operator) isNotNil() bool {

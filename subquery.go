@@ -9,6 +9,7 @@ type Subquery struct {
 	statement Statement
 	key       string
 	notNil    bool
+	err error
 }
 
 func SubqueryCreate(statement Statement) Subquery {
@@ -33,6 +34,10 @@ func SubqueryCall(statement Statement) (Subquery, error) {
 		return Subquery{}, errors.New("only a statement that returns elements, either via return or yield, can be used in a subquery")
 	}
 	return SubqueryCreate(statement), nil
+}
+
+func (s Subquery) getError() error {
+	return s.err
 }
 
 func (s Subquery) accept(visitor *CypherRenderer) {

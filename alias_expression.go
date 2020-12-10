@@ -7,6 +7,11 @@ type AliasedExpression struct {
 	alias    string
 	key      string
 	notNil   bool
+	err      error
+}
+
+func (aliased AliasedExpression) getError() error {
+	return aliased.err
 }
 
 func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpression {

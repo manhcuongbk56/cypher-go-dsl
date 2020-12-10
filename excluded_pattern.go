@@ -4,6 +4,7 @@ type ExcludedPattern struct {
 	patternElement PatternElement
 	key            string
 	notNil         bool
+	err error
 }
 
 func ExcludedPatterCreate(patternElement PatternElement) ExcludedPattern {
@@ -11,6 +12,10 @@ func ExcludedPatterCreate(patternElement PatternElement) ExcludedPattern {
 		patternElement: patternElement,
 		notNil:         true,
 	}
+}
+
+func (e ExcludedPattern) getError() error {
+	return e.err
 }
 
 func (e ExcludedPattern) accept(visitor *CypherRenderer) {

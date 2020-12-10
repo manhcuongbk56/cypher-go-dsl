@@ -10,6 +10,11 @@ type Comparison struct {
 	right    Expression
 	key      string
 	notNil   bool
+	err error
+}
+
+func (c Comparison) getError() error {
+	return c.err
 }
 
 func (c Comparison) isNotNil() bool {

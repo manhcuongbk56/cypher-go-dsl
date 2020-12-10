@@ -6,6 +6,7 @@ type Where struct {
 	key       string
 	condition Condition
 	notNil    bool
+	err error
 }
 
 func WhereCreate(condition Condition) Where {
@@ -13,6 +14,10 @@ func WhereCreate(condition Condition) Where {
 		condition: condition,
 		notNil:    true,
 	}
+}
+
+func (w Where) getError() error {
+	return w.err
 }
 
 func (w Where) isNotNil() bool {

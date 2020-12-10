@@ -6,6 +6,7 @@ type Create struct {
 	pattern Pattern
 	key     string
 	notNil  bool
+	err error
 }
 
 func CreateCreate(pattern Pattern) Create {
@@ -13,6 +14,10 @@ func CreateCreate(pattern Pattern) Create {
 		pattern: pattern,
 		notNil:  true,
 	}
+}
+
+func (c Create) getError() error {
+	return c.err
 }
 
 func (c Create) accept(visitor *CypherRenderer) {

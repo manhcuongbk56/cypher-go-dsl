@@ -7,6 +7,7 @@ type Unwind struct {
 	variable           string
 	key                string
 	notNil             bool
+	err error
 }
 
 func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
@@ -21,6 +22,10 @@ func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
 		variable:           variable,
 		notNil:             true,
 	}
+}
+
+func (u Unwind) getError() error {
+	return u.err
 }
 
 func (u Unwind) accept(visitor *CypherRenderer) {

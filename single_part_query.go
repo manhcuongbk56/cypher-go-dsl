@@ -10,6 +10,11 @@ type SinglePartQuery struct {
 	aReturn          Return
 	key              string
 	notNil           bool
+	err error
+}
+
+func (s SinglePartQuery) getError() error {
+	return s.err
 }
 
 func (s SinglePartQuery) isNotNil() bool {

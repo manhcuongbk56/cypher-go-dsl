@@ -8,6 +8,7 @@ type With struct {
 	where    Where
 	key      string
 	notNil   bool
+	err error
 }
 
 func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
@@ -16,6 +17,10 @@ func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Ski
 		body:     ReturnBodyCreate(returnItems, order, skip, limit),
 		notNil:   true,
 	}
+}
+
+func (with With) getError() error {
+	return with.err
 }
 
 func (with With) accept(visitor *CypherRenderer) {

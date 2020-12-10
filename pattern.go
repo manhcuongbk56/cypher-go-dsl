@@ -6,6 +6,7 @@ type Pattern struct {
 	patternElements []PatternElement
 	key             string
 	notNil          bool
+	err error
 }
 
 func PatternCreate(patternElements []PatternElement) Pattern {
@@ -13,6 +14,10 @@ func PatternCreate(patternElements []PatternElement) Pattern {
 		patternElements: patternElements,
 		notNil:          true,
 	}
+}
+
+func (p Pattern) getError() error {
+	return p.err
 }
 
 func (p Pattern) isNotNil() bool {

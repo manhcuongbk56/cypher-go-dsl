@@ -4,6 +4,11 @@ type DistinctExpression struct {
 	delegate Expression
 	key      string
 	notNil   bool
+	err error
+}
+
+func (d DistinctExpression) getError() error {
+	return d.err
 }
 
 func (d DistinctExpression) isNotNil() bool {

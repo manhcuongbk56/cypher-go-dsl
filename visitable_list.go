@@ -6,6 +6,11 @@ type FunctionArgumentList struct {
 	expressions []Visitable
 	key         string
 	notNil      bool
+	err error
+}
+
+func (v FunctionArgumentList) getError() error {
+	return v.err
 }
 
 func (v FunctionArgumentList) isNotNil() bool {

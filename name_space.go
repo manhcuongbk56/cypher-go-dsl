@@ -9,6 +9,7 @@ type Namespace struct {
 	content []string
 	key     string
 	notNil  bool
+	err error
 }
 
 func NameSpaceCreate(content []string) Namespace {
@@ -16,6 +17,10 @@ func NameSpaceCreate(content []string) Namespace {
 		content: content,
 		notNil:  true,
 	}
+}
+
+func (n Namespace) getError() error {
+	return n.err
 }
 
 func (n Namespace) accept(visitor *CypherRenderer) {

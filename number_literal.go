@@ -9,6 +9,11 @@ type NumberLiteral struct {
 	content int
 	key     string
 	notNil  bool
+	err error
+}
+
+func (n NumberLiteral) getError() error {
+	return n.err
 }
 
 func (n NumberLiteral) isNotNil() bool {

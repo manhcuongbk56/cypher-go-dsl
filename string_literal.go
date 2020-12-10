@@ -8,6 +8,7 @@ type StringLiteral struct {
 	content string
 	key     string
 	notNil  bool
+	err error
 }
 
 func StringLiteralCreate(content string) StringLiteral {
@@ -15,6 +16,10 @@ func StringLiteralCreate(content string) StringLiteral {
 		content: content,
 		notNil:  true,
 	}
+}
+
+func (s StringLiteral) getError() error {
+	return s.err
 }
 
 func (s StringLiteral) isNotNil() bool {

@@ -10,6 +10,7 @@ type ProcedureName struct {
 	value             string
 	key               string
 	notNil            bool
+	err error
 }
 
 func ProcedureNameCreate(namespaceAndProcedure ...string) ProcedureName {
@@ -45,6 +46,10 @@ func (p ProcedureName) getQualifiedName() string {
 		namespace = strings.Join(p.optionalNamespace.content[:], ".")
 	}
 	return namespace + "." + p.value
+}
+
+func (p ProcedureName) getError() error {
+	return p.err
 }
 
 func (p ProcedureName) accept(visitor *CypherRenderer) {

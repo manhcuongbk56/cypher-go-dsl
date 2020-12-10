@@ -7,6 +7,7 @@ type UnionPart struct {
 	query  SingleQuery
 	key    string
 	notNil bool
+	err error
 }
 
 func UnionPartCreate(all bool, query SingleQuery) UnionPart {
@@ -19,6 +20,10 @@ func UnionPartCreate(all bool, query SingleQuery) UnionPart {
 
 func (u UnionPart) isAll() bool {
 	return u.all
+}
+
+func (u UnionPart) getError() error {
+	return u.err
 }
 
 func (u UnionPart) accept(visitor *CypherRenderer) {

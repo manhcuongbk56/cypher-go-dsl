@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "fmt"
+
 func ExpressionsToVisitables(expressions []Expression) []Visitable {
 	visitables := make([]Visitable, len(expressions))
 	for i := range expressions {
@@ -14,4 +16,9 @@ func PatternElementsToVisitables(patterns []PatternElement) []Visitable {
 		visitables[i] = patterns[i]
 	}
 	return visitables
+}
+
+
+func getAddress (a interface{}) string {
+	return fmt.Sprintf("%p", a)
 }

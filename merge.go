@@ -7,6 +7,7 @@ type Merge struct {
 	onCreateOrMatchEvents []Visitable
 	key                   string
 	notNil                bool
+	err error
 }
 
 var BLANK = StringLiteralCreate(" ")
@@ -34,6 +35,10 @@ func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
 
 func (m Merge) hasEvent() bool {
 	return len(m.onCreateOrMatchEvents) > 0
+}
+
+func (m Merge) getError() error {
+	return m.err
 }
 
 func (m Merge) accept(visitor *CypherRenderer) {

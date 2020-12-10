@@ -7,6 +7,7 @@ type Delete struct {
 	detach      bool
 	key         string
 	notNil      bool
+	err error
 }
 
 func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
@@ -19,6 +20,10 @@ func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
 
 func (d Delete) isDetach() bool {
 	return d.detach
+}
+
+func (d Delete) getError() error {
+	return d.err
 }
 
 func (d Delete) accept(visitor *CypherRenderer) {

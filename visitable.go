@@ -24,12 +24,18 @@ func VisitIfNotNullA(dest Visitable, visitor *CypherRenderer) {
 	}
 }
 
+type CanHasError interface {
+	getError() error
+}
+
 type Visitable interface {
+	CanHasError
 	accept(visitor *CypherRenderer)
 	enter(renderer *CypherRenderer)
 	leave(renderer *CypherRenderer)
 	getKey() string
 	isNotNil() bool
+
 }
 
 type SubVisitable interface {
