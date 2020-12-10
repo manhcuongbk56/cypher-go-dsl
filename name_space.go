@@ -9,14 +9,16 @@ type Namespace struct {
 	content []string
 	key     string
 	notNil  bool
-	err error
+	err     error
 }
 
 func NameSpaceCreate(content []string) Namespace {
-	return Namespace{
+	n := Namespace{
 		content: content,
 		notNil:  true,
 	}
+	n.key = getAddress(&n)
+	return n
 }
 
 func (n Namespace) getError() error {
@@ -24,7 +26,6 @@ func (n Namespace) getError() error {
 }
 
 func (n Namespace) accept(visitor *CypherRenderer) {
-	n.key = fmt.Sprint(&n)
 	visitor.enter(n)
 	visitor.leave(n)
 }

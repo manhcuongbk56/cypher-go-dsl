@@ -9,7 +9,16 @@ type MapExpression struct {
 	expressions []Expression
 	key         string
 	notNil      bool
-	err error
+	err         error
+}
+
+func MapExpressionCreate(newContents []Expression) MapExpression {
+	m := MapExpression{
+		expressions: newContents,
+		notNil:      true,
+	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (m MapExpression) getError() error {
@@ -47,16 +56,12 @@ func NewMapExpression(objects ...interface{}) (MapExpression, error) {
 			return MapExpression{}, err
 		}
 		knownKeys[key] = 1
-		newContents[i/2] = EntryExpression{
-			Value: value,
-			Key:   key,
-		}
+		newContents[i/2] = EntryExpressionCreate(key, value)
 	}
-	return MapExpression{expressions: newContents}, nil
+	return MapExpressionCreate(newContents), nil
 }
 
 func (m MapExpression) accept(visitor *CypherRenderer) {
-	m.key = fmt.Sprint(&m)
 	(*visitor).enter(m)
 	for _, child := range m.expressions {
 		m.PrepareVisit(child).accept(visitor)

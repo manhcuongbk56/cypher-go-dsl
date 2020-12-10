@@ -6,14 +6,16 @@ type ExpressionList struct {
 	expressions []Expression
 	key         string
 	notNil      bool
-	err error
+	err         error
 }
 
 func ExpressionListCreate(expression []Expression) ExpressionList {
-	return ExpressionList{
+	e := ExpressionList{
 		expressions: expression,
 		notNil:      true,
 	}
+	e.key = getAddress(&e)
+	return e
 }
 
 func (e ExpressionList) GetExpressionType() ExpressionType {
@@ -41,7 +43,6 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 }
 
 func (e ExpressionList) accept(visitor *CypherRenderer) {
-	e.key = fmt.Sprint(&e)
 	(*visitor).enter(e)
 	for _, expression := range e.expressions {
 		e.PrepareVisit(expression).accept(visitor)

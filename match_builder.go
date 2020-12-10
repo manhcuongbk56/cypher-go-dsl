@@ -23,10 +23,5 @@ func (builder MatchBuilder) buildMatch() Match {
 		builtCondition := conditionBuilder.buildCondition()
 		optionalWhere = WhereCreate(builtCondition)
 	}
-	return Match{
-		optional:      builder.optional,
-		pattern:       pattern,
-		optionalWhere: optionalWhere,
-		notNil:        true,
-	}
+	return MatchCreate(builder.optional, pattern, optionalWhere)
 }

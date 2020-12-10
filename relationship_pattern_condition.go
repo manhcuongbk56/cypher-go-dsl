@@ -31,7 +31,6 @@ func (r RelationshipPatternCondition) isNotNil() bool {
 }
 
 func (r RelationshipPatternCondition) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	visitor.enter(r)
 	r.pathPattern.accept(visitor)
 	visitor.leave(r)

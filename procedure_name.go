@@ -10,7 +10,7 @@ type ProcedureName struct {
 	value             string
 	key               string
 	notNil            bool
-	err error
+	err               error
 }
 
 func ProcedureNameCreate(namespaceAndProcedure ...string) ProcedureName {
@@ -26,18 +26,22 @@ func ProcedureNameCreate(namespaceAndProcedure ...string) ProcedureName {
 }
 
 func ProcedureNameCreate1(value string) ProcedureName {
-	return ProcedureName{
+	p := ProcedureName{
 		value:  value,
 		notNil: true,
 	}
+	p.key = getAddress(&p)
+	return p
 }
 
 func ProcedureNameCreate2(namespace Namespace, value string) ProcedureName {
-	return ProcedureName{
+	p := ProcedureName{
 		value:             value,
 		optionalNamespace: namespace,
 		notNil:            true,
 	}
+	p.key = getAddress(&p)
+	return p
 }
 
 func (p ProcedureName) getQualifiedName() string {
@@ -53,7 +57,6 @@ func (p ProcedureName) getError() error {
 }
 
 func (p ProcedureName) accept(visitor *CypherRenderer) {
-	p.key = fmt.Sprint(&p)
 	visitor.enter(p)
 	VisitIfNotNull(p.optionalNamespace, visitor)
 	visitor.leave(p)

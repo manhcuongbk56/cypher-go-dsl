@@ -51,7 +51,6 @@ func (q UnionQuery) getError() error {
 }
 
 func (q UnionQuery) accept(visitor *CypherRenderer) {
-	q.key = fmt.Sprint(&q)
 	visitor.enter(q)
 	q.firstQuery.accept(visitor)
 	for _, additionalQuery := range q.additionalQueries {

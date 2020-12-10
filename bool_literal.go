@@ -8,7 +8,16 @@ type BooleanLiteral struct {
 	content bool
 	key     string
 	notNil  bool
-	err error
+	err     error
+}
+
+func BooleanLiteralCreate(content bool) BooleanLiteral {
+	b := BooleanLiteral{
+		content: content,
+		notNil:  true,
+	}
+	b.key = getAddress(&b)
+	return b
 }
 
 func (b BooleanLiteral) getError() error {
@@ -39,7 +48,6 @@ func (b BooleanLiteral) AsString() string {
 }
 
 func (b BooleanLiteral) accept(visitor *CypherRenderer) {
-	b.key = fmt.Sprint(&b)
 	(*visitor).enter(b)
 	(*visitor).leave(b)
 }

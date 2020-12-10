@@ -6,14 +6,16 @@ type Pattern struct {
 	patternElements []PatternElement
 	key             string
 	notNil          bool
-	err error
+	err             error
 }
 
 func PatternCreate(patternElements []PatternElement) Pattern {
-	return Pattern{
+	p := Pattern{
 		patternElements: patternElements,
 		notNil:          true,
 	}
+	p.key = getAddress(&p)
+	return p
 }
 
 func (p Pattern) getError() error {
@@ -33,7 +35,6 @@ func (p Pattern) PrepareVisit(visitable Visitable) Visitable {
 }
 
 func (p Pattern) accept(visitor *CypherRenderer) {
-	p.key = fmt.Sprint(&p)
 	(*visitor).enter(p)
 	for _, pattern := range p.patternElements {
 		p.PrepareVisit(pattern).accept(visitor)

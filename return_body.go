@@ -45,7 +45,6 @@ func (r ReturnBody) getKey() string {
 }
 
 func (r ReturnBody) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	r.returnItems.accept(visitor)
 	VisitIfNotNull(r.order, visitor)
 	VisitIfNotNull(r.skip, visitor)

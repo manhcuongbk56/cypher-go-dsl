@@ -7,15 +7,17 @@ type MergeAction struct {
 	set       Set
 	key       string
 	notNil    bool
-	err error
+	err       error
 }
 
 func MergeActionCreate(mergeType MERGE_TYPE, set Set) MergeAction {
-	return MergeAction{
+	m := MergeAction{
 		mergeType: mergeType,
 		set:       set,
 		notNil:    true,
 	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (m MergeAction) getError() error {
@@ -23,7 +25,6 @@ func (m MergeAction) getError() error {
 }
 
 func (m MergeAction) accept(visitor *CypherRenderer) {
-	m.key = fmt.Sprint(&m)
 	visitor.enter(m)
 	m.set.accept(visitor)
 	visitor.leave(m)

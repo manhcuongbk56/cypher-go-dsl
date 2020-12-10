@@ -76,7 +76,6 @@ func (item SortItem) Descending() SortItem {
 }
 
 func (item SortItem) accept(visitor *CypherRenderer) {
-	item.key = fmt.Sprint(&item)
 	(*visitor).enter(item)
 	NameOrExpression(item.expression).accept(visitor)
 	if item.direction.value == ASC || item.direction.value == DESC {

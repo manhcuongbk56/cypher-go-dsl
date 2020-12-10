@@ -7,7 +7,17 @@ type EntryExpression struct {
 	Value  Expression
 	key    string
 	notNil bool
-	err error
+	err    error
+}
+
+func EntryExpressionCreate(key string, value Expression) EntryExpression {
+	e := EntryExpression{
+		Value:  value,
+		Key:    key,
+		notNil: true,
+	}
+	e.key = getAddress(&e)
+	return e
 }
 
 func (e EntryExpression) getError() error {
@@ -27,7 +37,6 @@ func (e EntryExpression) GetExpressionType() ExpressionType {
 }
 
 func (e EntryExpression) accept(visitor *CypherRenderer) {
-	e.key = fmt.Sprint(&e)
 	(*visitor).enter(e)
 	e.Value.accept(visitor)
 	(*visitor).leave(e)

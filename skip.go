@@ -13,9 +13,7 @@ func SkipCreate(number int) Skip {
 	if number == 0 {
 		return Skip{}
 	}
-	literal := NumberLiteral{
-		content: number,
-	}
+	literal := NumberLiteralCreate(number)
 	skip := Skip{skipAmount: literal}
 	skip.key = getAddress(&skip)
 	return skip
@@ -34,7 +32,6 @@ func (s Skip) getKey() string {
 }
 
 func (s Skip) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	(*visitor).enter(s)
 	s.skipAmount.accept(visitor)
 	(*visitor).leave(s)

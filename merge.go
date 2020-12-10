@@ -7,17 +7,19 @@ type Merge struct {
 	onCreateOrMatchEvents []Visitable
 	key                   string
 	notNil                bool
-	err error
+	err                   error
 }
 
 var BLANK = StringLiteralCreate(" ")
 
 func MergeCreate(pattern Pattern) Merge {
-	return Merge{
+	m := Merge{
 		pattern:               pattern,
 		onCreateOrMatchEvents: make([]Visitable, 0),
 		notNil:                true,
 	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
@@ -26,11 +28,13 @@ func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
 	for _, mergeAction := range mergeActions {
 		onCreateOrMatchEvents = append(onCreateOrMatchEvents, mergeAction)
 	}
-	return Merge{
+	m := Merge{
 		pattern:               pattern,
 		onCreateOrMatchEvents: onCreateOrMatchEvents,
 		notNil:                true,
 	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (m Merge) hasEvent() bool {
@@ -42,7 +46,6 @@ func (m Merge) getError() error {
 }
 
 func (m Merge) accept(visitor *CypherRenderer) {
-	m.key = fmt.Sprint(&m)
 	visitor.enter(m)
 	m.pattern.accept(visitor)
 	for _, event := range m.onCreateOrMatchEvents {

@@ -6,14 +6,16 @@ type Create struct {
 	pattern Pattern
 	key     string
 	notNil  bool
-	err error
+	err     error
 }
 
 func CreateCreate(pattern Pattern) Create {
-	return Create{
+	c := Create{
 		pattern: pattern,
 		notNil:  true,
 	}
+	c.key = getAddress(&c)
+	return c
 }
 
 func (c Create) getError() error {
@@ -21,7 +23,6 @@ func (c Create) getError() error {
 }
 
 func (c Create) accept(visitor *CypherRenderer) {
-	c.key = fmt.Sprint(&c)
 	visitor.enter(c)
 	c.pattern.accept(visitor)
 	visitor.leave(c)

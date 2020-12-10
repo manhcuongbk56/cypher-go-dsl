@@ -7,7 +7,7 @@ type PropertyLookup struct {
 	propertyKeyName string
 	key             string
 	notNil          bool
-	err error
+	err             error
 }
 
 func (p PropertyLookup) getError() error {
@@ -19,7 +19,6 @@ func (p PropertyLookup) isNotNil() bool {
 }
 
 func (p PropertyLookup) accept(visitor *CypherRenderer) {
-	p.key = fmt.Sprint(&p)
 	visitor.enter(p)
 	visitor.leave(p)
 }

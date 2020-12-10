@@ -7,7 +7,16 @@ type Operator struct {
 	operatorType   OperatorType
 	key            string
 	notNil         bool
-	err error
+	err            error
+}
+
+func OperatorCreate(representation string, operatorType OperatorType) Operator {
+	o := Operator{
+		representation: representation,
+		operatorType:   operatorType,
+	}
+	o.key = getAddress(&o)
+	return o
 }
 
 func (o Operator) getError() error {
@@ -19,7 +28,6 @@ func (o Operator) isNotNil() bool {
 }
 
 func (o Operator) accept(visitor *CypherRenderer) {
-	o.key = fmt.Sprint(&o)
 	visitor.enter(o)
 	visitor.leave(o)
 }
@@ -82,38 +90,23 @@ var SET_LABEL = createLabelOperator("")
 var REMOVE_LABEL = createLabelOperator("")
 
 func createBinaryOperator(representation string) Operator {
-	return Operator{
-		representation: representation,
-		operatorType:   BINARY,
-	}
+	return OperatorCreate(representation, BINARY)
 }
 
 func createPropertyOperator(representation string) Operator {
-	return Operator{
-		representation: representation,
-		operatorType:   PROPERTY,
-	}
+	return OperatorCreate(representation, PROPERTY)
 }
 
 func createLabelOperator(representation string) Operator {
-	return Operator{
-		representation: representation,
-		operatorType:   LABEL,
-	}
+	return OperatorCreate(representation, LABEL)
 }
 
 func createPrefixOperator(representation string) Operator {
-	return Operator{
-		representation: representation,
-		operatorType:   PREFIX,
-	}
+	return OperatorCreate(representation, PREFIX)
 }
 
 func createPostfixOperator(representation string) Operator {
-	return Operator{
-		representation: representation,
-		operatorType:   POSTFIX,
-	}
+	return OperatorCreate(representation, POSTFIX)
 }
 
 type OperatorType string

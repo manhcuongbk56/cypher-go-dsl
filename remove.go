@@ -23,7 +23,6 @@ func (r Remove) getError() error {
 }
 
 func (r Remove) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	visitor.enter(r)
 	r.setItems.accept(visitor)
 	visitor.leave(r)

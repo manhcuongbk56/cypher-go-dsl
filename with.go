@@ -26,7 +26,6 @@ func (with With) getError() error {
 }
 
 func (with With) accept(visitor *CypherRenderer) {
-	with.key = fmt.Sprint(&with)
 	visitor.enter(with)
 	VisitIfNotNull(with.distinct, visitor)
 	with.body.accept(visitor)

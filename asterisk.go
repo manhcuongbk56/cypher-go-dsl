@@ -47,7 +47,6 @@ func (s Asterisk) AsString() string {
 }
 
 func (s Asterisk) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	visitor.enter(s)
 	visitor.leave(s)
 }

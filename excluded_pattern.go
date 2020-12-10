@@ -4,14 +4,16 @@ type ExcludedPattern struct {
 	patternElement PatternElement
 	key            string
 	notNil         bool
-	err error
+	err            error
 }
 
 func ExcludedPatterCreate(patternElement PatternElement) ExcludedPattern {
-	return ExcludedPattern{
+	e := ExcludedPattern{
 		patternElement: patternElement,
 		notNil:         true,
 	}
+	e.key = getAddress(&e)
+	return e
 }
 
 func (e ExcludedPattern) getError() error {

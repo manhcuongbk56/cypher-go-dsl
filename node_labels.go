@@ -6,14 +6,16 @@ type NodeLabels struct {
 	values []NodeLabel
 	notNil bool
 	key    string
-	err error
+	err    error
 }
 
 func NodeLabelsCreate(values []NodeLabel) NodeLabels {
-	return NodeLabels{
+	n := NodeLabels{
 		values: values,
 		notNil: true,
 	}
+	n.key = getAddress(&n)
+	return n
 }
 
 func (n NodeLabels) getError() error {
@@ -21,7 +23,6 @@ func (n NodeLabels) getError() error {
 }
 
 func (n NodeLabels) accept(visitor *CypherRenderer) {
-	n.key = fmt.Sprint(&n)
 	visitor.enter(n)
 	for _, value := range n.values {
 		value.accept(visitor)

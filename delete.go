@@ -7,15 +7,17 @@ type Delete struct {
 	detach      bool
 	key         string
 	notNil      bool
-	err error
+	err         error
 }
 
 func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
-	return Delete{
+	d := Delete{
 		deleteItems: deleteItems,
 		detach:      detach,
 		notNil:      true,
 	}
+	d.key = getAddress(&d)
+	return d
 }
 
 func (d Delete) isDetach() bool {
@@ -27,7 +29,6 @@ func (d Delete) getError() error {
 }
 
 func (d Delete) accept(visitor *CypherRenderer) {
-	d.key = fmt.Sprint(&d)
 	visitor.enter(d)
 	d.deleteItems.accept(visitor)
 	visitor.leave(d)

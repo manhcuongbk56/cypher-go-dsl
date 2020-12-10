@@ -10,14 +10,13 @@ type Node struct {
 	properties   Properties
 	key          string
 	notNil       bool
-	err error
+	err          error
 }
 
 func NodeCreate() Node {
 	node := Node{
 		notNil: true,
 	}
-	node.key = fmt.Sprint(&node)
 	return node
 }
 
@@ -68,7 +67,7 @@ func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
 }
 
 func NodeCreate4(newProperties MapExpression, node Node) Node {
-	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: Properties{properties: newProperties, notNil: true}}
+	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: PropertiesCreate(newProperties)}
 	node.injectKey()
 	return newNode
 }
@@ -125,11 +124,11 @@ func (node Node) leave(renderer *CypherRenderer) {
 }
 
 func (node Node) RelationshipTo(other Node, types ...string) Relationship {
-	return CreateRelationship(node, LTR(), other, types...)
+	return RelationshipCreate(node, LTR(), other, types...)
 }
 
 func (node Node) RelationshipFrom(other Node, types ...string) Relationship {
-	return CreateRelationship(node, RTL(), other, types...)
+	return RelationshipCreate(node, RTL(), other, types...)
 }
 
 func (node Node) RelationshipBetween(nodeDest Node, types ...string) Relationship {
@@ -165,14 +164,16 @@ type NodeLabel struct {
 	value  string
 	key    string
 	notNil bool
-	err error
+	err    error
 }
 
 func NodeLabelCreate(value string) NodeLabel {
-	return NodeLabel{
+	n := NodeLabel{
 		value:  value,
 		notNil: true,
 	}
+	n.key = getAddress(&n)
+	return n
 }
 
 func (n NodeLabel) getError() error {
@@ -188,7 +189,6 @@ func (n NodeLabel) getKey() string {
 }
 
 func (n NodeLabel) accept(visitor *CypherRenderer) {
-	n.key = fmt.Sprint(&n)
 	visitor.enter(n)
 	visitor.leave(n)
 }

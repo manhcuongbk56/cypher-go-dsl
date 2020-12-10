@@ -6,18 +6,20 @@ type Arguments struct {
 	expressions []Expression
 	key         string
 	notNil      bool
-	err error
+	err         error
+}
+
+func ArgumentsCreate(expression []Expression) Arguments {
+	a := Arguments{
+		expressions: expression,
+		notNil:      true,
+	}
+	a.key = getAddress(&a)
+	return a
 }
 
 func (a Arguments) getError() error {
 	return a.err
-}
-
-func ArgumentsCreate(expression []Expression) Arguments {
-	return Arguments{
-		expressions: expression,
-		notNil:      true,
-	}
 }
 
 func (a Arguments) isNotNil() bool {
@@ -37,7 +39,6 @@ func (a Arguments) PrepareVisit(child Visitable) Visitable {
 }
 
 func (a Arguments) accept(visitor *CypherRenderer) {
-	a.key = fmt.Sprint(&a)
 	(*visitor).enter(a)
 	for _, expression := range a.expressions {
 		a.PrepareVisit(expression).accept(visitor)

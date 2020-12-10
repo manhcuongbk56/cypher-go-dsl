@@ -6,7 +6,7 @@ type FunctionArgumentList struct {
 	expressions []Visitable
 	key         string
 	notNil      bool
-	err error
+	err         error
 }
 
 func (v FunctionArgumentList) getError() error {
@@ -30,7 +30,6 @@ func (v FunctionArgumentList) PrepareVisit(child Visitable) Visitable {
 }
 
 func (v FunctionArgumentList) accept(visitor *CypherRenderer) {
-	v.key = fmt.Sprint(&v)
 	(*visitor).enter(v)
 	for _, expression := range v.expressions {
 		v.PrepareVisit(expression).accept(visitor)

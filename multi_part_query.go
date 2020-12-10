@@ -7,14 +7,16 @@ type MultiPartQuery struct {
 	remainder SinglePartQuery
 	key       string
 	notNil    bool
-	err error
+	err       error
 }
 
 func MultiPartQueryCreate(parts []MultiPartElement, remainder SinglePartQuery) MultiPartQuery {
-	return MultiPartQuery{
+	m := MultiPartQuery{
 		parts:     parts,
 		remainder: remainder,
 	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (m MultiPartQuery) getError() error {
@@ -22,7 +24,6 @@ func (m MultiPartQuery) getError() error {
 }
 
 func (m MultiPartQuery) accept(visitor *CypherRenderer) {
-	m.key = fmt.Sprint(&m)
 	for _, part := range m.parts {
 		part.accept(visitor)
 	}

@@ -8,7 +8,18 @@ type Match struct {
 	optionalWhere Where
 	key           string
 	notNil        bool
-	err error
+	err           error
+}
+
+func MatchCreate(optional bool, pattern Pattern, optionalWhere Where) Match {
+	m := Match{
+		optional:      optional,
+		pattern:       pattern,
+		optionalWhere: optionalWhere,
+		notNil:        true,
+	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (match Match) getError() error {
@@ -24,7 +35,6 @@ func (match Match) isOptional() bool {
 }
 
 func (match Match) accept(visitor *CypherRenderer) {
-	match.key = fmt.Sprint(&match)
 	visitor.enter(match)
 	match.pattern.accept(visitor)
 	VisitIfNotNull(match.optionalWhere, visitor)

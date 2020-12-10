@@ -35,7 +35,6 @@ func (s SymbolicName) GetExpressionType() ExpressionType {
 }
 
 func (s SymbolicName) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	(*visitor).enter(s)
 	(*visitor).leave(s)
 }

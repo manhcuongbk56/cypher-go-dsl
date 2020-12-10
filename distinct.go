@@ -6,7 +6,7 @@ type Distinct struct {
 	IsDistinct bool
 	key        string
 	notNil     bool
-	err error
+	err        error
 }
 
 var DISTINCT_INSTANCE = Distinct{
@@ -27,7 +27,6 @@ func (d Distinct) getKey() string {
 }
 
 func (d Distinct) accept(visitor *CypherRenderer) {
-	d.key = fmt.Sprint(&d)
 	(*visitor).enter(d)
 	(*visitor).leave(d)
 }

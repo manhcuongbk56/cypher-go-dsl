@@ -6,7 +6,13 @@ type Order struct {
 	sortItems []SortItem
 	key       string
 	notNil    bool
-	err error
+	err       error
+}
+
+func OrderCreate(sortItems []SortItem) Order {
+	o := Order{sortItems: sortItems}
+	o.key = getAddress(&o)
+	return o
 }
 
 func (o Order) getError() error {
@@ -22,7 +28,6 @@ func (o Order) getKey() string {
 }
 
 func (o Order) accept(visitor *CypherRenderer) {
-	o.key = fmt.Sprint(&o)
 	(*visitor).enter(o)
 	for _, sortItem := range o.sortItems {
 		o.PrepareVisit(sortItem).accept(visitor)

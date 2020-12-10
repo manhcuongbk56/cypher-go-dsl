@@ -7,7 +7,7 @@ type MultiPartElement struct {
 	with             With
 	key              string
 	notNil           bool
-	err error
+	err              error
 }
 
 func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
@@ -18,11 +18,13 @@ func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartEl
 		clauses = make([]Visitable, 0)
 		clauses = append(clauses, precedingClauses...)
 	}
-	return MultiPartElement{
+	m := MultiPartElement{
 		precedingClauses: clauses,
 		with:             with,
 		notNil:           true,
 	}
+	m.key = getAddress(&m)
+	return m
 }
 
 func (m MultiPartElement) getError() error {
@@ -30,7 +32,6 @@ func (m MultiPartElement) getError() error {
 }
 
 func (m MultiPartElement) accept(visitor *CypherRenderer) {
-	m.key = fmt.Sprint(&m)
 	visitor.enter(m)
 	for _, clause := range m.precedingClauses {
 		clause.accept(visitor)

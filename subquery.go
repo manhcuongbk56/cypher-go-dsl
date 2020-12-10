@@ -43,7 +43,6 @@ func (s Subquery) getError() error {
 }
 
 func (s Subquery) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	visitor.enter(s)
 	s.statement.accept(visitor)
 	visitor.leave(s)

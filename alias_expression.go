@@ -2,7 +2,6 @@ package cypher_go_dsl
 
 import (
 	"errors"
-	"fmt"
 )
 
 type AliasedExpression struct {
@@ -13,22 +12,24 @@ type AliasedExpression struct {
 	err      error
 }
 
-func (aliased AliasedExpression) getError() error {
-	return aliased.err
-}
-
 func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpression {
-	return AliasedExpression{
+	a := AliasedExpression{
 		delegate: delegate,
 		alias:    alias,
 		notNil:   true,
 	}
+	a.key = getAddress(&a)
+	return a
 }
 
 func AliasedExpressionError(err error) AliasedExpression {
 	return AliasedExpression{
 		err: err,
 	}
+}
+
+func (aliased AliasedExpression) getError() error {
+	return aliased.err
 }
 
 func (aliased AliasedExpression) isNotNil() bool {
@@ -47,7 +48,6 @@ func (aliased AliasedExpression) As(newAlias string) AliasedExpression {
 }
 
 func (aliased AliasedExpression) accept(visitor *CypherRenderer) {
-	aliased.key = fmt.Sprint(&aliased)
 	(*visitor).enter(aliased)
 	NameOrExpression(aliased.delegate).accept(visitor)
 	(*visitor).leave(aliased)

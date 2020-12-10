@@ -43,7 +43,6 @@ func (r RelationshipTypes) getKey() string {
 }
 
 func (r RelationshipTypes) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	(*visitor).enter(r)
 	(*visitor).leave(r)
 }
@@ -89,7 +88,6 @@ func (relationshipLength RelationshipLength) getError() error {
 }
 
 func (relationshipLength RelationshipLength) accept(visitor *CypherRenderer) {
-	relationshipLength.key = fmt.Sprint(&relationshipLength)
 	visitor.enter(relationshipLength)
 	visitor.leave(relationshipLength)
 }
@@ -149,19 +147,4 @@ func RTL() Direction {
 
 func UNI() Direction {
 	return DirectionCreate("-", "-")
-}
-
-func CreateRelationship(left Node, direction Direction, right Node, types ...string) Relationship {
-	typeSlice := make([]string, 0)
-	typeSlice = append(typeSlice, types...)
-	relationshipTypes := RelationshipTypesCreate(typeSlice)
-	details := RelationshipDetailsCreate1(direction, relationshipTypes)
-	r := Relationship{
-		left:    &left,
-		right:   &right,
-		details: &details,
-		notNil:  true,
-	}
-	r.key = getAddress(&r)
-	return r
 }

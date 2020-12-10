@@ -4,7 +4,16 @@ type DistinctExpression struct {
 	delegate Expression
 	key      string
 	notNil   bool
-	err error
+	err      error
+}
+
+func DistinctExpressionCreate(delegate Expression) DistinctExpression {
+	d := DistinctExpression{
+		delegate: delegate,
+		notNil:   true,
+	}
+	d.key = getAddress(&d)
+	return d
 }
 
 func (d DistinctExpression) getError() error {

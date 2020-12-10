@@ -41,7 +41,7 @@ func (o OrderBuilder) Skip(number int) {
 }
 
 func (o OrderBuilder) Limit(number int) {
-	o.limit = CreateLimit(number)
+	o.limit = LimitCreate(number)
 }
 
 func (o OrderBuilder) BuildOrder() Order {

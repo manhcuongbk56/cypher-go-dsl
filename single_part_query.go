@@ -44,7 +44,6 @@ func (s SinglePartQuery) getKey() string {
 }
 
 func (s SinglePartQuery) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	for _, clause := range s.precedingClauses {
 		clause.accept(visitor)
 	}

@@ -31,7 +31,6 @@ func (w Where) getKey() string {
 }
 
 func (w Where) accept(visitor *CypherRenderer) {
-	w.key = fmt.Sprint(&w)
 	(*visitor).enter(w)
 	w.condition.accept(visitor)
 	(*visitor).leave(w)

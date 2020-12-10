@@ -27,7 +27,6 @@ func (s Set) getError() error {
 }
 
 func (s Set) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	visitor.enter(s)
 	s.setItems.accept(visitor)
 	visitor.leave(s)

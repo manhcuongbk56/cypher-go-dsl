@@ -14,14 +14,6 @@ type Comparison struct {
 	err      error
 }
 
-func (c Comparison) getError() error {
-	return c.err
-}
-
-func (c Comparison) isNotNil() bool {
-	return c.notNil
-}
-
 func ComparisonCreate(left Expression, operator Operator, right Expression) Comparison {
 	if !operator.isUnary() {
 		return Comparison{
@@ -69,8 +61,15 @@ func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 	return comparision
 }
 
+func (c Comparison) getError() error {
+	return c.err
+}
+
+func (c Comparison) isNotNil() bool {
+	return c.notNil
+}
+
 func (c Comparison) accept(visitor *CypherRenderer) {
-	c.key = fmt.Sprint(&c)
 	visitor.enter(c)
 	if c.left != nil {
 		NameOrExpression(c.left).accept(visitor)

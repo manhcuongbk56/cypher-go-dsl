@@ -29,7 +29,6 @@ func (u UnionPart) getError() error {
 }
 
 func (u UnionPart) accept(visitor *CypherRenderer) {
-	u.key = fmt.Sprint(&u)
 	visitor.enter(u)
 	u.query.accept(visitor)
 	visitor.leave(u)

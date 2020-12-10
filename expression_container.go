@@ -56,15 +56,11 @@ func (e *ExpressionContainer) Gte(rhs Expression) ConditionContainer {
 }
 
 func (e *ExpressionContainer) IsTrue() ConditionContainer {
-	return e.IsEqualTo(BooleanLiteral{
-		content: true,
-	})
+	return e.IsEqualTo(BooleanLiteralCreate(true))
 }
 
 func (e *ExpressionContainer) IsFalse() ConditionContainer {
-	return e.IsEqualTo(BooleanLiteral{
-		content: false,
-	})
+	return e.IsEqualTo(BooleanLiteralCreate(false))
 }
 
 func (e *ExpressionContainer) Matches(expression Expression) ConditionContainer {
@@ -146,9 +142,7 @@ func (e *ExpressionContainer) In(haystack Expression) ConditionContainer {
 
 func (e *ExpressionContainer) IsEmpty() ConditionContainer {
 	e.expression = size(e.expression)
-	return e.IsEqualTo(NumberLiteral{
-		content: 0,
-	})
+	return e.IsEqualTo(NumberLiteralCreate(0))
 }
 
 func (e *ExpressionContainer) Descending() SortItem {

@@ -31,7 +31,6 @@ func (u Unwind) getError() error {
 }
 
 func (u Unwind) accept(visitor *CypherRenderer) {
-	u.key = fmt.Sprint(&u)
 	visitor.enter(u)
 	u.expressionToUnwind.accept(visitor)
 	visitor.leave(u)

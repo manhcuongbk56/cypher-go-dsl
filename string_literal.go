@@ -49,7 +49,6 @@ func (s StringLiteral) AsString() string {
 }
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
-	s.key = fmt.Sprint(&s)
 	visitor.enter(s)
 	visitor.leave(s)
 }

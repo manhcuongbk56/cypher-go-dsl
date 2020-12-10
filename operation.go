@@ -8,23 +8,27 @@ type Operation struct {
 	right    Visitable
 	key      string
 	notNil   bool
-	err error
+	err      error
 }
 
 func OperationCreate(left Expression, operator Operator, right Expression) Operation {
-	return Operation{
+	o := Operation{
 		left:     left,
 		operator: operator,
 		right:    right,
 	}
+	o.key = getAddress(&o)
+	return o
 }
 
 func OperationCreate1(left Expression, operator Operator, right NodeLabel) Operation {
-	return Operation{
+	o := Operation{
 		left:     left,
 		operator: operator,
 		right:    right,
 	}
+	o.key = getAddress(&o)
+	return o
 }
 
 func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operation {
@@ -32,11 +36,13 @@ func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operati
 	for _, nodeLabel := range nodeLabels {
 		labels = append(labels, NodeLabelCreate(nodeLabel))
 	}
-	return Operation{
+	o := Operation{
 		left:     op1.getSymbolicName(),
 		operator: operator,
 		right:    NodeLabelsCreate(labels),
 	}
+	o.key = getAddress(&o)
+	return o
 }
 
 func (o Operation) getError() error {
@@ -44,7 +50,6 @@ func (o Operation) getError() error {
 }
 
 func (o Operation) accept(visitor *CypherRenderer) {
-	o.key = fmt.Sprint(&o)
 	NameOrExpression(o.left).accept(visitor)
 	o.operator.accept(visitor)
 	o.right.accept(visitor)

@@ -6,7 +6,17 @@ type Limit struct {
 	limitAmount NumberLiteral
 	key         string
 	notNil      bool
-	err error
+	err         error
+}
+
+func LimitCreate(number int) Limit {
+	if number == 0 {
+		return Limit{}
+	}
+	literal := NumberLiteralCreate(number)
+	l := Limit{limitAmount: literal}
+	l.key = getAddress(&l)
+	return l
 }
 
 func (l Limit) getError() error {
@@ -22,20 +32,9 @@ func (l Limit) getKey() string {
 }
 
 func (l Limit) accept(visitor *CypherRenderer) {
-	l.key = fmt.Sprint(&l)
 	(*visitor).enter(l)
 	l.limitAmount.accept(visitor)
 	(*visitor).leave(l)
-}
-
-func CreateLimit(number int) Limit {
-	if number == 0 {
-		return Limit{}
-	}
-	literal := NumberLiteral{
-		content: number,
-	}
-	return Limit{limitAmount: literal}
 }
 
 func (l Limit) enter(renderer *CypherRenderer) {

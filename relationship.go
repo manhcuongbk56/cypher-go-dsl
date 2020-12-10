@@ -8,7 +8,22 @@ type Relationship struct {
 	details *RelationshipDetails
 	key     string
 	notNil  bool
-	err error
+	err     error
+}
+
+func RelationshipCreate(left Node, direction Direction, right Node, types ...string) Relationship {
+	typeSlice := make([]string, 0)
+	typeSlice = append(typeSlice, types...)
+	relationshipTypes := RelationshipTypesCreate(typeSlice)
+	details := RelationshipDetailsCreate1(direction, relationshipTypes)
+	r := Relationship{
+		left:    &left,
+		right:   &right,
+		details: &details,
+		notNil:  true,
+	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r Relationship) getError() error {
@@ -46,7 +61,6 @@ func (r Relationship) IsPatternElement() bool {
 }
 
 func (r Relationship) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	visitor.enter(r)
 	r.left.accept(visitor)
 	r.details.accept(visitor)

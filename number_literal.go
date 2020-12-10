@@ -9,7 +9,16 @@ type NumberLiteral struct {
 	content int
 	key     string
 	notNil  bool
-	err error
+	err     error
+}
+
+func NumberLiteralCreate(content int) NumberLiteral {
+	n := NumberLiteral{
+		content: content,
+		notNil:  true,
+	}
+	n.key = getAddress(&n)
+	return n
 }
 
 func (n NumberLiteral) getError() error {
@@ -37,7 +46,6 @@ func (n NumberLiteral) AsString() string {
 }
 
 func (n NumberLiteral) accept(visitor *CypherRenderer) {
-	n.key = fmt.Sprint(&n)
 	(*visitor).enter(n)
 	(*visitor).leave(n)
 }

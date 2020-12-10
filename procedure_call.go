@@ -16,17 +16,19 @@ type ProcedureCall struct {
 	optionalWhere Where
 	key           string
 	notNil        bool
-	err error
+	err           error
 }
 
 func ProcedureCallCreate(name ProcedureName, arguments Arguments, yieldItems YieldItems, optionalWhere Where) ProcedureCall {
-	return ProcedureCall{
+	p := ProcedureCall{
 		name:          name,
 		arguments:     arguments,
 		yieldItems:    yieldItems,
 		optionalWhere: optionalWhere,
 		notNil:        true,
 	}
+	p.key = getAddress(&p)
+	return p
 }
 
 func (p ProcedureCall) doesReturnElement() bool {
@@ -38,7 +40,6 @@ func (p ProcedureCall) getError() error {
 }
 
 func (p ProcedureCall) accept(visitor *CypherRenderer) {
-	p.key = fmt.Sprint(&p)
 	visitor.enter(p)
 	p.name.accept(visitor)
 	VisitIfNotNull(p.arguments, visitor)

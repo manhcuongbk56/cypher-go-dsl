@@ -65,7 +65,6 @@ func (r RelationshipDetails) hasContent() bool {
 }
 
 func (r RelationshipDetails) accept(visitor *CypherRenderer) {
-	r.key = fmt.Sprint(&r)
 	visitor.enter(r)
 	VisitIfNotNull(r.symbolicName, visitor)
 	VisitIfNotNull(r.types, visitor)
