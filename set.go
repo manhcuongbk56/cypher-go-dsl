@@ -6,18 +6,20 @@ type Set struct {
 	setItems ExpressionList
 	key      string
 	notNil   bool
-	err error
+	err      error
+}
+
+func SetCreate(setItems ExpressionList) Set {
+	set := Set{
+		setItems: setItems,
+		notNil:   true,
+	}
+	set.key = getAddress(&set)
+	return set
 }
 
 func (s Set) isUpdatingClause() bool {
 	return true
-}
-
-func SetCreate(setItems ExpressionList) Set {
-	return Set{
-		setItems: setItems,
-		notNil:   true,
-	}
 }
 
 func (s Set) getError() error {

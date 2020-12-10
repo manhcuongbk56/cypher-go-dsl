@@ -6,18 +6,20 @@ type RelationshipPatternCondition struct {
 	pathPattern RelationshipPattern
 	key         string
 	notNil      bool
-	err error
+	err         error
+}
+
+func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) RelationshipPatternCondition {
+	r := RelationshipPatternCondition{
+		pathPattern: pathPattern,
+		notNil:      true,
+	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r RelationshipPatternCondition) getConditionType() string {
 	return "RelationshipPatternCondition"
-}
-
-func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) RelationshipPatternCondition {
-	return RelationshipPatternCondition{
-		pathPattern: pathPattern,
-		notNil:      true,
-	}
 }
 
 func (r RelationshipPatternCondition) getError() error {

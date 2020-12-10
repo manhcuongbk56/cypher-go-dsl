@@ -7,15 +7,17 @@ type UnionPart struct {
 	query  SingleQuery
 	key    string
 	notNil bool
-	err error
+	err    error
 }
 
 func UnionPartCreate(all bool, query SingleQuery) UnionPart {
-	return UnionPart{
+	unionPart := UnionPart{
 		all:    all,
 		query:  query,
 		notNil: true,
 	}
+	unionPart.key = getAddress(&unionPart)
+	return unionPart
 }
 
 func (u UnionPart) isAll() bool {

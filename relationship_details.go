@@ -10,15 +10,17 @@ type RelationshipDetails struct {
 	properties   Properties
 	key          string
 	notNil       bool
-	err error
+	err          error
 }
 
 func RelationshipDetailsCreate1(direction Direction, types RelationshipTypes) RelationshipDetails {
-	return RelationshipDetails{
+	r := RelationshipDetails{
 		direction: direction,
 		types:     types,
 		notNil:    true,
 	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r RelationshipDetails) getError() error {

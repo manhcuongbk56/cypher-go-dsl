@@ -9,14 +9,16 @@ type Subquery struct {
 	statement Statement
 	key       string
 	notNil    bool
-	err error
+	err       error
 }
 
 func SubqueryCreate(statement Statement) Subquery {
-	return Subquery{
+	subQuery := Subquery{
 		statement: statement,
 		notNil:    true,
 	}
+	subQuery.key = getAddress(&subQuery)
+	return subQuery
 }
 
 func SubqueryCall(statement Statement) (Subquery, error) {

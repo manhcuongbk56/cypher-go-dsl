@@ -11,16 +11,18 @@ type UnionQuery struct {
 	additionalQueries []UnionPart
 	key               string
 	notNil            bool
-	err error
+	err               error
 }
 
 func UnionQueryCreate(all bool, firstQuery SingleQuery, additionalQueries []UnionPart) UnionQuery {
-	return UnionQuery{
+	union := UnionQuery{
 		all:               all,
 		firstQuery:        firstQuery,
 		additionalQueries: additionalQueries,
 		notNil:            true,
 	}
+	union.key = getAddress(&union)
+	return union
 }
 
 func UnionQueryCreate1(all bool, queries []SingleQuery) (UnionQuery, error) {

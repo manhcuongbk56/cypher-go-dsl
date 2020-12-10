@@ -6,14 +6,16 @@ type Where struct {
 	key       string
 	condition Condition
 	notNil    bool
-	err error
+	err       error
 }
 
 func WhereCreate(condition Condition) Where {
-	return Where{
+	where := Where{
 		condition: condition,
 		notNil:    true,
 	}
+	where.key = getAddress(&where)
+	return where
 }
 
 func (w Where) getError() error {

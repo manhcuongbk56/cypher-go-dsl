@@ -10,7 +10,25 @@ type SinglePartQuery struct {
 	aReturn          Return
 	key              string
 	notNil           bool
-	err error
+	err              error
+}
+
+func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery, error) {
+	if len(clauses) > 0 {
+		_, isMatch := clauses[len(clauses)-1].(Match)
+		if isMatch {
+			if !aReturn.isNotNil() {
+				return SinglePartQuery{}, errors.New("required return clause")
+			}
+		}
+	}
+	singlePartQuery := SinglePartQuery{
+		precedingClauses: clauses,
+		aReturn:          aReturn,
+		notNil:           true,
+	}
+	singlePartQuery.key = getAddress(&singlePartQuery)
+	return singlePartQuery, nil
 }
 
 func (s SinglePartQuery) getError() error {
@@ -31,22 +49,6 @@ func (s SinglePartQuery) accept(visitor *CypherRenderer) {
 		clause.accept(visitor)
 	}
 	VisitIfNotNull(s.aReturn, visitor)
-}
-
-func SinglePartQueryCreate(clauses []Visitable, aReturn Return) (SinglePartQuery, error) {
-	if len(clauses) > 0 {
-		_, isMatch := clauses[len(clauses)-1].(Match)
-		if isMatch {
-			if !aReturn.isNotNil() {
-				return SinglePartQuery{}, errors.New("Required return clause")
-			}
-		}
-	}
-	return SinglePartQuery{
-		precedingClauses: clauses,
-		aReturn:          aReturn,
-		notNil:           true,
-	}, nil
 }
 
 func (s SinglePartQuery) enter(renderer *CypherRenderer) {

@@ -6,14 +6,16 @@ type Remove struct {
 	setItems ExpressionList
 	key      string
 	notNil   bool
-	err error
+	err      error
 }
 
 func RemoveCreate(setItems ExpressionList) Remove {
-	return Remove{
+	r := Remove{
 		setItems: setItems,
 		notNil:   true,
 	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r Remove) getError() error {

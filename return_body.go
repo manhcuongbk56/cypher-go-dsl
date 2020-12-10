@@ -9,17 +9,19 @@ type ReturnBody struct {
 	limit       Limit
 	key         string
 	notNil      bool
-	err error
+	err         error
 }
 
 func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit Limit) ReturnBody {
-	return ReturnBody{
+	r := ReturnBody{
 		returnItems: returnItems,
 		order:       order,
 		skip:        skip,
 		limit:       limit,
 		notNil:      true,
 	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r ReturnBody) getError() error {

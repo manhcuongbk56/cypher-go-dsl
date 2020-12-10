@@ -8,15 +8,17 @@ type With struct {
 	where    Where
 	key      string
 	notNil   bool
-	err error
+	err      error
 }
 
 func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
-	return With{
+	with := With{
 		distinct: DISTINCT_INSTANCE,
 		body:     ReturnBodyCreate(returnItems, order, skip, limit),
 		notNil:   true,
 	}
+	with.key = getAddress(&with)
+	return with
 }
 
 func (with With) getError() error {

@@ -12,10 +12,12 @@ type StringLiteral struct {
 }
 
 func StringLiteralCreate(content string) StringLiteral {
-	return StringLiteral{
+	stringLiteral := StringLiteral{
 		content: content,
 		notNil:  true,
 	}
+	stringLiteral.key = getAddress(&stringLiteral)
+	return stringLiteral
 }
 
 func (s StringLiteral) getError() error {

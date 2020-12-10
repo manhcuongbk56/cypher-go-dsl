@@ -7,15 +7,17 @@ type Return struct {
 	body     ReturnBody
 	key      string
 	notNil   bool
-	err error
+	err      error
 }
 
 func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
-	return Return{
+	r := Return{
 		distinct: distinctInstance,
 		body:     body,
 		notNil:   true,
 	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r Return) getError() error {

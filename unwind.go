@@ -7,7 +7,7 @@ type Unwind struct {
 	variable           string
 	key                string
 	notNil             bool
-	err error
+	err                error
 }
 
 func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
@@ -17,11 +17,13 @@ func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
 	} else {
 		expression = expressionToUnwind
 	}
-	return Unwind{
+	unwind := Unwind{
 		expressionToUnwind: expression,
 		variable:           variable,
 		notNil:             true,
 	}
+	unwind.key = getAddress(&unwind)
+	return unwind
 }
 
 func (u Unwind) getError() error {

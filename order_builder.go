@@ -37,7 +37,7 @@ func (o OrderBuilder) Ascending() {
 }
 
 func (o OrderBuilder) Skip(number int) {
-	o.skip = CreateSkip(number)
+	o.skip = SkipCreate(number)
 }
 
 func (o OrderBuilder) Limit(number int) {

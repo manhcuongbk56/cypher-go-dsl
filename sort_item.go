@@ -7,7 +7,16 @@ type SortItem struct {
 	direction  SortDirection
 	key        string
 	notNil     bool
-	err error
+	err        error
+}
+
+func SortItemCreate(expression Expression, direction SortDirectionRaw) SortItem {
+	sortItem := SortItem{
+		expression: expression,
+		direction:  SortDirection{value: direction},
+	}
+	sortItem.key = getAddress(&sortItem)
+	return sortItem
 }
 
 func (item SortItem) getError() error {
@@ -22,14 +31,13 @@ func (item SortItem) getKey() string {
 	return item.key
 }
 
-
 //SORT DIRECTION
 
 type SortDirection struct {
 	value  SortDirectionRaw
 	key    string
 	notNil bool
-	err error
+	err    error
 }
 
 func (s SortDirection) getError() error {
@@ -48,36 +56,16 @@ const (
 	DESC                       = "DESC"
 )
 
-func CreateSortItem(expression Expression, direction SortDirectionRaw) SortItem {
-	return SortItem{
-		expression: expression,
-		direction:  SortDirection{value: direction},
-	}
-}
-
 func CreateAscendingSortItem(expression Expression) SortItem {
-	return SortItem{
-		expression: expression,
-		direction: SortDirection{
-			value: ASC,
-		},
-	}
+	return SortItemCreate(expression, ASC)
 }
 
 func CreateDescendingSortItem(expression Expression) SortItem {
-	return SortItem{
-		expression: expression,
-		direction: SortDirection{
-			value: ASC,
-		},
-	}
+	return SortItemCreate(expression, DESC)
 }
 
 func (item SortItem) Ascending() SortItem {
-	return SortItem{
-		expression: item.expression,
-		direction:  SortDirection{value: ASC},
-	}
+	return SortItemCreate(item.expression, ASC)
 }
 
 func (item SortItem) Descending() SortItem {

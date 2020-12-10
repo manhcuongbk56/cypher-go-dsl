@@ -18,14 +18,16 @@ type RelationshipTypes struct {
 	values []string
 	key    string
 	notNil bool
-	err error
+	err    error
 }
 
 func RelationshipTypesCreate(types []string) RelationshipTypes {
-	return RelationshipTypes{
+	r := RelationshipTypes{
 		values: types,
 		notNil: true,
 	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (r RelationshipTypes) getError() error {
@@ -70,7 +72,16 @@ type RelationshipLength struct {
 	unbounded bool
 	key       string
 	notNil    bool
-	err error
+	err       error
+}
+
+func RelationshipLengthCreate(unbounded bool) RelationshipLength {
+	r := RelationshipLength{
+		unbounded: unbounded,
+		notNil:    true,
+	}
+	r.key = getAddress(&r)
+	return r
 }
 
 func (relationshipLength RelationshipLength) getError() error {
@@ -115,7 +126,7 @@ func (relationshipLength RelationshipLength) isNotNil() bool {
 }
 
 func (relationshipLength RelationshipLength) Unbounded() RelationshipLength {
-	return RelationshipLength{unbounded: true}
+	return RelationshipLengthCreate(true)
 }
 
 type Direction struct {
@@ -145,10 +156,12 @@ func CreateRelationship(left Node, direction Direction, right Node, types ...str
 	typeSlice = append(typeSlice, types...)
 	relationshipTypes := RelationshipTypesCreate(typeSlice)
 	details := RelationshipDetailsCreate1(direction, relationshipTypes)
-	return Relationship{
+	r := Relationship{
 		left:    &left,
 		right:   &right,
 		details: &details,
 		notNil:  true,
 	}
+	r.key = getAddress(&r)
+	return r
 }

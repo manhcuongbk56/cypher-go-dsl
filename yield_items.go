@@ -6,14 +6,16 @@ type YieldItems struct {
 	expressions []Expression
 	key         string
 	notNil      bool
-	err error
+	err         error
 }
 
 func YieldItemsCreate(expression []Expression) YieldItems {
-	return YieldItems{
+	yieldItem := YieldItems{
 		expressions: expression,
 		notNil:      true,
 	}
+	yieldItem.key = getAddress(&yieldItem)
+	return yieldItem
 }
 
 func (e YieldItems) getError() error {

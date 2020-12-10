@@ -6,7 +6,19 @@ type Skip struct {
 	skipAmount NumberLiteral
 	key        string
 	notNil     bool
-	err error
+	err        error
+}
+
+func SkipCreate(number int) Skip {
+	if number == 0 {
+		return Skip{}
+	}
+	literal := NumberLiteral{
+		content: number,
+	}
+	skip := Skip{skipAmount: literal}
+	skip.key = getAddress(&skip)
+	return skip
 }
 
 func (s Skip) getError() error {
@@ -26,16 +38,6 @@ func (s Skip) accept(visitor *CypherRenderer) {
 	(*visitor).enter(s)
 	s.skipAmount.accept(visitor)
 	(*visitor).leave(s)
-}
-
-func CreateSkip(number int) Skip {
-	if number == 0 {
-		return Skip{}
-	}
-	literal := NumberLiteral{
-		content: number,
-	}
-	return Skip{skipAmount: literal}
 }
 
 func (s Skip) enter(renderer *CypherRenderer) {

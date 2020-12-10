@@ -29,10 +29,7 @@ func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
 }
 
 func Sort(expression Expression) SortItem {
-	return SortItem{
-		expression: expression,
-		direction:  SortDirection{value: UNDEFINED},
-	}
+	return SortItemCreate(expression, UNDEFINED)
 }
 
 func escapeName(name string) string {

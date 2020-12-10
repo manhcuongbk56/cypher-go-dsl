@@ -6,14 +6,16 @@ type SymbolicName struct {
 	value  string
 	key    string
 	notNil bool
-	err error
+	err    error
 }
 
 func SymbolicNameCreate(value string) SymbolicName {
-	return SymbolicName{
+	symbolicName := SymbolicName{
 		value:  value,
 		notNil: true,
 	}
+	symbolicName.key = getAddress(&symbolicName)
+	return symbolicName
 }
 
 func (s SymbolicName) getError() error {
