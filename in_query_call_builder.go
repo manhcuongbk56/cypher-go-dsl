@@ -18,52 +18,52 @@ func InQueryCallBuilderCreate(defaultBuilder *DefaultStatementBuilder, procedure
 	}
 }
 
-func (i InQueryCallBuilder) where(condition Condition) OngoingReadingWithWhere {
+func (i InQueryCallBuilder) Where(condition Condition) OngoingReadingWithWhere {
 	i.conditionBuilder.Where(condition)
 	i.defaultBuilder.currentOngoingCall = i
 	return i.defaultBuilder
 }
 
-func (i InQueryCallBuilder) wherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	return i.where(RelationshipPatternConditionCreate(pattern))
+func (i InQueryCallBuilder) WherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
+	return i.Where(RelationshipPatternConditionCreate(pattern))
 }
 
-func (i InQueryCallBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	return i.returning(CreateSymbolicNameByString(variables...)...)
+func (i InQueryCallBuilder) ReturningByString(variables ...string) OngoingReadingAndReturn {
+	return i.Returning(CreateSymbolicNameByString(variables...)...)
 }
 
-func (i InQueryCallBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	return i.returning(CreateSymbolicNameByNamed(variables...)...)
+func (i InQueryCallBuilder) ReturningByNamed(variables ...Named) OngoingReadingAndReturn {
+	return i.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (i InQueryCallBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
+func (i InQueryCallBuilder) Returning(expression ...Expression) OngoingReadingAndReturn {
 	i.defaultBuilder.currentOngoingCall = i
-	return i.defaultBuilder.returning(expression...)
+	return i.defaultBuilder.Returning(expression...)
 }
 
-func (i InQueryCallBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	return i.returningDistinct(CreateSymbolicNameByString(variables...)...)
+func (i InQueryCallBuilder) ReturningDistinctByString(variables ...string) OngoingReadingAndReturn {
+	return i.ReturningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (i InQueryCallBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	return i.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (i InQueryCallBuilder) ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
+	return i.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (i InQueryCallBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
+func (i InQueryCallBuilder) ReturningDistinct(expression ...Expression) OngoingReadingAndReturn {
 	i.defaultBuilder.currentOngoingCall = i
-	return i.defaultBuilder.returningDistinct(expression...)
+	return i.defaultBuilder.ReturningDistinct(expression...)
 }
 
-func (i InQueryCallBuilder) build() (Statement, error) {
+func (i InQueryCallBuilder) Build() (Statement, error) {
 	panic("implement me")
 }
 
-func (i InQueryCallBuilder) withArgs(arguments ...Expression) OngoingInQueryCallWithArguments {
+func (i InQueryCallBuilder) WithArgs(arguments ...Expression) OngoingInQueryCallWithArguments {
 	i.arguments = arguments
 	return i
 }
 
-func (i InQueryCallBuilder) yieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields {
+func (i InQueryCallBuilder) YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields {
 	expressions := make([]Expression, len(name))
 	for i := range name {
 		expressions[i] = name[i]
@@ -72,15 +72,15 @@ func (i InQueryCallBuilder) yieldSymbolic(name ...SymbolicName) OngoingInQueryCa
 	return i
 }
 
-func (i InQueryCallBuilder) yieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields {
+func (i InQueryCallBuilder) YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields {
 	names := make([]SymbolicName, len(yieldedItems))
 	for i := range yieldedItems {
 		names[i] = SymbolicNameCreate(yieldedItems[i])
 	}
-	return i.yieldSymbolic(names...)
+	return i.YieldSymbolic(names...)
 }
 
-func (i InQueryCallBuilder) yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields {
+func (i InQueryCallBuilder) Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields {
 	expressions := make([]Expression, len(aliasedResultFields))
 	for i := range aliasedResultFields {
 		expressions[i] = aliasedResultFields[i]
@@ -89,35 +89,35 @@ func (i InQueryCallBuilder) yield(aliasedResultFields ...AliasedExpression) Ongo
 	return i
 }
 
-func (i InQueryCallBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return i.with(CreateSymbolicNameByString(variables...)...)
+func (i InQueryCallBuilder) WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return i.With(CreateSymbolicNameByString(variables...)...)
 }
 
-func (i InQueryCallBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return i.with(CreateSymbolicNameByNamed(variables...)...)
+func (i InQueryCallBuilder) WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return i.With(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (i InQueryCallBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+func (i InQueryCallBuilder) With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	i.defaultBuilder.currentOngoingCall = i
-	return i.defaultBuilder.with(expressions...)
+	return i.defaultBuilder.With(expressions...)
 }
 
-func (i InQueryCallBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return i.withDistinct(CreateSymbolicNameByString(variables...)...)
+func (i InQueryCallBuilder) WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return i.WithDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (i InQueryCallBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return i.withDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (i InQueryCallBuilder) WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return i.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (i InQueryCallBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+func (i InQueryCallBuilder) WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	i.defaultBuilder.currentOngoingCall = i
-	return i.defaultBuilder.withDistinct(expressions...)
+	return i.defaultBuilder.WithDistinct(expressions...)
 }
 
-func (i InQueryCallBuilder) call(statement Statement) OngoingReadingWithoutWhere {
+func (i InQueryCallBuilder) Call(statement Statement) OngoingReadingWithoutWhere {
 	i.defaultBuilder.currentOngoingCall = i
-	return i.defaultBuilder.call(statement)
+	return i.defaultBuilder.Call(statement)
 }
 
 func (i InQueryCallBuilder) isNotNil() bool {

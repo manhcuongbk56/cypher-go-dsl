@@ -1,9 +1,5 @@
 package cypher_go_dsl
 
-import (
-	"fmt"
-)
-
 type BooleanLiteral struct {
 	content bool
 	key     string

@@ -10,8 +10,8 @@ func TestRenderSimpleQuery(t *testing.T) {
 	customer := NewNode("Customer").Named("c")
 	relation := device.RelationshipTo(customer, "HAS")
 	statement, _ := Matchs(relation).
-		returning(customer.symbolicName).
-		build()
+		Returning(customer.symbolicName).
+		Build()
 	query := NewRenderer().Render(statement)
 	fmt.Println(query)
 }
@@ -21,8 +21,8 @@ func TestRenderComplexQuery(t *testing.T) {
 	customer := NewNode("Customer").Named("c")
 	relation := device.RelationshipTo(customer, "HAS")
 	statement, _ := Matchs(relation).
-		returning(customer.symbolicName).
-		build()
+		Returning(customer.symbolicName).
+		Build()
 	query := NewRenderer().Render(statement)
 	fmt.Println(query)
 }

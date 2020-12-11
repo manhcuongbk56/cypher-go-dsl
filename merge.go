@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type Merge struct {
 	pattern               Pattern
 	onCreateOrMatchEvents []Visitable

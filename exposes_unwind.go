@@ -1,8 +1,7 @@
 package cypher_go_dsl
 
 type ExposesUnwind interface {
-
-	unwinds(expression ...Expression) OngoingUnwind
-	unwindByString(variable string) OngoingUnwind
-	unwind(expression Expression) OngoingUnwind
+	Unwinds(expression ...Expression) OngoingUnwind
+	UnwindByString(variable string) OngoingUnwind
+	Unwind(expression Expression) OngoingUnwind
 }

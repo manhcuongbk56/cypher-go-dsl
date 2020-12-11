@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type Operation struct {
 	left     Expression
 	operator Operator

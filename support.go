@@ -18,7 +18,6 @@ func PatternElementsToVisitables(patterns []PatternElement) []Visitable {
 	return visitables
 }
 
-
-func getAddress (a interface{}) string {
+func getAddress(a interface{}) string {
 	return fmt.Sprintf("%p", a)
 }

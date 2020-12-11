@@ -6,9 +6,9 @@ import (
 
 func TestFindAllMovies(t *testing.T) {
 	movie := NewNode("Movie").Named("m")
-	statement := Matchs(movie).
-		returningByNamed(movie).
-		build()
+	statement, _ := Matchs(movie).
+		ReturningByNamed(movie).
+		Build()
 	query := NewRenderer().Render(statement)
 	expect := "MATCH (m:`Movie`) RETURN m"
 	if query != expect {
@@ -18,12 +18,12 @@ func TestFindAllMovies(t *testing.T) {
 
 func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 	farm := NewNode("Farm").Named("b")
-	statement := Matchs(farm).
-		where(ConditionsNot(farm.RelationshipFrom(AnyNode(), "HAS"))).
-		withByString("b").
-		optionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
-		returningByString("b", "p").
-		build()
+	statement, _ := Matchs(farm).
+		Where(ConditionsNot(farm.RelationshipFrom(AnyNode(), "HAS"))).
+		WithByString("b").
+		OptionalMatch(farm.RelationshipTo(AnyNode1("p"), "HAS")).
+		ReturningByString("b", "p").
+		Build()
 	query := NewRenderer().Render(statement)
 	expect := "MATCH (b:`Farm`) WHERE NOT (b)<-[:`HAS`]-() WITH b OPTIONAL MATCH (b)-[:`HAS`]->(p) RETURN b, p"
 	if query != expect {

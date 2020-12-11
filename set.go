@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type Set struct {
 	setItems ExpressionList
 	key      string

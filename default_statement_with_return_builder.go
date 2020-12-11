@@ -12,7 +12,7 @@ func (d *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expressi
 	d.returnList = append(d.returnList, expression...)
 }
 
-func (d DefaultStatementWithReturnBuilder) build() (Statement, error) {
+func (d DefaultStatementWithReturnBuilder) Build() (Statement, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
@@ -25,37 +25,37 @@ func (d DefaultStatementWithReturnBuilder) build() (Statement, error) {
 	return d.defaultBuilder.BuildImpl(false, returning), nil
 }
 
-func (d DefaultStatementWithReturnBuilder) and(expression Expression) TerminalOngoingOrderDefinition {
+func (d DefaultStatementWithReturnBuilder) And(expression Expression) TerminalOngoingOrderDefinition {
 	d.orderBuilder.And(expression)
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) descending() OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithReturnBuilder) Descending() OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.Descending()
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) ascending() OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithReturnBuilder) Ascending() OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.Ascending()
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithReturnBuilder) OrderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.OrderBySortItem(sortItem...)
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) orderBy(expression Expression) TerminalOngoingOrderDefinition {
+func (d DefaultStatementWithReturnBuilder) OrderBy(expression Expression) TerminalOngoingOrderDefinition {
 	d.orderBuilder.OrderByExpression(expression)
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) skip(number int) TerminalExposesLimitAndBuildableStatement {
+func (d DefaultStatementWithReturnBuilder) Skip(number int) TerminalExposesLimitAndBuildableStatement {
 	d.orderBuilder.Skip(number)
 	return d
 }
 
-func (d DefaultStatementWithReturnBuilder) limit(number int) BuildableStatement {
+func (d DefaultStatementWithReturnBuilder) Limit(number int) BuildableStatement {
 	d.orderBuilder.Limit(number)
 	return d
 }

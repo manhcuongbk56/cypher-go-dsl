@@ -6,7 +6,7 @@ type StatementBuilder interface {
 }
 
 type BuildableStatement interface {
-	build() (Statement, error)
+	Build() (Statement, error)
 }
 
 type BuildableStatementAndOngoingMatchAndUpdate interface {
@@ -29,7 +29,7 @@ type OngoingReading interface {
 	ExposesCreate
 	ExposesSubqueryCall
 
-	call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments
+	Call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments
 }
 
 type OngoingReadingAndReturn interface {
@@ -40,16 +40,16 @@ type OngoingReadingAndReturn interface {
 }
 
 type OngoingInQueryCallWithoutArguments interface {
-	withArgs(arguments ...Expression) OngoingInQueryCallWithArguments
-	yieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
-	yieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
-	yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
+	WithArgs(arguments ...Expression) OngoingInQueryCallWithArguments
+	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
 }
 
 type OngoingInQueryCallWithArguments interface {
-	yieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
-	yieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
-	yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
+	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
 }
 
 type OngoingInQueryCallWithReturnFields interface {
@@ -68,14 +68,14 @@ type OngoingReadingWithWhere interface {
 	OngoingReading
 	ExposesMatch
 	ExposesExistentialSubqueryCall
-	and(condition Condition) OngoingReadingWithWhere
-	andPattern(pattern RelationshipPattern) OngoingReadingWithWhere
-	or(condition Condition) OngoingReadingWithWhere
-	orPattern(pattern RelationshipPattern) OngoingReadingWithWhere
+	And(condition Condition) OngoingReadingWithWhere
+	AndPattern(pattern RelationshipPattern) OngoingReadingWithWhere
+	Or(condition Condition) OngoingReadingWithWhere
+	OrPattern(pattern RelationshipPattern) OngoingReadingWithWhere
 }
 
 type OngoingUnwind interface {
-	as(variable string) OngoingReading
+	As(variable string) OngoingReading
 }
 
 type OngoingUpdate interface {
@@ -93,20 +93,20 @@ type ExposesLimitAndOngoingReadingAndWith interface {
 
 type OrderableOngoingReadingAndWithWithoutWhere interface {
 	OrderableOngoingReadingAndWith
-	where(condition Condition) OrderableOngoingReadingAndWithWithWhere
-	wherePattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
+	Where(condition Condition) OrderableOngoingReadingAndWithWithWhere
+	WherePattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
 }
 
 type OrderableOngoingReadingAndWithWithWhere interface {
 	OrderableOngoingReadingAndWith
-	and(condition Condition) OrderableOngoingReadingAndWithWithWhere
-	andPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
-	or(condition Condition) OrderableOngoingReadingAndWithWithWhere
-	orPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
+	And(condition Condition) OrderableOngoingReadingAndWithWithWhere
+	AndPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
+	Or(condition Condition) OrderableOngoingReadingAndWithWithWhere
+	OrPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere
 }
 
 type ExposesExistentialSubqueryCall interface {
-	asCondition() Condition
+	AsCondition() Condition
 }
 
 type OrderableOngoingReadingAndWith interface {
@@ -120,27 +120,27 @@ type OngoingReadingAndWithWithWhereAndOrder interface {
 	ExposesSkip
 	ExposesLimit
 	OngoingReadingAndWith
-	and1(expression Expression) OngoingOrderDefinition
+	And1(expression Expression) OngoingOrderDefinition
 }
 
 type OngoingOrderDefinition interface {
 	ExposesSkip
 	ExposesLimit
-	descending() OngoingReadingAndWithWithWhereAndOrder
-	ascending() OngoingReadingAndWithWithWhereAndOrder
+	Descending() OngoingReadingAndWithWithWhereAndOrder
+	Ascending() OngoingReadingAndWithWithWhereAndOrder
 }
 
 type ExposesOrderBy interface {
-	orderBySortItem(sortItem ...SortItem) OrderableOngoingReadingAndWithWithWhere
-	orderByExpression(expression Expression) OngoingOrderDefinition
+	OrderBySortItem(sortItem ...SortItem) OrderableOngoingReadingAndWithWithWhere
+	OrderByExpression(expression Expression) OngoingOrderDefinition
 }
 
 type ExposesSkip interface {
-	skip(number int) ExposesLimitAndOngoingReadingAndWith
+	Skip(number int) ExposesLimitAndOngoingReadingAndWith
 }
 
 type ExposesLimit interface {
-	limit(number int) OngoingReadingAndWith
+	Limit(number int) OngoingReadingAndWith
 }
 
 type ExposesUpdatingClause interface {
@@ -150,33 +150,33 @@ type ExposesUpdatingClause interface {
 }
 
 type ExposesDelete interface {
-	deleteByString(variables ...string) OngoingUpdate
-	deleteByNamed(variables ...Named) OngoingUpdate
-	delete(expressions ...Expression) OngoingUpdate
-	detachDeleteByString(variables ...string) OngoingUpdate
-	detachDeleteByNamed(variables ...Named) OngoingUpdate
-	detachDelete(expressions ...Expression) OngoingUpdate
+	DeleteByString(variables ...string) OngoingUpdate
+	DeleteByNamed(variables ...Named) OngoingUpdate
+	Delete(expressions ...Expression) OngoingUpdate
+	DetachDeleteByString(variables ...string) OngoingUpdate
+	DetachDeleteByNamed(variables ...Named) OngoingUpdate
+	DetachDelete(expressions ...Expression) OngoingUpdate
 }
 
 type ExposesWith interface {
-	withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere
-	withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere
-	with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere
-	withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere
-	withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere
-	withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere
+	WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere
+	WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere
+	With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere
+	WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere
+	WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere
+	WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere
 }
 
 type ExposesSet interface {
-	set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate
-	setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate
+	Set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate
+	SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate
 }
 
 type ExposesSetAndRemove interface {
 	ExposesSet
-	setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate
-	removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate
-	remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate
+	SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate
+	RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate
+	Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate
 }
 
 type OngoingMatchAndUpdate interface {
@@ -187,8 +187,8 @@ type OngoingMatchAndUpdate interface {
 }
 
 type ExposesMergeAction interface {
-	onCreate() OngoingMergeAction
-	onMatch() OngoingMergeAction
+	OnCreate() OngoingMergeAction
+	OnMatch() OngoingMergeAction
 }
 
 type OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction interface {
@@ -198,33 +198,33 @@ type OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction interface {
 }
 
 type OngoingMergeAction interface {
-	getErr() error
-	set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction
-	setWithNamed(variable Named, expression Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction
+	GetErr() error
+	Set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction
+	SetWithNamed(variable Named, expression Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction
 }
 
 type OngoingMatchAndReturnWithOrder interface {
 	TerminalExposesSkip
 	TerminalExposesLimit
 	BuildableStatement
-	and(expression Expression) TerminalOngoingOrderDefinition
+	And(expression Expression) TerminalOngoingOrderDefinition
 }
 
 type TerminalExposesLimit interface {
-	limit(number int) BuildableStatement
+	Limit(number int) BuildableStatement
 }
 
 type TerminalOngoingOrderDefinition interface {
 	TerminalExposesSkip
 	TerminalExposesLimit
 	BuildableStatement
-	descending() OngoingMatchAndReturnWithOrder
-	ascending() OngoingMatchAndReturnWithOrder
+	Descending() OngoingMatchAndReturnWithOrder
+	Ascending() OngoingMatchAndReturnWithOrder
 }
 
 type TerminalExposesOrderBy interface {
-	orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder
-	orderBy(expression Expression) TerminalOngoingOrderDefinition
+	OrderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder
+	OrderBy(expression Expression) TerminalOngoingOrderDefinition
 }
 
 type TerminalExposesLimitAndBuildableStatement interface {
@@ -233,5 +233,5 @@ type TerminalExposesLimitAndBuildableStatement interface {
 }
 
 type TerminalExposesSkip interface {
-	skip(number int) TerminalExposesLimitAndBuildableStatement
+	Skip(number int) TerminalExposesLimitAndBuildableStatement
 }

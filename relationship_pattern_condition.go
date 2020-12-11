@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type RelationshipPatternCondition struct {
 	pathPattern RelationshipPattern
 	key         string

@@ -21,114 +21,114 @@ func DefaultStatementBuilderCreate() DefaultStatementBuilder {
 	}
 }
 
-func (d DefaultStatementBuilder) where(condition Condition) OngoingReadingWithWhere {
+func (d DefaultStatementBuilder) Where(condition Condition) OngoingReadingWithWhere {
 	d.currentOngoingMatch.conditionBuilder.Where(condition)
 	return d
 }
 
-func (d DefaultStatementBuilder) addWith(with With) DefaultStatementBuilder {
+func (d DefaultStatementBuilder) AddWith(with With) DefaultStatementBuilder {
 	if with.isNotNil() {
 		d.multipartElements = append(d.multipartElements, MultiPartElementCreate(d.BuildListOfVisitable(true), with))
 	}
 	return d
 }
 
-func (d DefaultStatementBuilder) wherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	return d.where(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementBuilder) WherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
+	return d.Where(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) ReturningByString(variables ...string) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) ReturningByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) ReturningDistinctByString(variables ...string) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDefault(false, expressions...)
+func (d DefaultStatementBuilder) With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDefault(false, expressions...)
 }
 
-func (d DefaultStatementBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDefault(true, expressions...)
+func (d DefaultStatementBuilder) WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDefault(true, expressions...)
 }
 
-func (d DefaultStatementBuilder) withDefault(distinct bool, expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+func (d DefaultStatementBuilder) WithDefault(distinct bool, expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	ongoingMatchAndWith := DefaultStatementWithWithBuilderCreate(&d, distinct)
 	ongoingMatchAndWith.addExpression(expressions...)
 	return ongoingMatchAndWith
 }
 
-func (d DefaultStatementBuilder) deleteByString(variables ...string) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) DeleteByString(variables ...string) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) deleteByNamed(variables ...Named) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) DeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) delete(expressions ...Expression) OngoingUpdate {
-	return d.update(UPDATE_TYPE_DELETE, ExpressionsToVisitables(expressions))
+func (d DefaultStatementBuilder) Delete(expressions ...Expression) OngoingUpdate {
+	return d.Update(UPDATE_TYPE_DELETE, ExpressionsToVisitables(expressions))
 }
 
-func (d DefaultStatementBuilder) detachDeleteByString(variables ...string) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementBuilder) DetachDeleteByString(variables ...string) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementBuilder) detachDeleteByNamed(variables ...Named) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementBuilder) DetachDeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementBuilder) detachDelete(expressions ...Expression) OngoingUpdate {
-	return d.update(UPDATE_TYPE_DETACH_DELETE, ExpressionsToVisitables(expressions))
+func (d DefaultStatementBuilder) DetachDelete(expressions ...Expression) OngoingUpdate {
+	return d.Update(UPDATE_TYPE_DETACH_DELETE, ExpressionsToVisitables(expressions))
 }
 
-func (d DefaultStatementBuilder) merge(pattern ...PatternElement) OngoingUpdate {
-	return d.update(UPDATE_TYPE_MERGE, PatternElementsToVisitables(pattern))
+func (d DefaultStatementBuilder) Merge(pattern ...PatternElement) OngoingUpdate {
+	return d.Update(UPDATE_TYPE_MERGE, PatternElementsToVisitables(pattern))
 }
 
-func (d DefaultStatementBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	d.closeCurrentOngoingUpdate()
+func (d DefaultStatementBuilder) Set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
+	d.CloseCurrentOngoingUpdate()
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, expressions...)
 }
 
-func (d DefaultStatementBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.set(variable.getSymbolicName(), expression)
+func (d DefaultStatementBuilder) SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.Set(variable.getSymbolicName(), expression)
 }
 
-func (d DefaultStatementBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, set1(node, labels...))
 }
 
-func (d DefaultStatementBuilder) removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementBuilder) RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, remove(node, labels...))
 }
 
-func (d DefaultStatementBuilder) remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementBuilder) Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
 	expressions := make([]Expression, len(properties))
 	for i := range properties {
 		expressions[i] = properties[i]
@@ -136,23 +136,23 @@ func (d DefaultStatementBuilder) remove(properties ...Property) BuildableStateme
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, expressions...)
 }
 
-func (d DefaultStatementBuilder) unwinds(expression ...Expression) OngoingUnwind {
-	return d.unwind(ListOf(expression...))
+func (d DefaultStatementBuilder) Unwinds(expression ...Expression) OngoingUnwind {
+	return d.Unwind(ListOf(expression...))
 }
 
-func (d DefaultStatementBuilder) unwindByString(variable string) OngoingUnwind {
-	return d.unwind(Name(variable))
+func (d DefaultStatementBuilder) UnwindByString(variable string) OngoingUnwind {
+	return d.Unwind(Name(variable))
 }
 
-func (d DefaultStatementBuilder) unwind(expression Expression) OngoingUnwind {
-	d.closeCurrentOngoingMatch()
+func (d DefaultStatementBuilder) Unwind(expression Expression) OngoingUnwind {
+	d.CloseCurrentOngoingMatch()
 	return DefaultOngoingUnwindCreate(&d, expression)
 }
 
-func (d DefaultStatementBuilder) call(statement Statement) OngoingReadingWithoutWhere {
-	d.closeCurrentOngoingCall()
-	d.closeCurrentOngoingMatch()
-	d.closeCurrentOngoingUpdate()
+func (d DefaultStatementBuilder) Call(statement Statement) OngoingReadingWithoutWhere {
+	d.CloseCurrentOngoingCall()
+	d.CloseCurrentOngoingMatch()
+	d.CloseCurrentOngoingUpdate()
 	singlePart, err := SubqueryCall(statement)
 	if err != nil {
 		d.err = err
@@ -162,56 +162,56 @@ func (d DefaultStatementBuilder) call(statement Statement) OngoingReadingWithout
 	return d
 }
 
-func (d DefaultStatementBuilder) call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
-	d.closeCurrentOngoingMatch()
-	d.closeCurrentOngoingCall()
+func (d DefaultStatementBuilder) Call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
+	d.CloseCurrentOngoingMatch()
+	d.CloseCurrentOngoingCall()
 	inQueryCallBuilder := InQueryCallBuilderCreate(&d, ProcedureNameCreate(namespaceAndProcedure...))
 	d.currentOngoingCall = inQueryCallBuilder
 	return inQueryCallBuilder
 }
 
-func (d DefaultStatementBuilder) asCondition() Condition {
+func (d DefaultStatementBuilder) AsCondition() Condition {
 	if !d.currentOngoingMatch.notNil || len(d.currentSinglePartElements) > 0 {
 		panic("only simple MATCH statements can be used as existential subqueries")
 	}
 	return ExistentialSubqueryExists(d.currentOngoingMatch.buildMatch())
 }
 
-func (d DefaultStatementBuilder) and(condition Condition) OngoingReadingWithWhere {
+func (d DefaultStatementBuilder) And(condition Condition) OngoingReadingWithWhere {
 	d.currentOngoingMatch.conditionBuilder.And(condition)
 	return d
 }
 
-func (d DefaultStatementBuilder) andPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	return d.and(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementBuilder) AndPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
+	return d.And(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementBuilder) or(condition Condition) OngoingReadingWithWhere {
+func (d DefaultStatementBuilder) Or(condition Condition) OngoingReadingWithWhere {
 	d.currentOngoingMatch.conditionBuilder.Or(condition)
 	return d
 }
 
-func (d DefaultStatementBuilder) orPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
-	return d.or(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementBuilder) OrPattern(pattern RelationshipPattern) OngoingReadingWithWhere {
+	return d.Or(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementBuilder) OptionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	return d.MatchDefault(true, pattern...)
 }
 
-func (d DefaultStatementBuilder) create(element ...PatternElement) OngoingUpdate {
-	return d.update(UPDATE_TYPE_CREATE, PatternElementsToVisitables(element))
+func (d DefaultStatementBuilder) Create(element ...PatternElement) OngoingUpdate {
+	return d.Update(UPDATE_TYPE_CREATE, PatternElementsToVisitables(element))
 }
 
-func (d DefaultStatementBuilder) onCreate() OngoingMergeAction {
-	return d.ongoingOnAfterMerge(ON_CREATE)
+func (d DefaultStatementBuilder) OnCreate() OngoingMergeAction {
+	return d.OngoingOnAfterMerge(ON_CREATE)
 }
 
-func (d DefaultStatementBuilder) onMatch() OngoingMergeAction {
-	return d.ongoingOnAfterMerge(ON_MATCH)
+func (d DefaultStatementBuilder) OnMatch() OngoingMergeAction {
+	return d.OngoingOnAfterMerge(ON_MATCH)
 }
 
-func (d *DefaultStatementBuilder) ongoingOnAfterMerge(mergeType MERGE_TYPE) OngoingMergeAction {
+func (d *DefaultStatementBuilder) OngoingOnAfterMerge(mergeType MERGE_TYPE) OngoingMergeAction {
 	if _, isSupports := d.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause); isSupports ||
 		!d.currentOngoingUpdate.notNil {
 		return OngoingMergeActionInBuilderError(errors.New("merge must have been invoked before defining an event"))
@@ -219,19 +219,19 @@ func (d *DefaultStatementBuilder) ongoingOnAfterMerge(mergeType MERGE_TYPE) Ongo
 	return OngoingMergeActionInBuilderCreate(d, mergeType)
 }
 
-func (d DefaultStatementBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementBuilder) Match(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	return d.MatchDefault(false, pattern...)
 }
 
 func (d DefaultStatementBuilder) MatchDefault(optional bool, pattern ...PatternElement) OngoingReadingWithoutWhere {
-	d.closeCurrentOngoingMatch()
-	d.closeCurrentOngoingCall()
+	d.CloseCurrentOngoingMatch()
+	d.CloseCurrentOngoingCall()
 	d.currentOngoingMatch = MatchBuilderCreate(optional)
 	d.currentOngoingMatch.patternList = append(d.currentOngoingMatch.patternList, pattern...)
 	return d
 }
 
-func (d *DefaultStatementBuilder) closeCurrentOngoingMatch() {
+func (d *DefaultStatementBuilder) CloseCurrentOngoingMatch() {
 	if !d.currentOngoingMatch.notNil {
 		return
 	}
@@ -239,11 +239,11 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingMatch() {
 	d.currentOngoingMatch = MatchBuilder{}
 }
 
-func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
+func (d *DefaultStatementBuilder) CloseCurrentOngoingCall() {
 	if d.currentOngoingCall == nil || !d.currentOngoingCall.isNotNil() {
 		return
 	}
-	builtCall, err := d.currentOngoingCall.build()
+	builtCall, err := d.currentOngoingCall.Build()
 	if err != nil {
 		d.err = err
 		return
@@ -252,7 +252,7 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingCall() {
 	d.currentOngoingCall = InQueryCallBuilder{}
 }
 
-func (d *DefaultStatementBuilder) closeCurrentOngoingUpdate() {
+func (d *DefaultStatementBuilder) CloseCurrentOngoingUpdate() {
 	if !d.currentOngoingUpdate.notNil {
 		return
 	}
@@ -260,15 +260,15 @@ func (d *DefaultStatementBuilder) closeCurrentOngoingUpdate() {
 	d.currentOngoingUpdate = DefaultStatementWithUpdateBuilder{}
 }
 
-func (d DefaultStatementBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
-	return d.returningDefault(false, expression...)
+func (d DefaultStatementBuilder) Returning(expression ...Expression) OngoingReadingAndReturn {
+	return d.ReturningDefault(false, expression...)
 }
 
-func (d DefaultStatementBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
-	return d.returningDefault(true, expression...)
+func (d DefaultStatementBuilder) ReturningDistinct(expression ...Expression) OngoingReadingAndReturn {
+	return d.ReturningDefault(true, expression...)
 }
 
-func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...Expression) OngoingReadingAndReturn {
+func (d DefaultStatementBuilder) ReturningDefault(distinct bool, expression ...Expression) OngoingReadingAndReturn {
 	withReturnBuilder := DefaultStatementWithReturnBuilder{
 		distinct:       distinct,
 		defaultBuilder: &d,
@@ -277,7 +277,7 @@ func (d DefaultStatementBuilder) returningDefault(distinct bool, expression ...E
 	return withReturnBuilder
 }
 
-func (d DefaultStatementBuilder) build() (Statement, error) {
+func (d DefaultStatementBuilder) Build() (Statement, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
@@ -302,7 +302,7 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 		visitables = append(visitables, d.currentOngoingUpdate.builder.build())
 	}
 	if d.currentOngoingCall != nil && d.currentOngoingCall.isNotNil() {
-		builtCall, err := d.currentOngoingCall.build()
+		builtCall, err := d.currentOngoingCall.Build()
 		if err != nil {
 			d.err = err
 			return nil
@@ -319,15 +319,15 @@ func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visita
 }
 
 func (d *DefaultStatementBuilder) addUpdatingClause(clause UpdatingClause) DefaultStatementBuilder {
-	d.closeCurrentOngoingMatch()
+	d.CloseCurrentOngoingMatch()
 	d.currentSinglePartElements = append(d.currentSinglePartElements, clause)
 	return *d
 }
 
-func (d *DefaultStatementBuilder) update(updateType UpdateType, pattern []Visitable) DefaultStatementBuilder {
-	d.closeCurrentOngoingMatch()
-	d.closeCurrentOngoingCall()
-	d.closeCurrentOngoingUpdate()
+func (d *DefaultStatementBuilder) Update(updateType UpdateType, pattern []Visitable) DefaultStatementBuilder {
+	d.CloseCurrentOngoingMatch()
+	d.CloseCurrentOngoingCall()
+	d.CloseCurrentOngoingUpdate()
 	d.currentOngoingUpdate = DefaultStatementWithUpdateBuilderCreate1(d, updateType, pattern)
 	return *d
 }
@@ -415,11 +415,11 @@ func OngoingMergeActionInBuilderError(err error) OngoingMergeActionInBuilder {
 	}
 }
 
-func (o OngoingMergeActionInBuilder) getErr() error {
+func (o OngoingMergeActionInBuilder) GetErr() error {
 	return o.err
 }
 
-func (o OngoingMergeActionInBuilder) set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
+func (o OngoingMergeActionInBuilder) Set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
 	support := o.defaultBuilder.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause)
 	newSupport, err := support.on(o.mergeType, expressions...)
 	newMergeBuilder, _ := newSupport.(MergeBuilder)
@@ -431,6 +431,6 @@ func (o OngoingMergeActionInBuilder) set(expressions ...Expression) OngoingMatch
 	return o.defaultBuilder
 }
 
-func (o OngoingMergeActionInBuilder) setWithNamed(variable Named, expression Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
-	return o.set(variable.getSymbolicName(), expression)
+func (o OngoingMergeActionInBuilder) SetWithNamed(variable Named, expression Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction {
+	return o.Set(variable.getSymbolicName(), expression)
 }

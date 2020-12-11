@@ -35,7 +35,6 @@ type Visitable interface {
 	leave(renderer *CypherRenderer)
 	getKey() string
 	isNotNil() bool
-
 }
 
 type SubVisitable interface {

@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type UnionPart struct {
 	all    bool
 	query  SingleQuery

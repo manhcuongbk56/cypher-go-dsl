@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type MergeAction struct {
 	mergeType MERGE_TYPE
 	set       Set
