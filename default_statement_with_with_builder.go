@@ -42,212 +42,212 @@ func (d *DefaultStatementWithWithBuilder) addExpression(expressions ...Expressio
 	d.returnList = append(d.returnList, expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) skip(number int) ExposesLimitAndOngoingReadingAndWith {
+func (d DefaultStatementWithWithBuilder) Skip(number int) ExposesLimitAndOngoingReadingAndWith {
 	d.orderBuilder.Skip(number)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) limit(number int) OngoingReadingAndWith {
+func (d DefaultStatementWithWithBuilder) Limit(number int) OngoingReadingAndWith {
 	d.orderBuilder.Limit(number)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) descending() OngoingReadingAndWithWithWhereAndOrder {
+func (d DefaultStatementWithWithBuilder) Descending() OngoingReadingAndWithWithWhereAndOrder {
 	d.orderBuilder.Descending()
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) ascending() OngoingReadingAndWithWithWhereAndOrder {
+func (d DefaultStatementWithWithBuilder) Ascending() OngoingReadingAndWithWithWhereAndOrder {
 	d.orderBuilder.Ascending()
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) orderBySortItem(sortItem ...SortItem) OrderableOngoingReadingAndWithWithWhere {
+func (d DefaultStatementWithWithBuilder) OrderBySortItem(sortItem ...SortItem) OrderableOngoingReadingAndWithWithWhere {
 	d.orderBuilder.OrderBySortItem(sortItem...)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) orderByExpression(expression Expression) OngoingOrderDefinition {
+func (d DefaultStatementWithWithBuilder) OrderByExpression(expression Expression) OngoingOrderDefinition {
 	d.orderBuilder.OrderByExpression(expression)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) ReturningByString(variables ...string) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) ReturningByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		returning(expression...)
+func (d DefaultStatementWithWithBuilder) Returning(expression ...Expression) OngoingReadingAndReturn {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Returning(expression...)
 }
 
-func (d DefaultStatementWithWithBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) ReturningDistinctByString(variables ...string) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		returningDistinct(expression...)
+func (d DefaultStatementWithWithBuilder) ReturningDistinct(expression ...Expression) OngoingReadingAndReturn {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		ReturningDistinct(expression...)
 }
 
-func (d DefaultStatementWithWithBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		with(expressions...)
+func (d DefaultStatementWithWithBuilder) With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		With(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		withDistinct(expressions...)
+func (d DefaultStatementWithWithBuilder) WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		WithDistinct(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) deleteByString(variables ...string) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) DeleteByString(variables ...string) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) deleteByNamed(variables ...Named) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) DeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) delete(expressions ...Expression) OngoingUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		delete(expressions...)
+func (d DefaultStatementWithWithBuilder) Delete(expressions ...Expression) OngoingUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Delete(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) detachDeleteByString(variables ...string) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithWithBuilder) DetachDeleteByString(variables ...string) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) detachDeleteByNamed(variables ...Named) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithWithBuilder) DetachDeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithWithBuilder) detachDelete(expressions ...Expression) OngoingUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		delete(expressions...)
+func (d DefaultStatementWithWithBuilder) DetachDelete(expressions ...Expression) OngoingUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Delete(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) merge(pattern ...PatternElement) OngoingUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		merge(pattern...)
+func (d DefaultStatementWithWithBuilder) Merge(pattern ...PatternElement) OngoingUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Merge(pattern...)
 }
 
-func (d DefaultStatementWithWithBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		set(expressions...)
+func (d DefaultStatementWithWithBuilder) Set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Set(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.set(variable.getSymbolicName(), expression)
+func (d DefaultStatementWithWithBuilder) SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.Set(variable.getSymbolicName(), expression)
 }
 
-func (d DefaultStatementWithWithBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		setByNode(node, labels...)
+func (d DefaultStatementWithWithBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		SetByNode(node, labels...)
 }
 
-func (d DefaultStatementWithWithBuilder) removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		removeByNode(node, labels...)
+func (d DefaultStatementWithWithBuilder) RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		RemoveByNode(node, labels...)
 }
 
-func (d DefaultStatementWithWithBuilder) remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		remove(properties...)
+func (d DefaultStatementWithWithBuilder) Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Remove(properties...)
 }
 
-func (d DefaultStatementWithWithBuilder) unwinds(expression ...Expression) OngoingUnwind {
-	return d.unwind(ListOf(expression...))
+func (d DefaultStatementWithWithBuilder) Unwinds(expression ...Expression) OngoingUnwind {
+	return d.Unwind(ListOf(expression...))
 }
 
-func (d DefaultStatementWithWithBuilder) unwindByString(variable string) OngoingUnwind {
-	return d.unwind(Name(variable))
+func (d DefaultStatementWithWithBuilder) UnwindByString(variable string) OngoingUnwind {
+	return d.Unwind(Name(variable))
 }
 
-func (d DefaultStatementWithWithBuilder) unwind(expression Expression) OngoingUnwind {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		unwind(expression)
+func (d DefaultStatementWithWithBuilder) Unwind(expression Expression) OngoingUnwind {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Unwind(expression)
 }
 
-func (d DefaultStatementWithWithBuilder) create(element ...PatternElement) OngoingUpdate {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		create(element...)
+func (d DefaultStatementWithWithBuilder) Create(element ...PatternElement) OngoingUpdate {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Create(element...)
 }
 
-func (d DefaultStatementWithWithBuilder) call(statement Statement) OngoingReadingWithoutWhere {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		call(statement)
+func (d DefaultStatementWithWithBuilder) Call(statement Statement) OngoingReadingWithoutWhere {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Call(statement)
 }
 
-func (d DefaultStatementWithWithBuilder) call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
-	return d.defaultBuilder.addWith(d.buildWith()).
-		call1(namespaceAndProcedure...)
+func (d DefaultStatementWithWithBuilder) Call1(namespaceAndProcedure ...string) OngoingInQueryCallWithoutArguments {
+	return d.defaultBuilder.AddWith(d.buildWith()).
+		Call1(namespaceAndProcedure...)
 }
 
-func (d DefaultStatementWithWithBuilder) match(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementWithWithBuilder) Match(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	return d.MatchDefault(false, pattern...)
 }
 
-func (d DefaultStatementWithWithBuilder) optionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
+func (d DefaultStatementWithWithBuilder) OptionalMatch(pattern ...PatternElement) OngoingReadingWithoutWhere {
 	return d.MatchDefault(true, pattern...)
 }
 
 func (d DefaultStatementWithWithBuilder) MatchDefault(optional bool, pattern ...PatternElement) OngoingReadingWithoutWhere {
-	return d.defaultBuilder.addWith(d.buildWith()).
+	return d.defaultBuilder.AddWith(d.buildWith()).
 		MatchDefault(optional, pattern...)
 }
 
-func (d DefaultStatementWithWithBuilder) where(condition Condition) OrderableOngoingReadingAndWithWithWhere {
+func (d DefaultStatementWithWithBuilder) Where(condition Condition) OrderableOngoingReadingAndWithWithWhere {
 	d.conditionBuilder.Where(condition)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) wherePattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	return d.where(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementWithWithBuilder) WherePattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
+	return d.Where(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementWithWithBuilder) and(condition Condition) OrderableOngoingReadingAndWithWithWhere {
+func (d DefaultStatementWithWithBuilder) And(condition Condition) OrderableOngoingReadingAndWithWithWhere {
 	d.conditionBuilder.And(condition)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) andPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	return d.and(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementWithWithBuilder) AndPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
+	return d.And(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementWithWithBuilder) or(condition Condition) OrderableOngoingReadingAndWithWithWhere {
+func (d DefaultStatementWithWithBuilder) Or(condition Condition) OrderableOngoingReadingAndWithWithWhere {
 	d.conditionBuilder.Or(condition)
 	return d
 }
 
-func (d DefaultStatementWithWithBuilder) orPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
-	return d.or(RelationshipPatternConditionCreate(pattern))
+func (d DefaultStatementWithWithBuilder) OrPattern(pattern RelationshipPattern) OrderableOngoingReadingAndWithWithWhere {
+	return d.Or(RelationshipPatternConditionCreate(pattern))
 }
 
-func (d DefaultStatementWithWithBuilder) and1(expression Expression) OngoingOrderDefinition {
+func (d DefaultStatementWithWithBuilder) And1(expression Expression) OngoingOrderDefinition {
 	d.orderBuilder.And(expression)
 	return d
 }

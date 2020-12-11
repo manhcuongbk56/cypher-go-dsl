@@ -1,7 +1,6 @@
 package cypher_go_dsl
 
 import (
-	"fmt"
 	"strings"
 )
 

@@ -1,10 +1,10 @@
 package cypher_go_dsl
 
 type ExposesReturning interface {
-	returningByString(variables ...string) OngoingReadingAndReturn
-	returningByNamed(variables ...Named) OngoingReadingAndReturn
-	returning(expression ...Expression) OngoingReadingAndReturn
-	returningDistinctByString(variables ...string) OngoingReadingAndReturn
-	returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn
-	returningDistinct(expression ...Expression) OngoingReadingAndReturn
+	ReturningByString(variables ...string) OngoingReadingAndReturn
+	ReturningByNamed(variables ...Named) OngoingReadingAndReturn
+	Returning(expression ...Expression) OngoingReadingAndReturn
+	ReturningDistinctByString(variables ...string) OngoingReadingAndReturn
+	ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn
+	ReturningDistinct(expression ...Expression) OngoingReadingAndReturn
 }

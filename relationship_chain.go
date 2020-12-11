@@ -4,7 +4,7 @@ type RelationshipChain struct {
 	relationships []Relationship
 	key           string
 	notNil        bool
-	err error
+	err           error
 }
 
 func (r RelationshipChain) getError() error {

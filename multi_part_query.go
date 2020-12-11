@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type MultiPartQuery struct {
 	parts     []MultiPartElement
 	remainder SinglePartQuery

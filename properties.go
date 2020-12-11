@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type Properties struct {
 	properties MapExpression
 	key        string

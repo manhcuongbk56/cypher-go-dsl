@@ -53,42 +53,42 @@ func (d DefaultStatementWithUpdateBuilder) isNotNil() bool {
 	return d.notNil
 }
 
-func (d DefaultStatementWithUpdateBuilder) and(expression Expression) TerminalOngoingOrderDefinition {
+func (d DefaultStatementWithUpdateBuilder) And(expression Expression) TerminalOngoingOrderDefinition {
 	d.orderBuilder.And(expression)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) descending() OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithUpdateBuilder) Descending() OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.Descending()
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) ascending() OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithUpdateBuilder) Ascending() OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.Ascending()
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) orderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
+func (d DefaultStatementWithUpdateBuilder) OrderBySortItem(sortItem ...SortItem) OngoingMatchAndReturnWithOrder {
 	d.orderBuilder.OrderBySortItem(sortItem...)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) orderBy(expression Expression) TerminalOngoingOrderDefinition {
+func (d DefaultStatementWithUpdateBuilder) OrderBy(expression Expression) TerminalOngoingOrderDefinition {
 	d.orderBuilder.OrderByExpression(expression)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) skip(number int) TerminalExposesLimitAndBuildableStatement {
+func (d DefaultStatementWithUpdateBuilder) Skip(number int) TerminalExposesLimitAndBuildableStatement {
 	d.orderBuilder.Skip(number)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) limit(number int) BuildableStatement {
+func (d DefaultStatementWithUpdateBuilder) Limit(number int) BuildableStatement {
 	d.orderBuilder.Limit(number)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) build() (Statement, error) {
+func (d DefaultStatementWithUpdateBuilder) Build() (Statement, error) {
 	if d.err != nil {
 		return nil, d.err
 	}
@@ -102,75 +102,75 @@ func (d DefaultStatementWithUpdateBuilder) build() (Statement, error) {
 	return d.defaultBuilder.BuildImpl(false, returning), nil
 }
 
-func (d DefaultStatementWithUpdateBuilder) returningByString(variables ...string) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) ReturningByString(variables ...string) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) returningByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returning(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) ReturningByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) returning(expression ...Expression) OngoingReadingAndReturn {
+func (d DefaultStatementWithUpdateBuilder) Returning(expression ...Expression) OngoingReadingAndReturn {
 	d.returnList = append(d.returnList, expression...)
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) returningDistinctByString(variables ...string) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) ReturningDistinctByString(variables ...string) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) returningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
-	return d.returningDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
+	return d.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) returningDistinct(expression ...Expression) OngoingReadingAndReturn {
-	d.returning(expression...)
+func (d DefaultStatementWithUpdateBuilder) ReturningDistinct(expression ...Expression) OngoingReadingAndReturn {
+	d.Returning(expression...)
 	d.distinct = true
 	return d
 }
 
-func (d DefaultStatementWithUpdateBuilder) withByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) withByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.with(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.With(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) with(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDefault(false, expressions...)
+func (d DefaultStatementWithUpdateBuilder) With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDefault(false, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) withDefault(distinct bool, returnedExpressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+func (d DefaultStatementWithUpdateBuilder) WithDefault(distinct bool, returnedExpressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
-	return d.defaultBuilder.withDefault(distinct, returnedExpressions...)
+	return d.defaultBuilder.WithDefault(distinct, returnedExpressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) withDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) withDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDistinct(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) withDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
-	return d.withDefault(true, expressions...)
+func (d DefaultStatementWithUpdateBuilder) WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return d.WithDefault(true, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) deleteByString(variables ...string) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) DeleteByString(variables ...string) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) deleteByNamed(variables ...Named) OngoingUpdate {
-	return d.delete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) DeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.Delete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) delete(expressions ...Expression) OngoingUpdate {
-	return d.deleteDefault(false, expressions...)
+func (d DefaultStatementWithUpdateBuilder) Delete(expressions ...Expression) OngoingUpdate {
+	return d.DeleteDefault(false, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) deleteDefault(nextDetach bool, deletedExpressions ...Expression) OngoingUpdate {
+func (d DefaultStatementWithUpdateBuilder) DeleteDefault(nextDetach bool, deletedExpressions ...Expression) OngoingUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	var deleteType UpdateType
 	if nextDetach {
@@ -182,46 +182,46 @@ func (d DefaultStatementWithUpdateBuilder) deleteDefault(nextDetach bool, delete
 	for i := range deletedExpressions {
 		visitables[i] = deletedExpressions[i]
 	}
-	return d.defaultBuilder.update(deleteType, visitables)
+	return d.defaultBuilder.Update(deleteType, visitables)
 }
 
-func (d DefaultStatementWithUpdateBuilder) detachDeleteByString(variables ...string) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByString(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) DetachDeleteByString(variables ...string) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByString(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) detachDeleteByNamed(variables ...Named) OngoingUpdate {
-	return d.detachDelete(CreateSymbolicNameByNamed(variables...)...)
+func (d DefaultStatementWithUpdateBuilder) DetachDeleteByNamed(variables ...Named) OngoingUpdate {
+	return d.DetachDelete(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) detachDelete(expressions ...Expression) OngoingUpdate {
-	return d.deleteDefault(true, expressions...)
+func (d DefaultStatementWithUpdateBuilder) DetachDelete(expressions ...Expression) OngoingUpdate {
+	return d.DeleteDefault(true, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) merge(pattern ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithUpdateBuilder) Merge(pattern ...PatternElement) OngoingUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
-	return d.defaultBuilder.merge(pattern...)
+	return d.defaultBuilder.Merge(pattern...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementWithUpdateBuilder) Set(expressions ...Expression) BuildableStatementAndOngoingMatchAndUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) setWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.set(variable.getSymbolicName(), expression)
+func (d DefaultStatementWithUpdateBuilder) SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
+	return d.Set(variable.getSymbolicName(), expression)
 }
 
-func (d DefaultStatementWithUpdateBuilder) setByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementWithUpdateBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, set1(node, labels...))
 }
 
-func (d DefaultStatementWithUpdateBuilder) removeByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementWithUpdateBuilder) RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, set1(node, labels...))
 }
 
-func (d DefaultStatementWithUpdateBuilder) remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
+func (d DefaultStatementWithUpdateBuilder) Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
 	expressions := make([]Expression, len(properties))
 	for i := range properties {
 		expressions[i] = properties[i]
@@ -230,7 +230,7 @@ func (d DefaultStatementWithUpdateBuilder) remove(properties ...Property) Builda
 	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) create(element ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithUpdateBuilder) Create(element ...PatternElement) OngoingUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
-	return d.defaultBuilder.create(element...)
+	return d.defaultBuilder.Create(element...)
 }

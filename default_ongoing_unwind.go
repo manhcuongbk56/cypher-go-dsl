@@ -12,7 +12,7 @@ func DefaultOngoingUnwindCreate(defaultBuilder *DefaultStatementBuilder, express
 	}
 }
 
-func (d DefaultOngoingUnwind) as(variable string) OngoingReading {
+func (d DefaultOngoingUnwind) As(variable string) OngoingReading {
 	d.defaultBuilder.currentSinglePartElements = append(d.defaultBuilder.currentSinglePartElements, UnwindCreate(d.expressionToUnwind, variable))
 	return d.defaultBuilder
 }

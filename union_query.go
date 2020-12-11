@@ -2,7 +2,6 @@ package cypher_go_dsl
 
 import (
 	"errors"
-	"fmt"
 )
 
 type UnionQuery struct {

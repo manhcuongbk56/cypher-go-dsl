@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type Relationship struct {
 	left    *Node
 	right   *Node

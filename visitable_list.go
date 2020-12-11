@@ -1,7 +1,5 @@
 package cypher_go_dsl
 
-import "fmt"
-
 type FunctionArgumentList struct {
 	expressions []Visitable
 	key         string

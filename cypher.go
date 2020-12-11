@@ -25,7 +25,7 @@ func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 }
 
 func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
-	return DefaultStatementBuilderCreate().match(element...)
+	return DefaultStatementBuilderCreate().Match(element...)
 }
 
 func Sort(expression Expression) SortItem {
