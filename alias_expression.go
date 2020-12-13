@@ -13,6 +13,15 @@ type AliasedExpression struct {
 }
 
 func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpression {
+	if delegate == nil {
+		return AliasedExpressionError(errors.New("expression to alias can't be nil"))
+	}
+	if delegate.getError() != nil {
+		return AliasedExpressionError(delegate.getError())
+	}
+	if alias == "" {
+		return AliasedExpressionError(errors.New("the alias may not be empty"))
+	}
 	a := AliasedExpression{
 		delegate: delegate,
 		alias:    alias,
