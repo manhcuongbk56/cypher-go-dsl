@@ -1,17 +1,50 @@
 package cypher_go_dsl
 
+import (
+	"errors"
+	"golang.org/x/xerrors"
+)
+
 type CompoundCondition struct {
 	operator      Operator
 	conditions    []Condition
 	conditionType ExpressionType
-	key string
+	key           string
 	notNil        bool
-	err error
+	err           error
 }
 
-
-func CompoundConditionCreate(left Expression, operator Operator, right Expression) CompoundCondition {
+func CompoundConditionCreate(left Condition, operator Operator, right Condition) CompoundCondition {
+	if left != nil && left.getError() != nil {
+		return CompoundConditionError(left.getError())
+	}
+	if operator.getError() != nil {
+		return CompoundConditionError(operator.getError())
+	}
+	if right != nil && right.getError() != nil {
+		return CompoundConditionError(right.getError())
+	}
+	if left == nil || !left.isNotNil() {
+		return CompoundConditionError(errors.New("left hand side condition is required"))
+	}
+	if !operator.isNotNil() {
+		return CompoundConditionError(errors.New("operator is required"))
+	}
+	isOperatorValid := false
+	for _, validOperator := range VALID_OPERATORS {
+		if validOperator == operator {
+			isOperatorValid = true
+		}
+	}
+	if !isOperatorValid {
+		return CompoundConditionError(xerrors.Errorf("operator %s is not valid", operator.representation))
+	}
+	if right == nil || !right.isNotNil() {
+		return CompoundConditionError(errors.New("left hand side condition is required"))
+	}
 	condition := CompoundCondition{operator: operator}
+	condition.add(operator, left)
+	condition.add(operator, right)
 	condition.injectKey()
 	return condition
 }
@@ -25,6 +58,11 @@ func CompoundConditionCreate1(operator Operator) CompoundCondition {
 	return condition
 }
 
+func CompoundConditionError(err error) CompoundCondition {
+	return CompoundCondition{
+		err: err,
+	}
+}
 
 func (c CompoundCondition) getError() error {
 	return c.err
@@ -51,10 +89,10 @@ func (c CompoundCondition) accept(visitor *CypherRenderer) {
 	if hasManyConditions {
 		for _, condition := range c.conditions[1:] {
 			var actualOperator Operator
-			compound, isCompount := condition.(CompoundCondition)
-			if isCompount {
+			compound, isCompound := condition.(CompoundCondition)
+			if isCompound {
 				actualOperator = compound.operator
-			}else {
+			} else {
 				actualOperator = c.operator
 			}
 			acceptVisitorWithOperatorForChildCondition(visitor, actualOperator, condition)
@@ -64,11 +102,11 @@ func (c CompoundCondition) accept(visitor *CypherRenderer) {
 }
 
 func (c CompoundCondition) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append("(")
 }
 
 func (c CompoundCondition) leave(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append(")")
 }
 
 func (c CompoundCondition) getKey() string {
@@ -89,8 +127,6 @@ var EMPTY_CONDITION = CompoundCondition{
 }
 
 var VALID_OPERATORS = []Operator{AND, OR, XOR}
-
-
 
 func (c *CompoundCondition) add(chainingOperator Operator, condition Condition) CompoundCondition {
 	if c.GetExpressionType() == EMPTY_CONDITION_EXPRESSION {
