@@ -7,6 +7,9 @@ type BooleanLiteral struct {
 	err     error
 }
 
+var TRUE = BooleanLiteralCreate(true)
+var FALSE = BooleanLiteralCreate(false)
+
 func BooleanLiteralCreate(content bool) BooleanLiteral {
 	b := BooleanLiteral{
 		content: content,
