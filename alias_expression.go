@@ -13,7 +13,7 @@ type AliasedExpression struct {
 }
 
 func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpression {
-	if delegate == nil {
+	if delegate == nil || !delegate.isNotNil() {
 		return AliasedExpressionError(errors.New("expression to alias can't be nil"))
 	}
 	if delegate.getError() != nil {
