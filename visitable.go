@@ -1,26 +1,9 @@
 package cypher_go_dsl
 
-import (
-	"fmt"
-	"reflect"
-)
-
 func VisitIfNotNull(dest interface{}, visitor *CypherRenderer) {
 	visitable, isVisitable := dest.(Visitable)
 	if isVisitable && visitable.isNotNil() {
 		visitable.accept(visitor)
-	}
-}
-
-func VisitIfNotNullA(dest Visitable, visitor *CypherRenderer) {
-	if reflect.ValueOf(dest).IsNil() {
-		visitable, isVisitable := dest.(Visitable)
-		if isVisitable {
-			if visitable == nil {
-				fmt.Print("io")
-			}
-			visitable.accept(visitor)
-		}
 	}
 }
 

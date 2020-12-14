@@ -67,6 +67,8 @@ func (e ExpressionList) leave(renderer *CypherRenderer) {
 
 func NewExpressionList(expression ...Expression) ExpressionList {
 	expressions := make([]Expression, len(expression))
-	expressions = append(expressions, expression...)
+	for i := range expression {
+		expressions[i] = expression[i]
+	}
 	return ExpressionList{expressions: expressions}
 }

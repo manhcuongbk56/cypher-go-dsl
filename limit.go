@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "errors"
+
 type Limit struct {
 	limitAmount NumberLiteral
 	key         string
@@ -9,12 +11,18 @@ type Limit struct {
 
 func LimitCreate(number int) Limit {
 	if number == 0 {
-		return Limit{}
+		return LimitError(errors.New("limit can not be zero"))
 	}
 	literal := NumberLiteralCreate(number)
 	l := Limit{limitAmount: literal}
 	l.key = getAddress(&l)
 	return l
+}
+
+func LimitError(err error) Limit {
+	return Limit{
+		err: err,
+	}
 }
 
 func (l Limit) getError() error {

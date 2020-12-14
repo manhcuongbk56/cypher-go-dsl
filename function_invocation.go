@@ -24,8 +24,8 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 		return FunctionInvocationError(errors.Errorf("expression for %s is required", definition.getImplementationName()))
 	}
 	arguments := make([]Visitable, len(expressions))
-	for _, expression := range expressions {
-		arguments = append(arguments, expression)
+	for i := range expressions {
+		arguments[i] = expressions[i]
 	}
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
@@ -64,8 +64,8 @@ func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern 
 		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
 	}
 	arguments := make([]Visitable, len(pattern.patternElements))
-	for _, expression := range pattern.patternElements {
-		arguments = append(arguments, expression)
+	for i := range pattern.patternElements {
+		arguments[i] = pattern.patternElements[i]
 	}
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
@@ -91,7 +91,7 @@ func FunctionInvocationCreateDistinct(definition FunctionDefinition, expressions
 	if len(expressions) == 0 || expressions[0] == nil || !expressions[0].isNotNil() {
 		return FunctionInvocationError(errors.Errorf("expression for %s is required", definition.getImplementationName()))
 	}
-	arguments := make([]Visitable, len(expressions))
+	arguments := make([]Visitable, 0)
 	arguments = append(arguments, DistinctExpression{
 		delegate: expressions[0],
 	})
