@@ -20,6 +20,10 @@ func MapExpressionCreate(newContents []Expression) MapExpression {
 	return m
 }
 
+func (m MapExpression) GetExpressionType() ExpressionType {
+	return "MapExpression"
+}
+
 func (m MapExpression) getError() error {
 	return m.err
 }

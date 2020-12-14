@@ -17,8 +17,9 @@ type CypherRenderer struct {
 	builder                strings.Builder
 }
 
-func (renderer *CypherRenderer) append(content string) {
+func (renderer *CypherRenderer) append(content string) *CypherRenderer {
 	renderer.builder.WriteString(content)
+	return renderer
 }
 
 func NewRenderer() *CypherRenderer {

@@ -12,9 +12,16 @@ type FunctionInvocation struct {
 	err          error
 }
 
-func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expression) (FunctionInvocation, error) {
-	if len(expressions) == 0 {
-		return FunctionInvocation{}, errors.New("need expression")
+func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expression) FunctionInvocation {
+	if expressions != nil {
+		for _, expression := range expressions {
+			if expression.getError() != nil {
+				return FunctionInvocationError(expression.getError())
+			}
+		}
+	}
+	if len(expressions) == 0 || expressions[0] == nil || !expressions[0].isNotNil() {
+		return FunctionInvocationError(errors.Errorf("expression for %s is required", definition.getImplementationName()))
 	}
 	arguments := make([]Visitable, len(expressions))
 	for _, expression := range expressions {
@@ -27,10 +34,16 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 		},
 	}
 	f.key = getAddress(&f)
-	return f, nil
+	return f
 }
 
-func CreateWithPatternElement(definition FunctionDefinition, element PatternElement) (FunctionInvocation, error) {
+func FunctionInvocationCreateWithPatternElement(definition FunctionDefinition, element PatternElement) FunctionInvocation {
+	if element != nil && element.getError() != nil {
+		return FunctionInvocationError(element.getError())
+	}
+	if element == nil || !element.isNotNil() {
+		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
+	}
 	arguments := make([]Visitable, 1)
 	arguments = append(arguments, element)
 	f := FunctionInvocation{
@@ -40,10 +53,16 @@ func CreateWithPatternElement(definition FunctionDefinition, element PatternElem
 		},
 	}
 	f.key = getAddress(&f)
-	return f, nil
+	return f
 }
 
-func CreateWithPattern(definition FunctionDefinition, pattern Pattern) (FunctionInvocation, error) {
+func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern Pattern) FunctionInvocation {
+	if pattern.getError() != nil {
+		return FunctionInvocationError(pattern.getError())
+	}
+	if !pattern.isNotNil() {
+		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
+	}
 	arguments := make([]Visitable, len(pattern.patternElements))
 	for _, expression := range pattern.patternElements {
 		arguments = append(arguments, expression)
@@ -55,15 +74,22 @@ func CreateWithPattern(definition FunctionDefinition, pattern Pattern) (Function
 		},
 	}
 	f.key = getAddress(&f)
-	return f, nil
+	return f
 }
 
-func CreateDistinct(definition FunctionDefinition, expressions ...Expression) (FunctionInvocation, error) {
-	if !definition.isAggregate() {
-		return FunctionInvocation{}, errors.New("the distinct operator can only be applied within aggregate functions")
+func FunctionInvocationCreateDistinct(definition FunctionDefinition, expressions ...Expression) FunctionInvocation {
+	if expressions != nil {
+		for _, expression := range expressions {
+			if expression.getError() != nil {
+				return FunctionInvocationError(expression.getError())
+			}
+		}
 	}
-	if len(expressions) == 0 {
-		return FunctionInvocation{}, errors.New("need expression")
+	if !definition.isAggregate() {
+		return FunctionInvocationError(errors.New("the distinct operator can only be applied within aggregate functions"))
+	}
+	if len(expressions) == 0 || expressions[0] == nil || !expressions[0].isNotNil() {
+		return FunctionInvocationError(errors.Errorf("expression for %s is required", definition.getImplementationName()))
 	}
 	arguments := make([]Visitable, len(expressions))
 	arguments = append(arguments, DistinctExpression{
@@ -79,7 +105,13 @@ func CreateDistinct(definition FunctionDefinition, expressions ...Expression) (F
 		},
 	}
 	f.key = getAddress(&f)
-	return f, nil
+	return f
+}
+
+func FunctionInvocationError(err error) FunctionInvocation {
+	return FunctionInvocation{
+		err: err,
+	}
 }
 
 func (f FunctionInvocation) getError() error {
