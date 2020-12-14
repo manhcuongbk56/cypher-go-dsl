@@ -30,7 +30,7 @@ func (d Distinct) accept(visitor *CypherRenderer) {
 }
 
 func (d Distinct) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append("DISTINCT ")
 }
 
 func (d Distinct) leave(renderer *CypherRenderer) {

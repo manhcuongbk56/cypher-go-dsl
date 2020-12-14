@@ -7,13 +7,22 @@ type ExcludedPattern struct {
 	err            error
 }
 
-func ExcludedPatterCreate(patternElement PatternElement) ExcludedPattern {
+func ExcludedPatternCreate(patternElement PatternElement) ExcludedPattern {
+	if patternElement.getError() != nil {
+		return ExcludedPatternError(patternElement.getError())
+	}
 	e := ExcludedPattern{
 		patternElement: patternElement,
 		notNil:         true,
 	}
 	e.key = getAddress(&e)
 	return e
+}
+
+func ExcludedPatternError(err error) ExcludedPattern {
+	return ExcludedPattern{
+		err: err,
+	}
 }
 
 func (e ExcludedPattern) getError() error {

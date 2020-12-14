@@ -7,17 +7,28 @@ type ExpressionList struct {
 	err         error
 }
 
-func ExpressionListCreate(expression []Expression) ExpressionList {
+func ExpressionListCreate(expressions []Expression) ExpressionList {
+	for _, expression := range expressions {
+		if expression.getError() != nil {
+			return ExpressionListError(expression.getError())
+		}
+	}
 	e := ExpressionList{
-		expressions: expression,
+		expressions: expressions,
 		notNil:      true,
 	}
 	e.key = getAddress(&e)
 	return e
 }
 
+func ExpressionListError(err error) ExpressionList {
+	return ExpressionList{
+		err: err,
+	}
+}
+
 func (e ExpressionList) GetExpressionType() ExpressionType {
-	panic("implement me")
+	return "ExpressionList"
 }
 
 func (e ExpressionList) getError() error {

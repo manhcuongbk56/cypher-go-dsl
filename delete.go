@@ -9,6 +9,9 @@ type Delete struct {
 }
 
 func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
+	if deleteItems.getError() != nil {
+		return DeleteError(deleteItems.getError())
+	}
 	d := Delete{
 		deleteItems: deleteItems,
 		detach:      detach,
@@ -16,6 +19,12 @@ func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
 	}
 	d.key = getAddress(&d)
 	return d
+}
+
+func DeleteError(err error) Delete {
+	return Delete{
+		err: err,
+	}
 }
 
 func (d Delete) isDetach() bool {
@@ -52,5 +61,5 @@ func (d Delete) isNotNil() bool {
 }
 
 func (d Delete) isUpdatingClause() bool {
-	panic("implement me")
+	return true
 }

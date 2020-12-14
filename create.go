@@ -8,12 +8,21 @@ type Create struct {
 }
 
 func CreateCreate(pattern Pattern) Create {
+	if pattern.getError() != nil {
+		return CreateError(pattern.getError())
+	}
 	c := Create{
 		pattern: pattern,
 		notNil:  true,
 	}
 	c.key = getAddress(&c)
 	return c
+}
+
+func CreateError(err error) Create {
+	return Create{
+		err: err,
+	}
 }
 
 func (c Create) getError() error {
@@ -43,5 +52,5 @@ func (c Create) isNotNil() bool {
 }
 
 func (c Create) isUpdatingClause() bool {
-	panic("implement me")
+	return true
 }

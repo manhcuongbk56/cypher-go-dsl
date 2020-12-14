@@ -8,12 +8,21 @@ type ExistentialSubquery struct {
 }
 
 func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
+	if fragment.getError() != nil {
+		return ExistentialSubqueryError(fragment.getError())
+	}
 	e := ExistentialSubquery{
 		fragment: fragment,
 		notNil:   true,
 	}
 	e.key = getAddress(&e)
 	return e
+}
+
+func ExistentialSubqueryError(err error) ExistentialSubquery {
+	return ExistentialSubquery{
+		err: err,
+	}
 }
 
 func ExistentialSubqueryExists(fragment Match) ExistentialSubquery {

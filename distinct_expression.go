@@ -8,12 +8,19 @@ type DistinctExpression struct {
 }
 
 func DistinctExpressionCreate(delegate Expression) DistinctExpression {
+	if delegate != nil && delegate.getError() != nil {
+		return DistinctExpressionError(delegate.getError())
+	}
 	d := DistinctExpression{
 		delegate: delegate,
 		notNil:   true,
 	}
 	d.key = getAddress(&d)
 	return d
+}
+
+func DistinctExpressionError(err error) DistinctExpression {
+	return DistinctExpression{err: err}
 }
 
 func (d DistinctExpression) getError() error {
