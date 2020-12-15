@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "errors"
+
 type SymbolicName struct {
 	value  string
 	key    string
@@ -8,12 +10,21 @@ type SymbolicName struct {
 }
 
 func SymbolicNameCreate(value string) SymbolicName {
+	if value == "" {
+		return SymbolicNameError(errors.New("name must be not empty"))
+	}
 	symbolicName := SymbolicName{
 		value:  value,
 		notNil: true,
 	}
 	symbolicName.key = getAddress(&symbolicName)
 	return symbolicName
+}
+
+func SymbolicNameError(err error) SymbolicName {
+	return SymbolicName{
+		err: err,
+	}
 }
 
 func (s SymbolicName) getError() error {

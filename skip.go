@@ -8,9 +8,6 @@ type Skip struct {
 }
 
 func SkipCreate(number int) Skip {
-	if number == 0 {
-		return Skip{}
-	}
 	literal := NumberLiteralCreate(number)
 	skip := Skip{skipAmount: literal}
 	skip.key = getAddress(&skip)

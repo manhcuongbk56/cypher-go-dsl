@@ -9,12 +9,19 @@ type SortItem struct {
 }
 
 func SortItemCreate(expression Expression, direction SortDirectionRaw) SortItem {
+	if expression != nil && expression.getError() != nil {
+		return SortItemError(expression.getError())
+	}
 	sortItem := SortItem{
 		expression: expression,
 		direction:  SortDirection{value: direction},
 	}
 	sortItem.key = getAddress(&sortItem)
 	return sortItem
+}
+
+func SortItemError(err error) SortItem {
+	return SortItem{err: err}
 }
 
 func (item SortItem) getError() error {

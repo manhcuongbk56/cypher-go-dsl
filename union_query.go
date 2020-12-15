@@ -13,7 +13,24 @@ type UnionQuery struct {
 	err               error
 }
 
-func UnionQueryCreate(all bool, firstQuery SingleQuery, additionalQueries []UnionPart) UnionQuery {
+func UnionQueryCreate(all bool, queries []SingleQuery) UnionQuery {
+	if queries == nil || len(queries) < 2 {
+		return UnionQueryError(errors.New("at least two queries are needed"))
+	}
+	for _, query := range queries {
+		if query != nil && query.getError() != nil {
+			return UnionQueryError(query.getError())
+		}
+	}
+	unionParts := make([]UnionPart, 0)
+	for _, query := range queries[1:] {
+		unionParts = append(unionParts, UnionPartCreate(all, query))
+	}
+	return unionQueryCreate1(all, queries[0], unionParts)
+}
+
+func unionQueryCreate1(all bool, firstQuery SingleQuery, additionalQueries []UnionPart) UnionQuery {
+
 	union := UnionQuery{
 		all:               all,
 		firstQuery:        firstQuery,
@@ -24,25 +41,20 @@ func UnionQueryCreate(all bool, firstQuery SingleQuery, additionalQueries []Unio
 	return union
 }
 
-func UnionQueryCreate1(all bool, queries []SingleQuery) (UnionQuery, error) {
-	if queries == nil || len(queries) < 2 {
-		return UnionQuery{}, errors.New("at least two queries are needed")
+func UnionQueryError(err error) UnionQuery {
+	return UnionQuery{
+		err: err,
 	}
-	unionParts := make([]UnionPart, 0)
-	for _, query := range queries[1:] {
-		unionParts = append(unionParts, UnionPartCreate(all, query))
-	}
-	return UnionQueryCreate(all, queries[0], unionParts), nil
 }
 
-func (q UnionQuery) addAdditionalQueries(newAdditionalQueries []SingleQuery) (UnionQuery, error) {
+func (q UnionQuery) addAdditionalQueries(newAdditionalQueries []SingleQuery) UnionQuery {
 	queries := make([]SingleQuery, 0)
 	queries = append(queries, q.firstQuery)
 	for _, unionPart := range q.additionalQueries {
 		queries = append(queries, unionPart.query)
 	}
 	queries = append(queries, newAdditionalQueries...)
-	return UnionQueryCreate1(q.all, queries)
+	return UnionQueryCreate(q.all, queries)
 }
 
 func (q UnionQuery) getError() error {

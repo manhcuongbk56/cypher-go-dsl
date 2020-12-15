@@ -9,6 +9,9 @@ type Unwind struct {
 }
 
 func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
+	if expressionToUnwind != nil && expressionToUnwind.getError() != nil {
+		return UnwindError(expressionToUnwind.getError())
+	}
 	var expression Expression
 	if aliased, isAliased := expressionToUnwind.(Aliased); isAliased {
 		expression = aliased.AsName()
@@ -22,6 +25,10 @@ func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
 	}
 	unwind.key = getAddress(&unwind)
 	return unwind
+}
+
+func UnwindError(err error) Unwind {
+	return Unwind{err: err}
 }
 
 func (u Unwind) getError() error {

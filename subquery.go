@@ -12,6 +12,9 @@ type Subquery struct {
 }
 
 func SubqueryCreate(statement Statement) Subquery {
+	if statement != nil && statement.getError() != nil {
+		return SubqueryError(statement.getError())
+	}
 	subQuery := Subquery{
 		statement: statement,
 		notNil:    true,
@@ -20,7 +23,10 @@ func SubqueryCreate(statement Statement) Subquery {
 	return subQuery
 }
 
-func SubqueryCall(statement Statement) (Subquery, error) {
+func SubqueryCall(statement Statement) Subquery {
+	if statement != nil && statement.getError() != nil {
+		return SubqueryError(statement.getError())
+	}
 	validReturn := false
 	if singlePartQuery, isSinglePartQuery := statement.(SinglePartQuery); isSinglePartQuery {
 		validReturn = singlePartQuery.doesReturnElements()
@@ -32,9 +38,15 @@ func SubqueryCall(statement Statement) (Subquery, error) {
 		validReturn = true
 	}
 	if !validReturn {
-		return Subquery{}, errors.New("only a statement that returns elements, either via return or yield, can be used in a subquery")
+		return SubqueryError(errors.New("only a statement that returns elements, either via return or yield, can be used in a subquery"))
 	}
-	return SubqueryCreate(statement), nil
+	return SubqueryCreate(statement)
+}
+
+func SubqueryError(err error) Subquery {
+	return Subquery{
+		err: err,
+	}
 }
 
 func (s Subquery) getError() error {

@@ -9,6 +9,9 @@ type UnionPart struct {
 }
 
 func UnionPartCreate(all bool, query SingleQuery) UnionPart {
+	if query != nil && query.getError() != nil {
+		return UnionPartError(query.getError())
+	}
 	unionPart := UnionPart{
 		all:    all,
 		query:  query,
@@ -16,6 +19,12 @@ func UnionPartCreate(all bool, query SingleQuery) UnionPart {
 	}
 	unionPart.key = getAddress(&unionPart)
 	return unionPart
+}
+
+func UnionPartError(err error) UnionPart {
+	return UnionPart{
+		err: err,
+	}
 }
 
 func (u UnionPart) isAll() bool {

@@ -10,13 +10,39 @@ type With struct {
 }
 
 func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
+	if returnItems.getError() != nil {
+		WithError(returnItems.getError())
+	}
+	if order.getError() != nil {
+		WithError(order.getError())
+	}
+	if skip.getError() != nil {
+		WithError(skip.getError())
+	}
+	if limit.getError() != nil {
+		WithError(limit.getError())
+	}
+	if where.getError() != nil {
+		WithError(where.getError())
+	}
+	distinctInstance := Distinct{}
+	if distinct {
+		distinctInstance = DISTINCT_INSTANCE
+	}
 	with := With{
-		distinct: DISTINCT_INSTANCE,
+		distinct: distinctInstance,
 		body:     ReturnBodyCreate(returnItems, order, skip, limit),
+		where:    where,
 		notNil:   true,
 	}
 	with.key = getAddress(&with)
 	return with
+}
+
+func WithError(err error) With {
+	return With{
+		err: err,
+	}
 }
 
 func (with With) getError() error {

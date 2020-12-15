@@ -150,12 +150,15 @@ func (d DefaultStatementBuilder) Unwind(expression Expression) OngoingUnwind {
 }
 
 func (d DefaultStatementBuilder) Call(statement Statement) OngoingReadingWithoutWhere {
+	if d.err != nil {
+		return d
+	}
 	d.CloseCurrentOngoingCall()
 	d.CloseCurrentOngoingMatch()
 	d.CloseCurrentOngoingUpdate()
-	singlePart, err := SubqueryCall(statement)
-	if err != nil {
-		d.err = err
+	singlePart := SubqueryCall(statement)
+	if singlePart.getError() != nil {
+		d.err = singlePart.getError()
 		return d
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, singlePart)

@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "errors"
+
 type YieldItems struct {
 	expressions []Expression
 	key         string
@@ -7,13 +9,27 @@ type YieldItems struct {
 	err         error
 }
 
-func YieldItemsCreate(expression []Expression) YieldItems {
+func YieldItemsCreate(expressions []Expression) YieldItems {
+	if expressions == nil || len(expressions) == 0 {
+		return YieldItemsError(errors.New("can not yield an empty list of items"))
+	}
+	for _, expression := range expressions {
+		if expression.getError() != nil {
+			return YieldItemsError(expression.getError())
+		}
+	}
 	yieldItem := YieldItems{
-		expressions: expression,
+		expressions: expressions,
 		notNil:      true,
 	}
 	yieldItem.key = getAddress(&yieldItem)
 	return yieldItem
+}
+
+func YieldItemsError(err error) YieldItems {
+	return YieldItems{
+		err: nil,
+	}
 }
 
 func (e YieldItems) getError() error {

@@ -8,12 +8,21 @@ type Where struct {
 }
 
 func WhereCreate(condition Condition) Where {
+	if condition != nil && condition.getError() != nil {
+		return WhereError(condition.getError())
+	}
 	where := Where{
 		condition: condition,
 		notNil:    true,
 	}
 	where.key = getAddress(&where)
 	return where
+}
+
+func WhereError(err error) Where {
+	return Where{
+		err: err,
+	}
 }
 
 func (w Where) getError() error {
