@@ -20,7 +20,7 @@ func (r RelationshipChain) getKey() string {
 }
 
 func (r RelationshipChain) RelationshipTo(node Node, types ...string) RelationshipPattern {
-	newRelation := (*(r.relationships[len(r.relationships)-1].right)).RelationshipTo(node, types...)
+	newRelation := r.relationships[len(r.relationships)-1].right.RelationshipTo(node, types...)
 	r.relationships = append(r.relationships, newRelation)
 	return r
 }
@@ -37,9 +37,9 @@ func (r RelationshipChain) accept(visitor *CypherRenderer) {
 	panic("implement me")
 }
 
-func FirstElement(relationship Relationship) RelationshipChain {
+func RelationshipChainCreate(relationship Relationship) RelationshipChain {
 	relations := make([]Relationship, 1)
-	relations = append(relations, relationship)
+	relations[0] = relationship
 	return RelationshipChain{relationships: relations}
 }
 

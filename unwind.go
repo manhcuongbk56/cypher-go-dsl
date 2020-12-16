@@ -52,9 +52,9 @@ func (u Unwind) leave(renderer *CypherRenderer) {
 }
 
 func (u Unwind) getKey() string {
-	panic("implement me")
+	return u.key
 }
 
 func (u Unwind) isNotNil() bool {
-	panic("implement me")
+	return u.notNil
 }

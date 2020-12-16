@@ -9,6 +9,11 @@ type EntryExpression struct {
 }
 
 func EntryExpressionCreate(key string, value Expression) EntryExpression {
+	if value != nil && value.getError() != nil {
+		return EntryExpression{
+			err: value.getError(),
+		}
+	}
 	e := EntryExpression{
 		Value:  value,
 		Key:    key,

@@ -10,6 +10,12 @@ type Match struct {
 }
 
 func MatchCreate(optional bool, pattern Pattern, optionalWhere Where) Match {
+	if pattern.getError() != nil {
+		return MatchError(pattern.getError())
+	}
+	if optionalWhere.getError() != nil {
+		return MatchError(optionalWhere.getError())
+	}
 	m := Match{
 		optional:      optional,
 		pattern:       pattern,
@@ -18,6 +24,10 @@ func MatchCreate(optional bool, pattern Pattern, optionalWhere Where) Match {
 	}
 	m.key = getAddress(&m)
 	return m
+}
+
+func MatchError(err error) Match {
+	return Match{err: err}
 }
 
 func (match Match) getError() error {

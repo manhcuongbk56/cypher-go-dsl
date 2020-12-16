@@ -12,12 +12,23 @@ type MapExpression struct {
 }
 
 func MapExpressionCreate(newContents []Expression) MapExpression {
+	for _, content := range newContents {
+		if content != nil && content.getError() != nil {
+			return MapExpressionError(content.getError())
+		}
+	}
 	m := MapExpression{
 		expressions: newContents,
 		notNil:      true,
 	}
 	m.key = getAddress(&m)
 	return m
+}
+
+func MapExpressionError(err error) MapExpression {
+	return MapExpression{
+		err: err,
+	}
 }
 
 func (m MapExpression) GetExpressionType() ExpressionType {
@@ -36,32 +47,28 @@ func (m MapExpression) getKey() string {
 	return m.key
 }
 
-func NewMapExpression(objects ...interface{}) (MapExpression, error) {
+func NewMapExpression(objects ...interface{}) MapExpression {
 	if len(objects)%2 != 0 {
-		err := errors.Errorf("number of object input should be product of 2 but it is %defaultBuilder", len(objects))
-		return MapExpression{}, err
+		return MapExpressionError(errors.Errorf("number of object input should be product of 2 but it is %defaultBuilder", len(objects)))
 	}
 	var newContents = make([]Expression, len(objects)/2)
 	var knownKeys = make(map[string]int)
 	for i := 0; i < len(objects); i += 2 {
 		key, isString := objects[i].(string)
 		if !isString {
-			err := errors.Errorf("key must be string")
-			return MapExpression{}, err
+			return MapExpressionError(errors.Errorf("key must be string"))
 		}
 		value, isExpression := objects[i+1].(Expression)
 		if !isExpression {
-			err := errors.Errorf("object must be expression")
-			return MapExpression{}, err
+			return MapExpressionError(errors.Errorf("object must be expression"))
 		}
 		if knownKeys[key] == 1 {
-			err := errors.Errorf("duplicate key")
-			return MapExpression{}, err
+			return MapExpressionError(errors.Errorf("duplicate key"))
 		}
 		knownKeys[key] = 1
 		newContents[i/2] = EntryExpressionCreate(key, value)
 	}
-	return MapExpressionCreate(newContents), nil
+	return MapExpressionCreate(newContents)
 }
 
 func (m MapExpression) accept(visitor *CypherRenderer) {

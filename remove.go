@@ -8,12 +8,21 @@ type Remove struct {
 }
 
 func RemoveCreate(setItems ExpressionList) Remove {
+	if setItems.getError() != nil {
+		return RemoveError(setItems.getError())
+	}
 	r := Remove{
 		setItems: setItems,
 		notNil:   true,
 	}
 	r.key = getAddress(&r)
 	return r
+}
+
+func RemoveError(err error) Remove {
+	return Remove{
+		err: err,
+	}
 }
 
 func (r Remove) getError() error {

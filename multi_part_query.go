@@ -9,12 +9,24 @@ type MultiPartQuery struct {
 }
 
 func MultiPartQueryCreate(parts []MultiPartElement, remainder SinglePartQuery) MultiPartQuery {
+	for _, part := range parts {
+		if part.getError() != nil {
+			return MultiPartQueryError(part.getError())
+		}
+	}
+	if remainder.getError() != nil {
+		return MultiPartQueryError(remainder.getError())
+	}
 	m := MultiPartQuery{
 		parts:     parts,
 		remainder: remainder,
 	}
 	m.key = getAddress(&m)
 	return m
+}
+
+func MultiPartQueryError(err error) MultiPartQuery {
+	return MultiPartQueryError(err)
 }
 
 func (m MultiPartQuery) getError() error {

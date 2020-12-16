@@ -8,12 +8,21 @@ type RelationshipPatternCondition struct {
 }
 
 func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) RelationshipPatternCondition {
+	if pathPattern.getError() != nil {
+		return RelationshipPatternConditionError(pathPattern.getError())
+	}
 	r := RelationshipPatternCondition{
 		pathPattern: pathPattern,
 		notNil:      true,
 	}
 	r.key = getAddress(&r)
 	return r
+}
+
+func RelationshipPatternConditionError(err error) RelationshipPatternCondition {
+	return RelationshipPatternCondition{
+		err: err,
+	}
 }
 
 func (r RelationshipPatternCondition) getConditionType() string {
@@ -41,9 +50,9 @@ func (r RelationshipPatternCondition) leave(renderer *CypherRenderer) {
 }
 
 func (r RelationshipPatternCondition) getKey() string {
-	panic("implement me")
+	return r.key
 }
 
 func (r RelationshipPatternCondition) GetExpressionType() ExpressionType {
-	panic("implement me")
+	return "RelationshipPatternCondition"
 }

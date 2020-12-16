@@ -288,7 +288,7 @@ func (d DefaultStatementBuilder) Build() (Statement, error) {
 }
 
 func (d DefaultStatementBuilder) BuildImpl(clearCurrentBuildSteps bool, returning Return) Statement {
-	singlePartQuery, _ := SinglePartQueryCreate(d.BuildListOfVisitable(clearCurrentBuildSteps), returning)
+	singlePartQuery := SinglePartQueryCreate(d.BuildListOfVisitable(clearCurrentBuildSteps), returning)
 	if len(d.multipartElements) == 0 {
 		return singlePartQuery
 	}

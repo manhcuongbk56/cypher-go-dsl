@@ -8,6 +8,11 @@ type Order struct {
 }
 
 func OrderCreate(sortItems []SortItem) Order {
+	for _, item := range sortItems {
+		if item.getError() != nil {
+			return Order{err: item.getError()}
+		}
+	}
 	o := Order{sortItems: sortItems}
 	o.key = getAddress(&o)
 	return o

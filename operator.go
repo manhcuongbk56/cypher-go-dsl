@@ -9,12 +9,17 @@ type Operator struct {
 }
 
 func OperatorCreate(representation string, operatorType OperatorType) Operator {
+
 	o := Operator{
 		representation: representation,
 		operatorType:   operatorType,
 	}
 	o.key = getAddress(&o)
 	return o
+}
+
+func OperatorError(err error) Operator {
+	return Operator{err: err}
 }
 
 func (o Operator) getError() error {

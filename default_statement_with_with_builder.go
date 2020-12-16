@@ -161,7 +161,7 @@ func (d DefaultStatementWithWithBuilder) Set(expressions ...Expression) Buildabl
 }
 
 func (d DefaultStatementWithWithBuilder) SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.Set(variable.getSymbolicName(), expression)
+	return d.Set(variable.getRequiredSymbolicName(), expression)
 }
 
 func (d DefaultStatementWithWithBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {

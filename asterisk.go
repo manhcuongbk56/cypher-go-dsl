@@ -7,6 +7,8 @@ type Asterisk struct {
 	err     error
 }
 
+var ASTERISK = AsteriskCreate()
+
 func AsteriskCreate() Asterisk {
 	asterisk := Asterisk{
 		content: "*",

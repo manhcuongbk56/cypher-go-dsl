@@ -8,6 +8,14 @@ type PropertyLookup struct {
 	err             error
 }
 
+func PropertyLookupCreate(name string) PropertyLookup {
+	property := PropertyLookup{
+		propertyKeyName: name,
+	}
+	property.key = getAddress(&property)
+	return property
+}
+
 func (p PropertyLookup) getError() error {
 	return p.err
 }
@@ -23,7 +31,10 @@ func (p PropertyLookup) accept(visitor *CypherRenderer) {
 
 func (p PropertyLookup) enter(renderer *CypherRenderer) {
 	renderer.builder.WriteString(".")
-	renderer.builder.WriteString(p.GetPropertyKeyName())
+	if ASTERISK.content == p.GetPropertyKeyName() {
+		renderer.builder.WriteString(p.GetPropertyKeyName())
+	}
+	renderer.builder.WriteString(escapeName(p.GetPropertyKeyName()))
 }
 
 func (p PropertyLookup) leave(renderer *CypherRenderer) {
@@ -34,7 +45,7 @@ func (p PropertyLookup) getKey() string {
 }
 
 func (p PropertyLookup) GetExpressionType() ExpressionType {
-	panic("implement me")
+	return "PropertyLookup"
 }
 
 func (p PropertyLookup) GetPropertyKeyName() string {

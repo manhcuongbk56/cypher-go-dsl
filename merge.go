@@ -11,6 +11,9 @@ type Merge struct {
 var BLANK = StringLiteralCreate(" ")
 
 func MergeCreate(pattern Pattern) Merge {
+	if pattern.getError() != nil {
+		return MergeError(pattern.getError())
+	}
 	m := Merge{
 		pattern:               pattern,
 		onCreateOrMatchEvents: make([]Visitable, 0),
@@ -21,6 +24,14 @@ func MergeCreate(pattern Pattern) Merge {
 }
 
 func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
+	if pattern.getError() != nil {
+		return MergeError(pattern.getError())
+	}
+	for _, action := range mergeActions {
+		if action.getError() != nil {
+			return MergeError(action.getError())
+		}
+	}
 	onCreateOrMatchEvents := make([]Visitable, 0)
 	onCreateOrMatchEvents = append(onCreateOrMatchEvents, BLANK)
 	for _, mergeAction := range mergeActions {
@@ -33,6 +44,10 @@ func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
 	}
 	m.key = getAddress(&m)
 	return m
+}
+
+func MergeError(err error) Merge {
+	return Merge{err: err}
 }
 
 func (m Merge) hasEvent() bool {

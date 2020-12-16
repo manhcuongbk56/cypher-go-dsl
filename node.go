@@ -1,6 +1,7 @@
 package cypher_go_dsl
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -25,10 +26,16 @@ func (node *Node) injectKey() {
 }
 
 func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ...string) Node {
-	labels := make([]NodeLabel, 0)
-	if primaryLabel != "" {
-		labels = append(labels, NodeLabel{value: primaryLabel})
+	if primaryLabel == "" {
+		return NodeError(errors.New("primary label is required"))
 	}
+	for _, label := range additionalLabels {
+		if label == "" {
+			return NodeError(errors.New("empty label is not allowed"))
+		}
+	}
+	labels := make([]NodeLabel, 0)
+	labels = append(labels, NodeLabel{value: primaryLabel})
 	for _, label := range additionalLabels {
 		labels = append(labels, NodeLabelCreate(label))
 	}
@@ -43,6 +50,9 @@ func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ..
 }
 
 func NodeCreate2(primaryLabel string) Node {
+	if primaryLabel == "" {
+		return NodeError(errors.New("primary label is required"))
+	}
 	var labels = make([]NodeLabel, 0)
 	labels = append(labels, NodeLabelCreate(primaryLabel))
 	node := Node{
@@ -54,6 +64,14 @@ func NodeCreate2(primaryLabel string) Node {
 }
 
 func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
+	if primaryLabel == "" {
+		return NodeError(errors.New("primary label is required"))
+	}
+	for _, label := range additionalLabel {
+		if label == "" {
+			return NodeError(errors.New("empty label is not allowed"))
+		}
+	}
 	var labels = make([]NodeLabel, 0)
 	labels = append(labels, NodeLabel{value: primaryLabel})
 	for _, label := range additionalLabel {
@@ -70,6 +88,19 @@ func NodeCreate4(newProperties MapExpression, node Node) Node {
 	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: PropertiesCreate(newProperties)}
 	node.injectKey()
 	return newNode
+}
+
+func NodeError(err error) Node {
+	return Node{
+		err: err,
+	}
+}
+
+func (node Node) getRequiredSymbolicName() SymbolicName {
+	if node.symbolicName.isNotNil() {
+		return node.symbolicName
+	}
+	return SymbolicNameError(errors.New("no name present"))
 }
 
 func (node Node) getSymbolicName() SymbolicName {
@@ -135,16 +166,15 @@ func (node Node) RelationshipBetween(nodeDest Node, types ...string) Relationshi
 	panic("implement me")
 }
 
-func (node Node) WithRawProperties(keysAndValues ...interface{}) (Node, error) {
-	var properties = &MapExpression{}
+func (node Node) WithRawProperties(keysAndValues ...interface{}) Node {
+	properties := MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
-		var err error
-		*properties, err = NewMapExpression(keysAndValues...)
-		if err != nil {
-			return Node{}, err
+		properties = NewMapExpression(keysAndValues...)
+		if properties.getError() != nil {
+			return NodeError(properties.getError())
 		}
 	}
-	return node.WithProperties(*properties), nil
+	return node.WithProperties(properties)
 }
 
 func (node Node) WithProperties(newProperties MapExpression) Node {
@@ -174,6 +204,10 @@ func NodeLabelCreate(value string) NodeLabel {
 	}
 	n.key = getAddress(&n)
 	return n
+}
+
+func NodeLabelError(err error) NodeLabel {
+	return NodeLabel{err: err}
 }
 
 func (n NodeLabel) getError() error {

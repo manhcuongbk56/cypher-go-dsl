@@ -1,5 +1,10 @@
 package cypher_go_dsl
 
+import (
+	"errors"
+	"golang.org/x/xerrors"
+)
+
 type Operation struct {
 	left     Expression
 	operator Operator
@@ -10,6 +15,24 @@ type Operation struct {
 }
 
 func OperationCreate(left Expression, operator Operator, right Expression) Operation {
+	if left != nil && left.getError() != nil {
+		return OperationError(left.getError())
+	}
+	if operator.getError() != nil {
+		return OperationError(operator.getError())
+	}
+	if right != nil && right.getError() != nil {
+		return OperationError(right.getError())
+	}
+	if left == nil || left.isNotNil() {
+		return OperationError(errors.New("left can not be nil"))
+	}
+	if operator.isNotNil() {
+		return OperationError(errors.New("operator can not be nil"))
+	}
+	if right == nil || right.isNotNil() {
+		return OperationError(errors.New("right can not be nil"))
+	}
 	o := Operation{
 		left:     left,
 		operator: operator,
@@ -20,6 +43,24 @@ func OperationCreate(left Expression, operator Operator, right Expression) Opera
 }
 
 func OperationCreate1(left Expression, operator Operator, right NodeLabel) Operation {
+	if left != nil && left.getError() != nil {
+		return OperationError(left.getError())
+	}
+	if operator.getError() != nil {
+		return OperationError(operator.getError())
+	}
+	if right.getError() != nil {
+		return OperationError(right.getError())
+	}
+	if left == nil || left.isNotNil() {
+		return OperationError(errors.New("left can not be nil"))
+	}
+	if operator.isNotNil() {
+		return OperationError(errors.New("operator can not be nil"))
+	}
+	if right.isNotNil() {
+		return OperationError(errors.New("right can not be nil"))
+	}
 	o := Operation{
 		left:     left,
 		operator: operator,
@@ -30,17 +71,39 @@ func OperationCreate1(left Expression, operator Operator, right NodeLabel) Opera
 }
 
 func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operation {
+	if op1.getError() != nil {
+		return OperationError(op1.getError())
+	}
+	if operator.getError() != nil {
+		return OperationError(operator.getError())
+	}
+	if op1.isNotNil() {
+		return OperationError(errors.New("left can not be nil"))
+	}
+	if operator.isNotNil() {
+		return OperationError(errors.New("operator can not be nil"))
+	}
+	if !(operator.representation == SET_LABEL.representation || operator.representation == REMOVE_LABEL.representation) {
+		return OperationError(xerrors.Errorf("operator %s can not use to modify label", operator.representation))
+	}
+	if nodeLabels == nil || len(nodeLabels) == 0 {
+		return OperationError(errors.New("labels can not be nil or empty"))
+	}
 	labels := make([]NodeLabel, 0)
 	for _, nodeLabel := range nodeLabels {
 		labels = append(labels, NodeLabelCreate(nodeLabel))
 	}
 	o := Operation{
-		left:     op1.getSymbolicName(),
+		left:     op1.getRequiredSymbolicName(),
 		operator: operator,
 		right:    NodeLabelsCreate(labels),
 	}
 	o.key = getAddress(&o)
 	return o
+}
+
+func OperationError(err error) Operation {
+	return Operation{err: err}
 }
 
 func (o Operation) getError() error {

@@ -8,12 +8,21 @@ type NodeLabels struct {
 }
 
 func NodeLabelsCreate(values []NodeLabel) NodeLabels {
+	for _, value := range values {
+		if value.getError() != nil {
+			return NodeLabelsError(value.getError())
+		}
+	}
 	n := NodeLabels{
 		values: values,
 		notNil: true,
 	}
 	n.key = getAddress(&n)
 	return n
+}
+
+func NodeLabelsError(err error) NodeLabels {
+	return NodeLabels{err: err}
 }
 
 func (n NodeLabels) getError() error {

@@ -18,6 +18,18 @@ type ProcedureCall struct {
 }
 
 func ProcedureCallCreate(name ProcedureName, arguments Arguments, yieldItems YieldItems, optionalWhere Where) ProcedureCall {
+	if name.getError() != nil {
+		return ProcedureCall{err: name.getError()}
+	}
+	if arguments.getError() != nil {
+		return ProcedureCall{err: arguments.getError()}
+	}
+	if yieldItems.getError() != nil {
+		return ProcedureCall{err: yieldItems.getError()}
+	}
+	if optionalWhere.getError() != nil {
+		return ProcedureCall{err: optionalWhere.getError()}
+	}
 	p := ProcedureCall{
 		name:          name,
 		arguments:     arguments,

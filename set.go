@@ -8,12 +8,21 @@ type Set struct {
 }
 
 func SetCreate(setItems ExpressionList) Set {
+	if setItems.getError() != nil {
+		return SetError(setItems.getError())
+	}
 	set := Set{
 		setItems: setItems,
 		notNil:   true,
 	}
 	set.key = getAddress(&set)
 	return set
+}
+
+func SetError(err error) Set {
+	return Set{
+		err: err,
+	}
 }
 
 func (s Set) isUpdatingClause() bool {

@@ -9,9 +9,14 @@ type ListLiteral struct {
 	notNil  bool
 }
 
-func ListLiteralCreate(content []Literal) ListLiteral {
+func ListLiteralCreate(contents []Literal) ListLiteral {
+	for _, content := range contents {
+		if content != nil && content.getError() != nil {
+			return ListLiteralError(content.getError())
+		}
+	}
 	list := ListLiteral{
-		content: content,
+		content: contents,
 	}
 	list.key = getAddress(&list)
 	return list

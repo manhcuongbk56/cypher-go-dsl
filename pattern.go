@@ -8,6 +8,11 @@ type Pattern struct {
 }
 
 func PatternCreate(patternElements []PatternElement) Pattern {
+	for _, element := range patternElements {
+		if element != nil && element.getError() != nil {
+			return Pattern{err: element.getError()}
+		}
+	}
 	p := Pattern{
 		patternElements: patternElements,
 		notNil:          true,

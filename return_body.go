@@ -11,6 +11,18 @@ type ReturnBody struct {
 }
 
 func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit Limit) ReturnBody {
+	if returnItems.getError() != nil {
+		ReturnBodyError(returnItems.getError())
+	}
+	if order.getError() != nil {
+		ReturnBodyError(order.getError())
+	}
+	if skip.getError() != nil {
+		ReturnBodyError(skip.getError())
+	}
+	if limit.getError() != nil {
+		ReturnBodyError(limit.getError())
+	}
 	r := ReturnBody{
 		returnItems: returnItems,
 		order:       order,
@@ -22,6 +34,12 @@ func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit 
 	return r
 }
 
+func ReturnBodyError(err error) ReturnBody {
+	return ReturnBody{
+		err: err,
+	}
+}
+
 func (r ReturnBody) getError() error {
 	return r.err
 }
@@ -31,11 +49,9 @@ func (r ReturnBody) isNotNil() bool {
 }
 
 func (r ReturnBody) enter(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (r ReturnBody) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (r ReturnBody) getKey() string {

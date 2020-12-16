@@ -1,11 +1,61 @@
 package cypher_go_dsl
 
+import "errors"
+
 type Property struct {
 	container Expression
 	name      PropertyLookup
 	key       string
 	notNil    bool
 	err       error
+}
+
+func PropertyCreate(parentContainer Named, name string) Property {
+	if parentContainer != nil && parentContainer.getError() != nil {
+		return PropertyError(parentContainer.getError())
+	}
+	if parentContainer == nil {
+		return PropertyError(errors.New("node or relationship is nil"))
+	}
+	requiredSymbolicName := parentContainer.getRequiredSymbolicName()
+	if requiredSymbolicName.getError() != nil {
+		return PropertyError(requiredSymbolicName.getError())
+	}
+	if name == "" {
+		return PropertyError(errors.New("property name is required"))
+	}
+	return PropertyCreate1(requiredSymbolicName, PropertyLookupCreate(name))
+}
+
+func PropertyCreate2(container Expression, name string) Property {
+	if container != nil && container.getError() != nil {
+		return PropertyError(container.getError())
+	}
+	if container == nil {
+		return PropertyError(errors.New("container is nil"))
+	}
+	if name == "" {
+		return PropertyError(errors.New("property name is required"))
+	}
+	return PropertyCreate1(container, PropertyLookupCreate(name))
+}
+
+func PropertyCreate1(container Expression, name PropertyLookup) Property {
+	if container != nil && container.getError() != nil {
+		return PropertyError(container.getError())
+	}
+	if name.getError() != nil {
+		return PropertyError(name.getError())
+	}
+	return Property{
+		container: container,
+		name:      name,
+		notNil:    true,
+	}
+}
+
+func PropertyError(err error) Property {
+	return Property{err: err}
 }
 
 func (p Property) getError() error {
@@ -24,11 +74,9 @@ func (p Property) accept(visitor *CypherRenderer) {
 }
 
 func (p Property) enter(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (p Property) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (p Property) getKey() string {
@@ -36,7 +84,7 @@ func (p Property) getKey() string {
 }
 
 func (p Property) GetExpressionType() ExpressionType {
-	panic("implement me")
+	return "Property"
 }
 
 func (p Property) getName() PropertyLookup {

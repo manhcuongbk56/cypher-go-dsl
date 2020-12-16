@@ -9,6 +9,9 @@ type Return struct {
 }
 
 func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
+	if body.getError() != nil {
+		return ReturnError(body.getError())
+	}
 	r := Return{
 		distinct: distinctInstance,
 		body:     body,
@@ -16,6 +19,21 @@ func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
 	}
 	r.key = getAddress(&r)
 	return r
+}
+
+func ReturnCreate1(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit) Return {
+	var distinctInstance Distinct
+	if distinct {
+		distinctInstance = DISTINCT_INSTANCE
+	}
+	body := ReturnBodyCreate(returnItems, order, skip, limit)
+	return ReturnCreate(distinctInstance, body)
+}
+
+func ReturnError(err error) Return {
+	return Return{
+		err: err,
+	}
 }
 
 func (r Return) getError() error {
@@ -35,15 +53,6 @@ func (r Return) accept(visitor *CypherRenderer) {
 	VisitIfNotNull(r.distinct, visitor)
 	r.body.accept(visitor)
 	(*visitor).leave(r)
-}
-
-func ReturnCreate1(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit) Return {
-	var distinctInstance Distinct
-	if distinct {
-		distinctInstance = DISTINCT_INSTANCE
-	}
-	body := ReturnBodyCreate(returnItems, order, skip, limit)
-	return ReturnCreate(distinctInstance, body)
 }
 
 func (r Return) enter(renderer *CypherRenderer) {

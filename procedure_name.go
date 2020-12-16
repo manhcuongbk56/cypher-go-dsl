@@ -34,6 +34,9 @@ func ProcedureNameCreate1(value string) ProcedureName {
 }
 
 func ProcedureNameCreate2(namespace Namespace, value string) ProcedureName {
+	if namespace.getError() != nil {
+		return ProcedureName{err: namespace.getError()}
+	}
 	p := ProcedureName{
 		value:             value,
 		optionalNamespace: namespace,
@@ -65,6 +68,7 @@ func (p ProcedureName) enter(renderer *CypherRenderer) {
 }
 
 func (p ProcedureName) leave(renderer *CypherRenderer) {
+	renderer.append(p.value)
 }
 
 func (p ProcedureName) getKey() string {
