@@ -8,6 +8,10 @@ type DefaultStatementWithReturnBuilder struct {
 	err            error
 }
 
+func DefaultStatementWithReturnBuilderError(err error) DefaultStatementWithReturnBuilder {
+	return DefaultStatementWithReturnBuilder{err: err}
+}
+
 func (d *DefaultStatementWithReturnBuilder) AddExpression(expression ...Expression) {
 	d.returnList = append(d.returnList, expression...)
 }

@@ -7,6 +7,7 @@ type InQueryCallBuilder struct {
 	yieldItems       YieldItems
 	conditionBuilder ConditionBuilder
 	notNil           bool
+	err              error
 }
 
 func InQueryCallBuilderCreate(defaultBuilder *DefaultStatementBuilder, procedureName ProcedureName) InQueryCallBuilder {

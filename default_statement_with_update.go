@@ -49,6 +49,10 @@ func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBu
 	}
 }
 
+func DefaultStatementWithUpdateBuilderError(err error) DefaultStatementWithUpdateBuilder {
+	return DefaultStatementWithUpdateBuilder{err: err}
+}
+
 func (d DefaultStatementWithUpdateBuilder) isNotNil() bool {
 	return d.notNil
 }

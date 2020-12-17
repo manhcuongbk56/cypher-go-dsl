@@ -19,6 +19,10 @@ func DefaultStatementWithWithBuilderCreate(defaultBuilder *DefaultStatementBuild
 	}
 }
 
+func DefaultStatementWithWithBuilderError(err error) DefaultStatementWithWithBuilder {
+	return DefaultStatementWithWithBuilder{err: err}
+}
+
 func (d *DefaultStatementWithWithBuilder) buildWith() With {
 	if len(d.returnList) == 0 {
 		return With{}
