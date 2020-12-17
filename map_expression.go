@@ -80,10 +80,11 @@ func (m MapExpression) accept(visitor *CypherRenderer) {
 }
 
 func (m MapExpression) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("{")
+	renderer.append("{")
 }
 
 func (m MapExpression) leave(renderer *CypherRenderer) {
+	renderer.append("}")
 }
 
 func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {

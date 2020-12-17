@@ -27,17 +27,15 @@ func TestRenderComplexQuery(t *testing.T) {
 	fmt.Println(query)
 }
 
-func TestExpressionContainer_Add(t *testing.T) {
-	var property = PropertyLookup{
-		propertyKeyName: "test",
+func TestGh48(t *testing.T) {
+	n := NewNode("Label").Named("n")
+	statement, err := Matchs(n).
+		SetWithNamed(n, MapOf("a", StringLiteralCreate("bar"), "b", StringLiteralCreate("baz"))).
+		ReturningByNamed(n).
+		Build()
+	if err != nil {
+		fmt.Print(err)
 	}
-	a := property.EndsWith(property)
-	fmt.Print(a)
-}
-
-func TestNodeAsNamedType(t *testing.T) {
-	var node interface{} = Node{}
-	a, b := node.(Named)
-	fmt.Print(a)
-	fmt.Print(b)
+	query := NewRenderer().Render(statement)
+	fmt.Println(query)
 }

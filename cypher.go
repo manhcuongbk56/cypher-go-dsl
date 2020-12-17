@@ -28,6 +28,10 @@ func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
 }
 
+func MapOf(objects ...interface{}) MapExpression {
+	return NewMapExpression(objects...)
+}
+
 func Sort(expression Expression) SortItem {
 	return SortItemCreate(expression, UNDEFINED)
 }

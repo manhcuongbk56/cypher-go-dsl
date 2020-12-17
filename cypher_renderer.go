@@ -1,6 +1,7 @@
 package cypher_go_dsl
 
 import (
+	"fmt"
 	"strings"
 )
 import uuid "github.com/google/uuid"
@@ -91,6 +92,9 @@ func (renderer *CypherRenderer) leave(visitable Visitable) {
 }
 
 func (renderer *CypherRenderer) PreEnter(visitable *Visitable) bool {
+	if _, isOperator := (*visitable).(Operator); isOperator {
+		fmt.Println("ahuhu")
+	}
 	lastAliased := peekAliased(renderer.currentAliasedElements)
 	visited := false
 	if lastAliased != nil {

@@ -13,6 +13,7 @@ func OperatorCreate(representation string, operatorType OperatorType) Operator {
 	o := Operator{
 		representation: representation,
 		operatorType:   operatorType,
+		notNil:         true,
 	}
 	o.key = getAddress(&o)
 	return o

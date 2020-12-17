@@ -559,7 +559,7 @@ func (d DefaultStatementBuilder) BuildImpl(clearCurrentBuildSteps bool, returnin
 
 func (d *DefaultStatementBuilder) BuildListOfVisitable(clearAfter bool) []Visitable {
 	visitables := make([]Visitable, 0)
-	copy(visitables, d.currentSinglePartElements)
+	visitables = append(visitables, d.currentSinglePartElements...)
 	if d.currentOngoingMatch.notNil {
 		visitables = append(visitables, d.currentOngoingMatch.buildMatch())
 	}

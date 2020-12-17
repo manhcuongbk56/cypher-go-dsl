@@ -52,11 +52,11 @@ func (e ExpressionList) PrepareVisit(child Visitable) Visitable {
 }
 
 func (e ExpressionList) accept(visitor *CypherRenderer) {
-	(*visitor).enter(e)
+	visitor.enter(e)
 	for _, expression := range e.expressions {
 		e.PrepareVisit(expression).accept(visitor)
 	}
-	(*visitor).leave(e)
+	visitor.leave(e)
 }
 
 func (e ExpressionList) enter(renderer *CypherRenderer) {

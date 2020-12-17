@@ -24,14 +24,14 @@ func OperationCreate(left Expression, operator Operator, right Expression) Opera
 	if right != nil && right.getError() != nil {
 		return OperationError(right.getError())
 	}
-	if left == nil || left.isNotNil() {
-		return OperationError(errors.New("left can not be nil"))
+	if left == nil || !left.isNotNil() {
+		return OperationError(errors.New("operation: left can not be nil"))
 	}
-	if operator.isNotNil() {
-		return OperationError(errors.New("operator can not be nil"))
+	if !operator.isNotNil() {
+		return OperationError(errors.New("operation: operator can not be nil"))
 	}
-	if right == nil || right.isNotNil() {
-		return OperationError(errors.New("right can not be nil"))
+	if right == nil || !right.isNotNil() {
+		return OperationError(errors.New("operation: right can not be nil"))
 	}
 	o := Operation{
 		left:     left,
@@ -111,6 +111,7 @@ func (o Operation) getError() error {
 }
 
 func (o Operation) accept(visitor *CypherRenderer) {
+	visitor.enter(o)
 	NameOrExpression(o.left).accept(visitor)
 	o.operator.accept(visitor)
 	o.right.accept(visitor)
@@ -142,6 +143,6 @@ func (o Operation) GetExpressionType() ExpressionType {
 }
 
 func (o Operation) needsGrouping() bool {
-	return (o.operator.operatorType == PROPERTY || o.operator.operatorType == LABEL) &&
+	return (o.operator.operatorType != PROPERTY && o.operator.operatorType != LABEL) &&
 		(o.operator != EXPONENTIATION && o.operator != PIPE)
 }
