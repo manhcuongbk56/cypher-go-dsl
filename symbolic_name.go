@@ -49,7 +49,7 @@ func (s SymbolicName) accept(visitor *CypherRenderer) {
 }
 
 func (s SymbolicName) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(renderer.resolve(s))
+	renderer.append(renderer.resolve(s))
 }
 
 func (s SymbolicName) leave(renderer *CypherRenderer) {

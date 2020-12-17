@@ -33,7 +33,7 @@ func (s Skip) accept(visitor *CypherRenderer) {
 }
 
 func (s Skip) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" SKIP ")
+	renderer.append(" SKIP ")
 }
 
 func (s Skip) leave(renderer *CypherRenderer) {

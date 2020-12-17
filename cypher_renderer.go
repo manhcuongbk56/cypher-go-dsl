@@ -113,7 +113,7 @@ func (renderer *CypherRenderer) PreEnter(visitable *Visitable) bool {
 		renderer.enableSeparator(nextLevel, true)
 	}
 	if separator, isSeparator := renderer.separatorOnCurrentLevel(); isSeparator {
-		renderer.builder.WriteString(separator)
+		renderer.append(separator)
 		renderer.resetSeparatorOnCurrentLevel()
 	}
 	return !renderer.skipNodeContent
@@ -154,15 +154,15 @@ func enterRelationshipTypes(renderer *CypherRenderer, visitable Visitable) {
 		}
 		typeWithPrefix = append(typeWithPrefix, RelTypeStart+typeRaw)
 	}
-	renderer.builder.WriteString(strings.Join(typeWithPrefix, RelTypSeparator))
+	renderer.append(strings.Join(typeWithPrefix, RelTypSeparator))
 }
 
 func enterRelationshipDetail(renderer *CypherRenderer, visitable Visitable) {
 	details := visitable.(RelationshipDetails)
 	direction := details.direction
-	renderer.builder.WriteString(direction.symbolLeft)
+	renderer.append(direction.symbolLeft)
 	if details.hasContent() {
-		renderer.builder.WriteString("[")
+		renderer.append("[")
 	}
 }
 
@@ -170,22 +170,22 @@ func leaveRelationshipDetail(renderer *CypherRenderer, visitable Visitable) {
 	details := visitable.(RelationshipDetails)
 	direction := details.direction
 	if details.hasContent() {
-		renderer.builder.WriteString("]")
+		renderer.append("]")
 	}
-	renderer.builder.WriteString(direction.symbolRight)
+	renderer.append(direction.symbolRight)
 }
 
 func enterSkip(renderer *CypherRenderer, visitable Visitable) {
-	renderer.builder.WriteString(" SKIP ")
+	renderer.append(" SKIP ")
 }
 
 func enterLimit(renderer *CypherRenderer, visitable Visitable) {
-	renderer.builder.WriteString(" LIMIT ")
+	renderer.append(" LIMIT ")
 }
 
 func enterLiteral(renderer *CypherRenderer, visitable Visitable) {
 	literal := visitable.(Literal)
-	renderer.builder.WriteString(literal.AsString())
+	renderer.append(literal.AsString())
 }
 
 func push(queue []string, element string) []string {

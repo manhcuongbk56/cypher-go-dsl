@@ -40,14 +40,14 @@ func (e EntryExpression) GetExpressionType() ExpressionType {
 }
 
 func (e EntryExpression) accept(visitor *CypherRenderer) {
-	(*visitor).enter(e)
+	visitor.enter(e)
 	e.Value.accept(visitor)
-	(*visitor).leave(e)
+	visitor.leave(e)
 }
 
 func (e EntryExpression) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(escapeName(e.Key))
-	renderer.builder.WriteString(": ")
+	renderer.append(escapeName(e.Key))
+	renderer.append(": ")
 }
 
 func (e EntryExpression) leave(renderer *CypherRenderer) {

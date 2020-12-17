@@ -44,19 +44,19 @@ func (relationshipLength RelationshipLength) enter(renderer *CypherRenderer) {
 	minimum := relationshipLength.minimum
 	maximum := relationshipLength.maximum
 	if relationshipLength.unbounded {
-		renderer.builder.WriteString("*")
+		renderer.append("*")
 		return
 	}
 	if minimum == nil && maximum == nil {
 		return
 	}
-	renderer.builder.WriteString("*")
+	renderer.append("*")
 	if minimum != nil {
-		renderer.builder.WriteString(strconv.Itoa(*minimum))
+		renderer.append(strconv.Itoa(*minimum))
 	}
-	renderer.builder.WriteString("..")
+	renderer.append("..")
 	if maximum != nil {
-		renderer.builder.WriteString(strconv.Itoa(*maximum))
+		renderer.append(strconv.Itoa(*maximum))
 	}
 }
 

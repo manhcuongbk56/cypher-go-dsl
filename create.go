@@ -36,11 +36,11 @@ func (c Create) accept(visitor *CypherRenderer) {
 }
 
 func (c Create) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("CREATE ")
+	renderer.append("CREATE ")
 }
 
 func (c Create) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }
 
 func (c Create) getKey() string {

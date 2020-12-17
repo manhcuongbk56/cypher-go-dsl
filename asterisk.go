@@ -52,7 +52,7 @@ func (s Asterisk) accept(visitor *CypherRenderer) {
 }
 
 func (s Asterisk) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(escapeAsterisk(s.AsString()))
+	renderer.append(escapeAsterisk(s.AsString()))
 }
 
 func (s Asterisk) leave(renderer *CypherRenderer) {

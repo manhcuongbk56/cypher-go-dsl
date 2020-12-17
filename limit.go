@@ -44,7 +44,7 @@ func (l Limit) accept(visitor *CypherRenderer) {
 }
 
 func (l Limit) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" LIMIT ")
+	renderer.append(" LIMIT ")
 }
 
 func (l Limit) leave(renderer *CypherRenderer) {

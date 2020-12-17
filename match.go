@@ -55,11 +55,11 @@ func (match Match) getKey() string {
 
 func (match Match) enter(renderer *CypherRenderer) {
 	if match.isOptional() {
-		renderer.builder.WriteString("OPTIONAL ")
+		renderer.append("OPTIONAL ")
 	}
-	renderer.builder.WriteString("MATCH ")
+	renderer.append("MATCH ")
 }
 
 func (match Match) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }

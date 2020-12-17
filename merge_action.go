@@ -31,11 +31,11 @@ func (m MergeAction) accept(visitor *CypherRenderer) {
 func (m MergeAction) enter(renderer *CypherRenderer) {
 	switch m.mergeType {
 	case ON_CREATE:
-		renderer.builder.WriteString("ON CREATE")
+		renderer.append("ON CREATE")
 	case ON_MATCH:
-		renderer.builder.WriteString("ON MATCH")
+		renderer.append("ON MATCH")
 	}
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }
 
 func (m MergeAction) leave(renderer *CypherRenderer) {

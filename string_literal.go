@@ -50,7 +50,7 @@ func (s StringLiteral) accept(visitor *CypherRenderer) {
 }
 
 func (s StringLiteral) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(escapeStringLiteral(s.AsString()))
+	renderer.append(escapeStringLiteral(s.AsString()))
 }
 
 func (s StringLiteral) leave(renderer *CypherRenderer) {

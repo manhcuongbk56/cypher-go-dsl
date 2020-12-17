@@ -68,7 +68,7 @@ func (m Merge) accept(visitor *CypherRenderer) {
 }
 
 func (m Merge) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("MERGE ")
+	renderer.append("MERGE ")
 }
 
 func (m Merge) leave(renderer *CypherRenderer) {

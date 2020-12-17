@@ -1,7 +1,6 @@
 package cypher_go_dsl
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,7 +12,9 @@ func TestRenderSimpleQuery(t *testing.T) {
 		Returning(customer.symbolicName).
 		Build()
 	query := NewRenderer().Render(statement)
-	fmt.Println(query)
+	if query != "MATCH (d:`Device` {`entity.id`: '7d729555-0d61-46ae-ab79-ce43e72f751b'})-[:`HAS`]->(c:`Customer`) RETURN c" {
+		t.Errorf("query is not match:\n %s", query)
+	}
 }
 
 func TestRenderComplexQuery(t *testing.T) {
@@ -24,7 +25,9 @@ func TestRenderComplexQuery(t *testing.T) {
 		Returning(customer.symbolicName).
 		Build()
 	query := NewRenderer().Render(statement)
-	fmt.Println(query)
+	if query != "MATCH (b:`Farm`)-[:`HAS`]->(c:`Customer`) RETURN c" {
+		t.Errorf("query is not match:\n %s", query)
+	}
 }
 
 func TestGh48(t *testing.T) {
@@ -34,8 +37,10 @@ func TestGh48(t *testing.T) {
 		ReturningByNamed(n).
 		Build()
 	if err != nil {
-		fmt.Print(err)
+		t.Errorf("error when build query: %s", err)
 	}
 	query := NewRenderer().Render(statement)
-	fmt.Println(query)
+	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {
+		t.Errorf("Query is not match: %s", query)
+	}
 }

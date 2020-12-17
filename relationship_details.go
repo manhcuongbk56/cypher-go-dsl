@@ -148,16 +148,16 @@ func (r RelationshipDetails) accept(visitor *CypherRenderer) {
 
 func (r RelationshipDetails) enter(renderer *CypherRenderer) {
 	direction := r.direction
-	renderer.builder.WriteString(direction.symbolLeft)
+	renderer.append(direction.symbolLeft)
 	if r.hasContent() {
-		renderer.builder.WriteString("[")
+		renderer.append("[")
 	}
 }
 
 func (r RelationshipDetails) leave(renderer *CypherRenderer) {
 	direction := r.direction
 	if r.hasContent() {
-		renderer.builder.WriteString("]")
+		renderer.append("]")
 	}
-	renderer.builder.WriteString(direction.symbolRight)
+	renderer.append(direction.symbolRight)
 }

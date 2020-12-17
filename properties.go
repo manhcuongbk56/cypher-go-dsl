@@ -41,7 +41,7 @@ func (p Properties) accept(visitor *CypherRenderer) {
 }
 
 func (p Properties) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }
 
 func (p Properties) leave(renderer *CypherRenderer) {

@@ -42,11 +42,11 @@ func (o Operator) enter(renderer *CypherRenderer) {
 		return
 	}
 	if operatorType != PREFIX && o != EXPONENTIATION {
-		renderer.builder.WriteString(" ")
+		renderer.append(" ")
 	}
-	renderer.builder.WriteString(o.representation)
+	renderer.append(o.representation)
 	if operatorType != POSTFIX && o != EXPONENTIATION {
-		renderer.builder.WriteString(" ")
+		renderer.append(" ")
 	}
 }
 

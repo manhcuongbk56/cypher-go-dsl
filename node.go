@@ -138,19 +138,19 @@ func (node Node) accept(visitor *CypherRenderer) {
 }
 
 func (node Node) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("(")
+	renderer.append("(")
 	if !node.hasSymbolic() {
 		return
 	}
 	_, renderer.skipNodeContent = renderer.visitedNamed[node.key]
 	renderer.visitedNamed[node.key] = 1
 	if renderer.skipNodeContent {
-		renderer.builder.WriteString(node.symbolicName.value)
+		renderer.append(node.symbolicName.value)
 	}
 }
 
 func (node Node) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(")")
+	renderer.append(")")
 	renderer.skipNodeContent = false
 }
 
@@ -231,8 +231,8 @@ func (n NodeLabel) enter(renderer *CypherRenderer) {
 	if n.value == "" {
 		return
 	}
-	renderer.builder.WriteString(NodeLabelStart)
-	renderer.builder.WriteString(escapeName(n.value))
+	renderer.append(NodeLabelStart)
+	renderer.append(escapeName(n.value))
 }
 
 func (n NodeLabel) leave(renderer *CypherRenderer) {

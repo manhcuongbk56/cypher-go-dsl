@@ -56,7 +56,7 @@ func (r Return) accept(visitor *CypherRenderer) {
 }
 
 func (r Return) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("RETURN ")
+	renderer.append("RETURN ")
 }
 
 func (r Return) leave(renderer *CypherRenderer) {

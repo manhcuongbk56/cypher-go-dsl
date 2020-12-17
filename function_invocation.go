@@ -129,12 +129,12 @@ func (f FunctionInvocation) accept(visitor *CypherRenderer) {
 }
 
 func (f FunctionInvocation) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(f.functionName)
-	renderer.builder.WriteString("(")
+	renderer.append(f.functionName)
+	renderer.append("(")
 }
 
 func (f FunctionInvocation) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(")")
+	renderer.append(")")
 }
 
 func (f FunctionInvocation) getKey() string {

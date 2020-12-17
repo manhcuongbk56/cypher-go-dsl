@@ -43,13 +43,13 @@ func (d Delete) accept(visitor *CypherRenderer) {
 
 func (d Delete) enter(renderer *CypherRenderer) {
 	if d.detach {
-		renderer.builder.WriteString("DETACH ")
+		renderer.append("DETACH ")
 	}
-	renderer.builder.WriteString("DELETE ")
+	renderer.append("DELETE ")
 }
 
 func (d Delete) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }
 
 func (d Delete) getKey() string {

@@ -30,10 +30,11 @@ func (d *DefaultStatementWithWithBuilder) buildWith() With {
 	returnItems := ExpressionListCreate(d.returnList)
 	condition := d.conditionBuilder.buildCondition()
 	var where Where
-	if condition == nil || condition.isNotNil() {
-		where = WhereCreate(condition)
-	} else {
+	if condition == nil || !condition.isNotNil() {
 		where = Where{}
+
+	} else {
+		where = WhereCreate(condition)
 	}
 	returnedWith := WithCreate(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
 		d.orderBuilder.limit, where)

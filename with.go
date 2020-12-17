@@ -58,11 +58,11 @@ func (with With) accept(visitor *CypherRenderer) {
 }
 
 func (with With) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString("WITH ")
+	renderer.append("WITH ")
 }
 
 func (with With) leave(renderer *CypherRenderer) {
-	renderer.builder.WriteString(" ")
+	renderer.append(" ")
 }
 
 func (with With) getKey() string {

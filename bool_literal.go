@@ -52,7 +52,7 @@ func (b BooleanLiteral) accept(visitor *CypherRenderer) {
 }
 
 func (b BooleanLiteral) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(b.AsString())
+	renderer.append(b.AsString())
 }
 
 func (b BooleanLiteral) leave(renderer *CypherRenderer) {

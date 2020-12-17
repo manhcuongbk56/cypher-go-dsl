@@ -49,7 +49,7 @@ func (r RelationshipTypes) enter(renderer *CypherRenderer) {
 		}
 		typeWithPrefix = append(typeWithPrefix, RelTypeStart+escapeName(typeRaw))
 	}
-	renderer.builder.WriteString(strings.Join(typeWithPrefix, RelTypSeparator))
+	renderer.append(strings.Join(typeWithPrefix, RelTypSeparator))
 }
 
 func (r RelationshipTypes) leave(renderer *CypherRenderer) {

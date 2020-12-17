@@ -30,11 +30,11 @@ func (p PropertyLookup) accept(visitor *CypherRenderer) {
 }
 
 func (p PropertyLookup) enter(renderer *CypherRenderer) {
-	renderer.builder.WriteString(".")
+	renderer.append(".")
 	if ASTERISK.content == p.GetPropertyKeyName() {
-		renderer.builder.WriteString(p.GetPropertyKeyName())
+		renderer.append(p.GetPropertyKeyName())
 	}
-	renderer.builder.WriteString(escapeName(p.GetPropertyKeyName()))
+	renderer.append(escapeName(p.GetPropertyKeyName()))
 }
 
 func (p PropertyLookup) leave(renderer *CypherRenderer) {
