@@ -234,7 +234,7 @@ func (d DefaultStatementBuilder) DetachDelete(expressions ...Expression) Ongoing
 	return d.Update(UPDATE_TYPE_DETACH_DELETE, ExpressionsToVisitables(expressions))
 }
 
-func (d DefaultStatementBuilder) Merge(patterns ...PatternElement) OngoingUpdate {
+func (d DefaultStatementBuilder) Merge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
@@ -317,7 +317,7 @@ func (d DefaultStatementBuilder) Unwinds(expressions ...Expression) OngoingUnwin
 			return DefaultOngoingUnwindError(expression.getError())
 		}
 	}
-	return d.Unwind(ListOf(expressions...))
+	return d.Unwind(CypherListOf(expressions...))
 }
 
 func (d DefaultStatementBuilder) UnwindByString(variable string) OngoingUnwind {
@@ -429,7 +429,7 @@ func (d DefaultStatementBuilder) OptionalMatch(patterns ...PatternElement) Ongoi
 	return d.MatchDefault(true, patterns...)
 }
 
-func (d DefaultStatementBuilder) Create(elements ...PatternElement) OngoingUpdate {
+func (d DefaultStatementBuilder) Create(elements ...PatternElement) OngoingUpdateAndExposesSet {
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}

@@ -1,6 +1,9 @@
 package cypher_go_dsl
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 /**
  * Create a new Node representation with at least one label, the "primary" label. This is required. All other labels
@@ -91,12 +94,263 @@ func CypherPropertyByExpression(expression Expression, name string) Property {
 	return PropertyCreate2(expression, name)
 }
 
-func Matchs(element ...PatternElement) OngoingReadingWithoutWhere {
+/**
+ * Starts defining a named path by indicating a name.
+ *
+ * @param name The name of the new path
+ * @return An ongoing definition of a named path
+ * @since 1.1
+ */
+func CypherPathByString(name string) OngoingDefinitionWithName {
+	return NamePathBuilderWithNameByString(name)
+}
+
+/**
+ * Starts defining a named path by indicating a name.
+ *
+ * @param name The name of the new path
+ * @return An ongoing definition of a named path
+ * @since 1.1
+ */
+func CypherPath(name SymbolicName) OngoingDefinitionWithName {
+	return NamePathBuilderWithName(name)
+}
+
+/**
+ * Starts defining a named path defined by the {@code shortestPath} between a relationship by indicating a name.
+ *
+ * @param name The name of the new shortestPath path
+ * @return An ongoing definition of a named path
+ * @since 1.1.1
+ */
+func CypherShortestPathByString(name string) OngoingShortestPathDefinitionWithName {
+	return NamePathShortestPathWithNameByString(name, SHORTEST_PATH)
+}
+
+/**
+ * Starts defining a named path defined by the {@code shortestPath} between a relationship by indicating a name.
+ *
+ * @param name The name of the new shortestPath path
+ * @return An ongoing definition of a named path
+ * @since 1.1.1
+ */
+func CypherShortestPath(name SymbolicName) OngoingShortestPathDefinitionWithName {
+	return NamePathShortestPathWithName(name, SHORTEST_PATH)
+}
+
+/**
+ * Creates a new symbolic name.
+ *
+ * @param value The value of the symbolic name
+ * @return A new symbolic name
+ */
+func CypherName(value string) SymbolicName {
+	return SymbolicNameCreate(value)
+}
+
+/**
+ * Creates a new parameter placeholder. Existing $-signs will be removed.
+ *
+ * @param name The name of the parameter, must not be null
+ * @return The new parameter
+ */
+func CypherParameter(name string) Parameter {
+	return ParameterCreate(name)
+}
+
+/**
+ * Prepares an optional match statement.
+ *
+ * @param pattern The patterns to match
+ * @return An ongoing match that is used to specify an optional where and a required return clause
+ */
+func CypherOptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
+	return DefaultStatementBuilderCreate().OptionalMatch(element...)
+}
+
+/**
+ * Starts building a statement based on a match clause. Use {@link Cypher#node(String, String...)} and related to
+ * retrieve a node or a relationship, which both are pattern elements.
+ *
+ * @param pattern The patterns to match
+ * @return An ongoing match that is used to specify an optional where and a required return clause
+ */
+func CypherMatch(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
 }
 
-func MapOf(objects ...interface{}) MapExpression {
+/**
+ * Starts building a statement based on a match clause. Use {@link Cypher#node(String, String...)} and related to
+ * retrieve a node or a relationship, which both are pattern elements.
+ *
+ * @param optional A flag whether the {@code MATCH} clause includes the {@code OPTIONAL} keyword.
+ * @param pattern  The patterns to match
+ * @return An ongoing match that is used to specify an optional where and a required return clause
+ * @since 2020.1.3
+ */
+func CypherMatchDefault(optional bool, element ...PatternElement) OngoingReadingWithoutWhere {
+	return DefaultStatementBuilderCreate().MatchDefault(optional, element...)
+}
+
+/**
+ * Starts building a statement based on a {@code CREATE} clause.
+ *
+ * @param pattern The patterns to create
+ * @param <T>     The type of the next step
+ * @return An ongoing {@code CREATE} that can be used to specify {@code WITH} and {@code RETURNING} etc.
+ */
+func CypherCreate(patterns ...PatternElement) OngoingUpdateAndExposesSet {
+	return DefaultStatementBuilderCreate().Create(patterns...)
+}
+
+/**
+ * Starts a statement with a leading {@code WITH}. Those are useful for passing on lists of various type that
+ * can be unwound later on etc. A leading {@code WITH} cannot be used with patterns obviously and needs its
+ * arguments to have an alias.
+ *
+ * @param variables One ore more variables.
+ * @return An ongoing with clause.
+ * @since 2020.1.2
+ */
+func CypherWithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return DefaultStatementBuilderCreate().WithByString(variables...)
+}
+
+/**
+ * Starts a statement with a leading {@code WITH}. Those are useful for passing on lists of various type that
+ * can be unwound later on etc. A leading {@code WITH} cannot be used with patterns obviously and needs its
+ * arguments to have an alias.
+ *
+ * @param variables One ore more variables.
+ * @return An ongoing with clause.
+ * @since 2020.1.2
+ */
+func CypherWithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return DefaultStatementBuilderCreate().WithByNamed(variables...)
+}
+
+/**
+ * Starts a statement with a leading {@code WITH}. Those are useful for passing on lists of various type that
+ * can be unwound later on etc. A leading {@code WITH} cannot be used with patterns obviously and needs its
+ * arguments to have an alias.
+ *
+ * @param expressions One ore more aliased expressions.
+ * @return An ongoing with clause.
+ */
+func CypherWith(variables ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return DefaultStatementBuilderCreate().With(variables...)
+}
+
+/**
+ * Starts building a statement based on a {@code MERGE} clause.
+ *
+ * @param pattern The patterns to merge
+ * @param <T>     The type of the next step
+ * @return An ongoing {@code MERGE} that can be used to specify {@code WITH} and {@code RETURNING} etc.
+ */
+func CypherMerge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
+	return DefaultStatementBuilderCreate().Merge(patterns...)
+}
+
+/**
+ * Starts building a statement starting with an {@code UNWIND} clause. The expression needs to be an expression
+ * evaluating to a list, otherwise the query will fail.
+ *
+ * @param expression The expression to unwind
+ * @return An ongoing {@code UNWIND}.
+ */
+func CypherUnwind(expression Expression) OngoingUnwind {
+	return DefaultStatementBuilderCreate().Unwind(expression)
+}
+
+/**
+ * Starts building a statement starting with an {@code UNWIND} clause. The expressions passed will be turned into a
+ * list expression
+ *
+ * @param expressions expressions to unwind
+ * @return a new instance of {@link StatementBuilder.OngoingUnwind}
+ */
+func CypherUnwindMulti(expressions ...Expression) OngoingUnwind {
+	return DefaultStatementBuilderCreate().Unwind(CypherListOf(expressions...))
+}
+
+/**
+ * Creates a new {@link SortItem} to be used as part of an {@link Order}.
+ *
+ * @param expression The expression by which things should be sorted
+ * @return A sort item, providing means to specify ascending or descending order
+ */
+func CypherSort(expression Expression) SortItem {
+	return SortItemCreate(expression, UNDEFINED)
+}
+
+/**
+ * Creates a map of expression from a list of key/value pairs.
+ *
+ * @param keysAndValues A list of key and values. Must be an even number, with alternating {@link String} and {@link Expression}
+ * @return A new map expression.
+ */
+func CypherMapOf(objects ...interface{}) MapExpression {
 	return NewMapExpression(objects...)
+}
+
+/**
+ * Creates a {@link ListExpression list-expression} from several expressions.
+ *
+ * @param expressions expressions to get combined into a list
+ * @return a new instance of {@link ListExpression}
+ */
+func CypherListOf(expressions ...Expression) ExpressionList {
+	return ExpressionListCreate(expressions)
+}
+
+/**
+ * @return The {@literal true} literal.
+ */
+func CypherLiteralTrue() BooleanLiteral {
+	return TRUE
+}
+
+/**
+ * @return The {@literal false} literal.
+ */
+func CypherLiteralFalse() BooleanLiteral {
+	return FALSE
+}
+
+/**
+ * Creates a {@code UNION} statement from several other statements. No checks are applied for matching return types.
+ *
+ * @param statements the statements to union.
+ * @return A union statement.
+ */
+func CypherUnion(statements ...Statement) Statement {
+	return unionImpl(false, statements...)
+}
+
+/**
+ * Creates a {@code UNION ALL} statement from several other statements. No checks are applied for matching return types.
+ *
+ * @param statements the statements to union.
+ * @return A union statement.
+ */
+func CypherUnionAll(statements ...Statement) Statement {
+	return unionImpl(true, statements...)
+}
+
+/**
+ * A {@literal RETURN} statement without a previous match.
+ *
+ * @param expressions The expressions to return
+ * @return A buildable statement
+ * @since 1.0.1
+ */
+func CypherReturning(expressions ...Expression) OngoingReadingAndReturn {
+	return DefaultStatementBuilderCreate().Returning(expressions...)
+}
+
+func CypherListBasedOn() OngoinDefi {
+
 }
 
 func Sort(expression Expression) SortItem {
@@ -107,14 +361,34 @@ func escapeName(name string) string {
 	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
 }
 
-func CypherName(value string) SymbolicName {
-	return SymbolicNameCreate(value)
-}
-
-func ListOf(expressions ...Expression) ExpressionList {
-	return ExpressionListCreate(expressions)
-}
-
 func Name(value string) SymbolicName {
 	return SymbolicNameCreate(value)
+}
+
+func unionImpl(unionAll bool, statements ...Statement) Statement {
+	if statements == nil || len(statements) < 2 {
+		return UnionQueryError(errors.New("at least 2 statements are required"))
+	}
+	i := 0
+	existingUnionQuery := UnionQuery{}
+	if unionQuery, isUnion := statements[0].(UnionQuery); isUnion {
+		existingUnionQuery = unionQuery
+		if existingUnionQuery.all != unionAll {
+			return UnionQueryError(errors.New("cannot mix union and union all"))
+		}
+		i = 1
+	}
+	listOfQueries := make([]SingleQuery, 0)
+	for _, query := range statements[i:] {
+		if singleQuery, isSingle := query.(SingleQuery); isSingle {
+			listOfQueries = append(listOfQueries, singleQuery)
+			continue
+		}
+		return UnionQueryError(errors.New("can only union single queries"))
+	}
+	if !existingUnionQuery.notNil {
+		return UnionQueryCreate(unionAll, listOfQueries)
+	} else {
+		return existingUnionQuery.addAdditionalQueries(listOfQueries)
+	}
 }

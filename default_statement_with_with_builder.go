@@ -155,7 +155,7 @@ func (d DefaultStatementWithWithBuilder) DetachDelete(expressions ...Expression)
 		Delete(expressions...)
 }
 
-func (d DefaultStatementWithWithBuilder) Merge(pattern ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithWithBuilder) Merge(pattern ...PatternElement) OngoingUpdateAndExposesSet {
 	return d.defaultBuilder.AddWith(d.buildWith()).
 		Merge(pattern...)
 }
@@ -185,7 +185,7 @@ func (d DefaultStatementWithWithBuilder) Remove(properties ...Property) Buildabl
 }
 
 func (d DefaultStatementWithWithBuilder) Unwinds(expression ...Expression) OngoingUnwind {
-	return d.Unwind(ListOf(expression...))
+	return d.Unwind(CypherListOf(expression...))
 }
 
 func (d DefaultStatementWithWithBuilder) UnwindByString(variable string) OngoingUnwind {
@@ -197,7 +197,7 @@ func (d DefaultStatementWithWithBuilder) Unwind(expression Expression) OngoingUn
 		Unwind(expression)
 }
 
-func (d DefaultStatementWithWithBuilder) Create(element ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithWithBuilder) Create(element ...PatternElement) OngoingUpdateAndExposesSet {
 	return d.defaultBuilder.AddWith(d.buildWith()).
 		Create(element...)
 }

@@ -8,7 +8,7 @@ func TestRenderSimpleQuery(t *testing.T) {
 	device := CypherNewNode("Device").NamedByString("d").WithRawProperties("entity.id", StringLiteral{content: "7d729555-0d61-46ae-ab79-ce43e72f751b", notNil: true})
 	customer := CypherNewNode("Customer").NamedByString("c")
 	relation := device.RelationshipTo(customer, "HAS")
-	statement, _ := Matchs(relation).
+	statement, _ := CypherMatch(relation).
 		Returning(customer.symbolicName).
 		Build()
 	query := NewRenderer().Render(statement)
@@ -21,7 +21,7 @@ func TestRenderComplexQuery(t *testing.T) {
 	device := CypherNewNode("Farm").NamedByString("b")
 	customer := CypherNewNode("Customer").NamedByString("c")
 	relation := device.RelationshipTo(customer, "HAS")
-	statement, _ := Matchs(relation).
+	statement, _ := CypherMatch(relation).
 		Returning(customer.symbolicName).
 		Build()
 	query := NewRenderer().Render(statement)

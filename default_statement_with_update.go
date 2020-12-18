@@ -201,7 +201,7 @@ func (d DefaultStatementWithUpdateBuilder) DetachDelete(expressions ...Expressio
 	return d.DeleteDefault(true, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) Merge(pattern ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithUpdateBuilder) Merge(pattern ...PatternElement) OngoingUpdateAndExposesSet {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	return d.defaultBuilder.Merge(pattern...)
 }
@@ -234,7 +234,7 @@ func (d DefaultStatementWithUpdateBuilder) Remove(properties ...Property) Builda
 	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, expressions...)
 }
 
-func (d DefaultStatementWithUpdateBuilder) Create(element ...PatternElement) OngoingUpdate {
+func (d DefaultStatementWithUpdateBuilder) Create(element ...PatternElement) OngoingUpdateAndExposesSet {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
 	return d.defaultBuilder.Create(element...)
 }

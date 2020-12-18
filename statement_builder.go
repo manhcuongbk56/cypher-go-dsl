@@ -197,6 +197,11 @@ type OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction interface {
 	ExposesMergeAction
 }
 
+type OngoingUpdateAndExposesSet interface {
+	OngoingUpdate
+	ExposesSet
+}
+
 type OngoingMergeAction interface {
 	GetErr() error
 	Set(expressions ...Expression) OngoingMatchAndUpdateAndBuildableStatementAndExposesMergeAction

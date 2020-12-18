@@ -6,7 +6,7 @@ import (
 
 func TestFindAllMovies(t *testing.T) {
 	movie := CypherNewNode("Movie").NamedByString("m")
-	statement, _ := Matchs(movie).
+	statement, _ := CypherMatch(movie).
 		ReturningByNamed(movie).
 		Build()
 	query := NewRenderer().Render(statement)
@@ -18,7 +18,7 @@ func TestFindAllMovies(t *testing.T) {
 
 func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 	farm := CypherNewNode("Farm").NamedByString("b")
-	statement, _ := Matchs(farm).
+	statement, _ := CypherMatch(farm).
 		Where(ConditionsNot(farm.RelationshipFrom(CypherAnyNode(), "HAS"))).
 		WithByString("b").
 		OptionalMatch(farm.RelationshipTo(CypherAnyNode1("p"), "HAS")).
