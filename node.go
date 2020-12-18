@@ -90,6 +90,10 @@ func NodeCreate4(newProperties MapExpression, node Node) Node {
 	return newNode
 }
 
+func NodeCreate5(primaryLabel string, properties MapExpression, additionalLabel ...string) Node {
+	return NodeCreate1(primaryLabel, PropertiesCreate(properties), additionalLabel...)
+}
+
 func NodeError(err error) Node {
 	return Node{
 		err: err,
@@ -185,8 +189,19 @@ func (node Node) Property(name string) {
 	fmt.Print(name)
 }
 
-func (node Node) Named(name string) Node {
+func (node Node) NamedByString(name string) Node {
 	node.symbolicName = SymbolicNameCreate(name)
+	return node
+}
+
+func (node Node) Named(name SymbolicName) Node {
+	if name.getError() != nil {
+		return NodeError(name.getError())
+	}
+	if !name.isNotNil() {
+		return NodeError(errors.New("node named: symbolic name is required"))
+	}
+	node.symbolicName = name
 	return node
 }
 
