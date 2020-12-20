@@ -1,5 +1,7 @@
 package cypher_go_dsl
 
+import "errors"
+
 type ListComprehension struct {
 	variable       SymbolicName
 	listExpression Expression
@@ -29,6 +31,13 @@ func ListComprehensionError(err error) ListComprehension {
 	return ListComprehension{
 		err: err,
 	}
+}
+
+func ListComprehensionWith(variable SymbolicName) OngoingDefinitionWithVariable {
+	if !variable.isNotNil() {
+		return ListComprehensionBuilder{err: errors.New("list comprehension: a variable is required")}
+	}
+	return ListComprehensionBuilderCreate(variable)
 }
 
 func (l ListComprehension) getError() error {
@@ -87,6 +96,13 @@ type ListComprehensionBuilder struct {
 	variable       SymbolicName
 	listExpression Expression
 	where          Where
+	err            error
+}
+
+func ListComprehensionBuilderCreate(variable SymbolicName) ListComprehensionBuilder {
+	return ListComprehensionBuilder{
+		variable: variable,
+	}
 }
 
 func (l ListComprehensionBuilder) in(list Expression) OngoingDefinitionWithList {

@@ -2,7 +2,7 @@ package cypher_go_dsl
 
 import "errors"
 
-type NamePath struct {
+type NamedPath struct {
 	name    SymbolicName
 	pattern Visitable
 	key     string
@@ -10,62 +10,62 @@ type NamePath struct {
 	err     error
 }
 
-func NamePathCreate(name SymbolicName, pattern RelationshipPattern) NamePath {
+func NamedPathCreate(name SymbolicName, pattern RelationshipPattern) NamedPath {
 	if name.getError() != nil {
-		return NamePathError(name.getError())
+		return NamedPathError(name.getError())
 	}
 	if pattern != nil && pattern.getError() != nil {
-		return NamePathError(pattern.getError())
+		return NamedPathError(pattern.getError())
 	}
-	n := NamePath{name: name, pattern: pattern}
+	n := NamedPath{name: name, pattern: pattern}
 	n.key = getAddress(&n)
 	return n
 }
 
-func NamePathCreate1(name SymbolicName, algorithm FunctionInvocation) NamePath {
+func NamedPathCreate1(name SymbolicName, algorithm FunctionInvocation) NamedPath {
 	if name.getError() != nil {
-		return NamePathError(name.getError())
+		return NamedPathError(name.getError())
 	}
 	if algorithm.getError() != nil {
-		return NamePathError(algorithm.getError())
+		return NamedPathError(algorithm.getError())
 	}
-	n := NamePath{name: name, pattern: algorithm}
+	n := NamedPath{name: name, pattern: algorithm}
 	n.key = getAddress(&n)
 	return n
 }
 
-func NamePathError(err error) NamePath {
-	return NamePath{err: err}
+func NamedPathError(err error) NamedPath {
+	return NamedPath{err: err}
 }
 
-func NamePathBuilderWithNameByString(name string) OngoingDefinitionWithName {
+func NamedPathBuilderWithNameByString(name string) OngoingDefinitionWithName {
 	if name == "" {
-		return NamePathBuilder{
+		return NamedPathBuilder{
 			err: errors.New("a name is required"),
 		}
 	}
-	return NamePathBuilderWithName(SymbolicNameCreate(name))
+	return NamedPathBuilderWithName(SymbolicNameCreate(name))
 }
 
-func NamePathBuilderWithName(name SymbolicName) OngoingDefinitionWithName {
+func NamedPathBuilderWithName(name SymbolicName) OngoingDefinitionWithName {
 	if !name.isNotNil() {
-		return NamePathBuilder{
+		return NamedPathBuilder{
 			err: errors.New("a name is required"),
 		}
 	}
-	return NamePathBuilder{name: name}
+	return NamedPathBuilder{name: name}
 }
 
-func NamePathShortestPathWithNameByString(name string, algorithm FunctionDefinition) OngoingShortestPathDefinitionWithName {
+func NamedPathShortestPathWithNameByString(name string, algorithm FunctionDefinition) OngoingShortestPathDefinitionWithName {
 	if name == "" {
 		return ShortestPathBuilder{
 			err: errors.New("a name is required"),
 		}
 	}
-	return NamePathShortestPathWithName(SymbolicNameCreate(name), algorithm)
+	return NamedPathShortestPathWithName(SymbolicNameCreate(name), algorithm)
 }
 
-func NamePathShortestPathWithName(name SymbolicName, algorithm FunctionDefinition) OngoingShortestPathDefinitionWithName {
+func NamedPathShortestPathWithName(name SymbolicName, algorithm FunctionDefinition) OngoingShortestPathDefinitionWithName {
 	if name.isNotNil() {
 		return ShortestPathBuilder{
 			err: errors.New("a name is required"),
@@ -77,26 +77,26 @@ func NamePathShortestPathWithName(name SymbolicName, algorithm FunctionDefinitio
 	}
 }
 
-func (n NamePath) getError() error {
+func (n NamedPath) getError() error {
 	return n.err
 }
 
-func (n NamePath) getRequiredSymbolicName() SymbolicName {
+func (n NamedPath) getRequiredSymbolicName() SymbolicName {
 	if n.name.isNotNil() {
 		return n.name
 	}
 	return SymbolicNameError(errors.New("no name present"))
 }
 
-func (n NamePath) getSymbolicName() SymbolicName {
+func (n NamedPath) getSymbolicName() SymbolicName {
 	return n.name
 }
 
-func (n NamePath) IsPatternElement() bool {
+func (n NamedPath) IsPatternElement() bool {
 	return true
 }
 
-func (n NamePath) accept(visitor *CypherRenderer) {
+func (n NamedPath) accept(visitor *CypherRenderer) {
 	visitor.enter(n)
 	n.name.accept(visitor)
 	ASSIGMENT.accept(visitor)
@@ -104,45 +104,45 @@ func (n NamePath) accept(visitor *CypherRenderer) {
 	visitor.leave(n)
 }
 
-func (n NamePath) enter(renderer *CypherRenderer) {
+func (n NamedPath) enter(renderer *CypherRenderer) {
 }
 
-func (n NamePath) leave(renderer *CypherRenderer) {
+func (n NamedPath) leave(renderer *CypherRenderer) {
 }
 
-func (n NamePath) getKey() string {
+func (n NamedPath) getKey() string {
 	return n.key
 }
 
-func (n NamePath) isNotNil() bool {
+func (n NamedPath) isNotNil() bool {
 	return n.notNil
 }
 
 //Interface
 type OngoingDefinitionWithName interface {
-	definedByRelationPattern(pattern RelationshipPattern) NamePath
+	definedByRelationPattern(pattern RelationshipPattern) NamedPath
 	getError() error
 }
 
 type OngoingShortestPathDefinitionWithName interface {
-	definedBy(relationship Relationship) NamePath
+	definedBy(relationship Relationship) NamedPath
 	getError() error
 }
 
-type NamePathBuilder struct {
+type NamedPathBuilder struct {
 	name SymbolicName
 	err  error
 }
 
-func NamePathBuilderCreate(name SymbolicName) NamePathBuilder {
-	return NamePathBuilder{name: name}
+func NamedPathBuilderCreate(name SymbolicName) NamedPathBuilder {
+	return NamedPathBuilder{name: name}
 }
 
-func (n NamePathBuilder) definedByRelationPattern(pattern RelationshipPattern) NamePath {
-	return NamePathCreate(n.name, pattern)
+func (n NamedPathBuilder) definedByRelationPattern(pattern RelationshipPattern) NamedPath {
+	return NamedPathCreate(n.name, pattern)
 }
 
-func (n NamePathBuilder) getError() error {
+func (n NamedPathBuilder) getError() error {
 	return n.err
 }
 
@@ -159,8 +159,8 @@ func ShortestPathBuilderCreate(name SymbolicName, algorithm FunctionDefinition) 
 	}
 }
 
-func (s ShortestPathBuilder) definedBy(relationship Relationship) NamePath {
-	return NamePathCreate1(s.name, FunctionInvocationCreateWithPatternElement(s.algorithm, relationship))
+func (s ShortestPathBuilder) definedBy(relationship Relationship) NamedPath {
+	return NamedPathCreate1(s.name, FunctionInvocationCreateWithPatternElement(s.algorithm, relationship))
 }
 
 func (s ShortestPathBuilder) getError() error {

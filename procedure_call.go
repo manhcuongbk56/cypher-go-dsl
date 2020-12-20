@@ -1,12 +1,5 @@
 package cypher_go_dsl
 
-type ProcedureCallBuilder interface {
-	ExposesWhere
-	ExposesReturning
-	BuildableStatement
-	isNotNil() bool
-}
-
 type ProcedureCall struct {
 	name          ProcedureName
 	arguments     Arguments
@@ -76,4 +69,65 @@ func (p ProcedureCall) isNotNil() bool {
 
 func (p ProcedureCall) doesReturnElements() bool {
 	return p.yieldItems.isNotNil()
+}
+
+/**
+ * The union of a buildable statement and call exposing new arguments and yields.
+ */
+type OngoingStandaloneCallWithoutArguments interface {
+	BuildableStatement
+	AsFunction
+	withArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments
+	YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields
+	Yield(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+}
+
+/**
+ * The union of a buildable statement and call exposing yields.
+ */
+type OngoingStandaloneCallWithArguments interface {
+	BuildableStatement
+	AsFunction
+	YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields
+	Yield(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+}
+
+/**
+ * A buildable statement exposing where and return clauses.
+ */
+type OngoingStandaloneCallWithReturnFields interface {
+	BuildableStatement
+	ExposesWhere
+	ExposesReturning
+	ExposesWith
+	ExposesSubqueryCall
+}
+
+type OngoingInQueryCallWithoutArguments interface {
+	WithArgs(arguments ...Expression) OngoingInQueryCallWithArguments
+	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
+}
+
+type OngoingInQueryCallWithArguments interface {
+	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
+	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
+}
+
+type OngoingInQueryCallWithReturnFields interface {
+	ExposesWhere
+	ExposesReturning
+	ExposesWith
+	ExposesSubqueryCall
+}
+
+type ProcedureCallBuilder interface {
+	ExposesWhere
+	ExposesReturning
+	BuildableStatement
+	isNotNil() bool
 }

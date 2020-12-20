@@ -102,7 +102,7 @@ func CypherPropertyByExpression(expression Expression, name string) Property {
  * @since 1.1
  */
 func CypherPathByString(name string) OngoingDefinitionWithName {
-	return NamePathBuilderWithNameByString(name)
+	return NamedPathBuilderWithNameByString(name)
 }
 
 /**
@@ -113,7 +113,7 @@ func CypherPathByString(name string) OngoingDefinitionWithName {
  * @since 1.1
  */
 func CypherPath(name SymbolicName) OngoingDefinitionWithName {
-	return NamePathBuilderWithName(name)
+	return NamedPathBuilderWithName(name)
 }
 
 /**
@@ -124,7 +124,7 @@ func CypherPath(name SymbolicName) OngoingDefinitionWithName {
  * @since 1.1.1
  */
 func CypherShortestPathByString(name string) OngoingShortestPathDefinitionWithName {
-	return NamePathShortestPathWithNameByString(name, SHORTEST_PATH)
+	return NamedPathShortestPathWithNameByString(name, SHORTEST_PATH)
 }
 
 /**
@@ -135,7 +135,7 @@ func CypherShortestPathByString(name string) OngoingShortestPathDefinitionWithNa
  * @since 1.1.1
  */
 func CypherShortestPath(name SymbolicName) OngoingShortestPathDefinitionWithName {
-	return NamePathShortestPathWithName(name, SHORTEST_PATH)
+	return NamedPathShortestPathWithName(name, SHORTEST_PATH)
 }
 
 /**
@@ -349,7 +349,65 @@ func CypherReturning(expressions ...Expression) OngoingReadingAndReturn {
 	return DefaultStatementBuilderCreate().Returning(expressions...)
 }
 
-func CypherListBasedOn() OngoinDefi {
+/**
+ * Creates a list comprehension starting with a {@link Relationship} or a {@link RelationshipChain chain of relationships}.
+ *
+ * @param relationshipPattern The relationship pattern on which the new list comprehension is based on.
+ * @return An ongoing definition.
+ * @since 2020.0.0
+ */
+func CypherListBasedOn(pattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPattern {
+	return PatternComprehensionBasedOn(pattern)
+}
+
+/**
+ * Creates a list comprehension starting with a {@link NamedPath named path}.
+ *
+ * @param namedPath The named path on which the new list comprehension is based on.
+ * @return An ongoing definition.
+ * @since 2020.1.1
+ */
+func CypherListBasedOnNamed(namedPath NamedPath) PatternComprehensionOngoingDefinitionWithPattern {
+	return PatternComprehensionBasedOnNamePath(namedPath)
+}
+
+/**
+ * Starts defining a {@link ListComprehension list comprehension}.
+ *
+ * @param variable The variable to which each element of the list is assigned.
+ * @return An ongoing definition of a list comprehension
+ * @since 1.0.1
+ */
+func CypherListWith(variable SymbolicName) OngoingDefinitionWithVariable {
+	return ListComprehensionBuilderCreate(variable)
+}
+
+/**
+ * Escapes and quotes the {@code unquotedString} for safe usage in Neo4j-Browser and Shell.
+ *
+ * @param unquotedString An unquoted string
+ * @return A quoted string with special chars escaped.
+ */
+func CypherQuote(unquotedString string) string {
+	return StringLiteralCreate(unquotedString).AsString()
+}
+
+/**
+ * @return generic case expression start
+ */
+func CypherCaseExpression() Case {
+	return GenericCaseCreate1()
+}
+
+/**
+ * @param expression initial expression for the simple case statement
+ * @return simple case expression start
+ */
+func CypherCaseExpression1(expression Expression) Case {
+	return SimpleCaseCreate1(expression)
+}
+
+func CypherCall(procedureName string) OngoingStan {
 
 }
 

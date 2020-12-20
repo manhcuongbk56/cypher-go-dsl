@@ -9,7 +9,7 @@ func TestGh48(t *testing.T) {
 		ReturningByNamed(n).
 		Build()
 	if err != nil {
-		t.Errorf("error when build query: %s", err)
+		t.Errorf("error When build query: %s", err)
 	}
 	query := NewRenderer().Render(statement)
 	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {
@@ -25,7 +25,7 @@ func TestGh48(t *testing.T) {
 //		ReturningByNamed(n).
 //		Build()
 //	if err != nil {
-//		t.Errorf("error when build query: %s", err)
+//		t.Errorf("error When build query: %s", err)
 //	}
 //	query := NewRenderer().Render(statement)
 //	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {

@@ -39,26 +39,6 @@ type OngoingReadingAndReturn interface {
 	BuildableStatement
 }
 
-type OngoingInQueryCallWithoutArguments interface {
-	WithArgs(arguments ...Expression) OngoingInQueryCallWithArguments
-	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
-	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
-	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
-}
-
-type OngoingInQueryCallWithArguments interface {
-	YieldSymbolic(name ...SymbolicName) OngoingInQueryCallWithReturnFields
-	YieldString(yieldedItems ...string) OngoingInQueryCallWithReturnFields
-	Yield(aliasedResultFields ...AliasedExpression) OngoingInQueryCallWithReturnFields
-}
-
-type OngoingInQueryCallWithReturnFields interface {
-	ExposesWhere
-	ExposesReturning
-	ExposesWith
-	ExposesSubqueryCall
-}
-
 type OngoingReadingAndWith interface {
 	OngoingReading
 	ExposesMatch

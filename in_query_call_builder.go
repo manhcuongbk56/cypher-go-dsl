@@ -56,7 +56,16 @@ func (i InQueryCallBuilder) ReturningDistinct(expression ...Expression) OngoingR
 }
 
 func (i InQueryCallBuilder) Build() (Statement, error) {
-	panic("implement me")
+	argumentsList := Arguments{}
+	if i.arguments == nil || len(i.arguments) > 0 {
+		argumentsList = ArgumentsCreate(i.arguments)
+	}
+	condition := i.conditionBuilder.buildCondition()
+	if condition != nil && condition.isNotNil() {
+		return ProcedureCallCreate(i.procedureName, argumentsList, i.yieldItems,
+			WhereCreate(condition)), nil
+	}
+	return ProcedureCallCreate(i.procedureName, argumentsList, i.yieldItems, Where{}), nil
 }
 
 func (i InQueryCallBuilder) WithArgs(arguments ...Expression) OngoingInQueryCallWithArguments {

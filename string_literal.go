@@ -1,11 +1,16 @@
 package cypher_go_dsl
 
+import "regexp"
+
 type StringLiteral struct {
 	content string
 	key     string
 	notNil  bool
 	err     error
 }
+
+var RESERVED_CHARS, _ = regexp.Compile("([" + regexp.QuoteMeta("\\'\"") + "])")
+var QUOTED_LITERAL_FORMAT = "'%s'"
 
 func StringLiteralCreate(content string) StringLiteral {
 	stringLiteral := StringLiteral{
@@ -25,6 +30,10 @@ func (s StringLiteral) isNotNil() bool {
 }
 
 func escapeStringLiteral(value string) string {
+	//TODO: need more time to escape string
+	if value == "" {
+		return value
+	}
 	return "'" + value + "'"
 }
 
@@ -41,7 +50,7 @@ func (s StringLiteral) GetContent() interface{} {
 }
 
 func (s StringLiteral) AsString() string {
-	return s.content
+	return escapeStringLiteral(s.content)
 }
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
@@ -50,7 +59,7 @@ func (s StringLiteral) accept(visitor *CypherRenderer) {
 }
 
 func (s StringLiteral) enter(renderer *CypherRenderer) {
-	renderer.append(escapeStringLiteral(s.AsString()))
+	renderer.append(s.AsString())
 }
 
 func (s StringLiteral) leave(renderer *CypherRenderer) {

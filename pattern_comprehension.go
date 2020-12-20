@@ -32,7 +32,7 @@ func PatternComprehensionBasedOn(pattern RelationshipPattern) PatternComprehensi
 	return PatternComprehensionBuilderCreate(pattern)
 }
 
-func PatternComprehensionBasedOnNamePath(pattern NamePath) PatternComprehensionOngoingDefinitionWithPattern {
+func PatternComprehensionBasedOnNamePath(pattern NamedPath) PatternComprehensionOngoingDefinitionWithPattern {
 	if !pattern.isNotNil() {
 		return PatternComprehensionBuilder{err: errors.New("pattern comprehension builder: a pattern is required")}
 	}
