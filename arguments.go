@@ -8,6 +8,11 @@ type Arguments struct {
 }
 
 func ArgumentsCreate(expression []Expression) Arguments {
+	for _, expr := range expression {
+		if expr != nil && expr.getError() != nil {
+			return Arguments{err: expr.getError()}
+		}
+	}
 	a := Arguments{
 		expressions: expression,
 		notNil:      true,

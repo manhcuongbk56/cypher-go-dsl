@@ -80,18 +80,19 @@ type OngoingStandaloneCallWithoutArguments interface {
 	withArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments
 	YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
 	YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields
-	Yield(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingStandaloneCallWithReturnFields
 }
 
 /**
  * The union of a buildable statement and call exposing yields.
  */
+
 type OngoingStandaloneCallWithArguments interface {
 	BuildableStatement
 	AsFunction
 	YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
 	YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields
-	Yield(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
+	Yield(aliasedResultFields ...AliasedExpression) OngoingStandaloneCallWithReturnFields
 }
 
 /**
@@ -130,4 +131,151 @@ type ProcedureCallBuilder interface {
 	ExposesReturning
 	BuildableStatement
 	isNotNil() bool
+}
+
+type StandaloneCallBuilder struct {
+	procedureName    ProcedureName
+	arguments        []Expression
+	yieldItems       YieldItems
+	conditionBuilder ConditionBuilder
+	notNil           bool
+	err              error
+}
+
+func StandaloneCallBuilderCreate(procedureName ProcedureName) StandaloneCallBuilder {
+	return StandaloneCallBuilder{
+		procedureName: procedureName,
+		notNil:        true,
+	}
+}
+
+func StandaloneCallBuilderError(err error) StandaloneCallBuilder {
+	return StandaloneCallBuilder{
+		err: err,
+	}
+}
+
+func (s StandaloneCallBuilder) Where(condition Condition) OngoingReadingWithWhere {
+	s.conditionBuilder.Where(condition)
+	return DefaultStatementBuilderCreate1(s)
+}
+
+func (s StandaloneCallBuilder) WherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
+	return s.Where(RelationshipPatternConditionCreate(pattern))
+}
+
+func (s StandaloneCallBuilder) ReturningByString(variables ...string) OngoingReadingAndReturn {
+	return s.Returning(CreateSymbolicNameByString(variables...)...)
+}
+
+func (s StandaloneCallBuilder) ReturningByNamed(variables ...Named) OngoingReadingAndReturn {
+	return s.Returning(CreateSymbolicNameByNamed(variables...)...)
+}
+
+func (s StandaloneCallBuilder) Returning(expression ...Expression) OngoingReadingAndReturn {
+	return DefaultStatementBuilderCreate1(s).Returning(expression...)
+}
+
+func (s StandaloneCallBuilder) ReturningDistinctByString(variables ...string) OngoingReadingAndReturn {
+	return s.ReturningDistinct(CreateSymbolicNameByString(variables...)...)
+}
+
+func (s StandaloneCallBuilder) ReturningDistinctByNamed(variables ...Named) OngoingReadingAndReturn {
+	return s.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
+}
+
+func (s StandaloneCallBuilder) ReturningDistinct(expression ...Expression) OngoingReadingAndReturn {
+	return DefaultStatementBuilderCreate1(s).ReturningDistinct(expression...)
+}
+
+func (s StandaloneCallBuilder) Build() (Statement, error) {
+	if s.procedureName.getError() != nil {
+		return nil, s.procedureName.getError()
+	}
+	if s.yieldItems.getError() != nil {
+		return nil, s.yieldItems.getError()
+	}
+	argumentsList := Arguments{}
+	if s.arguments == nil || len(s.arguments) > 0 {
+		argumentsList = ArgumentsCreate(s.arguments)
+	}
+	if argumentsList.getError() != nil {
+		return nil, argumentsList.getError()
+	}
+	condition := s.conditionBuilder.buildCondition()
+	if condition != nil && condition.isNotNil() {
+		if condition.getError() != nil {
+			return nil, condition.getError()
+		}
+		return ProcedureCallCreate(s.procedureName, argumentsList, s.yieldItems,
+			WhereCreate(condition)), nil
+	}
+	return ProcedureCallCreate(s.procedureName, argumentsList, s.yieldItems, Where{}), nil
+}
+
+func (s StandaloneCallBuilder) isNotNil() bool {
+	return s.notNil
+}
+
+func (s StandaloneCallBuilder) AsFunction() Expression {
+	return FunctionInvocationCreate(FunctionDefinitionDefault{s.procedureName.getQualifiedName()}, s.arguments...)
+}
+
+func (s StandaloneCallBuilder) withArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments {
+	s.arguments = arguments
+	return s
+}
+
+func (s StandaloneCallBuilder) YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields {
+	expressions := make([]Expression, len(name))
+	for i := range name {
+		expressions[i] = name[i]
+	}
+	s.yieldItems = yieldAllOf(expressions...)
+	return s
+}
+
+func (s StandaloneCallBuilder) YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields {
+	names := make([]SymbolicName, len(yieldedItems))
+	for i := range yieldedItems {
+		names[i] = SymbolicNameCreate(yieldedItems[i])
+	}
+	return s.YieldSymbolic(names...)
+}
+
+func (s StandaloneCallBuilder) Yield(aliasedResultFields ...AliasedExpression) OngoingStandaloneCallWithReturnFields {
+	expressions := make([]Expression, len(aliasedResultFields))
+	for i := range aliasedResultFields {
+		expressions[i] = aliasedResultFields[i]
+	}
+	s.yieldItems = yieldAllOf(expressions...)
+	return s
+}
+
+func (s StandaloneCallBuilder) WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return s.With(CreateSymbolicNameByString(variables...)...)
+}
+
+func (s StandaloneCallBuilder) WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return s.With(CreateSymbolicNameByNamed(variables...)...)
+}
+
+func (s StandaloneCallBuilder) With(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return DefaultStatementBuilderCreate1(s).With(expressions...)
+}
+
+func (s StandaloneCallBuilder) WithDistinctByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+	return s.WithDistinct(CreateSymbolicNameByString(variables...)...)
+}
+
+func (s StandaloneCallBuilder) WithDistinctByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+	return s.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
+}
+
+func (s StandaloneCallBuilder) WithDistinct(expressions ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+	return DefaultStatementBuilderCreate1(s).WithDistinct(expressions...)
+}
+
+func (s StandaloneCallBuilder) Call(statement Statement) OngoingReadingWithoutWhere {
+	return DefaultStatementBuilderCreate1(s).Call(statement)
 }

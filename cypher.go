@@ -407,8 +407,15 @@ func CypherCaseExpression1(expression Expression) Case {
 	return SimpleCaseCreate1(expression)
 }
 
-func CypherCall(procedureName string) OngoingStan {
+func CypherCallSimple(procedureName string) OngoingStandaloneCallWithoutArguments {
+	if procedureName == "" {
+		return StandaloneCallBuilderError(errors.New("the procedure name must not be nil or empty"))
+	}
+	return CypherCall(strings.Split(procedureName, "\\.")...)
+}
 
+func CypherCall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArguments {
+	return StatementCall(namespaceAndProcedure...)
 }
 
 func Sort(expression Expression) SortItem {

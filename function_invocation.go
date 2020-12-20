@@ -149,3 +149,15 @@ type FunctionDefinition interface {
 	getImplementationName() string
 	isAggregate() bool
 }
+
+type FunctionDefinitionDefault struct {
+	functionName string
+}
+
+func (f FunctionDefinitionDefault) getImplementationName() string {
+	return f.functionName
+}
+
+func (f FunctionDefinitionDefault) isAggregate() bool {
+	return false
+}

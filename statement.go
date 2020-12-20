@@ -11,3 +11,7 @@ type RegularQuery interface {
 type SingleQuery interface {
 	Statement
 }
+
+func StatementCall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArguments {
+	return StandaloneCallBuilderCreate(ProcedureNameCreate(namespaceAndProcedure...))
+}

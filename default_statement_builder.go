@@ -21,6 +21,14 @@ func DefaultStatementBuilderCreate() DefaultStatementBuilder {
 	}
 }
 
+func DefaultStatementBuilderCreate1(currentOngoingCall ProcedureCallBuilder) DefaultStatementBuilder {
+	return DefaultStatementBuilder{
+		currentOngoingCall:        currentOngoingCall,
+		currentSinglePartElements: make([]Visitable, 0),
+		multipartElements:         make([]MultiPartElement, 0),
+	}
+}
+
 func DefaultStatementBuilderError(err error) DefaultStatementBuilder {
 	return DefaultStatementBuilder{
 		err: err,
