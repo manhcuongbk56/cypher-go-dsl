@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 import (
 	"errors"
@@ -23,6 +23,10 @@ func NodeCreate() Node {
 
 func (node *Node) injectKey() {
 	node.key = fmt.Sprint(fmt.Sprintf("%p", node))
+}
+
+func (node Node) GetSymbolicName() SymbolicName {
+	return node.symbolicName
 }
 
 func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ...string) Node {

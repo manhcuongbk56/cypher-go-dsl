@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type ExposesRelationship interface {
 	RelationshipTo(node Node, types ...string) RelationshipPattern

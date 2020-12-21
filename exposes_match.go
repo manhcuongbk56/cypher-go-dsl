@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type ExposesMatch interface {
 	Match(pattern ...PatternElement) OngoingReadingWithoutWhere

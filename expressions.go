@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 func NameOrExpression(expression Expression) Expression {
 	named, isNamed := (expression).(Named)

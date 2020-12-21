@@ -1,15 +1,16 @@
-package cypher_go_dsl
+package test
 
 import (
+	"github.com/manhcuongbk56/cypher-go-dsl"
 	"testing"
 )
 
 func TestFindAllMovies(t *testing.T) {
-	movie := CypherNewNode("Movie").NamedByString("m")
-	statement, _ := CypherMatch(movie).
+	movie := cypher.CypherNewNode("Movie").NamedByString("m")
+	statement, _ := cypher.CypherMatch(movie).
 		ReturningByNamed(movie).
 		Build()
-	query := NewRenderer().Render(statement)
+	query := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (m:`Movie`) RETURN m"
 	if query != expect {
 		t.Errorf("%s is incorrect \n %s", query, expect)
@@ -17,14 +18,14 @@ func TestFindAllMovies(t *testing.T) {
 }
 
 func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
-	farm := CypherNewNode("Farm").NamedByString("b")
-	statement, _ := CypherMatch(farm).
-		Where(ConditionsNot(farm.RelationshipFrom(CypherAnyNode(), "HAS"))).
+	farm := cypher.CypherNewNode("Farm").NamedByString("b")
+	statement, _ := cypher.CypherMatch(farm).
+		Where(cypher.ConditionsNot(farm.RelationshipFrom(cypher.CypherAnyNode(), "HAS"))).
 		WithByString("b").
-		OptionalMatch(farm.RelationshipTo(CypherAnyNode1("p"), "HAS")).
+		OptionalMatch(farm.RelationshipTo(cypher.CypherAnyNode1("p"), "HAS")).
 		ReturningByString("b", "p").
 		Build()
-	query := NewRenderer().Render(statement)
+	query := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (b:`Farm`) WHERE NOT (b)<-[:`HAS`]-() WITH b OPTIONAL MATCH (b)-[:`HAS`]->(p) RETURN b, p"
 	if query != expect {
 		t.Errorf("%s is incorrect \n %s", query, expect)

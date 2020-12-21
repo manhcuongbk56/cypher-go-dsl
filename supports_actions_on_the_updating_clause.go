@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type SupportsActionsOnTheUpdatingClause interface {
 	on(mergeType MERGE_TYPE, expressions ...Expression) (SupportsActionsOnTheUpdatingClause, error)

@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type Order struct {
 	sortItems []SortItem

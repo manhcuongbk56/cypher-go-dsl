@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 func ConditionsNot(element PatternElement) Condition {
 	return ExcludedPatternCreate(element)

@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type ExposesReturning interface {
 	ReturningByString(variables ...string) OngoingReadingAndReturn

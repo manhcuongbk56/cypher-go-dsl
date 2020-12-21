@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 type UpdatingClauseBuilder interface {
 	build() UpdatingClause

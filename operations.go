@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 func Concat(op1 Expression, op2 Expression) Operation {
 	return OperationCreate(op1, CONCAT, op2)

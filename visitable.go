@@ -1,4 +1,4 @@
-package cypher_go_dsl
+package cypher
 
 func VisitIfNotNull(dest interface{}, visitor *CypherRenderer) {
 	visitable, isVisitable := dest.(Visitable)
