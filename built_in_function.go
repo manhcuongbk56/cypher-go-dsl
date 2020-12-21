@@ -37,7 +37,7 @@ var ID = Scalars{implementationName: "id"}
 var LAST = Scalars{implementationName: "last"}
 var PROPERTIES = Scalars{implementationName: "properties"}
 var SHORTEST_PATH = Scalars{implementationName: "shortestPath"}
-var SIZE = Scalars{implementationName: "size"}
+var SIZE = Scalars{implementationName: "FunctionSize"}
 var START_NODE = Scalars{implementationName: "startNode"}
 var TYPE = Scalars{implementationName: "type"}
 
@@ -84,7 +84,7 @@ func (a Aggregates) isAggregate() bool {
 
 var AVG = Aggregates{"avg"}
 var COLLECT = Aggregates{"collect"}
-var COUNT = Aggregates{"Count"}
+var COUNT = Aggregates{"FunctionCount"}
 var MAX = Aggregates{"max"}
 var MIN = Aggregates{"min"}
 var PERCENTILE_CONT = Aggregates{"percentileCont"}

@@ -2,7 +2,7 @@ package cypher_go_dsl
 
 import "errors"
 
-func idByNode(node Node) FunctionInvocation {
+func FunctionIdByNode(node Node) FunctionInvocation {
 	if node.getError() != nil {
 		return FunctionInvocationError(node.err)
 	}
@@ -12,7 +12,7 @@ func idByNode(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(ID, node.getSymbolicName())
 }
 
-func idByRelationship(relationship Relationship) FunctionInvocation {
+func FunctionIdByRelationship(relationship Relationship) FunctionInvocation {
 	if relationship.getError() != nil {
 		return FunctionInvocationError(relationship.err)
 	}
@@ -22,7 +22,7 @@ func idByRelationship(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(ID, relationship.getSymbolicName())
 }
 
-func labels(node Node) FunctionInvocation {
+func FunctionLabels(node Node) FunctionInvocation {
 	if node.getError() != nil {
 		return FunctionInvocationError(node.err)
 	}
@@ -32,7 +32,7 @@ func labels(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(LABELS, node.getSymbolicName())
 }
 
-func functionType(relationship Relationship) FunctionInvocation {
+func FunctionType(relationship Relationship) FunctionInvocation {
 	if relationship.getError() != nil {
 		return FunctionInvocationError(relationship.err)
 	}
@@ -42,23 +42,23 @@ func functionType(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(TYPE, relationship.getSymbolicName())
 }
 
-func Count(node Node) FunctionInvocation {
+func FunctionCount(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, node.getSymbolicName())
 }
 
-func CountByExpression(expression Expression) FunctionInvocation {
+func FunctionCountByExpression(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, expression)
 }
 
-func CountDistinct(node Node) FunctionInvocation {
+func FunctionCountDistinct(node Node) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(COUNT, node.getSymbolicName())
 }
 
-func countDistinctByExpression(expression Expression) FunctionInvocation {
+func FunctionCountDistinctByExpression(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(COUNT, expression)
 }
 
-func properties(node Node) FunctionInvocation {
+func FunctionProperties(node Node) FunctionInvocation {
 	if node.getError() != nil {
 		return FunctionInvocationError(node.err)
 	}
@@ -68,7 +68,7 @@ func properties(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(PROPERTIES, node.getSymbolicName())
 }
 
-func propertiesByRelationship(relationship Relationship) FunctionInvocation {
+func FunctionPropertiesByRelationship(relationship Relationship) FunctionInvocation {
 	if relationship.getError() != nil {
 		return FunctionInvocationError(relationship.err)
 	}
@@ -78,31 +78,31 @@ func propertiesByRelationship(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(PROPERTIES, relationship.getSymbolicName())
 }
 
-func propertiesByMapExpression(mapExpression MapExpression) FunctionInvocation {
+func FunctionPropertiesByMapExpression(mapExpression MapExpression) FunctionInvocation {
 	return FunctionInvocationCreate(PROPERTIES, mapExpression)
 }
 
-func coalesce(expression ...Expression) FunctionInvocation {
+func FunctionCoalesce(expression ...Expression) FunctionInvocation {
 	return FunctionInvocationCreate(COALESCE, expression...)
 }
 
-func toLower(expression Expression) FunctionInvocation {
+func FunctionToLower(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(TO_LOWER, expression)
 }
 
-func size(expression Expression) FunctionInvocation {
+func FunctionSize(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(SIZE, expression)
 }
 
-func sizeByPattern(pattern RelationshipPattern) FunctionInvocation {
+func FunctionSizeByPattern(pattern RelationshipPattern) FunctionInvocation {
 	return FunctionInvocationCreateWithPatternElement(SIZE, pattern)
 }
 
-func exists(expression Expression) FunctionInvocation {
+func FunctionExists(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(EXISTS, expression)
 }
 
-func distance(point1 Expression, point2 Expression) FunctionInvocation {
+func FunctionDistance(point1 Expression, point2 Expression) FunctionInvocation {
 	if point1.getError() != nil {
 		return FunctionInvocationError(point1.getError())
 	}
@@ -118,11 +118,11 @@ func distance(point1 Expression, point2 Expression) FunctionInvocation {
 	return FunctionInvocationCreate(DISTANCE, point1, point2)
 }
 
-func point(parameterMap MapExpression) FunctionInvocation {
+func FunctionPoint(parameterMap MapExpression) FunctionInvocation {
 	return FunctionInvocationCreate(POINT, parameterMap)
 }
 
-func pointByParameter(parameter Parameter) FunctionInvocation {
+func FunctionPointByParameter(parameter Parameter) FunctionInvocation {
 	return FunctionInvocationCreate(POINT, parameter)
 }
 
