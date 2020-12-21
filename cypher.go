@@ -414,20 +414,116 @@ func CypherCallSimple(procedureName string) OngoingStandaloneCallWithoutArgument
 	return CypherCall(strings.Split(procedureName, "\\.")...)
 }
 
+/**
+ * Starts defining a procedure call of the procedure with the given qualified name.
+ *
+ * @param namespaceAndProcedure The procedure name of the procedure to call.
+ * @return An ongoing definition of a call
+ */
 func CypherCall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArguments {
 	return StatementCall(namespaceAndProcedure...)
 }
 
-func Sort(expression Expression) SortItem {
-	return SortItemCreate(expression, UNDEFINED)
+/**
+ * Starts building a statement based on one subquery.
+ *
+ * @param subquery The statement representing the subquery
+ * @neo4j.version 4.0.0
+ * @see ExposesSubqueryCall#call(Statement)
+ * @since 2020.1.2
+ * @return A new ongoing read without any further conditions or returns.
+ */
+func CypherCallByStatement(subquery Statement) OngoingReadingWithoutWhere {
+	return DefaultStatementBuilderCreate().Call(subquery)
+}
+
+/**
+ * Creates a closed range with given boundaries.
+ *
+ * @param targetExpression The target expression for the range
+ * @param start            The inclusive start
+ * @param end              The exclusive end
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubList(targetExpression Expression, start int, end int) Expression {
+	return SubList(targetExpression, NumberLiteralCreate(start), NumberLiteralCreate(end))
+}
+
+/**
+ * Creates an open range starting at {@code start}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param start            The inclusive start
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListFrom(targetExpression Expression, start int) Expression {
+	return SubListFrom(targetExpression, NumberLiteralCreate(start))
+}
+
+/**
+ * Creates an open range starting at {@code start}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param start            The inclusive start
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListFromByExpression(targetExpression Expression, start Expression) Expression {
+	return SubListFrom(targetExpression, start)
+}
+
+/**
+ * Creates an open range starting at {@code start}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param end              The exclusive end
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListUntil(targetExpression Expression, end int) Expression {
+	return SubListUntil(targetExpression, NumberLiteralCreate(end))
+}
+
+/**
+ * Creates an open range starting at {@code start}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param end              The exclusive end
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListUntilByExpression(targetExpression Expression, end Expression) Expression {
+	return SubListUntil(targetExpression, end)
+}
+
+/**
+ * Creates a single valued range at {@code index}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param index            The index of the range
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListValueAt(targetExpression Expression, index int) Expression {
+	return ValueAt(targetExpression, NumberLiteralCreate(index))
+}
+
+/**
+ * Creates a single valued range at {@code index}.
+ *
+ * @param targetExpression The target expression for the range
+ * @param index            The index of the range
+ * @return A range literal.
+ * @since 2020.1.0
+ */
+func CypherSubListValueAtByExpression(targetExpression Expression, index Expression) Expression {
+	return ValueAt(targetExpression, index)
 }
 
 func escapeName(name string) string {
 	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
-}
-
-func Name(value string) SymbolicName {
-	return SymbolicNameCreate(value)
 }
 
 func unionImpl(unionAll bool, statements ...Statement) Statement {

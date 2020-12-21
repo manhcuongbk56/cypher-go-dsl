@@ -189,7 +189,7 @@ func (d DefaultStatementWithWithBuilder) Unwinds(expression ...Expression) Ongoi
 }
 
 func (d DefaultStatementWithWithBuilder) UnwindByString(variable string) OngoingUnwind {
-	return d.Unwind(Name(variable))
+	return d.Unwind(CypherName(variable))
 }
 
 func (d DefaultStatementWithWithBuilder) Unwind(expression Expression) OngoingUnwind {

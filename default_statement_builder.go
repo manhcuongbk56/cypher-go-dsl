@@ -332,7 +332,7 @@ func (d DefaultStatementBuilder) UnwindByString(variable string) OngoingUnwind {
 	if d.err != nil {
 		return DefaultOngoingUnwindError(d.err)
 	}
-	return d.Unwind(Name(variable))
+	return d.Unwind(CypherName(variable))
 }
 
 func (d DefaultStatementBuilder) Unwind(expression Expression) OngoingUnwind {
