@@ -29,3 +29,7 @@ func TestRenderComplexQuery(t *testing.T) {
 		t.Errorf("query is not match:\n %s", query)
 	}
 }
+
+func TestWithCountFunction(t *testing.T) {
+
+}

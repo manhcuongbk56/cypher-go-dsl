@@ -42,15 +42,15 @@ func functionType(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(TYPE, relationship.getSymbolicName())
 }
 
-func count(node Node) FunctionInvocation {
+func Count(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, node.getSymbolicName())
 }
 
-func countByExpression(expression Expression) FunctionInvocation {
+func CountByExpression(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, expression)
 }
 
-func countDistinct(node Node) FunctionInvocation {
+func CountDistinct(node Node) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(COUNT, node.getSymbolicName())
 }
 

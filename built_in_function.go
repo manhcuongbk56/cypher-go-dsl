@@ -84,7 +84,7 @@ func (a Aggregates) isAggregate() bool {
 
 var AVG = Aggregates{"avg"}
 var COLLECT = Aggregates{"collect"}
-var COUNT = Aggregates{"count"}
+var COUNT = Aggregates{"Count"}
 var MAX = Aggregates{"max"}
 var MIN = Aggregates{"min"}
 var PERCENTILE_CONT = Aggregates{"percentileCont"}
