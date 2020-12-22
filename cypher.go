@@ -522,6 +522,25 @@ func CypherSubListValueAtByExpression(targetExpression Expression, index Express
 	return ValueAt(targetExpression, index)
 }
 
+func CypherLiteralOf(object interface{}) Literal {
+	if object == nil {
+		return NIL_INSTANCE
+	}
+	if stringValue, isString := object.(string); isString {
+		return StringLiteralCreate(stringValue)
+	}
+	if intValue, isInt := object.(int); isInt {
+		return NumberLiteralCreate(intValue)
+	}
+	if literalSlice, isLiteralSlice := object.([]Literal); isLiteralSlice {
+		return ListLiteralCreate(literalSlice)
+	}
+	if booleanValue, isBoolean := object.(bool); isBoolean {
+		return BooleanLiteralCreate(booleanValue)
+	}
+	return StringLiteralError(errors.New("cypher literal of: unsupported literal type"))
+}
+
 func escapeName(name string) string {
 	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
 }

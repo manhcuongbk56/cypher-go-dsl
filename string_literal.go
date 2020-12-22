@@ -21,6 +21,10 @@ func StringLiteralCreate(content string) StringLiteral {
 	return stringLiteral
 }
 
+func StringLiteralError(err error) StringLiteral {
+	return StringLiteralError(err)
+}
+
 func (s StringLiteral) getError() error {
 	return s.err
 }
