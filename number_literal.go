@@ -1,19 +1,37 @@
 package cypher
 
 import (
-	"strconv"
+	"math/big"
 )
 
 type NumberLiteral struct {
-	content int
+	content *big.Float
 	key     string
 	notNil  bool
 	err     error
 }
 
-func NumberLiteralCreate(content int) NumberLiteral {
+func NumberLiteralCreate(content int64) NumberLiteral {
 	n := NumberLiteral{
-		content: content,
+		content: new(big.Float).SetInt(new(big.Int).SetInt64(content)),
+		notNil:  true,
+	}
+	n.key = getAddress(&n)
+	return n
+}
+
+func NumberLiteralCreate2(content float64) NumberLiteral {
+	n := NumberLiteral{
+		content: big.NewFloat(content),
+		notNil:  true,
+	}
+	n.key = getAddress(&n)
+	return n
+}
+
+func NumberLiteralCreate1(content int) NumberLiteral {
+	n := NumberLiteral{
+		content: new(big.Float).SetInt(new(big.Int).SetInt64(int64(content))),
 		notNil:  true,
 	}
 	n.key = getAddress(&n)
@@ -33,7 +51,7 @@ func (n NumberLiteral) getKey() string {
 }
 
 func (n NumberLiteral) GetExpressionType() ExpressionType {
-	return EXPRESSION
+	return "NumberLiteral"
 }
 
 func (n NumberLiteral) GetContent() interface{} {
@@ -41,12 +59,12 @@ func (n NumberLiteral) GetContent() interface{} {
 }
 
 func (n NumberLiteral) AsString() string {
-	return strconv.Itoa(n.content)
+	return n.content.String()
 }
 
 func (n NumberLiteral) accept(visitor *CypherRenderer) {
-	(*visitor).enter(n)
-	(*visitor).leave(n)
+	visitor.enter(n)
+	visitor.leave(n)
 }
 
 func (n NumberLiteral) enter(renderer *CypherRenderer) {

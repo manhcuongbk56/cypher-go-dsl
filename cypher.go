@@ -447,7 +447,7 @@ func CypherCallByStatement(subquery Statement) OngoingReadingWithoutWhere {
  * @since 2020.1.0
  */
 func CypherSubList(targetExpression Expression, start int, end int) Expression {
-	return SubList(targetExpression, NumberLiteralCreate(start), NumberLiteralCreate(end))
+	return SubList(targetExpression, NumberLiteralCreate1(start), NumberLiteralCreate1(end))
 }
 
 /**
@@ -459,7 +459,7 @@ func CypherSubList(targetExpression Expression, start int, end int) Expression {
  * @since 2020.1.0
  */
 func CypherSubListFrom(targetExpression Expression, start int) Expression {
-	return SubListFrom(targetExpression, NumberLiteralCreate(start))
+	return SubListFrom(targetExpression, NumberLiteralCreate1(start))
 }
 
 /**
@@ -483,7 +483,7 @@ func CypherSubListFromByExpression(targetExpression Expression, start Expression
  * @since 2020.1.0
  */
 func CypherSubListUntil(targetExpression Expression, end int) Expression {
-	return SubListUntil(targetExpression, NumberLiteralCreate(end))
+	return SubListUntil(targetExpression, NumberLiteralCreate1(end))
 }
 
 /**
@@ -507,7 +507,7 @@ func CypherSubListUntilByExpression(targetExpression Expression, end Expression)
  * @since 2020.1.0
  */
 func CypherSubListValueAt(targetExpression Expression, index int) Expression {
-	return ValueAt(targetExpression, NumberLiteralCreate(index))
+	return ValueAt(targetExpression, NumberLiteralCreate1(index))
 }
 
 /**
@@ -530,7 +530,7 @@ func CypherLiteralOf(object interface{}) Literal {
 		return StringLiteralCreate(stringValue)
 	}
 	if intValue, isInt := object.(int); isInt {
-		return NumberLiteralCreate(intValue)
+		return NumberLiteralCreate1(intValue)
 	}
 	if literalSlice, isLiteralSlice := object.([]Literal); isLiteralSlice {
 		return ListLiteralCreate(literalSlice)

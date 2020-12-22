@@ -142,7 +142,7 @@ func (e *ExpressionContainer) In(haystack Expression) ConditionContainer {
 
 func (e *ExpressionContainer) IsEmpty() ConditionContainer {
 	e.expression = FunctionSize(e.expression)
-	return e.IsEqualTo(NumberLiteralCreate(0))
+	return e.IsEqualTo(NumberLiteralCreate1(0))
 }
 
 func (e *ExpressionContainer) Descending() SortItem {

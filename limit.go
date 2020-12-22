@@ -13,7 +13,7 @@ func LimitCreate(number int) Limit {
 	if number == 0 {
 		return LimitError(errors.New("limit can not be zero"))
 	}
-	literal := NumberLiteralCreate(number)
+	literal := NumberLiteralCreate1(number)
 	l := Limit{limitAmount: literal}
 	l.key = getAddress(&l)
 	return l
