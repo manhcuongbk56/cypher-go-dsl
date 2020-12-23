@@ -37,7 +37,7 @@ var ID = Scalars{implementationName: "id"}
 var LAST = Scalars{implementationName: "last"}
 var PROPERTIES = Scalars{implementationName: "properties"}
 var SHORTEST_PATH = Scalars{implementationName: "shortestPath"}
-var SIZE = Scalars{implementationName: "FunctionSize"}
+var SIZE = Scalars{implementationName: "size"}
 var START_NODE = Scalars{implementationName: "startNode"}
 var TYPE = Scalars{implementationName: "type"}
 

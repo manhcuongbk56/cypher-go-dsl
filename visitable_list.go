@@ -7,6 +7,12 @@ type FunctionArgumentList struct {
 	err         error
 }
 
+func FunctionArgumentListCreate(visitables ...Visitable) FunctionArgumentList {
+	argumentList := FunctionArgumentList{expressions: visitables}
+	argumentList.key = getAddress(&argumentList)
+	return argumentList
+}
+
 func (v FunctionArgumentList) getError() error {
 	return v.err
 }

@@ -241,3 +241,20 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 }
+
+func TestSizeOfRelationship(t *testing.T) {
+	statementBuilder := cypher.MatchElements(cypher.NewNode("a"))
+	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	statement, err := statementBuilder.Where(expression).
+		Returning(cypher.FunctionSizeByPattern(cypher.NewNode("a").RelationshipTo(cypher.CypherAnyNode())).As("fof").Get()).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (a) WHERE a.name = 'Alice' RETURN size((a)-->()) AS fof"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}

@@ -5,6 +5,7 @@ import (
 )
 
 type FunctionInvocation struct {
+	*ExpressionContainer
 	functionName string
 	arguments    FunctionArgumentList
 	key          string
@@ -29,11 +30,11 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 	}
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
-		arguments: FunctionArgumentList{
-			expressions: arguments,
-		},
+		arguments:    FunctionArgumentListCreate(arguments...),
+		notNil:       true,
 	}
 	f.key = getAddress(&f)
+	f.expression = f
 	return f
 }
 
@@ -44,15 +45,15 @@ func FunctionInvocationCreateWithPatternElement(definition FunctionDefinition, e
 	if element == nil || !element.isNotNil() {
 		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
 	}
-	arguments := make([]Visitable, 1)
+	arguments := make([]Visitable, 0)
 	arguments = append(arguments, element)
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
-		arguments: FunctionArgumentList{
-			expressions: arguments,
-		},
+		arguments:    FunctionArgumentListCreate(arguments...),
+		notNil:       true,
 	}
 	f.key = getAddress(&f)
+	f.ExpressionContainer = ExpressionChain(f)
 	return f
 }
 
@@ -69,11 +70,11 @@ func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern 
 	}
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
-		arguments: FunctionArgumentList{
-			expressions: arguments,
-		},
+		arguments:    FunctionArgumentListCreate(arguments...),
+		notNil:       true,
 	}
 	f.key = getAddress(&f)
+	f.expression = f
 	return f
 }
 
@@ -100,11 +101,11 @@ func FunctionInvocationCreateDistinct(definition FunctionDefinition, expressions
 	}
 	f := FunctionInvocation{
 		functionName: definition.getImplementationName(),
-		arguments: FunctionArgumentList{
-			expressions: arguments,
-		},
+		arguments:    FunctionArgumentListCreate(arguments...),
+		notNil:       true,
 	}
 	f.key = getAddress(&f)
+	f.expression = f
 	return f
 }
 
