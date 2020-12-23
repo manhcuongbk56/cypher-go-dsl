@@ -1,6 +1,9 @@
 package cypher
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type SymbolicName struct {
 	value  string
@@ -49,6 +52,9 @@ func (s SymbolicName) accept(visitor *CypherRenderer) {
 }
 
 func (s SymbolicName) enter(renderer *CypherRenderer) {
+	if s.value == "y" {
+		fmt.Println("lol")
+	}
 	renderer.append(renderer.resolve(s))
 }
 

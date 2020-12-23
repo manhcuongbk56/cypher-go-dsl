@@ -1,8 +1,12 @@
 package cypher
 
 type RelationshipPattern interface {
-	ExposesRelationship
+	ExposesRelationshipChain
 	PatternElement
+	//User for relationship
+	Named(name string) Relationship
+	//Use for relationship chain
+	NamedC(name string) RelationshipChain
 }
 
 type Direction struct {

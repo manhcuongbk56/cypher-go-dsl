@@ -4,20 +4,14 @@ type ExpressionContainer struct {
 	expression Expression
 }
 
-func (e ExpressionContainer) accept(visitor *CypherRenderer) {
-	e.expression.accept(visitor)
+func ExpressionContainerWrap(expression Expression) *ExpressionContainer {
+	return &ExpressionContainer{
+		expression: expression,
+	}
 }
 
-func (e ExpressionContainer) enter(renderer *CypherRenderer) {
-	panic("can not enter expression container")
-}
-
-func (e ExpressionContainer) leave(renderer *CypherRenderer) {
-	panic("can not leave expression container")
-}
-
-func (e ExpressionContainer) getKey() string {
-	panic("Expression container have no key")
+func (e ExpressionContainer) Get() Expression {
+	return e.expression
 }
 
 func (e *ExpressionContainer) As(alias string) ExpressionContainer {

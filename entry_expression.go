@@ -46,7 +46,7 @@ func (e EntryExpression) accept(visitor *CypherRenderer) {
 }
 
 func (e EntryExpression) enter(renderer *CypherRenderer) {
-	renderer.append(escapeName(e.Key))
+	renderer.append(escapeIfNecessary(e.Key))
 	renderer.append(": ")
 }
 

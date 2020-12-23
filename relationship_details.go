@@ -108,9 +108,6 @@ func (r RelationshipDetails) unbounded() RelationshipDetails {
 }
 
 func (r RelationshipDetails) min(minimum int) RelationshipDetails {
-	if !r.length.isNotNil() || r.length.minimum == nil {
-		return r
-	}
 	newLength := RelationshipLengthCreate1(&minimum, nil)
 	if r.length.isNotNil() {
 		newLength = RelationshipLengthCreate1(&minimum, r.length.maximum)
@@ -119,9 +116,6 @@ func (r RelationshipDetails) min(minimum int) RelationshipDetails {
 }
 
 func (r RelationshipDetails) max(maximum int) RelationshipDetails {
-	if !r.length.isNotNil() || r.length.minimum == nil {
-		return r
-	}
 	newLength := RelationshipLengthCreate1(nil, &maximum)
 	if r.length.isNotNil() {
 		newLength = RelationshipLengthCreate1(r.length.minimum, &maximum)

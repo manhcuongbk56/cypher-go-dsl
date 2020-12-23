@@ -35,9 +35,9 @@ func (p Properties) getError() error {
 }
 
 func (p Properties) accept(visitor *CypherRenderer) {
-	(*visitor).enter(p)
+	visitor.enter(p)
 	p.properties.accept(visitor)
-	(*visitor).leave(p)
+	visitor.leave(p)
 }
 
 func (p Properties) enter(renderer *CypherRenderer) {

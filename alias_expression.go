@@ -75,6 +75,6 @@ func (aliased AliasedExpression) enter(renderer *CypherRenderer) {
 func (aliased AliasedExpression) leave(renderer *CypherRenderer) {
 	if _, visited := renderer.visitableToAliased[aliased.key]; !visited {
 		renderer.append(" AS ")
-		renderer.append(escapeName(aliased.alias))
+		renderer.append(escapeIfNecessary(aliased.alias))
 	}
 }

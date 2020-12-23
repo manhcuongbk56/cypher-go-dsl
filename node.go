@@ -170,8 +170,8 @@ func (node Node) RelationshipFrom(other Node, types ...string) Relationship {
 	return RelationshipCreate(node, RTL(), other, types...)
 }
 
-func (node Node) RelationshipBetween(nodeDest Node, types ...string) Relationship {
-	panic("implement me")
+func (node Node) RelationshipBetween(other Node, types ...string) Relationship {
+	return RelationshipCreate(node, UNI(), other, types...)
 }
 
 func (node Node) WithRawProperties(keysAndValues ...interface{}) Node {
@@ -189,8 +189,8 @@ func (node Node) WithProperties(newProperties MapExpression) Node {
 	return NodeCreate4(newProperties, node)
 }
 
-func (node Node) Property(name string) {
-	fmt.Print(name)
+func (node Node) Property(name string) Property {
+	return PropertyCreate(node, name)
 }
 
 func (node Node) NamedByString(name string) Node {
@@ -207,6 +207,14 @@ func (node Node) Named(name SymbolicName) Node {
 	}
 	node.symbolicName = name
 	return node
+}
+
+func (node Node) As(alias string) AliasedExpression {
+	symbolicName := node.getRequiredSymbolicName()
+	if symbolicName.getError() != nil {
+		return AliasedExpressionError(symbolicName.getError())
+	}
+	return ExpressionContainerWrap(symbolicName).As(alias).Get().(AliasedExpression)
 }
 
 type NodeLabel struct {

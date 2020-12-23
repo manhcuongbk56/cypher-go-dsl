@@ -25,8 +25,8 @@ func TestCypherLiteralOf(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := CypherLiteralOf(tt.args.object); got.AsString() != tt.want.AsString() {
-				t.Errorf("CypherLiteralOf() = %v, want %v", got.AsString(), tt.want.AsString())
+			if got := LiteralOf(tt.args.object); got.AsString() != tt.want.AsString() {
+				t.Errorf("LiteralOf() = %v, want %v", got.AsString(), tt.want.AsString())
 			}
 		})
 	}

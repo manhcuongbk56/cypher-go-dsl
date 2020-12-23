@@ -34,7 +34,7 @@ func (p PropertyLookup) enter(renderer *CypherRenderer) {
 	if ASTERISK.content == p.GetPropertyKeyName() {
 		renderer.append(p.GetPropertyKeyName())
 	}
-	renderer.append(escapeName(p.GetPropertyKeyName()))
+	renderer.append(escapeIfNecessary(p.GetPropertyKeyName()))
 }
 
 func (p PropertyLookup) leave(renderer *CypherRenderer) {

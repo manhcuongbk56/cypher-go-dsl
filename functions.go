@@ -299,7 +299,7 @@ func FunctionSumDistinct(expression Expression) FunctionInvocation {
 }
 
 func FunctionRange2Raw(start int, end int) FunctionInvocation {
-	return FunctionRange2(CypherLiteralOf(start), CypherLiteralOf(end))
+	return FunctionRange2(LiteralOf(start), LiteralOf(end))
 }
 
 func FunctionRange2(start Expression, end Expression) FunctionInvocation {
@@ -307,7 +307,7 @@ func FunctionRange2(start Expression, end Expression) FunctionInvocation {
 }
 
 func FunctionRange3Raw(start int, end int, step int) FunctionInvocation {
-	return FunctionRange3(CypherLiteralOf(start), CypherLiteralOf(end), CypherLiteralOf(step))
+	return FunctionRange3(LiteralOf(start), LiteralOf(end), LiteralOf(step))
 }
 
 func FunctionRange3(start Expression, end Expression, step Expression) FunctionInvocation {

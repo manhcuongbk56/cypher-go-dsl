@@ -37,8 +37,8 @@ func (r RelationshipTypes) getKey() string {
 }
 
 func (r RelationshipTypes) accept(visitor *CypherRenderer) {
-	(*visitor).enter(r)
-	(*visitor).leave(r)
+	visitor.enter(r)
+	visitor.leave(r)
 }
 
 func (r RelationshipTypes) enter(renderer *CypherRenderer) {
@@ -47,9 +47,11 @@ func (r RelationshipTypes) enter(renderer *CypherRenderer) {
 		if typeRaw == "" {
 			continue
 		}
-		typeWithPrefix = append(typeWithPrefix, RelTypeStart+escapeName(typeRaw))
+		typeWithPrefix = append(typeWithPrefix, escapeName(typeRaw))
 	}
-	renderer.append(strings.Join(typeWithPrefix, RelTypSeparator))
+	if len(r.values) > 0 {
+		renderer.append(RelTypeStart).append(strings.Join(typeWithPrefix, RelTypSeparator))
+	}
 }
 
 func (r RelationshipTypes) leave(renderer *CypherRenderer) {

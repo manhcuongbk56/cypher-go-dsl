@@ -44,3 +44,7 @@ func (b *ConditionContainer) Not(pathPattern RelationshipPattern) *ConditionCont
 	b.expression = ComparisonCreate1(NOT, b.expression)
 	return b
 }
+
+func (b ConditionContainer) Get() Condition {
+	return b.expression.(Condition)
+}

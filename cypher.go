@@ -38,7 +38,7 @@ func CypherNewNodeWithProperties(primaryLabel string, properties MapExpression, 
 	return NodeCreate5(primaryLabel, properties, additionalLabel...)
 }
 
-func CypherNewNode(primaryLabel string) Node {
+func NewNode(primaryLabel string) Node {
 	return NodeCreate2(primaryLabel)
 }
 
@@ -175,7 +175,7 @@ func CypherOptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
  * @param pattern The patterns to match
  * @return An ongoing match that is used to specify an optional where and a required return clause
  */
-func CypherMatch(element ...PatternElement) OngoingReadingWithoutWhere {
+func MatchElements(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
 }
 
@@ -290,7 +290,7 @@ func CypherSort(expression Expression) SortItem {
  * @param keysAndValues A list of key and values. Must be an even number, with alternating {@link String} and {@link Expression}
  * @return A new map expression.
  */
-func CypherMapOf(objects ...interface{}) MapExpression {
+func MapOf(objects ...interface{}) MapExpression {
 	return NewMapExpression(objects...)
 }
 
@@ -522,7 +522,7 @@ func CypherSubListValueAtByExpression(targetExpression Expression, index Express
 	return ValueAt(targetExpression, index)
 }
 
-func CypherLiteralOf(object interface{}) Literal {
+func LiteralOf(object interface{}) Literal {
 	if object == nil {
 		return NIL_INSTANCE
 	}
@@ -543,6 +543,11 @@ func CypherLiteralOf(object interface{}) Literal {
 
 func escapeName(name string) string {
 	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
+}
+
+func escapeIfNecessary(name string) string {
+	//TODO: maybe need to implement this
+	return name
 }
 
 func unionImpl(unionAll bool, statements ...Statement) Statement {

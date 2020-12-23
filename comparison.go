@@ -23,8 +23,8 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 	if right != nil && right.getError() != nil {
 		return ComparisonError(right.getError())
 	}
-	if !operator.isUnary() {
-		return ComparisonError(errors.New("operator must be unary"))
+	if !operator.isNotNil() {
+		return ComparisonError(errors.New("operator must be not nil"))
 	}
 	if left == nil || !left.isNotNil() {
 		return ComparisonError(errors.New("left expression must be not nil"))
@@ -113,4 +113,8 @@ func (c Comparison) getKey() string {
 
 func (c Comparison) GetExpressionType() ExpressionType {
 	return CONDITION
+}
+
+func (c Comparison) getConditionType() string {
+	return "Comparison"
 }

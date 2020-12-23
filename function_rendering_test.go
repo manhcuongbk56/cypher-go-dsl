@@ -5,8 +5,8 @@ import (
 )
 
 func TestCountInReturnClause(t *testing.T) {
-	userNode := CypherNewNode("User").NamedByString("u")
-	statement, err := CypherMatch(userNode).Returning(FunctionCount(userNode)).Build()
+	userNode := NewNode("User").NamedByString("u")
+	statement, err := MatchElements(userNode).Returning(FunctionCount(userNode)).Build()
 	if err != nil {
 		t.Errorf("error when rendering statement: %s", err)
 	}

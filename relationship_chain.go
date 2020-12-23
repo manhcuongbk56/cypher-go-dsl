@@ -1,10 +1,22 @@
 package cypher
 
+import "errors"
+
 type RelationshipChain struct {
 	relationships []Relationship
 	key           string
 	notNil        bool
 	err           error
+}
+
+func RelationshipChainCreate(relationship Relationship) RelationshipChain {
+	relations := make([]Relationship, 1)
+	relations[0] = relationship
+	return RelationshipChain{relationships: relations}
+}
+
+func RelationshipChainError(msg string) RelationshipChain {
+	return RelationshipChain{err: errors.New(msg)}
 }
 
 func (r RelationshipChain) getError() error {
@@ -19,28 +31,50 @@ func (r RelationshipChain) getKey() string {
 	return r.key
 }
 
-func (r RelationshipChain) RelationshipTo(node Node, types ...string) RelationshipPattern {
+func (r RelationshipChain) RelationshipTo(node Node, types ...string) RelationshipChain {
 	newRelation := r.relationships[len(r.relationships)-1].right.RelationshipTo(node, types...)
 	r.relationships = append(r.relationships, newRelation)
 	return r
 }
 
-func (r RelationshipChain) RelationshipFrom(node Node, types ...string) RelationshipPattern {
-	panic("implement me")
+func (r RelationshipChain) RelationshipFrom(node Node, types ...string) RelationshipChain {
+	newRelation := r.relationships[len(r.relationships)-1].right.RelationshipFrom(node, types...)
+	r.relationships = append(r.relationships, newRelation)
+	return r
 }
 
-func (r RelationshipChain) RelationshipBetween(node Node, types ...string) RelationshipPattern {
-	panic("implement me")
+func (r RelationshipChain) RelationshipBetween(node Node, types ...string) RelationshipChain {
+	newRelation := r.relationships[len(r.relationships)-1].right.RelationshipBetween(node, types...)
+	r.relationships = append(r.relationships, newRelation)
+	return r
+}
+
+func (r RelationshipChain) Named(name string) Relationship {
+	return RelationshipError(errors.New("can not use named for relationship chain"))
+}
+
+func (r RelationshipChain) NamedC(name string) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].Named(name)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
 }
 
 func (r RelationshipChain) accept(visitor *CypherRenderer) {
-	panic("implement me")
+	visitor.enter(r)
+	lastNode := Node{}
+	for _, relationship := range r.relationships {
+		relationship.left.accept(visitor)
+		relationship.details.accept(visitor)
+		lastNode = relationship.right
+	}
+	VisitIfNotNull(lastNode, visitor)
+	visitor.leave(r)
 }
 
-func RelationshipChainCreate(relationship Relationship) RelationshipChain {
-	relations := make([]Relationship, 1)
-	relations[0] = relationship
-	return RelationshipChain{relationships: relations}
+func (r RelationshipChain) enter(renderer *CypherRenderer) {
+}
+
+func (r RelationshipChain) leave(renderer *CypherRenderer) {
 }
 
 func (r RelationshipChain) Add(relationship Relationship) RelationshipChain {
@@ -50,12 +84,4 @@ func (r RelationshipChain) Add(relationship Relationship) RelationshipChain {
 
 func (r RelationshipChain) IsPatternElement() bool {
 	return true
-}
-
-func (r RelationshipChain) enter(renderer *CypherRenderer) {
-	panic("implement me")
-}
-
-func (r RelationshipChain) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }

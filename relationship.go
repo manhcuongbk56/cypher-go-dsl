@@ -68,27 +68,23 @@ func (r Relationship) getKey() string {
 	return r.key
 }
 
-func (r Relationship) namedByString(newSymbolicName string) Relationship {
+func (r Relationship) NamedByString(newSymbolicName string) Relationship {
 	return RelationshipCreate3(r.left, r.details.namedByString(newSymbolicName), r.right)
 }
 
-func (r Relationship) named(newSymbolicName SymbolicName) Relationship {
-	return RelationshipCreate3(r.left, r.details.named(newSymbolicName), r.right)
-}
-
-func (r Relationship) unbounded() Relationship {
+func (r Relationship) Unbounded() Relationship {
 	return RelationshipCreate3(r.left, r.details.unbounded(), r.right)
 }
 
-func (r Relationship) min(minimum int) Relationship {
+func (r Relationship) Min(minimum int) Relationship {
 	return RelationshipCreate3(r.left, r.details.min(minimum), r.right)
 }
 
-func (r Relationship) max(minimum int, maximum int) Relationship {
+func (r Relationship) Length(minimum int, maximum int) Relationship {
 	return RelationshipCreate3(r.left, r.details.min(minimum).max(maximum), r.right)
 }
 
-func (r Relationship) length(maximum int) Relationship {
+func (r Relationship) Max(maximum int) Relationship {
 	return RelationshipCreate3(r.left, r.details.max(maximum), r.right)
 }
 
@@ -110,16 +106,24 @@ func (r Relationship) IsPatternElement() bool {
 	return true
 }
 
-func (r Relationship) RelationshipTo(node Node, types ...string) RelationshipPattern {
+func (r Relationship) RelationshipTo(node Node, types ...string) RelationshipChain {
 	return RelationshipChainCreate(r).Add(r.right.RelationshipTo(node, types...))
 }
 
-func (r Relationship) RelationshipFrom(node Node, types ...string) RelationshipPattern {
+func (r Relationship) RelationshipFrom(node Node, types ...string) RelationshipChain {
 	return RelationshipChainCreate(r).Add(r.right.RelationshipFrom(node, types...))
 }
 
-func (r Relationship) RelationshipBetween(node Node, types ...string) RelationshipPattern {
+func (r Relationship) RelationshipBetween(node Node, types ...string) RelationshipChain {
 	return RelationshipChainCreate(r).Add(r.right.RelationshipBetween(node, types...))
+}
+
+func (r Relationship) Named(name string) Relationship {
+	return RelationshipCreate3(r.left, r.details.namedByString(name), r.right)
+}
+
+func (r Relationship) NamedC(name string) RelationshipChain {
+	return RelationshipChainError("can not use namedC for relationship")
 }
 
 func (r Relationship) Property(name string) Property {
