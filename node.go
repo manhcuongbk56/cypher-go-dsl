@@ -214,7 +214,7 @@ func (node Node) As(alias string) AliasedExpression {
 	if symbolicName.getError() != nil {
 		return AliasedExpressionError(symbolicName.getError())
 	}
-	return ExpressionContainerWrap(symbolicName).As(alias).Get().(AliasedExpression)
+	return ExpressionChain(symbolicName).As(alias).Get().(AliasedExpression)
 }
 
 type NodeLabel struct {

@@ -4,7 +4,7 @@ type ExpressionContainer struct {
 	expression Expression
 }
 
-func ExpressionContainerWrap(expression Expression) *ExpressionContainer {
+func ExpressionChain(expression Expression) *ExpressionContainer {
 	return &ExpressionContainer{
 		expression: expression,
 	}

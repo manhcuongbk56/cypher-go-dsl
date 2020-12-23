@@ -59,6 +59,42 @@ func (r RelationshipChain) NamedC(name string) RelationshipChain {
 	return r
 }
 
+func (r RelationshipChain) Unbounded() RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].Unbounded()
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
+func (r RelationshipChain) Min(minimum int) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].Min(minimum)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
+func (r RelationshipChain) Length(minimum int, maximum int) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].Length(minimum, maximum)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
+func (r RelationshipChain) Max(maximum int) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].Max(maximum)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
+func (r RelationshipChain) Properties(newProperties MapExpression) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].WithProperties(newProperties)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
+func (r RelationshipChain) PropertiesRaw(keysAndValues ...interface{}) RelationshipChain {
+	namedRelation := r.relationships[len(r.relationships)-1].WithRawProperties(keysAndValues...)
+	r.relationships[len(r.relationships)-1] = namedRelation
+	return r
+}
+
 func (r RelationshipChain) accept(visitor *CypherRenderer) {
 	visitor.enter(r)
 	lastNode := Node{}

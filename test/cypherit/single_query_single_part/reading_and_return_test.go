@@ -171,7 +171,7 @@ func TestChainedRelations1(t *testing.T) {
 	statementBuilder := cypher.MatchElements(userNode.
 		RelationshipTo(bikeNode, "OWNS").NamedByString("r1").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
-	expression := cypher.ExpressionContainerWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -189,7 +189,7 @@ func TestChainedRelations2(t *testing.T) {
 	statementBuilder := cypher.MatchElements(userNode.
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
-	expression := cypher.ExpressionContainerWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -209,7 +209,7 @@ func TestChainedRelations3(t *testing.T) {
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").
 		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y"))
-	expression := cypher.ExpressionContainerWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -217,6 +217,26 @@ func TestChainedRelations3(t *testing.T) {
 	}
 	query := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`]->(t:`Trip`)<-[x:`WAS_ON`]-(u)-[y]-(:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
+	tripNode := cypher.NewNode("Trip").NamedByString("t")
+	statementBuilder := cypher.MatchElements(userNode.
+		RelationshipTo(bikeNode, "OWNS").
+		RelationshipTo(tripNode, "USED_ON").NamedC("r2").Min(1).Properties(cypher.MapOf("when", cypher.LiteralOf("2019-04-16"))).
+		RelationshipFrom(userNode, "WAS_ON").NamedC("x").Max(2).Properties(cypher.MapOf("whatever", cypher.LiteralOf("2020-04-16"))).
+		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
+	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`*1.. {when: '2019-04-16'}]->(t:`Trip`)<-[x:`WAS_ON`*..2 {whatever: '2020-04-16'}]-(u)-[y*2..3 {idk: '2021-04-16'}]-(:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
