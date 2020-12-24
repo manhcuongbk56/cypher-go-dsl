@@ -246,7 +246,7 @@ func TestSizeOfRelationship(t *testing.T) {
 	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
 	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
-		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.CypherAnyNode())).As("fof").Get()).
+		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -254,6 +254,200 @@ func TestSizeOfRelationship(t *testing.T) {
 	}
 	query := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (a) WHERE a.name = 'Alice' RETURN size((a)-->()) AS fof"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSizeOfRelationshipChain(t *testing.T) {
+	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
+	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	statement, err := statementBuilder.Where(expression).
+		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode()).RelationshipTo(cypher.AnyNode())).As("fof").Get()).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (a) WHERE a.name = 'Alice' RETURN size((a)-->()-->()) AS fof"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderDefault(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(cypher.CypherSort(userNode.Property("name"))).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderAscending(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Ascending()).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name ASC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderDescending(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending()).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name DESC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderConcatenation(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending(),
+			cypher.CypherSort(userNode.Property("age")).Ascending()).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name DESC, u.age ASC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderDefaultExpression(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBy(userNode.Property("name")).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderAscendingExpression(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(userNode.Property("name").Ascending()).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name ASC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderDescendingExpression(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBySortItem(userNode.Property("name").Descending()).Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name DESC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSortOrderConcatenationExpression(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		OrderBy(userNode.Property("name")).Descending().
+		And(userNode.Property("age")).Ascending().
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u ORDER BY u.name DESC, u.age ASC"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSkip(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		Skip(1).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u SKIP 1"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestLimit(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		Limit(1).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u LIMIT 1"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestSkipAndLimit(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+		Skip(1).
+		Limit(1).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN u SKIP 1 LIMIT 1"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
+
+func TestDistinct(t *testing.T) {
+	statement, err := cypher.MatchElements(userNode).ReturningDistinctByNamed(userNode).
+		Skip(1).
+		Limit(1).
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query := cypher.NewRenderer().Render(statement)
+	expect := "MATCH (u:`User`) RETURN DISTINCT u SKIP 1 LIMIT 1"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}

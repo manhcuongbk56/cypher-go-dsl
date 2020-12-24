@@ -12,7 +12,7 @@ type RelationshipChain struct {
 func RelationshipChainCreate(relationship Relationship) RelationshipChain {
 	relations := make([]Relationship, 1)
 	relations[0] = relationship
-	return RelationshipChain{relationships: relations}
+	return RelationshipChain{relationships: relations, notNil: true}
 }
 
 func RelationshipChainError(msg string) RelationshipChain {

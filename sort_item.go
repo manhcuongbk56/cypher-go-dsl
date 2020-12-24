@@ -15,6 +15,7 @@ func SortItemCreate(expression Expression, direction SortDirectionRaw) SortItem 
 	sortItem := SortItem{
 		expression: expression,
 		direction:  SortDirection{value: direction},
+		notNil:     true,
 	}
 	sortItem.key = getAddress(&sortItem)
 	return sortItem

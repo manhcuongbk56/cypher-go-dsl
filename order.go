@@ -13,7 +13,7 @@ func OrderCreate(sortItems []SortItem) Order {
 			return Order{err: item.getError()}
 		}
 	}
-	o := Order{sortItems: sortItems}
+	o := Order{sortItems: sortItems, notNil: true}
 	o.key = getAddress(&o)
 	return o
 }
@@ -43,9 +43,8 @@ func (o Order) PrepareVisit(visitable Visitable) Visitable {
 }
 
 func (o Order) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append(" ORDER BY ")
 }
 
 func (o Order) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }

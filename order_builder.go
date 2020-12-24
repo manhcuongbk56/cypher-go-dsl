@@ -14,42 +14,42 @@ func OrderBuilderCreate() OrderBuilder {
 	}
 }
 
-func (o OrderBuilder) OrderBySortItem(item ...SortItem) {
+func (o *OrderBuilder) OrderBySortItem(item ...SortItem) {
 	o.sortItemList = append(o.sortItemList, item...)
 }
 
-func (o OrderBuilder) OrderByExpression(expression Expression) {
+func (o *OrderBuilder) OrderByExpression(expression Expression) {
 	o.lastSortItem = CypherSort(expression)
 }
 
-func (o OrderBuilder) And(expression Expression) {
+func (o *OrderBuilder) And(expression Expression) {
 	o.OrderByExpression(expression)
 }
 
-func (o OrderBuilder) Descending() {
+func (o *OrderBuilder) Descending() {
 	o.sortItemList = append(o.sortItemList, o.lastSortItem.Descending())
 	o.lastSortItem = SortItem{}
 }
 
-func (o OrderBuilder) Ascending() {
+func (o *OrderBuilder) Ascending() {
 	o.sortItemList = append(o.sortItemList, o.lastSortItem.Ascending())
 	o.lastSortItem = SortItem{}
 }
 
-func (o OrderBuilder) Skip(number int) {
+func (o *OrderBuilder) Skip(number int) {
 	o.skip = SkipCreate(number)
 }
 
-func (o OrderBuilder) Limit(number int) {
+func (o *OrderBuilder) Limit(number int) {
 	o.limit = LimitCreate(number)
 }
 
-func (o OrderBuilder) BuildOrder() Order {
+func (o *OrderBuilder) BuildOrder() Order {
 	if o.lastSortItem.isNotNil() {
 		o.sortItemList = append(o.sortItemList, o.lastSortItem)
 	}
 	if o.sortItemList != nil && len(o.sortItemList) > 0 {
-		return Order{sortItems: o.sortItemList}
+		return OrderCreate(o.sortItemList)
 	}
 	return Order{}
 }

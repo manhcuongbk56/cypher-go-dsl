@@ -14,7 +14,7 @@ func LimitCreate(number int) Limit {
 		return LimitError(errors.New("limit can not be zero"))
 	}
 	literal := NumberLiteralCreate1(number)
-	l := Limit{limitAmount: literal}
+	l := Limit{limitAmount: literal, notNil: true}
 	l.key = getAddress(&l)
 	return l
 }

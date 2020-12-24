@@ -45,7 +45,7 @@ func NewNode(primaryLabel string) Node {
 /**
  * @return A node matching any node.
  */
-func CypherAnyNode() Node {
+func AnyNode() Node {
 	return NodeCreate()
 }
 

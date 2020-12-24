@@ -9,7 +9,7 @@ type Skip struct {
 
 func SkipCreate(number int) Skip {
 	literal := NumberLiteralCreate1(number)
-	skip := Skip{skipAmount: literal}
+	skip := Skip{skipAmount: literal, notNil: true}
 	skip.key = getAddress(&skip)
 	return skip
 }

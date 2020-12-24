@@ -20,7 +20,7 @@ func TestFindAllMovies(t *testing.T) {
 func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 	farm := cypher.NewNode("Farm").NamedByString("b")
 	statement, _ := cypher.MatchElements(farm).
-		Where(cypher.ConditionsNot(farm.RelationshipFrom(cypher.CypherAnyNode(), "HAS"))).
+		Where(cypher.ConditionsNot(farm.RelationshipFrom(cypher.AnyNode(), "HAS"))).
 		WithByString("b").
 		OptionalMatch(farm.RelationshipTo(cypher.CypherAnyNode1("p"), "HAS")).
 		ReturningByString("b", "p").

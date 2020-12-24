@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type Property struct {
+	*ExpressionContainer
 	container Expression
 	name      PropertyLookup
 	key       string
@@ -47,11 +48,14 @@ func PropertyCreate1(container Expression, name PropertyLookup) Property {
 	if name.getError() != nil {
 		return PropertyError(name.getError())
 	}
-	return Property{
+	property := Property{
 		container: container,
 		name:      name,
 		notNil:    true,
 	}
+	property.key = getAddress(&property)
+	property.ExpressionContainer = ExpressionChain(property)
+	return property
 }
 
 func PropertyError(err error) Property {

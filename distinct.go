@@ -10,6 +10,7 @@ type Distinct struct {
 var DISTINCT_INSTANCE = Distinct{
 	IsDistinct: true,
 	key:        "DISTINCT_INSTANCE",
+	notNil:     true,
 }
 
 func (d Distinct) getError() error {
@@ -34,5 +35,4 @@ func (d Distinct) enter(renderer *CypherRenderer) {
 }
 
 func (d Distinct) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }
