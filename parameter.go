@@ -6,6 +6,7 @@ import (
 )
 
 type Parameter struct {
+	ExpressionContainer
 	name   string
 	key    string
 	err    error
@@ -24,6 +25,7 @@ func ParameterCreate(name string) Parameter {
 		notNil: true,
 	}
 	parameter.key = getAddress(&parameter)
+	parameter.ExpressionContainer = ExpressionChain(parameter)
 	return parameter
 }
 

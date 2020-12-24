@@ -28,6 +28,7 @@ func DefaultStatementWithUpdateBuilderCreate1(defaultBuilder *DefaultStatementBu
 		defaultBuilder: defaultBuilder,
 		distinct:       false,
 		builder:        builder,
+		notNil:         true,
 	}
 }
 

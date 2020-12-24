@@ -3,7 +3,7 @@ package cypher
 import "errors"
 
 type Property struct {
-	*ExpressionContainer
+	ExpressionContainer
 	container Expression
 	name      PropertyLookup
 	key       string

@@ -5,7 +5,7 @@ import (
 )
 
 type FunctionInvocation struct {
-	*ExpressionContainer
+	ExpressionContainer
 	functionName string
 	arguments    FunctionArgumentList
 	key          string
