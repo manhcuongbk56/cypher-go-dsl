@@ -171,7 +171,7 @@ func TestChainedRelations1(t *testing.T) {
 	statementBuilder := cypher.MatchElements(userNode.
 		RelationshipTo(bikeNode, "OWNS").NamedByString("r1").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
-	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -189,7 +189,7 @@ func TestChainedRelations2(t *testing.T) {
 	statementBuilder := cypher.MatchElements(userNode.
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
-	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -209,7 +209,7 @@ func TestChainedRelations3(t *testing.T) {
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").
 		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y"))
-	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -229,7 +229,7 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").Min(1).Properties(cypher.MapOf("when", cypher.LiteralOf("2019-04-16"))).
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").Max(2).Properties(cypher.MapOf("whatever", cypher.LiteralOf("2020-04-16"))).
 		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
-	expression := cypher.ExpressionChain(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -244,7 +244,7 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 
 func TestSizeOfRelationship(t *testing.T) {
 	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
-	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	expression := cypher.ExpressionWrap(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
 		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
@@ -261,7 +261,7 @@ func TestSizeOfRelationship(t *testing.T) {
 
 func TestSizeOfRelationshipChain(t *testing.T) {
 	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
-	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	expression := cypher.ExpressionWrap(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
 		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode()).RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()

@@ -25,7 +25,7 @@ func ParameterCreate(name string) Parameter {
 		notNil: true,
 	}
 	parameter.key = getAddress(&parameter)
-	parameter.ExpressionContainer = ExpressionChain(parameter)
+	parameter.ExpressionContainer = ExpressionWrap(parameter)
 	return parameter
 }
 

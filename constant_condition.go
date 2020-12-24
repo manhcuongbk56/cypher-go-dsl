@@ -1,6 +1,7 @@
 package cypher
 
 type ConstantCondition struct {
+	ConditionContainer
 	value  BooleanLiteral
 	key    string
 	notNil bool
@@ -19,6 +20,7 @@ func ConstantConditionCreate(value BooleanLiteral) ConstantCondition {
 		notNil: true,
 	}
 	constantCondition.key = getAddress(&constantCondition)
+	constantCondition.ConditionContainer = ConditionWrap(constantCondition)
 	return constantCondition
 }
 

@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type HasLabelCondition struct {
+	ConditionContainer
 	nodeName   SymbolicName
 	nodeLabels []NodeLabel
 	key        string
@@ -30,6 +31,7 @@ func HasLabelConditionCreate(nodeName SymbolicName, labels ...string) HasLabelCo
 		notNil:     true,
 	}
 	hasLabelCondition.key = getAddress(&hasLabelCondition)
+	hasLabelCondition.ConditionContainer = ConditionWrap(hasLabelCondition)
 	return hasLabelCondition
 }
 
@@ -49,6 +51,7 @@ func HasLabelConditionCreate1(nodeName SymbolicName, labels []NodeLabel) HasLabe
 		notNil:     true,
 	}
 	hasLabelCondition.key = getAddress(&hasLabelCondition)
+	hasLabelCondition.ConditionContainer = ConditionWrap(hasLabelCondition)
 	return hasLabelCondition
 }
 

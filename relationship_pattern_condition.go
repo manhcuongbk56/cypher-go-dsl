@@ -1,6 +1,7 @@
 package cypher
 
 type RelationshipPatternCondition struct {
+	ConditionContainer
 	pathPattern RelationshipPattern
 	key         string
 	notNil      bool
@@ -16,6 +17,7 @@ func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) Relatio
 		notNil:      true,
 	}
 	r.key = getAddress(&r)
+	r.ConditionContainer = ConditionWrap(r)
 	return r
 }
 

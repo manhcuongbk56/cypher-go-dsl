@@ -1,6 +1,7 @@
 package cypher
 
 type Asterisk struct {
+	ExpressionContainer
 	content string
 	key     string
 	notNil  bool
@@ -15,6 +16,7 @@ func AsteriskCreate() Asterisk {
 		notNil:  true,
 	}
 	asterisk.key = getAddress(&asterisk)
+	asterisk.ExpressionContainer = ExpressionWrap(asterisk)
 	return asterisk
 }
 

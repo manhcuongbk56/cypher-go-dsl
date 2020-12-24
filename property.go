@@ -54,7 +54,7 @@ func PropertyCreate1(container Expression, name PropertyLookup) Property {
 		notNil:    true,
 	}
 	property.key = getAddress(&property)
-	property.ExpressionContainer = ExpressionChain(property)
+	property.ExpressionContainer = ExpressionWrap(property)
 	return property
 }
 

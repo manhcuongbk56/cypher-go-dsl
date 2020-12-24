@@ -1,6 +1,7 @@
 package cypher
 
 type BooleanLiteral struct {
+	ExpressionContainer
 	content bool
 	key     string
 	notNil  bool
@@ -16,6 +17,7 @@ func BooleanLiteralCreate(content bool) BooleanLiteral {
 		notNil:  true,
 	}
 	b.key = getAddress(&b)
+	b.ExpressionContainer = ExpressionWrap(b)
 	return b
 }
 

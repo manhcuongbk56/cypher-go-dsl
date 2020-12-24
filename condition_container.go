@@ -4,6 +4,12 @@ type ConditionContainer struct {
 	ExpressionContainer
 }
 
+func ConditionWrap(condition Condition) ConditionContainer {
+	return ConditionContainer{
+		ExpressionContainer{condition},
+	}
+}
+
 func (b ConditionContainer) And(condition Condition) ConditionContainer {
 	b.expression = CompoundConditionCreate(b.expression.(Condition), AND, condition)
 	return b

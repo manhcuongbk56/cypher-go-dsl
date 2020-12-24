@@ -5,6 +5,7 @@ import (
 )
 
 type Comparison struct {
+	ConditionContainer
 	left     Expression
 	operator Operator
 	right    Expression
@@ -38,6 +39,7 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 		right:    right,
 	}
 	comparison.key = getAddress(&comparison)
+	comparison.ConditionContainer = ConditionWrap(comparison)
 	return comparison
 }
 
@@ -72,6 +74,7 @@ func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 		return Comparison{}
 	}
 	comparison.key = getAddress(&comparison)
+	comparison.ConditionContainer = ConditionWrap(comparison)
 	return comparison
 }
 

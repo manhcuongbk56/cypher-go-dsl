@@ -5,6 +5,7 @@ import (
 )
 
 type AliasedExpression struct {
+	ExpressionContainer
 	delegate Expression
 	alias    string
 	key      string
@@ -28,6 +29,7 @@ func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpressio
 		notNil:   true,
 	}
 	a.key = getAddress(&a)
+	a.ExpressionContainer = ExpressionWrap(a)
 	return a
 }
 

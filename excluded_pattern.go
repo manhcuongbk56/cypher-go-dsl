@@ -1,6 +1,7 @@
 package cypher
 
 type ExcludedPattern struct {
+	ConditionContainer
 	patternElement PatternElement
 	key            string
 	notNil         bool
@@ -16,6 +17,7 @@ func ExcludedPatternCreate(patternElement PatternElement) ExcludedPattern {
 		notNil:         true,
 	}
 	e.key = getAddress(&e)
+	e.ConditionContainer = ConditionWrap(e)
 	return e
 }
 

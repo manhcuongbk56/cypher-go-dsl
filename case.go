@@ -1,6 +1,7 @@
 package cypher
 
 type Case struct {
+	ConditionContainer
 	caseElse       CaseElse
 	caseExpression Expression
 	caseWhenThens  []CaseWhenThen
@@ -31,6 +32,7 @@ func SimpleCaseCreate(caseExpression Expression, caseWhenThens []CaseWhenThen) C
 		notNil:         true,
 	}
 	simpleCase.key = getAddress(&simpleCase)
+	simpleCase.ConditionContainer = ConditionWrap(simpleCase)
 	return simpleCase
 }
 
@@ -45,6 +47,7 @@ func SimpleCaseCreate1(caseExpression Expression) Case {
 		notNil:         true,
 	}
 	simpleCase.key = getAddress(&simpleCase)
+	simpleCase.ConditionContainer = ConditionWrap(simpleCase)
 	return simpleCase
 }
 
@@ -64,6 +67,7 @@ func EndingSimpleCaseCreate(caseExpression Expression, caseWhenThens []CaseWhenT
 		notNil:         true,
 	}
 	simpleCase.key = getAddress(&simpleCase)
+	simpleCase.ConditionContainer = ConditionWrap(simpleCase)
 	return simpleCase
 }
 
@@ -74,6 +78,7 @@ func GenericCaseCreate1() Case {
 		caseType:      GENERIC_CASE,
 	}
 	genericCase.key = getAddress(&genericCase)
+	genericCase.ConditionContainer = ConditionWrap(genericCase)
 	return genericCase
 }
 
@@ -89,6 +94,7 @@ func GenericCaseCreate(caseWhenThens []CaseWhenThen) Case {
 		caseType:      GENERIC_CASE,
 	}
 	genericCase.key = getAddress(&genericCase)
+	genericCase.ConditionContainer = ConditionWrap(genericCase)
 	return genericCase
 }
 
@@ -104,6 +110,7 @@ func EndingGenericCaseCreate(caseWhenThens []CaseWhenThen) Case {
 		caseType:      ENDING_GENERIC_CASE,
 	}
 	genericCase.key = getAddress(&genericCase)
+	genericCase.ConditionContainer = ConditionWrap(genericCase)
 	return genericCase
 }
 

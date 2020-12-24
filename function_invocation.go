@@ -53,7 +53,7 @@ func FunctionInvocationCreateWithPatternElement(definition FunctionDefinition, e
 		notNil:       true,
 	}
 	f.key = getAddress(&f)
-	f.ExpressionContainer = ExpressionChain(f)
+	f.ExpressionContainer = ExpressionWrap(f)
 	return f
 }
 

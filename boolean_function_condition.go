@@ -1,6 +1,7 @@
 package cypher
 
 type BooleanFunctionCondition struct {
+	ConditionContainer
 	delegate FunctionInvocation
 	key      string
 	notNil   bool
@@ -13,6 +14,7 @@ func BooleanFunctionConditionCreate(delegate FunctionInvocation) BooleanFunction
 		notNil:   true,
 	}
 	function.key = getAddress(&function)
+	function.ConditionContainer = ConditionWrap(function)
 	return function
 }
 

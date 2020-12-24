@@ -1,6 +1,7 @@
 package cypher
 
 type ExistentialSubquery struct {
+	ConditionContainer
 	fragment Match
 	key      string
 	notNil   bool
@@ -16,6 +17,7 @@ func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
 		notNil:   true,
 	}
 	e.key = getAddress(&e)
+	e.ConditionContainer = ConditionWrap(e)
 	return e
 }
 

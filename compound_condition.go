@@ -6,6 +6,7 @@ import (
 )
 
 type CompoundCondition struct {
+	ConditionContainer
 	operator      Operator
 	conditions    []Condition
 	conditionType ExpressionType
@@ -46,6 +47,7 @@ func CompoundConditionCreate(left Condition, operator Operator, right Condition)
 	condition.add(operator, left)
 	condition.add(operator, right)
 	condition.injectKey()
+	condition.ConditionContainer = ConditionWrap(condition)
 	return condition
 }
 
@@ -55,6 +57,7 @@ func CompoundConditionCreate1(operator Operator) CompoundCondition {
 		conditions: make([]Condition, 0),
 	}
 	condition.injectKey()
+	condition.ConditionContainer = ConditionWrap(condition)
 	return condition
 }
 
