@@ -81,7 +81,9 @@ func TestMultipleRelationshipTypes(t *testing.T) {
 }
 
 func TestRelationshipWithProperties(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").WithProperties(cypher.MapOf("boughtOn", cypher.LiteralOf("2019-04-16")))).
+	statement, err := cypher.
+		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").
+			WithProperties(cypher.MapOf("boughtOn", cypher.LiteralOf("2019-04-16")))).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
