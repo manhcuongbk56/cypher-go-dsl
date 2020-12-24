@@ -136,13 +136,13 @@ func (node Node) getError() error {
 }
 
 func (node Node) accept(visitor *CypherRenderer) {
-	(*visitor).enter(node)
+	visitor.enter(node)
 	VisitIfNotNull(node.symbolicName, visitor)
 	for _, label := range node.labels {
 		label.accept(visitor)
 	}
 	VisitIfNotNull(node.properties, visitor)
-	(*visitor).leave(node)
+	visitor.leave(node)
 }
 
 func (node Node) enter(renderer *CypherRenderer) {

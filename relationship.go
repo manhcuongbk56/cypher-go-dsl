@@ -12,9 +12,12 @@ type Relationship struct {
 }
 
 func RelationshipCreate(left Node, direction Direction, right Node, types ...string) Relationship {
-	typeSlice := make([]string, 0)
-	typeSlice = append(typeSlice, types...)
-	relationshipTypes := RelationshipTypesCreate(typeSlice)
+	relationshipTypes := RelationshipTypes{}
+	if len(types) > 0 {
+		typeSlice := make([]string, 0)
+		typeSlice = append(typeSlice, types...)
+		relationshipTypes = RelationshipTypesCreate(typeSlice)
+	}
 	details := RelationshipDetailsCreate1(direction, relationshipTypes)
 	return RelationshipCreate3(left, details, right)
 }

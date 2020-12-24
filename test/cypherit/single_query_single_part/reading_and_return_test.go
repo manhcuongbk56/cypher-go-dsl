@@ -243,10 +243,10 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 }
 
 func TestSizeOfRelationship(t *testing.T) {
-	statementBuilder := cypher.MatchElements(cypher.NewNode("a"))
+	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
 	expression := cypher.ExpressionChain(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
-		Returning(cypher.FunctionSizeByPattern(cypher.NewNode("a").RelationshipTo(cypher.CypherAnyNode())).As("fof").Get()).
+		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.CypherAnyNode())).As("fof").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)

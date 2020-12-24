@@ -49,6 +49,10 @@ func CypherAnyNode() Node {
 	return NodeCreate()
 }
 
+func AnyNodeNamed(name string) Node {
+	return NodeCreate().NamedByString(name)
+}
+
 /**
  * @return The {@code *} wildcard literal.
  */

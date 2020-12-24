@@ -124,8 +124,7 @@ func (r RelationshipDetails) max(maximum int) RelationshipDetails {
 }
 
 func (r RelationshipDetails) hasContent() bool {
-	return r.direction.notNil ||
-		r.symbolicName.isNotNil() ||
+	return r.symbolicName.isNotNil() ||
 		r.types.isNotNil() ||
 		r.length.isNotNil() ||
 		r.properties.isNotNil()
