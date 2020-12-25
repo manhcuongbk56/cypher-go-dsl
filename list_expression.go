@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type ListExpression struct {
+	ExpressionContainer
 	content ExpressionList
 	err     error
 	key     string
@@ -18,6 +19,7 @@ func ListExpressionCreate(content ExpressionList) ListExpression {
 		notNil:  true,
 	}
 	list.key = getAddress(&list)
+	list.ExpressionContainer = ExpressionWrap(list)
 	return list
 }
 

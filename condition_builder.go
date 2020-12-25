@@ -13,9 +13,7 @@ func (c *ConditionBuilder) Where(newCondition Condition) {
 }
 
 func (c *ConditionBuilder) And(additionalCondition Condition) {
-	conditionContainer := ConditionContainer{ExpressionContainer{expression: additionalCondition}}
-	conditionContainer.And(additionalCondition)
-	c.condition = conditionContainer.expression.(Condition)
+	c.condition = c.condition.And(additionalCondition).Get()
 }
 
 func (c *ConditionBuilder) Or(additionalCondition Condition) {

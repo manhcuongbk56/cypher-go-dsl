@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type ListComprehension struct {
+	ExpressionContainer
 	variable       SymbolicName
 	listExpression Expression
 	where          Where
@@ -24,6 +25,7 @@ func ListComprehensionCreate(variable SymbolicName, listExpression Expression, w
 		notNil:         true,
 	}
 	list.key = getAddress(&list)
+	list.ExpressionContainer = ExpressionWrap(list)
 	return list
 }
 

@@ -1,6 +1,7 @@
 package cypher
 
 type DistinctExpression struct {
+	ExpressionContainer
 	delegate Expression
 	key      string
 	notNil   bool
@@ -16,6 +17,7 @@ func DistinctExpressionCreate(delegate Expression) DistinctExpression {
 		notNil:   true,
 	}
 	d.key = getAddress(&d)
+	d.ExpressionContainer = ExpressionWrap(d)
 	return d
 }
 

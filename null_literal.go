@@ -1,6 +1,7 @@
 package cypher
 
 type NilLiteral struct {
+	ExpressionContainer
 	key    string
 	notNil bool
 	err    error
@@ -11,6 +12,7 @@ func NullLiteralCreate() NilLiteral {
 		notNil: true,
 	}
 	nilLiteral.key = getAddress(&nilLiteral)
+	nilLiteral.ExpressionContainer = ExpressionWrap(nilLiteral)
 	return nilLiteral
 }
 

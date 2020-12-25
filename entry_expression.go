@@ -1,6 +1,7 @@
 package cypher
 
 type EntryExpression struct {
+	ExpressionContainer
 	Key    string
 	Value  Expression
 	key    string
@@ -20,6 +21,7 @@ func EntryExpressionCreate(key string, value Expression) EntryExpression {
 		notNil: true,
 	}
 	e.key = getAddress(&e)
+	e.ExpressionContainer = ExpressionWrap(e)
 	return e
 }
 

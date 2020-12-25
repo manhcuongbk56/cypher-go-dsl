@@ -34,7 +34,7 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 		notNil:       true,
 	}
 	f.key = getAddress(&f)
-	f.expression = f
+	f.ExpressionContainer = ExpressionWrap(f)
 	return f
 }
 
@@ -74,7 +74,7 @@ func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern 
 		notNil:       true,
 	}
 	f.key = getAddress(&f)
-	f.expression = f
+	f.ExpressionContainer = ExpressionWrap(f)
 	return f
 }
 
@@ -105,7 +105,7 @@ func FunctionInvocationCreateDistinct(definition FunctionDefinition, expressions
 		notNil:       true,
 	}
 	f.key = getAddress(&f)
-	f.expression = f
+	f.ExpressionContainer = ExpressionWrap(f)
 	return f
 }
 

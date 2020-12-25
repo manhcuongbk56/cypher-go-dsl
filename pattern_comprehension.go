@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type PatternComprehension struct {
+	ExpressionContainer
 	pattern        PatternElement
 	where          Where
 	listDefinition Expression
@@ -18,6 +19,7 @@ func PatternComprehensionCreate(pattern PatternElement, where Where, listDefinit
 		listDefinition: listDefinition,
 	}
 	patternComprehension.key = getAddress(&patternComprehension)
+	patternComprehension.ExpressionContainer = ExpressionWrap(patternComprehension)
 	return patternComprehension
 }
 

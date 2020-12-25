@@ -51,7 +51,7 @@ func (aliased AliasedExpression) GetExpressionType() ExpressionType {
 	return EXPRESSION
 }
 
-func (aliased AliasedExpression) As(newAlias string) AliasedExpression {
+func (aliased AliasedExpression) Aliased(newAlias string) AliasedExpression {
 	if newAlias == "" {
 		return AliasedExpressionError(errors.New("the alias may not be empty"))
 	}

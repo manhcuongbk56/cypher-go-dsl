@@ -5,6 +5,7 @@ import (
 )
 
 type NumberLiteral struct {
+	ExpressionContainer
 	content *big.Float
 	key     string
 	notNil  bool
@@ -17,6 +18,7 @@ func NumberLiteralCreate(content int64) NumberLiteral {
 		notNil:  true,
 	}
 	n.key = getAddress(&n)
+	n.ExpressionContainer = ExpressionWrap(n)
 	return n
 }
 
@@ -26,6 +28,7 @@ func NumberLiteralCreate2(content float64) NumberLiteral {
 		notNil:  true,
 	}
 	n.key = getAddress(&n)
+	n.ExpressionContainer = ExpressionWrap(n)
 	return n
 }
 
@@ -35,6 +38,7 @@ func NumberLiteralCreate1(content int) NumberLiteral {
 		notNil:  true,
 	}
 	n.key = getAddress(&n)
+	n.ExpressionContainer = ExpressionWrap(n)
 	return n
 }
 

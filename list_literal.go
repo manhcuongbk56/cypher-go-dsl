@@ -3,6 +3,7 @@ package cypher
 import "strings"
 
 type ListLiteral struct {
+	ExpressionContainer
 	content []Literal
 	key     string
 	err     error
@@ -19,6 +20,7 @@ func ListLiteralCreate(contents []Literal) ListLiteral {
 		content: contents,
 	}
 	list.key = getAddress(&list)
+	list.ExpressionContainer = ExpressionWrap(list)
 	return list
 }
 

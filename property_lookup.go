@@ -13,6 +13,7 @@ func PropertyLookupCreate(name string) PropertyLookup {
 		propertyKeyName: name,
 	}
 	property.key = getAddress(&property)
+	property.ExpressionContainer = ExpressionWrap(property)
 	return property
 }
 

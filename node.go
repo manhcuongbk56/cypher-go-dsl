@@ -217,6 +217,10 @@ func (node Node) As(alias string) AliasedExpression {
 	return ExpressionWrap(symbolicName).As(alias).Get().(AliasedExpression)
 }
 
+func (node Node) InternalId() FunctionInvocation {
+	return FunctionIdByNode(node)
+}
+
 type NodeLabel struct {
 	value  string
 	key    string

@@ -5,6 +5,7 @@ import (
 )
 
 type MapExpression struct {
+	ExpressionContainer
 	expressions []Expression
 	key         string
 	notNil      bool
@@ -22,6 +23,7 @@ func MapExpressionCreate(newContents []Expression) MapExpression {
 		notNil:      true,
 	}
 	m.key = getAddress(&m)
+	m.ExpressionContainer = ExpressionWrap(m)
 	return m
 }
 

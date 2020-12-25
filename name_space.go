@@ -5,6 +5,7 @@ import (
 )
 
 type Namespace struct {
+	ExpressionContainer
 	content []string
 	key     string
 	notNil  bool
@@ -17,6 +18,7 @@ func NameSpaceCreate(content []string) Namespace {
 		notNil:  true,
 	}
 	n.key = getAddress(&n)
+	n.ExpressionContainer = ExpressionWrap(n)
 	return n
 }
 

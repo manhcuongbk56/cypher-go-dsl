@@ -5,6 +5,7 @@ import (
 )
 
 type SymbolicName struct {
+	ExpressionContainer
 	value  string
 	key    string
 	notNil bool
@@ -20,6 +21,7 @@ func SymbolicNameCreate(value string) SymbolicName {
 		notNil: true,
 	}
 	symbolicName.key = getAddress(&symbolicName)
+	symbolicName.ExpressionContainer = ExpressionWrap(symbolicName)
 	return symbolicName
 }
 

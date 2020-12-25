@@ -6,6 +6,7 @@ import (
 )
 
 type Operation struct {
+	ExpressionContainer
 	left     Expression
 	operator Operator
 	right    Visitable
@@ -37,8 +38,10 @@ func OperationCreate(left Expression, operator Operator, right Expression) Opera
 		left:     left,
 		operator: operator,
 		right:    right,
+		notNil:   true,
 	}
 	o.key = getAddress(&o)
+	o.ExpressionContainer = ExpressionWrap(o)
 	return o
 }
 
@@ -65,8 +68,10 @@ func OperationCreate1(left Expression, operator Operator, right NodeLabel) Opera
 		left:     left,
 		operator: operator,
 		right:    right,
+		notNil:   true,
 	}
 	o.key = getAddress(&o)
+	o.ExpressionContainer = ExpressionWrap(o)
 	return o
 }
 
@@ -97,8 +102,10 @@ func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operati
 		left:     op1.getRequiredSymbolicName(),
 		operator: operator,
 		right:    NodeLabelsCreate(labels),
+		notNil:   true,
 	}
 	o.key = getAddress(&o)
+	o.ExpressionContainer = ExpressionWrap(o)
 	return o
 }
 

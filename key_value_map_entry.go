@@ -1,6 +1,7 @@
 package cypher
 
 type KeyValueMapEntry struct {
+	ExpressionContainer
 	entryKey string
 	value    Expression
 	key      string
@@ -17,6 +18,7 @@ func KeyValueMapEntryCreate(key string, value Expression) KeyValueMapEntry {
 		value:    value,
 	}
 	entry.key = getAddress(&entry)
+	entry.ExpressionContainer = ExpressionWrap(entry)
 	return entry
 }
 

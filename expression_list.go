@@ -1,6 +1,7 @@
 package cypher
 
 type ExpressionList struct {
+	ExpressionContainer
 	expressions []Expression
 	key         string
 	notNil      bool
@@ -18,6 +19,7 @@ func ExpressionListCreate(expressions []Expression) ExpressionList {
 		notNil:      true,
 	}
 	e.key = getAddress(&e)
+	e.ExpressionContainer = ExpressionWrap(e)
 	return e
 }
 

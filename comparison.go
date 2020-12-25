@@ -37,6 +37,7 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 		left:     left,
 		operator: operator,
 		right:    right,
+		notNil:   true,
 	}
 	comparison.key = getAddress(&comparison)
 	comparison.ConditionContainer = ConditionWrap(comparison)
@@ -74,6 +75,7 @@ func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 		return Comparison{}
 	}
 	comparison.key = getAddress(&comparison)
+	comparison.notNil = true
 	comparison.ConditionContainer = ConditionWrap(comparison)
 	return comparison
 }

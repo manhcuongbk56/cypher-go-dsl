@@ -3,6 +3,7 @@ package cypher
 import "errors"
 
 type ListOperator struct {
+	ExpressionContainer
 	targetExpression Expression
 	details          ListOperatorDetails
 	key              string
@@ -17,6 +18,7 @@ func listOperatorCreate(targetExpression Expression, optionalStart Expression, d
 		notNil:           true,
 	}
 	operator.key = getAddress(&operator)
+	operator.ExpressionContainer = ExpressionWrap(operator)
 	return operator
 }
 
@@ -154,6 +156,7 @@ func (l ListOperator) GetExpressionType() ExpressionType {
 
 //Dot struct
 type Dot struct {
+	ExpressionContainer
 	content string
 	key     string
 	notNil  bool
@@ -163,12 +166,13 @@ type Dot struct {
 var DOTS = DotCreate("..")
 
 func DotCreate(content string) Dot {
-	Dot := Dot{
+	dot := Dot{
 		content: content,
 		notNil:  true,
 	}
-	Dot.key = getAddress(&Dot)
-	return Dot
+	dot.key = getAddress(&dot)
+	dot.ExpressionContainer = ExpressionWrap(dot)
+	return dot
 }
 
 func (s Dot) getError() error {

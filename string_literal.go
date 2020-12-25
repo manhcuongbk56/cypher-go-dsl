@@ -3,6 +3,7 @@ package cypher
 import "regexp"
 
 type StringLiteral struct {
+	ExpressionContainer
 	content string
 	key     string
 	notNil  bool
@@ -18,6 +19,7 @@ func StringLiteralCreate(content string) StringLiteral {
 		notNil:  true,
 	}
 	stringLiteral.key = getAddress(&stringLiteral)
+	stringLiteral.ExpressionContainer = ExpressionWrap(stringLiteral)
 	return stringLiteral
 }
 
