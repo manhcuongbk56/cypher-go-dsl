@@ -13,6 +13,32 @@ type FunctionInvocation struct {
 	err          error
 }
 
+func FunctionInvocationCreate1(definition FunctionDefinition) FunctionInvocation {
+	return FunctionInvocationCreateWithFunctionName(definition.getImplementationName(), nil)
+}
+
+func FunctionInvocationCreateWithFunctionName(functionName string, arguments ...Expression) FunctionInvocation {
+	if arguments != nil {
+		for _, expression := range arguments {
+			if expression.getError() != nil {
+				return FunctionInvocationError(expression.getError())
+			}
+		}
+	}
+	argumentVisitables := make([]Visitable, len(arguments))
+	for i := range arguments {
+		argumentVisitables[i] = arguments[i]
+	}
+	f := FunctionInvocation{
+		functionName: functionName,
+		arguments:    FunctionArgumentListCreate(argumentVisitables...),
+		notNil:       true,
+	}
+	f.key = getAddress(&f)
+	f.ExpressionContainer = ExpressionWrap(f)
+	return f
+}
+
 func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expression) FunctionInvocation {
 	if expressions != nil {
 		for _, expression := range expressions {

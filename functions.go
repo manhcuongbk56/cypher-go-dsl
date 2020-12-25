@@ -176,6 +176,13 @@ func FunctionCollectDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(AVG, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code max()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-max">max</a>.
+ *
+ * @param expression A list from which the maximum element value is returned
+ * @return A function call for {@code max()}
+ */
 func FunctionMax(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -183,6 +190,13 @@ func FunctionMax(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(MAX, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code max()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-max">max</a>.
+ *
+ * @param expression A list from which the maximum element value is returned
+ * @return A function call for {@code max()}
+ */
 func FunctionMaxDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -190,6 +204,13 @@ func FunctionMaxDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(MAX, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code min()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-min">min</a>.
+ *
+ * @param expression A list from which the minimum element value is returned
+ * @return A function call for {@code min()}
+ */
 func FunctionMin(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -197,6 +218,13 @@ func FunctionMin(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(MIN, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code min()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-min">min</a>.
+ *
+ * @param expression A list from which the minimum element value is returned
+ * @return A function call for {@code min()}
+ */
 func FunctionMinDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -204,6 +232,14 @@ func FunctionMinDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(MIN, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code percentileCont()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-percentilecont">percentileCont</a>.
+ *
+ * @param expression A numeric expression
+ * @param percentile A numeric value between 0.0 and 1.0
+ * @return A function call for {@code percentileCont()}
+ */
 func FunctionPercentileCont(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -217,6 +253,14 @@ func FunctionPercentileCont(expression Expression, percentile float64) FunctionI
 	return FunctionInvocationCreate(PERCENTILE_CONT, expression, NumberLiteralCreate2(percentile))
 }
 
+/**
+ * Creates a function invocation for the {@code percentileCont()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-percentilecont">percentileCont</a>.
+ *
+ * @param expression A numeric expression
+ * @param percentile A numeric value between 0.0 and 1.0
+ * @return A function call for {@code percentileCont()}
+ */
 func FunctionPercentileContDistinct(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -230,6 +274,14 @@ func FunctionPercentileContDistinct(expression Expression, percentile float64) F
 	return FunctionInvocationCreateDistinct(PERCENTILE_CONT, expression, NumberLiteralCreate2(percentile))
 }
 
+/**
+ * Creates a function invocation for the {@code percentileDisc()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-percentiledisc">percentileDisc</a>.
+ *
+ * @param expression A numeric expression
+ * @param percentile A numeric value between 0.0 and 1.0
+ * @return A function call for {@code percentileDisc()}
+ */
 func FunctionPercentileDisc(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -243,6 +295,14 @@ func FunctionPercentileDisc(expression Expression, percentile float64) FunctionI
 	return FunctionInvocationCreate(PERCENTILE_DISC, expression, NumberLiteralCreate2(percentile))
 }
 
+/**
+ * Creates a function invocation for the {@code percentileDisc()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-percentiledisc">percentileDisc</a>.
+ *
+ * @param expression A numeric expression
+ * @param percentile A numeric value between 0.0 and 1.0
+ * @return A function call for {@code percentileDisc()}
+ */
 func FunctionPercentileDiscDistinct(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -256,6 +316,13 @@ func FunctionPercentileDiscDistinct(expression Expression, percentile float64) F
 	return FunctionInvocationCreateDistinct(PERCENTILE_DISC, expression, NumberLiteralCreate2(percentile))
 }
 
+/**
+ * Creates a function invocation for the {@code stDev()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-stdev">stDev</a>.
+ *
+ * @param expression A numeric expression
+ * @return A function call for {@code stDev()}
+ */
 func FunctionStDev(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -263,6 +330,13 @@ func FunctionStDev(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(ST_DEV, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code stDev()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-stdev">stDev</a>.
+ *
+ * @param expression A numeric expression
+ * @return A function call for {@code stDev()}
+ */
 func FunctionStDevDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -270,6 +344,13 @@ func FunctionStDevDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(ST_DEV, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code stDevP()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-stdevp">stDevP</a>.
+ *
+ * @param expression A numeric expression
+ * @return A function call for {@code stDevP()}
+ */
 func FunctionStDevP(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -277,6 +358,13 @@ func FunctionStDevP(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(ST_DEV_P, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code stDevP()} function with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-stdevp">stDevP</a>.
+ *
+ * @param expression A numeric expression
+ * @return A function call for {@code stDevP()}
+ */
 func FunctionStDevPDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -284,6 +372,13 @@ func FunctionStDevPDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(ST_DEV_P, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code sum()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-sum">sum</a>.
+ *
+ * @param expression An expression returning a set of numeric values
+ * @return A function call for {@code sum()}
+ */
 func FunctionSum(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -291,6 +386,13 @@ func FunctionSum(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(SUM, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code sum()} function  with {@code DISTINCT} added.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-sum">sum</a>.
+ *
+ * @param expression An expression returning a set of numeric values
+ * @return A function call for {@code sum()}
+ */
 func FunctionSumDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -298,18 +400,49 @@ func FunctionSumDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(SUM, expression)
 }
 
+/**
+ * @param start the range's start
+ * @param end   the range's end
+ * @return A function call for {@code range()}
+ * @see #range(Expression, Expression)
+ */
 func FunctionRange2Raw(start int, end int) FunctionInvocation {
 	return FunctionRange2(LiteralOf(start), LiteralOf(end))
 }
 
+/**
+ * @param start the range's start
+ * @param end   the range's end
+ * @return A function call for {@code range()}
+ * @see #range(Expression, Expression, Expression)
+ */
 func FunctionRange2(start Expression, end Expression) FunctionInvocation {
 	return FunctionRange3(start, end, nil)
 }
 
+/**
+ * Creates a function invocation for the {@code range()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/list/#functions-range">range</a>.
+ *
+ * @param start the range's start
+ * @param end   the range's end
+ * @param step  the range's step
+ * @return A function call for {@code range()}
+ * @see #range(Expression, Expression, Expression)
+ */
 func FunctionRange3Raw(start int, end int, step int) FunctionInvocation {
 	return FunctionRange3(LiteralOf(start), LiteralOf(end), LiteralOf(step))
 }
 
+/**
+ * Creates a function invocation for the {@code range()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/list/#functions-range">range</a>.
+ *
+ * @param start the range's start
+ * @param end   the range's end
+ * @param step  the range's step
+ * @return A function call for {@code range()}
+ */
 func FunctionRange3(start Expression, end Expression, step Expression) FunctionInvocation {
 	if start != nil && start.getError() != nil {
 		return FunctionInvocationError(start.getError())
@@ -333,6 +466,13 @@ func FunctionRange3(start Expression, end Expression, step Expression) FunctionI
 	}
 }
 
+/**
+ * Creates a function invocation for the {@code head()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-head">head</a>.
+ *
+ * @param expression A list from which the head element is returned
+ * @return A function call for {@code head()}
+ */
 func FunctionHead(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -340,6 +480,13 @@ func FunctionHead(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(HEAD, expression)
 }
 
+/**
+ * Creates a function invocation for the {@code last()} function.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-last">last</a>.
+ *
+ * @param expression A list from which the last element is returned
+ * @return A function call for {@code last()}
+ */
 func FunctionLast(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
@@ -347,6 +494,14 @@ func FunctionLast(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(LAST, expression)
 }
 
+/**
+ * Creates a function invocation for {@code nodes{}}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/list/#functions-nodes">nodes</a>.
+ *
+ * @param path The path for which the number of nodes should be retrieved
+ * @return A function call for {@code nodes()} on a path.
+ * @since 1.1
+ */
 func FunctionNodes(path NamedPath) FunctionInvocation {
 	if path.getError() != nil {
 		return FunctionInvocationError(path.getError())
@@ -359,6 +514,98 @@ func FunctionNodes(path NamedPath) FunctionInvocation {
 		return FunctionInvocationError(errors.New("functions nodes : path need to be named"))
 	}
 	return FunctionInvocationCreate(NODES, symbolicName)
+}
+
+/**
+ * Creates a function invocation for {@code relationships{}}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/list/#functions-relationships">relationships</a>.
+ *
+ * @param path The path for which the relationships should be retrieved
+ * @return A function call for {@code relationships()} on a path.
+ * @since 2020.0.2
+ */
+func FunctionRelationships(path NamedPath) FunctionInvocation {
+	if path.getError() != nil {
+		return FunctionInvocationError(path.getError())
+	}
+	if !path.isNotNil() {
+		return FunctionInvocationError(errors.New("functions relationships : path for relationships is required"))
+	}
+	symbolicName := path.getRequiredSymbolicName()
+	if symbolicName.getError() != nil {
+		return FunctionInvocationError(errors.New("functions relationships : path need to be named"))
+	}
+	return FunctionInvocationCreate(RELATIONSHIPS, symbolicName)
+}
+
+/**
+ * Creates a function invocation for {@code startNode{}}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-startnode">startNode</a>.
+ *
+ * @param relationship The relationship for which the start node be retrieved
+ * @return A function call for {@code startNode()} on a path.
+ * @since 2020.0.2
+ */
+func FunctionStartNode(relationship Relationship) FunctionInvocation {
+	if relationship.getError() != nil {
+		return FunctionInvocationError(relationship.getError())
+	}
+	if !relationship.isNotNil() {
+		return FunctionInvocationError(errors.New("functions start node : relationship for start node is required"))
+	}
+	symbolicName := relationship.getRequiredSymbolicName()
+	if symbolicName.getError() != nil {
+		return FunctionInvocationError(errors.New("functions start node : relationship need to be named"))
+	}
+	return FunctionInvocationCreate(START_NODE, symbolicName)
+}
+
+/**
+ * Creates a function invocation for {@code endNode{}}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-endnode">endNode</a>.
+ *
+ * @param relationship The relationship for which the end node be retrieved
+ * @return A function call for {@code endNode()} on a path.
+ * @since 2020.0.2
+ */
+func FunctionEndNode(relationship Relationship) FunctionInvocation {
+	if relationship.getError() != nil {
+		return FunctionInvocationError(relationship.getError())
+	}
+	if !relationship.isNotNil() {
+		return FunctionInvocationError(errors.New("functions start node : relationship for end node is required"))
+	}
+	symbolicName := relationship.getRequiredSymbolicName()
+	if symbolicName.getError() != nil {
+		return FunctionInvocationError(errors.New("functions start node : relationship need to be named"))
+	}
+	return FunctionInvocationCreate(END_NODE, symbolicName)
+}
+
+/**
+ * Creates a function invocation for {@code date()}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ * This is the most simple form.
+ *
+ * @return A function call for {@code date()}.
+ * @since 2020.1.0
+ */
+func FunctionDate() FunctionInvocation {
+	return FunctionInvocationCreate1(DATE)
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ *
+ * @param year  The year
+ * @param month The month
+ * @param day   The day
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionCalendarDate(year int, month int, day int) FunctionInvocation {
+	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "month", LiteralOf(month), "day", LiteralOf(day)))
 }
 
 //TODO: implement more create FunctionInvocation function
