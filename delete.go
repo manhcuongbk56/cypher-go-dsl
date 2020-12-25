@@ -49,7 +49,7 @@ func (d Delete) enter(renderer *CypherRenderer) {
 }
 
 func (d Delete) leave(renderer *CypherRenderer) {
-	renderer.append(" ")
+	renderer.append("")
 }
 
 func (d Delete) getKey() string {

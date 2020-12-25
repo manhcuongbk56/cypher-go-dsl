@@ -168,7 +168,7 @@ func CypherParameter(name string) Parameter {
  * @param pattern The patterns to match
  * @return An ongoing match that is used to specify an optional where and a required return clause
  */
-func CypherOptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
+func OptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().OptionalMatch(element...)
 }
 
