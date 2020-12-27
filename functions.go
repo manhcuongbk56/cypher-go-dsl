@@ -2,6 +2,7 @@ package cypher
 
 import (
 	"errors"
+	"time"
 )
 
 func FunctionIdByNode(node Node) FunctionInvocation {
@@ -608,4 +609,473 @@ func FunctionCalendarDate(year int, month int, day int) FunctionInvocation {
 	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "month", LiteralOf(month), "day", LiteralOf(day)))
 }
 
-//TODO: implement more create FunctionInvocation function
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ *
+ * @param year      The year
+ * @param week      The optional week
+ * @param dayOfWeek The optional day of the week
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionWeekDate(year int, week int, dayOfWeek int) FunctionInvocation {
+	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "week", LiteralOf(week), "dayOfWeek", LiteralOf(dayOfWeek)))
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ *
+ * @param year         The year
+ * @param quarter      The optional week
+ * @param dayOfQuarter The optional day of the week
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionQuarterDate(year int, quarter int, dayOfQuarter int) FunctionInvocation {
+	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "quarter", LiteralOf(quarter), "dayOfQuarter", LiteralOf(dayOfQuarter)))
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ *
+ * @param year       The year
+ * @param ordinalDay The ordinal day of the year.
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionOrdinalDate(year int, ordinalDay int) FunctionInvocation {
+	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "ordinalDay", LiteralOf(ordinalDay)))
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code date({})}
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions date with components :components is required"))
+	}
+	return FunctionInvocationCreate(DATE, components)
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ * This creates a date from a string.
+ *
+ * @param temporalValue A string representing a temporal value.
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateWithTemporal(temporalValue string) FunctionInvocation {
+	if temporalValue == "" {
+		return FunctionInvocationError(errors.New("functions date with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(DATE, LiteralOf(temporalValue))
+}
+
+/**
+ * Creates a function invocation for {@code date({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">date</a>.
+ * This creates a date from a string.
+ *
+ * @param temporalValue An expression representing a temporal value.
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateWithExpression(temporalValue Expression) FunctionInvocation {
+	if temporalValue.getError() != nil {
+		return FunctionInvocationError(temporalValue.getError())
+	}
+	if !temporalValue.isNotNil() {
+		return FunctionInvocationError(errors.New("functions date with temporalValue :temporalValue is required"))
+	}
+	return FunctionInvocationCreate(DATE, temporalValue)
+}
+
+/**
+ * Creates a function invocation for {@code datetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/datetime/">datetime</a>.
+ *
+ * @return A function call for {@code datetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionDatetime() FunctionInvocation {
+	return FunctionInvocationCreate(DATETIME)
+}
+
+/**
+ * Creates a function invocation for {@code datetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/datetime/">datetime</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code datetime({})}
+ * @return A function call for {@code datetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateTimeWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions datetime with components :components is required"))
+	}
+	return FunctionInvocationCreate(DATETIME, components)
+}
+
+/**
+ * Creates a function invocation for {@code datetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">datetime</a>.
+ * This creates a datetime from a string.
+ *
+ * @param temporalValue A string representing a temporal value.
+ * @return A function call for {@code datetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateTimeWithTemporal(temporalValue string) FunctionInvocation {
+	if temporalValue == "" {
+		return FunctionInvocationError(errors.New("functions datetime with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(DATETIME, LiteralOf(temporalValue))
+}
+
+/**
+ * Creates a function invocation for {@code datetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/date/">datetime</a>.
+ * This creates a datetime from a string.
+ *
+ * @param temporalValue An expression representing a temporal value.
+ * @return A function call for {@code date({})}.
+ * @since 2020.1.0
+ */
+func FunctionDateTimeWithExpression(temporalValue Expression) FunctionInvocation {
+	if temporalValue.getError() != nil {
+		return FunctionInvocationError(temporalValue.getError())
+	}
+	if !temporalValue.isNotNil() {
+		return FunctionInvocationError(errors.New("functions datetime with temporalValue :temporalValue is required"))
+	}
+	return FunctionInvocationCreate(DATETIME, temporalValue)
+}
+
+/**
+ * Creates a function invocation for {@code localdatetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localdatetime</a>.
+ *
+ * @return A function call for {@code localdatetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalDatetime() FunctionInvocation {
+	return FunctionInvocationCreate(LOCALDATETIME)
+}
+
+/**
+ * Creates a function invocation for {@code localdatetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localdatetime</a>.
+ *
+ * @param timeZone The timezone to use when creating the temporal instance
+ * @return A function call for {@code localdatetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalDateTimeWithTimezone(location *time.Location) FunctionInvocation {
+	if location == nil {
+		return FunctionInvocationError(errors.New("functions localdatetime with timezone :timezone is required"))
+	}
+	return FunctionInvocationCreate(LOCALDATETIME, timezoneMapLiteralOf(location))
+}
+
+/**
+ * Creates a function invocation for {@code localdatetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localdatetime</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code localdatetime({})}
+ * @return A function call for {@code localdatetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalDateTimeWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions localdatetime with components :components is required"))
+	}
+	return FunctionInvocationCreate(LOCALDATETIME, components)
+}
+
+/**
+ * Creates a function invocation for {@code localdatetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localdatetime</a>.
+ * This creates a localdatetime from a string.
+ *
+ * @param temporalValue A string representing a temporal value.
+ * @return A function call for {@code localdatetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalDateTimeWithTemporal(temporalValue string) FunctionInvocation {
+	if temporalValue == "" {
+		return FunctionInvocationError(errors.New("functions localdatetime with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(LOCALDATETIME, LiteralOf(temporalValue))
+}
+
+/**
+ * Creates a function invocation for {@code localdatetime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localdatetime</a>.
+ * This creates a localdatetime from a string.
+ *
+ * @param temporalValue An expression representing a temporal value.
+ * @return A function call for {@code localdatetime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalDateTimeWithExpression(temporalValue Expression) FunctionInvocation {
+	if temporalValue.getError() != nil {
+		return FunctionInvocationError(temporalValue.getError())
+	}
+	if !temporalValue.isNotNil() {
+		return FunctionInvocationError(errors.New("functions localdatetime with temporalValue :temporalValue is required"))
+	}
+	return FunctionInvocationCreate(LOCALDATETIME, temporalValue)
+}
+
+/**
+ * Creates a function invocation for {@code localtime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localtime</a>.
+ *
+ * @return A function call for {@code localtime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocaltime() FunctionInvocation {
+	return FunctionInvocationCreate(LOCALTIME)
+}
+
+/**
+ * Creates a function invocation for {@code localtime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localtime</a>.
+ *
+ * @return A function call for {@code localtime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalTimeWithTimezone(location *time.Location) FunctionInvocation {
+	if location == nil {
+		return FunctionInvocationError(errors.New("functions localtime with timezone :timezone is required"))
+	}
+	return FunctionInvocationCreate(LOCALTIME, timezoneMapLiteralOf(location))
+}
+
+/**
+ * Creates a function invocation for {@code localtime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localdatetime/">localtime</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code localtime({})}
+ * @return A function call for {@code localtime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalTimeWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions localtime with components :components is required"))
+	}
+	return FunctionInvocationCreate(LOCALTIME, components)
+}
+
+/**
+ * Creates a function invocation for {@code localtime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localtime/">localtime</a>.
+ * This creates a localtime from a string.
+ *
+ * @param temporalValue A string representing a temporal value.
+ * @return A function call for {@code localtime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalTimeWithTemporal(temporalValue string) FunctionInvocation {
+	if temporalValue == "" {
+		return FunctionInvocationError(errors.New("functions localtime with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(LOCALTIME, LiteralOf(temporalValue))
+}
+
+/**
+ * Creates a function invocation for {@code localtime({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/localtime/">localtime</a>.
+ * This creates a localtime from a string.
+ *
+ * @param temporalValue An expression representing a temporal value.
+ * @return A function call for {@code localtime({})}.
+ * @since 2020.1.0
+ */
+func FunctionLocalTimeWithExpression(temporalValue Expression) FunctionInvocation {
+	if temporalValue.getError() != nil {
+		return FunctionInvocationError(temporalValue.getError())
+	}
+	if !temporalValue.isNotNil() {
+		return FunctionInvocationError(errors.New("functions localtime with temporalValue :temporalValue is required"))
+	}
+	return FunctionInvocationCreate(LOCALTIME, temporalValue)
+}
+
+/**
+ * Creates a function invocation for {@code time({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/time/">time</a>.
+ *
+ * @return A function call for {@code time({})}.
+ * @since 2020.1.0
+ */
+func FunctionTime() FunctionInvocation {
+	return FunctionInvocationCreate(TIME)
+}
+
+/**
+ * Creates a function invocation for {@code time({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/time/">time</a>.
+ *
+ * @param timeZone The timezone to use when creating the temporal instance
+ * @return A function call for {@code time({})}.
+ * @since 2020.1.0
+ */
+func FunctionTimeWithTimeZone(location *time.Location) FunctionInvocation {
+	if location == nil {
+		return FunctionInvocationError(errors.New("functions time with timezone :timezone is required"))
+	}
+	return FunctionInvocationCreate(TIME, timezoneMapLiteralOf(location))
+}
+
+/**
+ * Creates a function invocation for {@code time({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/time/">time</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code time({})}
+ * @return A function call for {@code time({})}.
+ * @since 2020.1.0
+ */
+func FunctionTimeWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions time with components :components is required"))
+	}
+	return FunctionInvocationCreate(TIME, components)
+}
+
+/**
+ * Creates a function invocation for {@code time({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/time/">time</a>.
+ * This creates a time from a string.
+ *
+ * @param temporalValue A string representing a temporal value.
+ * @return A function call for {@code time({})}.
+ * @since 2020.1.0
+ */
+func FunctionTimeWithTemporal(temporalValue string) FunctionInvocation {
+	if temporalValue == "" {
+		return FunctionInvocationError(errors.New("functions time with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(TIME, LiteralOf(temporalValue))
+}
+
+/**
+ * Creates a function invocation for {@code time({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/time/">time</a>.
+ * This creates a time from a string.
+ *
+ * @param temporalValue An expression representing a temporal value.
+ * @return A function call for {@code time({})}.
+ * @since 2020.1.0
+ */
+func FunctionTimeWithExpression(temporalValue Expression) FunctionInvocation {
+	if temporalValue.getError() != nil {
+		return FunctionInvocationError(temporalValue.getError())
+	}
+	if !temporalValue.isNotNil() {
+		return FunctionInvocationError(errors.New("functions time with temporalValue :temporalValue is required"))
+	}
+	return FunctionInvocationCreate(TIME, temporalValue)
+}
+
+/**
+ * Creates a function invocation for {@code duration({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/duration/">duration</a>.
+ * This is the most generic form.
+ *
+ * @param components The map to pass to {@code duration({})}
+ * @return A function call for {@code duration({})}.
+ * @since 2020.1.0
+ */
+func FunctionDurationWithComponents(components MapExpression) FunctionInvocation {
+	if components.getError() != nil {
+		return FunctionInvocationError(components.getError())
+	}
+	if !components.isNotNil() {
+		return FunctionInvocationError(errors.New("functions duration with components :components is required"))
+	}
+	return FunctionInvocationCreate(DURATION, components)
+}
+
+/**
+ * Creates a function invocation for {@code duration({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/duration/">duration</a>.
+ * This creates a duration from a string.
+ *
+ * @param temporalAmount A string representing a temporal amount.
+ * @return A function call for {@code duration({})}.
+ * @since 2020.1.0
+ */
+func FunctionDurationWithTemporal(temporalAmount string) FunctionInvocation {
+	if temporalAmount == "" {
+		return FunctionInvocationError(errors.New("functions duration with temporal :temporal is required"))
+	}
+	return FunctionInvocationCreate(DURATION, LiteralOf(temporalAmount))
+}
+
+/**
+ * Creates a function invocation for {@code duration({})}.
+ * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/duration/">duration</a>.
+ * This creates a duration from a string.
+ *
+ * @param temporalAmount An expression representing a temporal amount.
+ * @return A function call for {@code duration({})}.
+ * @since 2020.1.0
+ */
+func FunctionDurationWithExpression(temporalAmount Expression) FunctionInvocation {
+	if temporalAmount.getError() != nil {
+		return FunctionInvocationError(temporalAmount.getError())
+	}
+	if !temporalAmount.isNotNil() {
+		return FunctionInvocationError(errors.New("functions duration with temporalAmount :temporalAmount is required"))
+	}
+	return FunctionInvocationCreate(DURATION, temporalAmount)
+}
+
+/**
+ * Creates a function invocation for {@code shortestPath({})}.
+ *
+ * @param relationship The relationship to be passed to {@code shortestPath}.
+ * @return A function call for {@code shortestPath({})}.
+ * @since 2020.0.0
+ */
+func FunctionShortestPath(relationship Relationship) FunctionInvocation {
+	if relationship.getError() != nil {
+		return FunctionInvocationError(relationship.getError())
+	}
+	return FunctionInvocationCreateWithPatternElement(SHORTEST_PATH, relationship)
+}
+
+func timezoneMapLiteralOf(location *time.Location) MapExpression {
+	return MapOf("timezone", LiteralOf(location.String()))
+}
