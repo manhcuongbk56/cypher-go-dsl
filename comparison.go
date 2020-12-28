@@ -34,9 +34,9 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 		return ComparisonError(errors.New("right expression must be not nil"))
 	}
 	comparison := Comparison{
-		left:     left,
+		left:     nestedIfCondition(left),
 		operator: operator,
-		right:    right,
+		right:    nestedIfCondition(right),
 		notNil:   true,
 	}
 	comparison.key = getAddress(&comparison)
@@ -63,11 +63,11 @@ func ComparisonCreate1(operator Operator, expression Expression) Comparison {
 		comparison = Comparison{
 			left:     nil,
 			operator: operator,
-			right:    expression,
+			right:    nestedIfCondition(expression),
 		}
 	case POSTFIX:
 		comparison = Comparison{
-			left:     expression,
+			left:     nestedIfCondition(expression),
 			operator: operator,
 			right:    nil,
 		}
@@ -96,11 +96,11 @@ func (c Comparison) isNotNil() bool {
 
 func (c Comparison) accept(visitor *CypherRenderer) {
 	visitor.enter(c)
-	if c.left != nil {
+	if c.left != nil && c.left.isNotNil() {
 		NameOrExpression(c.left).accept(visitor)
 	}
 	c.operator.accept(visitor)
-	if c.right != nil {
+	if c.right != nil && c.right.isNotNil() {
 		NameOrExpression(c.right).accept(visitor)
 	}
 	visitor.leave(c)
@@ -122,4 +122,12 @@ func (c Comparison) GetExpressionType() ExpressionType {
 
 func (c Comparison) getConditionType() string {
 	return "Comparison"
+}
+
+func nestedIfCondition(expression Expression) Expression {
+	_, isCondition := expression.(Condition)
+	if isCondition {
+		return NestedExpressionCreate(expression)
+	}
+	return expression
 }

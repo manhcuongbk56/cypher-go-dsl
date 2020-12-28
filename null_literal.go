@@ -32,7 +32,6 @@ func (n NilLiteral) enter(renderer *CypherRenderer) {
 }
 
 func (n NilLiteral) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (n NilLiteral) getKey() string {

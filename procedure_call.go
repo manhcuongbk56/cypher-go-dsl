@@ -160,6 +160,10 @@ func (s StandaloneCallBuilder) Where(condition Condition) OngoingReadingWithWher
 	return DefaultStatementBuilderCreate1(s)
 }
 
+func (s StandaloneCallBuilder) WhereConditionContainer(container ConditionContainer) OngoingReadingWithWhere {
+	return s.Where(container.Get())
+}
+
 func (s StandaloneCallBuilder) WherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
 	return s.Where(RelationshipPatternConditionCreate(pattern))
 }

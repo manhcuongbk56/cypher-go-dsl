@@ -66,7 +66,7 @@ func NamedPathShortestPathWithNameByString(name string, algorithm FunctionDefini
 }
 
 func NamedPathShortestPathWithName(name SymbolicName, algorithm FunctionDefinition) OngoingShortestPathDefinitionWithName {
-	if name.isNotNil() {
+	if !name.isNotNil() {
 		return ShortestPathBuilder{
 			err: errors.New("a name is required"),
 		}
@@ -125,7 +125,7 @@ type OngoingDefinitionWithName interface {
 }
 
 type OngoingShortestPathDefinitionWithName interface {
-	definedBy(relationship Relationship) NamedPath
+	DefinedBy(relationship Relationship) NamedPath
 	getError() error
 }
 
@@ -159,7 +159,13 @@ func ShortestPathBuilderCreate(name SymbolicName, algorithm FunctionDefinition) 
 	}
 }
 
-func (s ShortestPathBuilder) definedBy(relationship Relationship) NamedPath {
+func (s ShortestPathBuilder) DefinedBy(relationship Relationship) NamedPath {
+	if s.err != nil {
+		return NamedPathError(s.err)
+	}
+	if relationship.err != nil {
+		return NamedPathError(relationship.err)
+	}
 	return NamedPathCreate1(s.name, FunctionInvocationCreateWithPatternElement(s.algorithm, relationship))
 }
 

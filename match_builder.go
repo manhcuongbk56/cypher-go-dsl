@@ -18,10 +18,9 @@ func MatchBuilderCreate(optional bool) MatchBuilder {
 func (builder MatchBuilder) buildMatch() Match {
 	pattern := Pattern{patternElements: builder.patternList}
 	conditionBuilder := builder.conditionBuilder
-	var optionalWhere Where = Where{}
-	if conditionBuilder.condition != nil {
-		builtCondition := conditionBuilder.buildCondition()
-		optionalWhere = WhereCreate(builtCondition)
+	builtCondition := conditionBuilder.buildCondition()
+	if builtCondition == nil || !builtCondition.isNotNil() {
+		return MatchCreate(builder.optional, pattern, Where{})
 	}
-	return MatchCreate(builder.optional, pattern, optionalWhere)
+	return MatchCreate(builder.optional, pattern, WhereCreate(builtCondition))
 }

@@ -1,6 +1,9 @@
 package cypher
 
-import "regexp"
+import (
+	"fmt"
+	"regexp"
+)
 
 type StringLiteral struct {
 	ExpressionContainer
@@ -60,6 +63,9 @@ func (s StringLiteral) AsString() string {
 }
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
+	if s.content == "Meg Ryan" {
+		fmt.Println("AAAA")
+	}
 	visitor.enter(s)
 	visitor.leave(s)
 }

@@ -173,7 +173,7 @@ func TestChainedRelations1(t *testing.T) {
 	statementBuilder := cypher.MatchElements(userNode.
 		RelationshipTo(bikeNode, "OWNS").NamedByString("r1").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
-	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
+	expression := userNode.Property("name").MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)

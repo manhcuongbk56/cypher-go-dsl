@@ -25,6 +25,10 @@ func (i InQueryCallBuilder) Where(condition Condition) OngoingReadingWithWhere {
 	return i.defaultBuilder
 }
 
+func (i InQueryCallBuilder) WhereConditionContainer(container ConditionContainer) OngoingReadingWithWhere {
+	return i.Where(container.Get())
+}
+
 func (i InQueryCallBuilder) WherePattern(pattern RelationshipPattern) OngoingReadingWithWhere {
 	return i.Where(RelationshipPatternConditionCreate(pattern))
 }

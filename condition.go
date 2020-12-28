@@ -9,5 +9,5 @@ type Condition interface {
 	AndRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
 	OrRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
 	XorRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
-	Not(pathPattern RelationshipPattern) ConditionContainer
+	Not() ConditionContainer
 }

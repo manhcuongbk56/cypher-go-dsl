@@ -17,15 +17,20 @@ func (c *ConditionBuilder) And(additionalCondition Condition) {
 }
 
 func (c *ConditionBuilder) Or(additionalCondition Condition) {
-	conditionContainer := ConditionContainer{ExpressionContainer{expression: additionalCondition}}
-	conditionContainer.Or(additionalCondition)
-	c.condition = conditionContainer.expression.(Condition)
+	c.condition = c.condition.Or(additionalCondition).Get()
 }
 
 func (c *ConditionBuilder) hasCondition() bool {
-	return true
+	if c.condition == nil || !c.condition.isNotNil() {
+		return false
+	}
+	compound, isCompound := c.condition.(CompoundCondition)
+	return c.condition.isNotNil() && (!isCompound || compound.hasCondition())
 }
 
 func (c *ConditionBuilder) buildCondition() Condition {
-	return c.condition
+	if c.hasCondition() {
+		return c.condition
+	}
+	return nil
 }

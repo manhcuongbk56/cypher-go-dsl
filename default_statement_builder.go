@@ -46,6 +46,10 @@ func (d DefaultStatementBuilder) Where(condition Condition) OngoingReadingWithWh
 	return d
 }
 
+func (d DefaultStatementBuilder) WhereConditionContainer(container ConditionContainer) OngoingReadingWithWhere {
+	return d.Where(container.Get())
+}
+
 func (d DefaultStatementBuilder) AddWith(with With) DefaultStatementBuilder {
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)

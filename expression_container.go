@@ -63,9 +63,7 @@ func (e ExpressionContainer) Matches(expression Expression) ConditionContainer {
 }
 
 func (e ExpressionContainer) MatchesPattern(pattern string) ConditionContainer {
-	e.expression = ComparisonCreate(e.expression, MATCHES, StringLiteral{
-		content: pattern,
-	})
+	e.expression = ComparisonCreate(e.expression, MATCHES, StringLiteralCreate(pattern))
 	return ConditionContainer{e}
 }
 

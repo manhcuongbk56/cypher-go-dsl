@@ -185,7 +185,7 @@ func TestOptionalMatchThenDelete(t *testing.T) {
 		return
 	}
 	query := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (b:`Bike`) OPTIONAL MATCH (u:`User`), (o:`U`) DELETE u, b"
+	expect := "MATCH (b:`Bike`) OPTIONAL MATCH (u:`User`), (o:`U`) DELETE u, b "
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}

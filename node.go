@@ -22,7 +22,7 @@ func NodeCreate() Node {
 }
 
 func (node *Node) injectKey() {
-	node.key = fmt.Sprint(fmt.Sprintf("%p", node))
+	node.key = getAddress(node)
 }
 
 func (node Node) GetSymbolicName() SymbolicName {
@@ -90,7 +90,7 @@ func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
 
 func NodeCreate4(newProperties MapExpression, node Node) Node {
 	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: PropertiesCreate(newProperties)}
-	node.injectKey()
+	newNode.injectKey()
 	return newNode
 }
 
@@ -149,6 +149,9 @@ func (node Node) enter(renderer *CypherRenderer) {
 	renderer.append("(")
 	if !node.hasSymbolic() {
 		return
+	}
+	if _, aaaa := renderer.visitedNamed[node.key]; aaaa {
+		fmt.Println("aaaaa")
 	}
 	_, renderer.skipNodeContent = renderer.visitedNamed[node.key]
 	renderer.visitedNamed[node.key] = 1

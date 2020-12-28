@@ -43,7 +43,7 @@ func CompoundConditionCreate(left Condition, operator Operator, right Condition)
 	if right == nil || !right.isNotNil() {
 		return CompoundConditionError(errors.New("left hand side condition is required"))
 	}
-	condition := CompoundCondition{operator: operator}
+	condition := CompoundCondition{operator: operator, notNil: true}
 	condition.add(operator, left)
 	condition.add(operator, right)
 	condition.injectKey()
@@ -55,6 +55,7 @@ func CompoundConditionCreate1(operator Operator) CompoundCondition {
 	condition := CompoundCondition{
 		operator:   operator,
 		conditions: make([]Condition, 0),
+		notNil:     true,
 	}
 	condition.injectKey()
 	condition.ConditionContainer = ConditionWrap(condition)
@@ -120,6 +121,18 @@ func (c CompoundCondition) GetExpressionType() ExpressionType {
 	return c.conditionType
 }
 
+func (c CompoundCondition) Or(condition Condition) ConditionContainer {
+	return ConditionWrap(c.add(OR, condition))
+}
+
+func (c CompoundCondition) And(condition Condition) ConditionContainer {
+	return ConditionWrap(c.add(AND, condition))
+}
+
+func (c CompoundCondition) Xor(condition Condition) ConditionContainer {
+	return ConditionWrap(c.add(XOR, condition))
+}
+
 func (c *CompoundCondition) injectKey() {
 	c.key = getAddress(c)
 }
@@ -127,15 +140,14 @@ func (c *CompoundCondition) injectKey() {
 var EMPTY_CONDITION = CompoundCondition{
 	conditions:    make([]Condition, 0),
 	conditionType: EMPTY_CONDITION_EXPRESSION,
+	notNil:        true,
 }
 
 var VALID_OPERATORS = []Operator{AND, OR, XOR}
 
 func (c *CompoundCondition) add(chainingOperator Operator, condition Condition) CompoundCondition {
 	if c.GetExpressionType() == EMPTY_CONDITION_EXPRESSION {
-		newCompound := CompoundCondition{
-			operator: chainingOperator,
-		}
+		newCompound := CompoundConditionCreate1(chainingOperator)
 		return newCompound.add(chainingOperator, condition)
 	}
 	if compoundCondition, isCompound := condition.(CompoundCondition); isCompound {
@@ -160,12 +172,12 @@ func (c *CompoundCondition) add(chainingOperator Operator, condition Condition) 
 		c.conditions = append(c.conditions, condition)
 		return *c
 	}
-	return CompoundConditionCreate(c, chainingOperator, condition)
+	return CompoundConditionCreate(*c, chainingOperator, condition)
 }
 
 func (c CompoundCondition) hasCondition() bool {
 	return !(c.GetExpressionType() == EMPTY_CONDITION_EXPRESSION ||
-		len(c.conditions) > 0)
+		len(c.conditions) == 0)
 }
 
 func (c CompoundCondition) canBeFlattenedWith(operator Operator) bool {
