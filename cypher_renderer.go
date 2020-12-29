@@ -37,7 +37,7 @@ func NewRenderer() *CypherRenderer {
 
 func (renderer CypherRenderer) Render(statement Statement) string {
 	statement.accept(&renderer)
-	return renderer.builder.String()
+	return strings.TrimSpace(renderer.builder.String())
 }
 
 func (renderer *CypherRenderer) enableSeparator(level int, on bool) {

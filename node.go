@@ -2,7 +2,6 @@ package cypher
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Node struct {
@@ -150,9 +149,6 @@ func (node Node) enter(renderer *CypherRenderer) {
 	if !node.hasSymbolic() {
 		return
 	}
-	if _, aaaa := renderer.visitedNamed[node.key]; aaaa {
-		fmt.Println("aaaaa")
-	}
 	_, renderer.skipNodeContent = renderer.visitedNamed[node.key]
 	renderer.visitedNamed[node.key] = 1
 	if renderer.skipNodeContent {
@@ -222,6 +218,10 @@ func (node Node) As(alias string) AliasedExpression {
 
 func (node Node) InternalId() FunctionInvocation {
 	return FunctionIdByNode(node)
+}
+
+func (node Node) HasLabels(labelsToQuery ...string) Condition {
+	return HasLabelConditionCreate(node.getRequiredSymbolicName(), labelsToQuery...)
 }
 
 type NodeLabel struct {

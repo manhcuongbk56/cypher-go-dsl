@@ -8,7 +8,7 @@ type Merge struct {
 	err                   error
 }
 
-var BLANK = StringLiteralCreate(" ")
+var BLANK = RawStringLiteralCreate(" ")
 
 func MergeCreate(pattern Pattern) Merge {
 	if pattern.getError() != nil {

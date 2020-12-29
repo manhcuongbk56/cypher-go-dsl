@@ -6,8 +6,8 @@ type Condition interface {
 	And(condition Condition) ConditionContainer
 	Or(condition Condition) ConditionContainer
 	Xor(condition Condition) ConditionContainer
-	AndRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
-	OrRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
-	XorRelationshipPattern(pathPattern RelationshipPattern) ConditionContainer
+	AndPattern(pathPattern RelationshipPattern) ConditionContainer
+	OrPattern(pathPattern RelationshipPattern) ConditionContainer
+	XorPattern(pathPattern RelationshipPattern) ConditionContainer
 	Not() ConditionContainer
 }

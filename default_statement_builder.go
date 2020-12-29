@@ -291,7 +291,7 @@ func (d DefaultStatementBuilder) SetByNode(node Node, labels ...string) Buildabl
 	if node.getError() != nil {
 		return DefaultStatementBuilderError(node.getError())
 	}
-	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, set1(node, labels...))
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, OperationSetLabel(node, labels...))
 }
 
 func (d DefaultStatementBuilder) RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
@@ -301,7 +301,7 @@ func (d DefaultStatementBuilder) RemoveByNode(node Node, labels ...string) Build
 	if node.getError() != nil {
 		return DefaultStatementBuilderError(node.getError())
 	}
-	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, remove(node, labels...))
+	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, OperationRemove(node, labels...))
 }
 
 func (d DefaultStatementBuilder) Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {
@@ -465,7 +465,7 @@ func (d *DefaultStatementBuilder) OngoingOnAfterMerge(mergeType MERGE_TYPE) Ongo
 	if d.err != nil {
 		return OngoingMergeActionInBuilderError(d.err)
 	}
-	if _, isSupports := d.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause); isSupports ||
+	if _, isSupports := d.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause); !isSupports ||
 		!d.currentOngoingUpdate.notNil {
 		return OngoingMergeActionInBuilderError(errors.New("merge must have been invoked before defining an event"))
 	}
@@ -664,10 +664,10 @@ func prepareSetExpression(possibleSetOperations []Expression) ([]Expression, err
 		}
 	}
 	if len(listOfExpressions)%2 != 0 {
-		return nil, xerrors.New("the list of expression to set must be even")
+		return nil, xerrors.New("the list of expression to OperationSet must be even")
 	}
 	for i := 0; i < len(listOfExpressions); i += 2 {
-		propertyOperations = append(propertyOperations, set(listOfExpressions[i], listOfExpressions[i+1]))
+		propertyOperations = append(propertyOperations, OperationSet(listOfExpressions[i], listOfExpressions[i+1]))
 	}
 	return propertyOperations, nil
 }

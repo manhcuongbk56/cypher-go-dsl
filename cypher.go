@@ -166,7 +166,7 @@ func CypherParameter(name string) Parameter {
  * Prepares an optional match statement.
  *
  * @param pattern The patterns to match
- * @return An ongoing match that is used to specify an optional where and a required return clause
+ * @return An ongoing match that is used to specify an optional Where and a required return clause
  */
 func OptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().OptionalMatch(element...)
@@ -177,7 +177,7 @@ func OptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
  * retrieve a node or a relationship, which both are pattern elements.
  *
  * @param pattern The patterns to match
- * @return An ongoing match that is used to specify an optional where and a required return clause
+ * @return An ongoing match that is used to specify an optional Where and a required return clause
  */
 func MatchElements(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
@@ -189,7 +189,7 @@ func MatchElements(element ...PatternElement) OngoingReadingWithoutWhere {
  *
  * @param optional A flag whether the {@code MATCH} clause includes the {@code OPTIONAL} keyword.
  * @param pattern  The patterns to match
- * @return An ongoing match that is used to specify an optional where and a required return clause
+ * @return An ongoing match that is used to specify an optional Where and a required return clause
  * @since 2020.1.3
  */
 func CypherMatchDefault(optional bool, element ...PatternElement) OngoingReadingWithoutWhere {
@@ -304,8 +304,8 @@ func MapOf(objects ...interface{}) MapExpression {
  * @param expressions expressions to get combined into a list
  * @return a new instance of {@link ListExpression}
  */
-func CypherListOf(expressions ...Expression) ExpressionList {
-	return ExpressionListCreate(expressions)
+func CypherListOf(expressions ...Expression) ListExpression {
+	return ListExpressionCreate1(expressions...)
 }
 
 /**
@@ -360,7 +360,7 @@ func CypherReturning(expressions ...Expression) OngoingReadingAndReturn {
  * @return An ongoing definition.
  * @since 2020.0.0
  */
-func CypherListBasedOn(pattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPattern {
+func ListBasedOn(pattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPattern {
 	return PatternComprehensionBasedOn(pattern)
 }
 

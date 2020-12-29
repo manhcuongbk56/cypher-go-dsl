@@ -17,6 +17,7 @@ func PatternComprehensionCreate(pattern PatternElement, where Where, listDefinit
 		pattern:        pattern,
 		where:          where,
 		listDefinition: listDefinition,
+		notNil:         true,
 	}
 	patternComprehension.key = getAddress(&patternComprehension)
 	patternComprehension.ExpressionContainer = ExpressionWrap(patternComprehension)
@@ -78,20 +79,20 @@ type PatternComprehensionOngoingDefinitionWithoutReturn interface {
 	/**
 	 * @param variables the elements to be returned from the pattern
 	 * @return The final definition of the pattern comprehension
-	 * @see #returning(Expression...)
+	 * @see #Returning(Expression...)
 	 */
-	returningByNamed(variables ...Named) PatternComprehension
+	ReturningByNamed(variables ...Named) PatternComprehension
 	/**
 	 * @param listDefinition Defines the elements to be returned from the pattern
 	 * @return The final definition of the pattern comprehension
 	 */
-	returning(listDefinitions ...Expression) PatternComprehension
+	Returning(listDefinitions ...Expression) PatternComprehension
 }
 
 type PatternComprehensionOngoingDefinitionWithPattern interface {
 	PatternComprehensionOngoingDefinitionWithoutReturn
-	where(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere
-	wherePattern(pathPattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere
+	Where(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere
+	WherePattern(pathPattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere
 }
 
 type PatternComprehensionOngoingDefinitionWithPatternAndWhere interface {
@@ -116,11 +117,11 @@ func PatternComprehensionBuilderCreate(pattern PatternElement) PatternComprehens
 	}
 }
 
-func (p PatternComprehensionBuilder) returningByNamed(variables ...Named) PatternComprehension {
-	return p.returning(CreateSymbolicNameByNamed(variables...)...)
+func (p PatternComprehensionBuilder) ReturningByNamed(variables ...Named) PatternComprehension {
+	return p.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (p PatternComprehensionBuilder) returning(listDefinitions ...Expression) PatternComprehension {
+func (p PatternComprehensionBuilder) Returning(listDefinitions ...Expression) PatternComprehension {
 	where := Where{}
 	condition := p.conditionBuilder.buildCondition()
 	if condition != nil && condition.isNotNil() {
@@ -129,16 +130,16 @@ func (p PatternComprehensionBuilder) returning(listDefinitions ...Expression) Pa
 	return PatternComprehensionCreate(p.pattern, where, ListOrSingleExpression(listDefinitions...))
 }
 
-func (p PatternComprehensionBuilder) where(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere {
+func (p PatternComprehensionBuilder) Where(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere {
 	p.conditionBuilder.Where(condition)
 	return p
 }
 
-func (p PatternComprehensionBuilder) wherePattern(pathPattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere {
+func (p PatternComprehensionBuilder) WherePattern(pathPattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere {
 	if !pathPattern.isNotNil() {
 		return PatternComprehensionBuilder{err: errors.New("pattern comprehension builder: path pattern must not be nil")}
 	}
-	return p.where(RelationshipPatternConditionCreate(pathPattern))
+	return p.Where(RelationshipPatternConditionCreate(pathPattern))
 }
 
 func (p PatternComprehensionBuilder) And(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere {

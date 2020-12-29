@@ -48,7 +48,7 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 		}
 	}
 	if len(expressions) == 0 || expressions[0] == nil || !expressions[0].isNotNil() {
-		return FunctionInvocationError(errors.Errorf("expression for %s is required", definition.getImplementationName()))
+		return FunctionInvocationError(errors.Errorf("function invocation create: expression for %s is required", definition.getImplementationName()))
 	}
 	arguments := make([]Visitable, len(expressions))
 	for i := range expressions {

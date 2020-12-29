@@ -82,10 +82,10 @@ func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operati
 	if operator.getError() != nil {
 		return OperationError(operator.getError())
 	}
-	if op1.isNotNil() {
+	if !op1.isNotNil() {
 		return OperationError(errors.New("left can not be nil"))
 	}
-	if operator.isNotNil() {
+	if !operator.isNotNil() {
 		return OperationError(errors.New("operator can not be nil"))
 	}
 	if !(operator.representation == SET_LABEL.representation || operator.representation == REMOVE_LABEL.representation) {

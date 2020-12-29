@@ -377,7 +377,7 @@ func FunctionStDevPDistinct(expression Expression) FunctionInvocation {
  * Creates a function invocation for the {@code sum()} function.
  * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-sum">sum</a>.
  *
- * @param expression An expression returning a set of numeric values
+ * @param expression An expression Returning a OperationSet of numeric values
  * @return A function call for {@code sum()}
  */
 func FunctionSum(expression Expression) FunctionInvocation {
@@ -391,7 +391,7 @@ func FunctionSum(expression Expression) FunctionInvocation {
  * Creates a function invocation for the {@code sum()} function  with {@code DISTINCT} added.
  * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-sum">sum</a>.
  *
- * @param expression An expression returning a set of numeric values
+ * @param expression An expression Returning a OperationSet of numeric values
  * @return A function call for {@code sum()}
  */
 func FunctionSumDistinct(expression Expression) FunctionInvocation {

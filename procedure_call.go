@@ -96,7 +96,7 @@ type OngoingStandaloneCallWithArguments interface {
 }
 
 /**
- * A buildable statement exposing where and return clauses.
+ * A buildable statement exposing Where and return clauses.
  */
 type OngoingStandaloneCallWithReturnFields interface {
 	BuildableStatement

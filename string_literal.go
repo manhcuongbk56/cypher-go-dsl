@@ -1,7 +1,6 @@
 package cypher
 
 import (
-	"fmt"
 	"regexp"
 )
 
@@ -63,9 +62,6 @@ func (s StringLiteral) AsString() string {
 }
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
-	if s.content == "Meg Ryan" {
-		fmt.Println("AAAA")
-	}
 	visitor.enter(s)
 	visitor.leave(s)
 }

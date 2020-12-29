@@ -75,11 +75,9 @@ func (h HasLabelCondition) accept(visitor *CypherRenderer) {
 }
 
 func (h HasLabelCondition) enter(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (h HasLabelCondition) leave(renderer *CypherRenderer) {
-	panic("implement me")
 }
 
 func (h HasLabelCondition) getKey() string {

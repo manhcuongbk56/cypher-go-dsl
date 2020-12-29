@@ -33,8 +33,18 @@ func DefaultStatementWithUpdateBuilderCreate1(defaultBuilder *DefaultStatementBu
 }
 
 func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBuilder, updateType UpdateType, expressions ...Expression) DefaultStatementWithUpdateBuilder {
+	if defaultBuilder != nil && defaultBuilder.err != nil {
+		return DefaultStatementWithUpdateBuilder{
+			err: defaultBuilder.err,
+		}
+	}
 	visitables := make([]Visitable, len(expressions))
 	for i := range expressions {
+		if expressions[i] != nil && expressions[i].getError() != nil {
+			return DefaultStatementWithUpdateBuilder{
+				err: expressions[i].getError(),
+			}
+		}
 		visitables[i] = expressions[i]
 	}
 	builder, err := getUpdatingClauseBuilder(updateType, visitables...)
@@ -47,6 +57,7 @@ func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBu
 		defaultBuilder: defaultBuilder,
 		distinct:       false,
 		builder:        builder,
+		notNil:         true,
 	}
 }
 
@@ -218,12 +229,15 @@ func (d DefaultStatementWithUpdateBuilder) SetWithNamed(variable Named, expressi
 
 func (d DefaultStatementWithUpdateBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
-	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, set1(node, labels...))
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_SET, OperationSetLabel(node, labels...))
 }
 
 func (d DefaultStatementWithUpdateBuilder) RemoveByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
+	if d.err != nil {
+		return d
+	}
 	d.defaultBuilder.addUpdatingClause(d.builder.build())
-	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, set1(node, labels...))
+	return DefaultStatementWithUpdateBuilderCreate2(d.defaultBuilder, UPDATE_TYPE_REMOVE, OperationSetLabel(node, labels...))
 }
 
 func (d DefaultStatementWithUpdateBuilder) Remove(properties ...Property) BuildableStatementAndOngoingMatchAndUpdate {

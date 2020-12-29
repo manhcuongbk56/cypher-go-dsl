@@ -41,7 +41,7 @@ func CompoundConditionCreate(left Condition, operator Operator, right Condition)
 		return CompoundConditionError(xerrors.Errorf("operator %s is not valid", operator.representation))
 	}
 	if right == nil || !right.isNotNil() {
-		return CompoundConditionError(errors.New("left hand side condition is required"))
+		return CompoundConditionError(errors.New("right hand side condition is required"))
 	}
 	condition := CompoundCondition{operator: operator, notNil: true}
 	condition.add(operator, left)
