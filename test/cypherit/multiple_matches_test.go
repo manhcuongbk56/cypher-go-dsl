@@ -175,18 +175,9 @@ func TestOptionalNext(t *testing.T) {
 }
 
 func TestOptionalMatchThenDelete(t *testing.T) {
-	statement, err := cypher.
+	buildableStatement := cypher.
 		MatchElements(bikeNode).
 		OptionalMatch(userNode, cypher.NewNode("U").NamedByString("o")).
-		DeleteByNamed(userNode, bikeNode).
-		Build()
-	if err != nil {
-		t.Errorf("error when build query\n %s", err)
-		return
-	}
-	query := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (b:`Bike`) OPTIONAL MATCH (u:`User`), (o:`U`) DELETE u, b "
-	if query != expect {
-		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
-	}
+		DeleteByNamed(userNode, bikeNode)
+	Assert(t, buildableStatement, "MATCH (b:`Bike`) OPTIONAL MATCH (u:`User`), (o:`U`) DELETE u, b")
 }

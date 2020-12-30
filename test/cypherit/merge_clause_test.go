@@ -82,7 +82,7 @@ func TestShouldRenderMergeWithWith(t *testing.T) {
 func TestMatchShouldExposeMerge(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherMerge(userNode).
+	builder = cypher.MatchElements(userNode).
 		Merge(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "MATCH (u:`User`) MERGE (u)-[o:`OWNS`]->(b:`Bike`)")
 }
