@@ -83,37 +83,37 @@ func (e ExpressionContainer) EndsWith(rhs Expression) ConditionContainer {
 }
 
 func (e ExpressionContainer) Concat(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, CONCAT, rhs)
+	e.expression = OperationConcat(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Add(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, ADDITION, rhs)
+	e.expression = OperationAdd(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Subtract(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, SUBTRACTION, rhs)
+	e.expression = OperationSubtract(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Multiply(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, MULTIPLICATION, rhs)
+	e.expression = OperationMultiply(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Divide(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, DIVISION, rhs)
+	e.expression = OperationDivide(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Remainder(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, MODULO_DIVISION, rhs)
+	e.expression = OperationRemainder(e.expression, rhs)
 	return e
 }
 
 func (e ExpressionContainer) Pow(rhs Expression) ExpressionContainer {
-	e.expression = ComparisonCreate(e.expression, EXPONENTIATION, rhs)
+	e.expression = OperationPow(e.expression, rhs)
 	return e
 }
 

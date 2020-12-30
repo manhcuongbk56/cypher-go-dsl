@@ -152,7 +152,7 @@ func (d DefaultStatementWithWithBuilder) DetachDeleteByNamed(variables ...Named)
 
 func (d DefaultStatementWithWithBuilder) DetachDelete(expressions ...Expression) OngoingUpdate {
 	return d.defaultBuilder.AddWith(d.buildWith()).
-		Delete(expressions...)
+		DetachDelete(expressions...)
 }
 
 func (d DefaultStatementWithWithBuilder) Merge(pattern ...PatternElement) OngoingUpdateAndExposesSet {
