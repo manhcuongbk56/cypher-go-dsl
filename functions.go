@@ -149,6 +149,26 @@ func FunctionAvgDistinct(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(AVG, expression)
 }
 
+func FunctionCollectByNamed(variable Named) FunctionInvocation {
+	if variable != nil && variable.getError() != nil {
+		return FunctionInvocationError(variable.getError())
+	}
+	if variable == nil || !variable.isNotNil() {
+		return FunctionInvocationError(errors.New("function collect by named: the variable parameter is required"))
+	}
+	return FunctionInvocationCreate(COLLECT, variable.getRequiredSymbolicName())
+}
+
+func FunctionCollectDistinctByNamed(variable Named) FunctionInvocation {
+	if variable != nil && variable.getError() != nil {
+		return FunctionInvocationError(variable.getError())
+	}
+	if variable == nil || !variable.isNotNil() {
+		return FunctionInvocationError(errors.New("function collect by named: the variable parameter is required"))
+	}
+	return FunctionInvocationCreateDistinct(COLLECT, variable.getRequiredSymbolicName())
+}
+
 /**
  * Creates a function invocation for the {@code collect()} function.
  * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/aggregating/#functions-collect">collect</a>.
@@ -160,7 +180,7 @@ func FunctionCollect(expression Expression) FunctionInvocation {
 	if expression != nil && expression.getError() != nil {
 		return FunctionInvocationError(expression.getError())
 	}
-	return FunctionInvocationCreate(AVG, expression)
+	return FunctionInvocationCreate(COLLECT, expression)
 }
 
 /**

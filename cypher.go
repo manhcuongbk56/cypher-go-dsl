@@ -34,7 +34,7 @@ func CypherNewNodeWithLabels(primaryLabel string, additionalLabel ...string) Nod
  * @param additionalLabels Additional labels
  * @return A new node representation
  */
-func CypherNewNodeWithProperties(primaryLabel string, properties MapExpression, additionalLabel ...string) Node {
+func NewNodeWithProperties(primaryLabel string, properties MapExpression, additionalLabel ...string) Node {
 	return NodeCreate5(primaryLabel, properties, additionalLabel...)
 }
 

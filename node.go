@@ -224,6 +224,10 @@ func (node Node) HasLabels(labelsToQuery ...string) Condition {
 	return HasLabelConditionCreate(node.getRequiredSymbolicName(), labelsToQuery...)
 }
 
+func (node Node) Labels() FunctionInvocation {
+	return FunctionLabels(node)
+}
+
 type NodeLabel struct {
 	value  string
 	key    string

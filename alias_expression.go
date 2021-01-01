@@ -59,9 +59,9 @@ func (aliased AliasedExpression) Aliased(newAlias string) AliasedExpression {
 }
 
 func (aliased AliasedExpression) accept(visitor *CypherRenderer) {
-	(*visitor).enter(aliased)
+	visitor.enter(aliased)
 	NameOrExpression(aliased.delegate).accept(visitor)
-	(*visitor).leave(aliased)
+	visitor.leave(aliased)
 }
 
 func (aliased AliasedExpression) getKey() string {
@@ -79,4 +79,12 @@ func (aliased AliasedExpression) leave(renderer *CypherRenderer) {
 		renderer.append(" AS ")
 		renderer.append(escapeIfNecessary(aliased.alias))
 	}
+}
+
+func (aliased AliasedExpression) GetAlias() string {
+	return aliased.alias
+}
+
+func (aliased AliasedExpression) AsName() SymbolicName {
+	return SymbolicNameCreate(aliased.alias)
 }
