@@ -85,7 +85,7 @@ func (n NamedPath) getRequiredSymbolicName() SymbolicName {
 	if n.name.isNotNil() {
 		return n.name
 	}
-	return SymbolicNameError(errors.New("no name present"))
+	return SymbolicNameError(errors.New("namepath get symbolic name: no name present"))
 }
 
 func (n NamedPath) getSymbolicName() SymbolicName {

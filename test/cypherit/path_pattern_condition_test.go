@@ -18,7 +18,7 @@ func TestDoc3651And(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WHERE (other.name IN ['Andy', 'Peter'] AND (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -33,7 +33,7 @@ func TestDoc3651And(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WHERE (other.name IN ['Andy', 'Peter'] AND (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -53,7 +53,7 @@ func TestDoc3651Or(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WHERE (other.name IN ['Andy', 'Peter'] OR (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -68,7 +68,7 @@ func TestDoc3651Or(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WHERE (other.name IN ['Andy', 'Peter'] OR (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -88,7 +88,7 @@ func TestDoc3651Xor(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WHERE (other.name IN ['Andy', 'Peter'] XOR (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -106,7 +106,7 @@ func TestDoc3652(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (person:`Person`), (peter:`Person` {name: 'Peter'}) WHERE NOT (person)-->(peter) RETURN person.name, person.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -123,7 +123,7 @@ func TestDoc3653(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (n:`Person`) WHERE (n)-[:`KNOWS`]-( {name: 'Timothy'}) RETURN n.name, n.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -145,7 +145,7 @@ func TestGh113(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (foo:`Foo`) RETURN foo, [(foo)-[rel:`FOOBAR`]->(bar:`Bar`) WHERE (bar)-[:`HAS`]->(:`ZZZ`) | [rel, bar]]"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -164,7 +164,7 @@ func TestDoc3654(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (n:`Person`)-[r]->() WHERE (n.name = 'Andy' AND type(r) =~ 'K.*') RETURN type(r), r.since"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -185,7 +185,7 @@ func TestAfterWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WITH timothy, other WHERE (other.name IN ['Andy', 'Peter'] AND (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -200,7 +200,7 @@ func TestAfterWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (timothy:`Person` {name: 'Timothy'}), (other:`Person`) WITH timothy, other WHERE (other.name IN ['Andy', 'Peter'] AND (timothy)<--(other)) RETURN other.name, other.age"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -221,7 +221,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (a:`Person` {name: 'Keanu Reeves'}) RETURN [(a)--(b) WHERE (b:`Movie` AND b.released IS NOT NULL) | b.released] AS years"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -241,7 +241,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (a:`Person` {name: 'Keanu Reeves'}) RETURN [(a)--(b) WHERE ((b:`Movie` AND b.released IS NOT NULL) OR b.title = 'The Matrix' OR b.title = 'The Matrix 2') | b.released] AS years"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -261,7 +261,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (a:`Person` {name: 'Keanu Reeves'}) RETURN [(a)--(b) WHERE ((b:`Movie` AND b.released IS NOT NULL) OR b.title = 'The Matrix' OR b.title = 'The Matrix 2') | b.released] AS years"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -278,7 +278,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (a:`Person` {name: 'Keanu Reeves'}) RETURN [(a)--(b) WHERE b:`Movie` | b.released] AS years"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)

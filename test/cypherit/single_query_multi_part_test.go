@@ -19,7 +19,7 @@ func TestSimpleWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`) WHERE u.a IS NULL WITH b, u RETURN b"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -36,7 +36,7 @@ func TestShouldRendererLeadingWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "WITH $listOfPropertyMaps AS p UNWIND p AS item RETURN item"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -58,7 +58,7 @@ func TestSimpleWithChained(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`) WHERE u.a IS NULL WITH b, u MATCH (t:`Trip`) WHERE t.name = 'Festive500' WITH b, u, t RETURN b, u, t"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -77,7 +77,7 @@ func TestDeletingSimpleWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`) WHERE u.a IS NULL DELETE u WITH b, u RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -96,7 +96,7 @@ func TestDeletingSimpleWithReverse(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`) WHERE u.a IS NULL WITH b, u DELETE u RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -118,7 +118,7 @@ func TestMixedClauseWithWith(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`) MATCH (t:`Trip`) DELETE t WITH b, t MATCH (u) WITH b, u RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)

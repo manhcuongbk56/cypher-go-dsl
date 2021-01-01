@@ -15,7 +15,7 @@ func TestEqualWithStringLiteral(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.name = 'Test' RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -32,7 +32,7 @@ func TestEqualWithNumberLiteral(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.age = 21 RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)

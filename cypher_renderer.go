@@ -1,9 +1,9 @@
 package cypher
 
 import (
+	"github.com/rs/xid"
 	"strings"
 )
-import uuid "github.com/google/uuid"
 
 type CypherRenderer struct {
 	visitableToAliased     map[string]AliasedExpression
@@ -15,6 +15,7 @@ type CypherRenderer struct {
 	currentLevel           int
 	skipNodeContent        bool
 	builder                strings.Builder
+	guid                   xid.ID
 }
 
 func (renderer *CypherRenderer) append(content string) *CypherRenderer {
@@ -32,12 +33,16 @@ func NewRenderer() *CypherRenderer {
 		currentAliasedElements: make([]AliasedExpression, 0),
 		skipNodeContent:        false,
 		builder:                strings.Builder{},
+		guid:                   xid.New(),
 	}
 }
 
-func (renderer CypherRenderer) Render(statement Statement) string {
+func (renderer CypherRenderer) Render(statement Statement) (string, error) {
+	if statement.getError() != nil {
+		return "", statement.getError()
+	}
 	statement.accept(&renderer)
-	return strings.TrimSpace(renderer.builder.String())
+	return strings.TrimSpace(renderer.builder.String()), nil
 }
 
 func (renderer *CypherRenderer) enableSeparator(level int, on bool) {
@@ -61,9 +66,9 @@ func (renderer *CypherRenderer) resolve(name SymbolicName) string {
 	if _, isExist := renderer.resolvedSymbolicNames[name]; !isExist {
 		value := name.value
 		if len(value) > 0 {
-			return value
+			return escapeIfNecessary(value)
 		}
-		return uuid.New().String()
+		return renderer.guid.String()
 	}
 	return renderer.resolvedSymbolicNames[name]
 }

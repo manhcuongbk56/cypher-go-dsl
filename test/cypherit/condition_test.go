@@ -16,7 +16,7 @@ func TestConditionChainingAnd(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.name = 'Test' AND u.age = 21) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -34,7 +34,7 @@ func TestConditionChainingOr(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.name = 'Test' OR u.age = 21) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -52,7 +52,7 @@ func TestNestedCondition1(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((true OR false) AND true) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -71,7 +71,7 @@ func TestNestedCondition2(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (((true OR false) AND true) OR false) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -91,7 +91,7 @@ func TestNestedCondition3(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((((true OR false) AND true) OR false) AND false) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -110,7 +110,7 @@ func TestNestedCondition4(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((true OR false) AND true OR (false AND true)) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -130,7 +130,7 @@ func TestNestedCondition5(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((true OR false) AND true OR (false AND true) AND true) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -149,7 +149,7 @@ func TestNestedCondition6(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((true OR false) AND true OR (false OR true)) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -167,7 +167,7 @@ func TestNestedCondition7(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE ((true OR false) AND true OR (false OR true)) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -185,7 +185,7 @@ func TestConditionChainingXor(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.name = 'Test' XOR u.age = 21) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -203,7 +203,7 @@ func TestMultipleEmptyConditionsMustCollapse(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -220,7 +220,7 @@ func TestMultipleEmptyConditionsMustCollapse1(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -237,7 +237,7 @@ func TestMultipleEmptyConditionsMustCollapse2(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -255,7 +255,7 @@ func TestMultipleEmptyConditionsMustCollapse3(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.a = true RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -274,7 +274,7 @@ func TestMultipleEmptyConditionsMustCollapse4(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.a = true RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -293,7 +293,7 @@ func TestMultipleEmptyConditionsMustCollapse5(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.a = true RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -313,7 +313,7 @@ func TestMultipleEmptyConditionsMustCollapse6(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.a = true RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -334,7 +334,7 @@ func TestMultipleEmptyConditionsMustCollapse7(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.a = true AND u.b = false) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -354,7 +354,7 @@ func TestMultipleEmptyConditionsMustCollapse8(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.a = true AND u.b = false) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -374,7 +374,7 @@ func TestMultipleEmptyConditionsMustCollapse9(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.a = true AND u.b = false) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -393,7 +393,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE u.name = 'Test' RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -409,7 +409,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (u.name = 'Test' AND u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -426,7 +426,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (u.name = 'Test' AND u.name = 'Test' AND u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -442,7 +442,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (u.name = 'Test' OR u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -459,7 +459,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (u.name = 'Test' OR u.name = 'Test' OR u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -477,7 +477,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (((u.name = 'Test' AND u.name = 'Test') OR u.name = 'foobar') AND u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -495,7 +495,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE ((u.name = 'Test' OR u.name = 'foobar') AND u.name = 'Test' AND u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -514,7 +514,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE ((((u.name = 'Test' OR u.name = 'foobar') AND u.name = 'Test') OR u.name = 'foobar') AND u.name = 'Test') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -531,7 +531,7 @@ func TestChainingOnWhere(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE ((u.name IS NOT NULL AND u.name = 'Test') OR u.age = 21) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -553,7 +553,7 @@ func TestChainingOnCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (u.name = 'Test' OR u.name = 'foobar' OR u.name = 'foobar') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -571,7 +571,7 @@ func TestChainingOnCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE ((u.name = 'Test' AND u.name = 'bazbar') OR u.name = 'foobar' OR u.name = 'foobar') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -588,7 +588,7 @@ func TestChainingOnCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (u.name = 'Test' AND u.name = 'bazbar' AND u.name = 'foobar') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -606,7 +606,7 @@ func TestChainingOnCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE ((u.name = 'Test' AND u.name = 'bazbar') OR u.name = 'foobar' OR u.name = 'foobar') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -625,7 +625,7 @@ func TestChainingOnCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE (((u.name = 'Test' AND u.name = 'bazbar') OR u.name = 'foobar' OR u.name = 'foobar') AND u.name = 'bazbar') RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -652,7 +652,7 @@ func TestChainingCombined(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE (((u.name = 'Test' AND u.name = 'bazbar') OR u.name = 'foobar' OR u.name = 'foobar') AND NOT (((u.name = 'bazbar' AND u.name = 'foobar') OR u.name = 'Test'))) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -669,7 +669,7 @@ func TestNegatedCondition(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) WHERE NOT (u.name IS NOT NULL) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -686,7 +686,7 @@ func TestNoConditionShouldNotBeRendered(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	expect := "MATCH (u:`User`) RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
@@ -702,7 +702,7 @@ func TestNoConditionShouldNotBeRendered(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	query = cypher.NewRenderer().Render(statement)
+	query, _ = cypher.NewRenderer().Render(statement)
 	expect = "MATCH (u:`User`) WHERE u.name = 'test' RETURN u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)

@@ -60,7 +60,7 @@ func (r Relationship) getRequiredSymbolicName() SymbolicName {
 	if r.details.symbolicName.isNotNil() {
 		return r.details.symbolicName
 	}
-	return SymbolicNameError(errors.New("no name present"))
+	return SymbolicNameError(errors.New("relationship get symbolic name:  no name present"))
 }
 
 func (r Relationship) getSymbolicName() SymbolicName {

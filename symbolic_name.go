@@ -25,6 +25,16 @@ func SymbolicNameCreate(value string) SymbolicName {
 	return symbolicName
 }
 
+func SymbolicNameUnResolve() SymbolicName {
+	symbolicName := SymbolicName{
+		value:  "",
+		notNil: true,
+	}
+	symbolicName.key = getAddress(&symbolicName)
+	symbolicName.ExpressionContainer = ExpressionWrap(symbolicName)
+	return symbolicName
+}
+
 func SymbolicNameError(err error) SymbolicName {
 	return SymbolicName{
 		err: err,
@@ -48,8 +58,8 @@ func (s SymbolicName) GetExpressionType() ExpressionType {
 }
 
 func (s SymbolicName) accept(visitor *CypherRenderer) {
-	(*visitor).enter(s)
-	(*visitor).leave(s)
+	visitor.enter(s)
+	visitor.leave(s)
 }
 
 func (s SymbolicName) enter(renderer *CypherRenderer) {

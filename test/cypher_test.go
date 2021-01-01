@@ -12,7 +12,7 @@ func TestRenderSimpleQuery(t *testing.T) {
 	statement, _ := cypher.MatchElements(relation).
 		Returning(customer.GetSymbolicName()).
 		Build()
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	if query != "MATCH (d:`Device` {entity.id: '7d729555-0d61-46ae-ab79-ce43e72f751b'})-[:`HAS`]->(c:`Customer`) RETURN c" {
 		t.Errorf("query is not match:\n %s", query)
 	}
@@ -25,7 +25,7 @@ func TestRenderComplexQuery(t *testing.T) {
 	statement, _ := cypher.MatchElements(relation).
 		Returning(customer.GetSymbolicName()).
 		Build()
-	query := cypher.NewRenderer().Render(statement)
+	query, _ := cypher.NewRenderer().Render(statement)
 	if query != "MATCH (b:`Farm`)-[:`HAS`]->(c:`Customer`) RETURN c" {
 		t.Errorf("query is not match:\n %s", query)
 	}

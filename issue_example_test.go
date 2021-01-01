@@ -11,7 +11,7 @@ func TestGh48(t *testing.T) {
 	if err != nil {
 		t.Errorf("error When build query: %s", err)
 	}
-	query := NewRenderer().Render(statement)
+	query, _ := NewRenderer().Render(statement)
 	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {
 		t.Errorf("Query is not match: %s", query)
 	}

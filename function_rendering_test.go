@@ -10,7 +10,7 @@ func TestCountInReturnClause(t *testing.T) {
 	if err != nil {
 		t.Errorf("error when rendering statement: %s", err)
 	}
-	query := NewRenderer().Render(statement)
+	query, _ := NewRenderer().Render(statement)
 	if query != "MATCH (u:`User`) RETURN FunctionCount(u)" {
 		t.Errorf("query is not match:\n %s", query)
 	}
