@@ -2,6 +2,7 @@ package cypher
 
 import (
 	"github.com/rs/xid"
+	"golang.org/x/xerrors"
 	"strings"
 )
 
@@ -38,8 +39,11 @@ func NewRenderer() *CypherRenderer {
 }
 
 func (renderer CypherRenderer) Render(statement Statement) (string, error) {
-	if statement.getError() != nil {
-		return "", statement.getError()
+	if  statement == nil {
+		return "", xerrors.New("can not render nil statement")
+	}
+	if  statement.GetError() != nil {
+		return "", statement.GetError()
 	}
 	statement.accept(&renderer)
 	return strings.TrimSpace(renderer.builder.String()), nil

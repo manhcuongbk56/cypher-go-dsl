@@ -8,8 +8,8 @@ type Create struct {
 }
 
 func CreateCreate(pattern Pattern) Create {
-	if pattern.getError() != nil {
-		return CreateError(pattern.getError())
+	if pattern.GetError() != nil {
+		return CreateError(pattern.GetError())
 	}
 	c := Create{
 		pattern: pattern,
@@ -25,7 +25,7 @@ func CreateError(err error) Create {
 	}
 }
 
-func (c Create) getError() error {
+func (c Create) GetError() error {
 	return c.err
 }
 

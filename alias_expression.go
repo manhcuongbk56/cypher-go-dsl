@@ -17,8 +17,8 @@ func AliasedExpressionCreate(delegate Expression, alias string) AliasedExpressio
 	if delegate == nil || !delegate.isNotNil() {
 		return AliasedExpressionError(errors.New("expression to alias can't be nil"))
 	}
-	if delegate.getError() != nil {
-		return AliasedExpressionError(delegate.getError())
+	if delegate.GetError() != nil {
+		return AliasedExpressionError(delegate.GetError())
 	}
 	if alias == "" {
 		return AliasedExpressionError(errors.New("the alias may not be empty"))
@@ -39,7 +39,7 @@ func AliasedExpressionError(err error) AliasedExpression {
 	}
 }
 
-func (aliased AliasedExpression) getError() error {
+func (aliased AliasedExpression) GetError() error {
 	return aliased.err
 }
 

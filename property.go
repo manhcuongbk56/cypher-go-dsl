@@ -12,15 +12,15 @@ type Property struct {
 }
 
 func PropertyCreate(parentContainer Named, name string) Property {
-	if parentContainer != nil && parentContainer.getError() != nil {
-		return PropertyError(parentContainer.getError())
+	if parentContainer != nil && parentContainer.GetError() != nil {
+		return PropertyError(parentContainer.GetError())
 	}
 	if parentContainer == nil {
 		return PropertyError(errors.New("node or relationship is nil"))
 	}
 	requiredSymbolicName := parentContainer.getRequiredSymbolicName()
-	if requiredSymbolicName.getError() != nil {
-		return PropertyError(requiredSymbolicName.getError())
+	if requiredSymbolicName.GetError() != nil {
+		return PropertyError(requiredSymbolicName.GetError())
 	}
 	if name == "" {
 		return PropertyError(errors.New("property name is required"))
@@ -29,8 +29,8 @@ func PropertyCreate(parentContainer Named, name string) Property {
 }
 
 func PropertyCreate2(container Expression, name string) Property {
-	if container != nil && container.getError() != nil {
-		return PropertyError(container.getError())
+	if container != nil && container.GetError() != nil {
+		return PropertyError(container.GetError())
 	}
 	if container == nil {
 		return PropertyError(errors.New("container is nil"))
@@ -42,11 +42,11 @@ func PropertyCreate2(container Expression, name string) Property {
 }
 
 func PropertyCreate1(container Expression, name PropertyLookup) Property {
-	if container != nil && container.getError() != nil {
-		return PropertyError(container.getError())
+	if container != nil && container.GetError() != nil {
+		return PropertyError(container.GetError())
 	}
-	if name.getError() != nil {
-		return PropertyError(name.getError())
+	if name.GetError() != nil {
+		return PropertyError(name.GetError())
 	}
 	property := Property{
 		container: container,
@@ -59,14 +59,16 @@ func PropertyCreate1(container Expression, name PropertyLookup) Property {
 }
 
 func PropertyError(err error) Property {
-	return Property{err: err}
+	property := Property{err: err}
+	property.ExpressionContainer = ExpressionWrap(property)
+	return property
 }
 
 func (p Property) To(expression Expression) Operation {
 	return OperationSet(p, expression)
 }
 
-func (p Property) getError() error {
+func (p Property) GetError() error {
 	return p.err
 }
 

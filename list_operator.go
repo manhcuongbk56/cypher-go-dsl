@@ -35,14 +35,14 @@ func ListOperatorError(err error) ListOperator {
  * @return A range literal.
  */
 func SubList(targetExpression Expression, start Expression, end Expression) ListOperator {
-	if targetExpression != nil && targetExpression.getError() != nil {
-		return ListOperatorError(targetExpression.getError())
+	if targetExpression != nil && targetExpression.GetError() != nil {
+		return ListOperatorError(targetExpression.GetError())
 	}
-	if start != nil && start.getError() != nil {
-		return ListOperatorError(start.getError())
+	if start != nil && start.GetError() != nil {
+		return ListOperatorError(start.GetError())
 	}
-	if end != nil && end.getError() != nil {
-		return ListOperatorError(end.getError())
+	if end != nil && end.GetError() != nil {
+		return ListOperatorError(end.GetError())
 	}
 	if targetExpression == nil || targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
@@ -64,11 +64,11 @@ func SubList(targetExpression Expression, start Expression, end Expression) List
  * @return A range literal.
  */
 func SubListFrom(targetExpression Expression, start Expression) ListOperator {
-	if targetExpression != nil && targetExpression.getError() != nil {
-		return ListOperatorError(targetExpression.getError())
+	if targetExpression != nil && targetExpression.GetError() != nil {
+		return ListOperatorError(targetExpression.GetError())
 	}
-	if start != nil && start.getError() != nil {
-		return ListOperatorError(start.getError())
+	if start != nil && start.GetError() != nil {
+		return ListOperatorError(start.GetError())
 	}
 	if targetExpression == nil || targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
@@ -87,11 +87,11 @@ func SubListFrom(targetExpression Expression, start Expression) ListOperator {
  * @return A range literal.
  */
 func SubListUntil(targetExpression Expression, end Expression) ListOperator {
-	if targetExpression != nil && targetExpression.getError() != nil {
-		return ListOperatorError(targetExpression.getError())
+	if targetExpression != nil && targetExpression.GetError() != nil {
+		return ListOperatorError(targetExpression.GetError())
 	}
-	if end != nil && end.getError() != nil {
-		return ListOperatorError(end.getError())
+	if end != nil && end.GetError() != nil {
+		return ListOperatorError(end.GetError())
 	}
 	if targetExpression == nil || targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
@@ -110,11 +110,11 @@ func SubListUntil(targetExpression Expression, end Expression) ListOperator {
  * @return A range literal.
  */
 func ValueAt(targetExpression Expression, index Expression) ListOperator {
-	if targetExpression != nil && targetExpression.getError() != nil {
-		return ListOperatorError(targetExpression.getError())
+	if targetExpression != nil && targetExpression.GetError() != nil {
+		return ListOperatorError(targetExpression.GetError())
 	}
-	if index != nil && index.getError() != nil {
-		return ListOperatorError(index.getError())
+	if index != nil && index.GetError() != nil {
+		return ListOperatorError(index.GetError())
 	}
 	if targetExpression == nil || targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
@@ -125,7 +125,7 @@ func ValueAt(targetExpression Expression, index Expression) ListOperator {
 	return listOperatorCreate(targetExpression, index, Dot{}, nil)
 }
 
-func (l ListOperator) getError() error {
+func (l ListOperator) GetError() error {
 	return l.err
 }
 
@@ -175,7 +175,7 @@ func DotCreate(content string) Dot {
 	return dot
 }
 
-func (s Dot) getError() error {
+func (s Dot) GetError() error {
 	return s.err
 }
 
@@ -223,11 +223,11 @@ type ListOperatorDetails struct {
 }
 
 func ListOperatorDetailsCreate(optionalStart Expression, dots Dot, optionalEnd Expression) ListOperatorDetails {
-	if optionalStart != nil && optionalStart.getError() != nil {
-		return ListOperatorDetails{err: optionalStart.getError()}
+	if optionalStart != nil && optionalStart.GetError() != nil {
+		return ListOperatorDetails{err: optionalStart.GetError()}
 	}
-	if optionalEnd != nil && optionalEnd.getError() != nil {
-		return ListOperatorDetails{err: optionalEnd.getError()}
+	if optionalEnd != nil && optionalEnd.GetError() != nil {
+		return ListOperatorDetails{err: optionalEnd.GetError()}
 	}
 	operator := ListOperatorDetails{
 		optionalStart: optionalStart,
@@ -239,7 +239,7 @@ func ListOperatorDetailsCreate(optionalStart Expression, dots Dot, optionalEnd E
 	return operator
 }
 
-func (l ListOperatorDetails) getError() error {
+func (l ListOperatorDetails) GetError() error {
 	return l.err
 }
 

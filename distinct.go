@@ -13,7 +13,7 @@ var DISTINCT_INSTANCE = Distinct{
 	notNil:     true,
 }
 
-func (d Distinct) getError() error {
+func (d Distinct) GetError() error {
 	return d.err
 }
 

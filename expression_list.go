@@ -10,8 +10,8 @@ type ExpressionList struct {
 
 func ExpressionListCreate(expressions []Expression) ExpressionList {
 	for _, expression := range expressions {
-		if expression.getError() != nil {
-			return ExpressionListError(expression.getError())
+		if expression.GetError() != nil {
+			return ExpressionListError(expression.GetError())
 		}
 	}
 	e := ExpressionList{
@@ -33,7 +33,7 @@ func (e ExpressionList) GetExpressionType() ExpressionType {
 	return "ExpressionList"
 }
 
-func (e ExpressionList) getError() error {
+func (e ExpressionList) GetError() error {
 	return e.err
 }
 

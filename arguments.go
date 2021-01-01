@@ -9,8 +9,8 @@ type Arguments struct {
 
 func ArgumentsCreate(expression []Expression) Arguments {
 	for _, expr := range expression {
-		if expr != nil && expr.getError() != nil {
-			return Arguments{err: expr.getError()}
+		if expr != nil && expr.GetError() != nil {
+			return Arguments{err: expr.GetError()}
 		}
 	}
 	a := Arguments{
@@ -21,7 +21,7 @@ func ArgumentsCreate(expression []Expression) Arguments {
 	return a
 }
 
-func (a Arguments) getError() error {
+func (a Arguments) GetError() error {
 	return a.err
 }
 

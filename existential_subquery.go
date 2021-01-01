@@ -9,8 +9,8 @@ type ExistentialSubquery struct {
 }
 
 func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
-	if fragment.getError() != nil {
-		return ExistentialSubqueryError(fragment.getError())
+	if fragment.GetError() != nil {
+		return ExistentialSubqueryError(fragment.GetError())
 	}
 	e := ExistentialSubquery{
 		fragment: fragment,
@@ -31,7 +31,7 @@ func ExistentialSubqueryExists(fragment Match) ExistentialSubquery {
 	return ExistentialSubqueryCreate(fragment)
 }
 
-func (e ExistentialSubquery) getError() error {
+func (e ExistentialSubquery) GetError() error {
 	return e.err
 }
 

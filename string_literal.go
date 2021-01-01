@@ -29,7 +29,7 @@ func StringLiteralError(err error) StringLiteral {
 	return StringLiteralError(err)
 }
 
-func (s StringLiteral) getError() error {
+func (s StringLiteral) GetError() error {
 	return s.err
 }
 

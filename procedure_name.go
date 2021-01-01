@@ -34,8 +34,8 @@ func ProcedureNameCreate1(value string) ProcedureName {
 }
 
 func ProcedureNameCreate2(namespace Namespace, value string) ProcedureName {
-	if namespace.getError() != nil {
-		return ProcedureName{err: namespace.getError()}
+	if namespace.GetError() != nil {
+		return ProcedureName{err: namespace.GetError()}
 	}
 	p := ProcedureName{
 		value:             value,
@@ -54,7 +54,7 @@ func (p ProcedureName) getQualifiedName() string {
 	return namespace + "." + p.value
 }
 
-func (p ProcedureName) getError() error {
+func (p ProcedureName) GetError() error {
 	return p.err
 }
 

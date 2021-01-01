@@ -14,8 +14,8 @@ type MapExpression struct {
 
 func MapExpressionCreate(newContents []Expression) MapExpression {
 	for _, content := range newContents {
-		if content != nil && content.getError() != nil {
-			return MapExpressionError(content.getError())
+		if content != nil && content.GetError() != nil {
+			return MapExpressionError(content.GetError())
 		}
 	}
 	m := MapExpression{
@@ -37,7 +37,7 @@ func (m MapExpression) GetExpressionType() ExpressionType {
 	return "MapExpression"
 }
 
-func (m MapExpression) getError() error {
+func (m MapExpression) GetError() error {
 	return m.err
 }
 
@@ -74,11 +74,11 @@ func NewMapExpression(objects ...interface{}) MapExpression {
 }
 
 func (m MapExpression) accept(visitor *CypherRenderer) {
-	(*visitor).enter(m)
+	visitor.enter(m)
 	for _, child := range m.expressions {
 		m.PrepareVisit(child).accept(visitor)
 	}
-	(*visitor).leave(m)
+	visitor.leave(m)
 }
 
 func (m MapExpression) enter(renderer *CypherRenderer) {
@@ -87,6 +87,17 @@ func (m MapExpression) enter(renderer *CypherRenderer) {
 
 func (m MapExpression) leave(renderer *CypherRenderer) {
 	renderer.append("}")
+}
+
+func (m MapExpression) AddEntries(entries []Expression) MapExpression {
+	newContent := make([]Expression, len(m.expressions) + len(entries))
+	for i:= range m.expressions {
+		newContent[i] = m.expressions[i]
+	}
+	for i:= range entries {
+		newContent[i + len(m.expressions)] = entries[i]
+	}
+	return MapExpressionCreate(newContent)
 }
 
 func (m MapExpression) PrepareVisit(visitable Visitable) Visitable {

@@ -31,7 +31,7 @@ func RelationshipLengthCreate1(minimum *int, maximum *int) RelationshipLength {
 	return r
 }
 
-func (relationshipLength RelationshipLength) getError() error {
+func (relationshipLength RelationshipLength) GetError() error {
 	return relationshipLength.err
 }
 

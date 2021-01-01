@@ -9,8 +9,8 @@ type Unwind struct {
 }
 
 func UnwindCreate(expressionToUnwind Expression, variable string) Unwind {
-	if expressionToUnwind != nil && expressionToUnwind.getError() != nil {
-		return UnwindError(expressionToUnwind.getError())
+	if expressionToUnwind != nil && expressionToUnwind.GetError() != nil {
+		return UnwindError(expressionToUnwind.GetError())
 	}
 	var expression Expression
 	if aliased, isAliased := expressionToUnwind.(Aliased); isAliased {
@@ -31,7 +31,7 @@ func UnwindError(err error) Unwind {
 	return Unwind{err: err}
 }
 
-func (u Unwind) getError() error {
+func (u Unwind) GetError() error {
 	return u.err
 }
 

@@ -10,12 +10,12 @@ type MultiPartElement struct {
 
 func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
 	for _, clause := range precedingClauses {
-		if clause != nil && clause.getError() != nil {
-			return MultiPartElement{err: clause.getError()}
+		if clause != nil && clause.GetError() != nil {
+			return MultiPartElement{err: clause.GetError()}
 		}
 	}
-	if with.getError() != nil {
-		return MultiPartElement{err: with.getError()}
+	if with.GetError() != nil {
+		return MultiPartElement{err: with.GetError()}
 	}
 	var clauses []Visitable
 	if precedingClauses == nil || len(precedingClauses) == 0 {
@@ -33,7 +33,7 @@ func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartEl
 	return m
 }
 
-func (m MultiPartElement) getError() error {
+func (m MultiPartElement) GetError() error {
 	return m.err
 }
 

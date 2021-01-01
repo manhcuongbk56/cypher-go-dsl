@@ -18,7 +18,7 @@ func NullLiteralCreate() NilLiteral {
 
 var NIL_INSTANCE = NullLiteralCreate()
 
-func (n NilLiteral) getError() error {
+func (n NilLiteral) GetError() error {
 	return n.err
 }
 

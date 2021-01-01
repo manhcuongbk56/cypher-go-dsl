@@ -11,17 +11,17 @@ type ProcedureCall struct {
 }
 
 func ProcedureCallCreate(name ProcedureName, arguments Arguments, yieldItems YieldItems, optionalWhere Where) ProcedureCall {
-	if name.getError() != nil {
-		return ProcedureCall{err: name.getError()}
+	if name.GetError() != nil {
+		return ProcedureCall{err: name.GetError()}
 	}
-	if arguments.getError() != nil {
-		return ProcedureCall{err: arguments.getError()}
+	if arguments.GetError() != nil {
+		return ProcedureCall{err: arguments.GetError()}
 	}
-	if yieldItems.getError() != nil {
-		return ProcedureCall{err: yieldItems.getError()}
+	if yieldItems.GetError() != nil {
+		return ProcedureCall{err: yieldItems.GetError()}
 	}
-	if optionalWhere.getError() != nil {
-		return ProcedureCall{err: optionalWhere.getError()}
+	if optionalWhere.GetError() != nil {
+		return ProcedureCall{err: optionalWhere.GetError()}
 	}
 	p := ProcedureCall{
 		name:          name,
@@ -38,7 +38,7 @@ func (p ProcedureCall) doesReturnElement() bool {
 	return p.yieldItems.isNotNil()
 }
 
-func (p ProcedureCall) getError() error {
+func (p ProcedureCall) GetError() error {
 	return p.err
 }
 
@@ -193,23 +193,23 @@ func (s StandaloneCallBuilder) ReturningDistinct(expression ...Expression) Ongoi
 }
 
 func (s StandaloneCallBuilder) Build() (Statement, error) {
-	if s.procedureName.getError() != nil {
-		return nil, s.procedureName.getError()
+	if s.procedureName.GetError() != nil {
+		return nil, s.procedureName.GetError()
 	}
-	if s.yieldItems.getError() != nil {
-		return nil, s.yieldItems.getError()
+	if s.yieldItems.GetError() != nil {
+		return nil, s.yieldItems.GetError()
 	}
 	argumentsList := Arguments{}
 	if s.arguments == nil || len(s.arguments) > 0 {
 		argumentsList = ArgumentsCreate(s.arguments)
 	}
-	if argumentsList.getError() != nil {
-		return nil, argumentsList.getError()
+	if argumentsList.GetError() != nil {
+		return nil, argumentsList.GetError()
 	}
 	condition := s.conditionBuilder.buildCondition()
 	if condition != nil && condition.isNotNil() {
-		if condition.getError() != nil {
-			return nil, condition.getError()
+		if condition.GetError() != nil {
+			return nil, condition.GetError()
 		}
 		return ProcedureCallCreate(s.procedureName, argumentsList, s.yieldItems,
 			WhereCreate(condition)), nil

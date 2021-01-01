@@ -18,8 +18,8 @@ func UnionQueryCreate(all bool, queries []SingleQuery) UnionQuery {
 		return UnionQueryError(errors.New("at least two queries are needed"))
 	}
 	for _, query := range queries {
-		if query != nil && query.getError() != nil {
-			return UnionQueryError(query.getError())
+		if query != nil && query.GetError() != nil {
+			return UnionQueryError(query.GetError())
 		}
 	}
 	unionParts := make([]UnionPart, 0)
@@ -57,7 +57,7 @@ func (q UnionQuery) addAdditionalQueries(newAdditionalQueries []SingleQuery) Uni
 	return UnionQueryCreate(q.all, queries)
 }
 
-func (q UnionQuery) getError() error {
+func (q UnionQuery) GetError() error {
 	return q.err
 }
 

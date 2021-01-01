@@ -12,8 +12,8 @@ type Subquery struct {
 }
 
 func SubqueryCreate(statement Statement) Subquery {
-	if statement != nil && statement.getError() != nil {
-		return SubqueryError(statement.getError())
+	if statement != nil && statement.GetError() != nil {
+		return SubqueryError(statement.GetError())
 	}
 	subQuery := Subquery{
 		statement: statement,
@@ -24,8 +24,8 @@ func SubqueryCreate(statement Statement) Subquery {
 }
 
 func SubqueryCall(statement Statement) Subquery {
-	if statement != nil && statement.getError() != nil {
-		return SubqueryError(statement.getError())
+	if statement != nil && statement.GetError() != nil {
+		return SubqueryError(statement.GetError())
 	}
 	validReturn := false
 	if singlePartQuery, isSinglePartQuery := statement.(SinglePartQuery); isSinglePartQuery {
@@ -49,7 +49,7 @@ func SubqueryError(err error) Subquery {
 	}
 }
 
-func (s Subquery) getError() error {
+func (s Subquery) GetError() error {
 	return s.err
 }
 

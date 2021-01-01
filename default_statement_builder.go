@@ -39,8 +39,8 @@ func (d DefaultStatementBuilder) Where(condition Condition) OngoingReadingWithWh
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if condition != nil && condition.getError() != nil {
-		return DefaultStatementBuilderError(condition.getError())
+	if condition != nil && condition.GetError() != nil {
+		return DefaultStatementBuilderError(condition.GetError())
 	}
 	d.currentOngoingMatch.conditionBuilder.Where(condition)
 	return d
@@ -54,8 +54,8 @@ func (d DefaultStatementBuilder) AddWith(with With) DefaultStatementBuilder {
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if with.getError() != nil {
-		return DefaultStatementBuilderError(with.getError())
+	if with.GetError() != nil {
+		return DefaultStatementBuilderError(with.GetError())
 	}
 	if with.isNotNil() {
 		d.multipartElements = append(d.multipartElements, MultiPartElementCreate(d.BuildListOfVisitable(true), with))
@@ -67,8 +67,8 @@ func (d DefaultStatementBuilder) WherePattern(pattern RelationshipPattern) Ongoi
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if pattern != nil && pattern.getError() != nil {
-		return DefaultStatementBuilderError(pattern.getError())
+	if pattern != nil && pattern.GetError() != nil {
+		return DefaultStatementBuilderError(pattern.GetError())
 	}
 	return d.Where(RelationshipPatternConditionCreate(pattern))
 }
@@ -82,8 +82,8 @@ func (d DefaultStatementBuilder) ReturningByNamed(variables ...Named) OngoingRea
 		return DefaultStatementWithReturnBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementWithReturnBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementWithReturnBuilderError(variable.GetError())
 		}
 	}
 	return d.Returning(CreateSymbolicNameByNamed(variables...)...)
@@ -101,8 +101,8 @@ func (d DefaultStatementBuilder) ReturningDistinctByNamed(variables ...Named) On
 		return DefaultStatementWithReturnBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementWithReturnBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementWithReturnBuilderError(variable.GetError())
 		}
 	}
 	return d.ReturningDistinct(CreateSymbolicNameByNamed(variables...)...)
@@ -120,8 +120,8 @@ func (d DefaultStatementBuilder) WithByNamed(variables ...Named) OrderableOngoin
 		return DefaultStatementWithWithBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementWithWithBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementWithWithBuilderError(variable.GetError())
 		}
 	}
 	return d.With(CreateSymbolicNameByNamed(variables...)...)
@@ -132,8 +132,8 @@ func (d DefaultStatementBuilder) With(expressions ...Expression) OrderableOngoin
 		return DefaultStatementWithWithBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementWithWithBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementWithWithBuilderError(expression.GetError())
 		}
 	}
 	return d.WithDefault(false, expressions...)
@@ -151,8 +151,8 @@ func (d DefaultStatementBuilder) WithDistinctByNamed(variables ...Named) Orderab
 		return DefaultStatementWithWithBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementWithWithBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementWithWithBuilderError(variable.GetError())
 		}
 	}
 	return d.WithDistinct(CreateSymbolicNameByNamed(variables...)...)
@@ -163,8 +163,8 @@ func (d DefaultStatementBuilder) WithDistinct(expressions ...Expression) Orderab
 		return DefaultStatementWithWithBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementWithWithBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementWithWithBuilderError(expression.GetError())
 		}
 	}
 	return d.WithDefault(true, expressions...)
@@ -175,8 +175,8 @@ func (d DefaultStatementBuilder) WithDefault(distinct bool, expressions ...Expre
 		return DefaultStatementWithWithBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementWithWithBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementWithWithBuilderError(expression.GetError())
 		}
 	}
 	ongoingMatchAndWith := DefaultStatementWithWithBuilderCreate(&d, distinct)
@@ -196,8 +196,8 @@ func (d DefaultStatementBuilder) DeleteByNamed(variables ...Named) OngoingUpdate
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementBuilderError(variable.GetError())
 		}
 	}
 	return d.Delete(CreateSymbolicNameByNamed(variables...)...)
@@ -208,8 +208,8 @@ func (d DefaultStatementBuilder) Delete(expressions ...Expression) OngoingUpdate
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementBuilderError(expression.GetError())
 		}
 	}
 	return d.Update(UPDATE_TYPE_DELETE, ExpressionsToVisitables(expressions))
@@ -227,8 +227,8 @@ func (d DefaultStatementBuilder) DetachDeleteByNamed(variables ...Named) Ongoing
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, variable := range variables {
-		if variable != nil && variable.getError() != nil {
-			return DefaultStatementBuilderError(variable.getError())
+		if variable != nil && variable.GetError() != nil {
+			return DefaultStatementBuilderError(variable.GetError())
 		}
 	}
 	return d.DetachDelete(CreateSymbolicNameByNamed(variables...)...)
@@ -239,8 +239,8 @@ func (d DefaultStatementBuilder) DetachDelete(expressions ...Expression) Ongoing
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementBuilderError(expression.GetError())
 		}
 	}
 	return d.Update(UPDATE_TYPE_DETACH_DELETE, ExpressionsToVisitables(expressions))
@@ -251,8 +251,8 @@ func (d DefaultStatementBuilder) Merge(patterns ...PatternElement) OngoingUpdate
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, pattern := range patterns {
-		if pattern != nil && pattern.getError() != nil {
-			return DefaultStatementBuilderError(pattern.getError())
+		if pattern != nil && pattern.GetError() != nil {
+			return DefaultStatementBuilderError(pattern.GetError())
 		}
 	}
 	return d.Update(UPDATE_TYPE_MERGE, PatternElementsToVisitables(patterns))
@@ -263,8 +263,8 @@ func (d DefaultStatementBuilder) Set(expressions ...Expression) BuildableStateme
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementBuilderError(expression.GetError())
 		}
 	}
 	d.CloseCurrentOngoingUpdate()
@@ -275,11 +275,11 @@ func (d DefaultStatementBuilder) SetWithNamed(variable Named, expression Express
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if variable != nil && variable.getError() != nil {
-		return DefaultStatementBuilderError(variable.getError())
+	if variable != nil && variable.GetError() != nil {
+		return DefaultStatementBuilderError(variable.GetError())
 	}
-	if expression != nil && expression.getError() != nil {
-		return DefaultStatementBuilderError(expression.getError())
+	if expression != nil && expression.GetError() != nil {
+		return DefaultStatementBuilderError(expression.GetError())
 	}
 	return d.Set(variable.getSymbolicName(), expression)
 }
@@ -288,8 +288,8 @@ func (d DefaultStatementBuilder) SetByNode(node Node, labels ...string) Buildabl
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if node.getError() != nil {
-		return DefaultStatementBuilderError(node.getError())
+	if node.GetError() != nil {
+		return DefaultStatementBuilderError(node.GetError())
 	}
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_SET, OperationSetLabel(node, labels...))
 }
@@ -298,8 +298,8 @@ func (d DefaultStatementBuilder) RemoveByNode(node Node, labels ...string) Build
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if node.getError() != nil {
-		return DefaultStatementBuilderError(node.getError())
+	if node.GetError() != nil {
+		return DefaultStatementBuilderError(node.GetError())
 	}
 	return DefaultStatementWithUpdateBuilderCreate2(&d, UPDATE_TYPE_REMOVE, OperationRemove(node, labels...))
 }
@@ -309,8 +309,8 @@ func (d DefaultStatementBuilder) Remove(properties ...Property) BuildableStateme
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, property := range properties {
-		if property.getError() != nil {
-			return DefaultStatementBuilderError(property.getError())
+		if property.GetError() != nil {
+			return DefaultStatementBuilderError(property.GetError())
 		}
 	}
 	expressions := make([]Expression, len(properties))
@@ -325,8 +325,8 @@ func (d DefaultStatementBuilder) Unwinds(expressions ...Expression) OngoingUnwin
 		return DefaultOngoingUnwindError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultOngoingUnwindError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultOngoingUnwindError(expression.GetError())
 		}
 	}
 	return d.Unwind(CypherListOf(expressions...))
@@ -343,8 +343,8 @@ func (d DefaultStatementBuilder) Unwind(expression Expression) OngoingUnwind {
 	if d.err != nil {
 		return DefaultOngoingUnwindError(d.err)
 	}
-	if expression != nil && expression.getError() != nil {
-		return DefaultOngoingUnwindError(expression.getError())
+	if expression != nil && expression.GetError() != nil {
+		return DefaultOngoingUnwindError(expression.GetError())
 	}
 	d.CloseCurrentOngoingMatch()
 	return DefaultOngoingUnwindCreate(&d, expression)
@@ -354,8 +354,8 @@ func (d DefaultStatementBuilder) Call(statement Statement) OngoingReadingWithout
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if statement != nil && statement.getError() != nil {
-		return DefaultStatementBuilderError(statement.getError())
+	if statement != nil && statement.GetError() != nil {
+		return DefaultStatementBuilderError(statement.GetError())
 	}
 	if d.err != nil {
 		return d
@@ -364,8 +364,8 @@ func (d DefaultStatementBuilder) Call(statement Statement) OngoingReadingWithout
 	d.CloseCurrentOngoingMatch()
 	d.CloseCurrentOngoingUpdate()
 	singlePart := SubqueryCall(statement)
-	if singlePart.getError() != nil {
-		d.err = singlePart.getError()
+	if singlePart.GetError() != nil {
+		d.err = singlePart.GetError()
 		return d
 	}
 	d.currentSinglePartElements = append(d.currentSinglePartElements, singlePart)
@@ -402,8 +402,8 @@ func (d DefaultStatementBuilder) AndPattern(pattern RelationshipPattern) Ongoing
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if pattern != nil && pattern.getError() != nil {
-		return DefaultStatementBuilderError(pattern.getError())
+	if pattern != nil && pattern.GetError() != nil {
+		return DefaultStatementBuilderError(pattern.GetError())
 	}
 	return d.And(RelationshipPatternConditionCreate(pattern))
 }
@@ -412,8 +412,8 @@ func (d DefaultStatementBuilder) Or(condition Condition) OngoingReadingWithWhere
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if condition != nil && condition.getError() != nil {
-		return DefaultStatementBuilderError(condition.getError())
+	if condition != nil && condition.GetError() != nil {
+		return DefaultStatementBuilderError(condition.GetError())
 	}
 	d.currentOngoingMatch.conditionBuilder.Or(condition)
 	return d
@@ -423,8 +423,8 @@ func (d DefaultStatementBuilder) OrPattern(pattern RelationshipPattern) OngoingR
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}
-	if pattern != nil && pattern.getError() != nil {
-		return DefaultStatementBuilderError(pattern.getError())
+	if pattern != nil && pattern.GetError() != nil {
+		return DefaultStatementBuilderError(pattern.GetError())
 	}
 	return d.Or(RelationshipPatternConditionCreate(pattern))
 }
@@ -434,8 +434,8 @@ func (d DefaultStatementBuilder) OptionalMatch(patterns ...PatternElement) Ongoi
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, pattern := range patterns {
-		if pattern != nil && pattern.getError() != nil {
-			return DefaultStatementBuilderError(pattern.getError())
+		if pattern != nil && pattern.GetError() != nil {
+			return DefaultStatementBuilderError(pattern.GetError())
 		}
 	}
 	return d.MatchDefault(true, patterns...)
@@ -446,8 +446,8 @@ func (d DefaultStatementBuilder) Create(elements ...PatternElement) OngoingUpdat
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, element := range elements {
-		if element != nil && element.getError() != nil {
-			return DefaultStatementBuilderError(element.getError())
+		if element != nil && element.GetError() != nil {
+			return DefaultStatementBuilderError(element.GetError())
 		}
 	}
 	return d.Update(UPDATE_TYPE_CREATE, PatternElementsToVisitables(elements))
@@ -477,8 +477,8 @@ func (d DefaultStatementBuilder) Match(patterns ...PatternElement) OngoingReadin
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, pattern := range patterns {
-		if pattern != nil && pattern.getError() != nil {
-			return DefaultStatementBuilderError(pattern.getError())
+		if pattern != nil && pattern.GetError() != nil {
+			return DefaultStatementBuilderError(pattern.GetError())
 		}
 	}
 	return d.MatchDefault(false, patterns...)
@@ -489,8 +489,8 @@ func (d DefaultStatementBuilder) MatchDefault(optional bool, patterns ...Pattern
 		return DefaultStatementBuilderError(d.err)
 	}
 	for _, pattern := range patterns {
-		if pattern != nil && pattern.getError() != nil {
-			return DefaultStatementBuilderError(pattern.getError())
+		if pattern != nil && pattern.GetError() != nil {
+			return DefaultStatementBuilderError(pattern.GetError())
 		}
 	}
 	d.CloseCurrentOngoingMatch()
@@ -542,8 +542,8 @@ func (d DefaultStatementBuilder) ReturningDefault(distinct bool, expressions ...
 		return DefaultStatementWithReturnBuilderError(d.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementWithReturnBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementWithReturnBuilderError(expression.GetError())
 		}
 	}
 	withReturnBuilder := DefaultStatementWithReturnBuilder{
@@ -704,8 +704,8 @@ func (o OngoingMergeActionInBuilder) Set(expressions ...Expression) OngoingMatch
 		return DefaultStatementBuilderError(o.err)
 	}
 	for _, expression := range expressions {
-		if expression != nil && expression.getError() != nil {
-			return DefaultStatementBuilderError(expression.getError())
+		if expression != nil && expression.GetError() != nil {
+			return DefaultStatementBuilderError(expression.GetError())
 		}
 	}
 	support := o.defaultBuilder.currentOngoingUpdate.builder.(SupportsActionsOnTheUpdatingClause)
@@ -723,11 +723,11 @@ func (o OngoingMergeActionInBuilder) SetWithNamed(variable Named, expression Exp
 	if o.err != nil {
 		return DefaultStatementBuilderError(o.err)
 	}
-	if variable != nil && variable.getError() != nil {
-		return DefaultStatementBuilderError(variable.getError())
+	if variable != nil && variable.GetError() != nil {
+		return DefaultStatementBuilderError(variable.GetError())
 	}
-	if expression != nil && expression.getError() != nil {
-		return DefaultStatementBuilderError(expression.getError())
+	if expression != nil && expression.GetError() != nil {
+		return DefaultStatementBuilderError(expression.GetError())
 	}
 	return o.Set(variable.getSymbolicName(), expression)
 }

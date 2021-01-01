@@ -10,8 +10,8 @@ type KeyValueMapEntry struct {
 }
 
 func KeyValueMapEntryCreate(key string, value Expression) KeyValueMapEntry {
-	if value != nil && value.getError() != nil {
-		return KeyValueMapEntryError(value.getError())
+	if value != nil && value.GetError() != nil {
+		return KeyValueMapEntryError(value.GetError())
 	}
 	entry := KeyValueMapEntry{
 		entryKey: key,
@@ -28,7 +28,7 @@ func KeyValueMapEntryError(err error) KeyValueMapEntry {
 	}
 }
 
-func (k KeyValueMapEntry) getError() error {
+func (k KeyValueMapEntry) GetError() error {
 	return k.err
 }
 

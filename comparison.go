@@ -15,14 +15,14 @@ type Comparison struct {
 }
 
 func ComparisonCreate(left Expression, operator Operator, right Expression) Comparison {
-	if left != nil && left.getError() != nil {
-		return ComparisonError(left.getError())
+	if left != nil && left.GetError() != nil {
+		return ComparisonError(left.GetError())
 	}
-	if operator.getError() != nil {
-		return ComparisonError(operator.getError())
+	if operator.GetError() != nil {
+		return ComparisonError(operator.GetError())
 	}
-	if right != nil && right.getError() != nil {
-		return ComparisonError(right.getError())
+	if right != nil && right.GetError() != nil {
+		return ComparisonError(right.GetError())
 	}
 	if !operator.isNotNil() {
 		return ComparisonError(errors.New("operator must be not nil"))
@@ -45,11 +45,11 @@ func ComparisonCreate(left Expression, operator Operator, right Expression) Comp
 }
 
 func ComparisonCreate1(operator Operator, expression Expression) Comparison {
-	if operator.getError() != nil {
-		return ComparisonError(operator.getError())
+	if operator.GetError() != nil {
+		return ComparisonError(operator.GetError())
 	}
-	if expression != nil && expression.getError() != nil {
-		return ComparisonError(expression.getError())
+	if expression != nil && expression.GetError() != nil {
+		return ComparisonError(expression.GetError())
 	}
 	if !operator.isUnary() {
 		return ComparisonError(errors.New("comparison: operator must be unary"))
@@ -86,7 +86,7 @@ func ComparisonError(err error) Comparison {
 	}
 }
 
-func (c Comparison) getError() error {
+func (c Comparison) GetError() error {
 	return c.err
 }
 

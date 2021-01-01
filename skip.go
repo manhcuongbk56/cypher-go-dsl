@@ -14,7 +14,7 @@ func SkipCreate(number int) Skip {
 	return skip
 }
 
-func (s Skip) getError() error {
+func (s Skip) GetError() error {
 	return s.err
 }
 

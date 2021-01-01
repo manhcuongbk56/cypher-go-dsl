@@ -11,8 +11,8 @@ type ListExpression struct {
 }
 
 func ListExpressionCreate(content ExpressionList) ListExpression {
-	if content.getError() != nil {
-		return ListExpressionError(content.getError())
+	if content.GetError() != nil {
+		return ListExpressionError(content.GetError())
 	}
 	list := ListExpression{
 		content: content,
@@ -44,7 +44,7 @@ func ListOrSingleExpression(expressions ...Expression) Expression {
 	}
 }
 
-func (l ListExpression) getError() error {
+func (l ListExpression) GetError() error {
 	return l.err
 }
 

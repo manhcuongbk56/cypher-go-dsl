@@ -8,8 +8,8 @@ type Set struct {
 }
 
 func SetCreate(setItems ExpressionList) Set {
-	if setItems.getError() != nil {
-		return SetError(setItems.getError())
+	if setItems.GetError() != nil {
+		return SetError(setItems.GetError())
 	}
 	set := Set{
 		setItems: setItems,
@@ -29,7 +29,7 @@ func (s Set) isUpdatingClause() bool {
 	return true
 }
 
-func (s Set) getError() error {
+func (s Set) GetError() error {
 	return s.err
 }
 

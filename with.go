@@ -10,20 +10,20 @@ type With struct {
 }
 
 func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
-	if returnItems.getError() != nil {
-		WithError(returnItems.getError())
+	if returnItems.GetError() != nil {
+		WithError(returnItems.GetError())
 	}
-	if order.getError() != nil {
-		WithError(order.getError())
+	if order.GetError() != nil {
+		WithError(order.GetError())
 	}
-	if skip.getError() != nil {
-		WithError(skip.getError())
+	if skip.GetError() != nil {
+		WithError(skip.GetError())
 	}
-	if limit.getError() != nil {
-		WithError(limit.getError())
+	if limit.GetError() != nil {
+		WithError(limit.GetError())
 	}
-	if where.getError() != nil {
-		WithError(where.getError())
+	if where.GetError() != nil {
+		WithError(where.GetError())
 	}
 	distinctInstance := Distinct{}
 	if distinct {
@@ -45,7 +45,7 @@ func WithError(err error) With {
 	}
 }
 
-func (with With) getError() error {
+func (with With) GetError() error {
 	return with.err
 }
 

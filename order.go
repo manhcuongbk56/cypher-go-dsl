@@ -9,8 +9,8 @@ type Order struct {
 
 func OrderCreate(sortItems []SortItem) Order {
 	for _, item := range sortItems {
-		if item.getError() != nil {
-			return Order{err: item.getError()}
+		if item.GetError() != nil {
+			return Order{err: item.GetError()}
 		}
 	}
 	o := Order{sortItems: sortItems, notNil: true}
@@ -18,7 +18,7 @@ func OrderCreate(sortItems []SortItem) Order {
 	return o
 }
 
-func (o Order) getError() error {
+func (o Order) GetError() error {
 	return o.err
 }
 

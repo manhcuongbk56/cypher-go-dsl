@@ -25,7 +25,7 @@ func LimitError(err error) Limit {
 	}
 }
 
-func (l Limit) getError() error {
+func (l Limit) GetError() error {
 	return l.err
 }
 

@@ -25,7 +25,7 @@ func BooleanFunctionConditionError(err error) BooleanFunctionCondition {
 	return function
 }
 
-func (b BooleanFunctionCondition) getError() error {
+func (b BooleanFunctionCondition) GetError() error {
 	return b.err
 }
 

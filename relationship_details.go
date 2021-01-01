@@ -14,8 +14,8 @@ type RelationshipDetails struct {
 }
 
 func RelationshipDetailsCreate1(direction Direction, types RelationshipTypes) RelationshipDetails {
-	if types.getError() != nil {
-		return RelationshipDetailsError(types.getError())
+	if types.GetError() != nil {
+		return RelationshipDetailsError(types.GetError())
 	}
 	r := RelationshipDetails{
 		direction: direction,
@@ -27,11 +27,11 @@ func RelationshipDetailsCreate1(direction Direction, types RelationshipTypes) Re
 }
 
 func RelationshipDetailsCreate2(direction Direction, symbolicName SymbolicName, types RelationshipTypes) RelationshipDetails {
-	if symbolicName.getError() != nil {
-		return RelationshipDetailsError(symbolicName.getError())
+	if symbolicName.GetError() != nil {
+		return RelationshipDetailsError(symbolicName.GetError())
 	}
-	if types.getError() != nil {
-		return RelationshipDetailsError(types.getError())
+	if types.GetError() != nil {
+		return RelationshipDetailsError(types.GetError())
 	}
 	r := RelationshipDetails{
 		direction:    direction,
@@ -45,17 +45,17 @@ func RelationshipDetailsCreate2(direction Direction, symbolicName SymbolicName, 
 
 func RelationshipDetailsCreate(direction Direction, symbolicName SymbolicName,
 	types RelationshipTypes, length RelationshipLength, properties Properties) RelationshipDetails {
-	if symbolicName.getError() != nil {
-		return RelationshipDetailsError(symbolicName.getError())
+	if symbolicName.GetError() != nil {
+		return RelationshipDetailsError(symbolicName.GetError())
 	}
-	if types.getError() != nil {
-		return RelationshipDetailsError(types.getError())
+	if types.GetError() != nil {
+		return RelationshipDetailsError(types.GetError())
 	}
-	if length.getError() != nil {
-		return RelationshipDetailsError(length.getError())
+	if length.GetError() != nil {
+		return RelationshipDetailsError(length.GetError())
 	}
-	if properties.getError() != nil {
-		return RelationshipDetailsError(properties.getError())
+	if properties.GetError() != nil {
+		return RelationshipDetailsError(properties.GetError())
 	}
 	return RelationshipDetails{
 		direction:    direction,
@@ -73,7 +73,9 @@ func RelationshipDetailsError(err error) RelationshipDetails {
 	}
 }
 
-func (r RelationshipDetails) getError() error {
+
+
+func (r RelationshipDetails) GetError() error {
 	return r.err
 }
 

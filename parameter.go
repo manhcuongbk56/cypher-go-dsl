@@ -35,7 +35,7 @@ func ParameterError(err error) Parameter {
 	}
 }
 
-func (p Parameter) getError() error {
+func (p Parameter) GetError() error {
 	return p.err
 }
 

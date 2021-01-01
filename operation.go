@@ -16,14 +16,14 @@ type Operation struct {
 }
 
 func OperationCreate(left Expression, operator Operator, right Expression) Operation {
-	if left != nil && left.getError() != nil {
-		return OperationError(left.getError())
+	if left != nil && left.GetError() != nil {
+		return OperationError(left.GetError())
 	}
-	if operator.getError() != nil {
-		return OperationError(operator.getError())
+	if operator.GetError() != nil {
+		return OperationError(operator.GetError())
 	}
-	if right != nil && right.getError() != nil {
-		return OperationError(right.getError())
+	if right != nil && right.GetError() != nil {
+		return OperationError(right.GetError())
 	}
 	if left == nil || !left.isNotNil() {
 		return OperationError(errors.New("operation: left can not be nil"))
@@ -46,14 +46,14 @@ func OperationCreate(left Expression, operator Operator, right Expression) Opera
 }
 
 func OperationCreate1(left Expression, operator Operator, right NodeLabel) Operation {
-	if left != nil && left.getError() != nil {
-		return OperationError(left.getError())
+	if left != nil && left.GetError() != nil {
+		return OperationError(left.GetError())
 	}
-	if operator.getError() != nil {
-		return OperationError(operator.getError())
+	if operator.GetError() != nil {
+		return OperationError(operator.GetError())
 	}
-	if right.getError() != nil {
-		return OperationError(right.getError())
+	if right.GetError() != nil {
+		return OperationError(right.GetError())
 	}
 	if left == nil || left.isNotNil() {
 		return OperationError(errors.New("left can not be nil"))
@@ -76,11 +76,11 @@ func OperationCreate1(left Expression, operator Operator, right NodeLabel) Opera
 }
 
 func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operation {
-	if op1.getError() != nil {
-		return OperationError(op1.getError())
+	if op1.GetError() != nil {
+		return OperationError(op1.GetError())
 	}
-	if operator.getError() != nil {
-		return OperationError(operator.getError())
+	if operator.GetError() != nil {
+		return OperationError(operator.GetError())
 	}
 	if !op1.isNotNil() {
 		return OperationError(errors.New("left can not be nil"))
@@ -113,7 +113,7 @@ func OperationError(err error) Operation {
 	return Operation{err: err}
 }
 
-func (o Operation) getError() error {
+func (o Operation) GetError() error {
 	return o.err
 }
 

@@ -1,4 +1,4 @@
-package test
+package test_cypher
 
 import (
 	"github.com/manhcuongbk56/cypher-go-dsl"

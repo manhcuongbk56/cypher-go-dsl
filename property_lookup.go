@@ -17,7 +17,7 @@ func PropertyLookupCreate(name string) PropertyLookup {
 	return property
 }
 
-func (p PropertyLookup) getError() error {
+func (p PropertyLookup) GetError() error {
 	return p.err
 }
 
@@ -34,6 +34,7 @@ func (p PropertyLookup) enter(renderer *CypherRenderer) {
 	renderer.append(".")
 	if ASTERISK.content == p.GetPropertyKeyName() {
 		renderer.append(p.GetPropertyKeyName())
+		return
 	}
 	renderer.append(escapeIfNecessary(p.GetPropertyKeyName()))
 }

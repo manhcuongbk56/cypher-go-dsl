@@ -9,8 +9,8 @@ type RelationshipPatternCondition struct {
 }
 
 func RelationshipPatternConditionCreate(pathPattern RelationshipPattern) RelationshipPatternCondition {
-	if pathPattern.getError() != nil {
-		return RelationshipPatternConditionError(pathPattern.getError())
+	if pathPattern.GetError() != nil {
+		return RelationshipPatternConditionError(pathPattern.GetError())
 	}
 	r := RelationshipPatternCondition{
 		pathPattern: pathPattern,
@@ -31,7 +31,7 @@ func (r RelationshipPatternCondition) getConditionType() string {
 	return "RelationshipPatternCondition"
 }
 
-func (r RelationshipPatternCondition) getError() error {
+func (r RelationshipPatternCondition) GetError() error {
 	return r.err
 }
 

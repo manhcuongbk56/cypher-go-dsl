@@ -9,8 +9,8 @@ type Delete struct {
 }
 
 func DeleteCreate(deleteItems ExpressionList, detach bool) Delete {
-	if deleteItems.getError() != nil {
-		return DeleteError(deleteItems.getError())
+	if deleteItems.GetError() != nil {
+		return DeleteError(deleteItems.GetError())
 	}
 	d := Delete{
 		deleteItems: deleteItems,
@@ -31,7 +31,7 @@ func (d Delete) isDetach() bool {
 	return d.detach
 }
 
-func (d Delete) getError() error {
+func (d Delete) GetError() error {
 	return d.err
 }
 

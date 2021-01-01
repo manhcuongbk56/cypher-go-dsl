@@ -17,7 +17,7 @@ func DefaultOngoingUnwindError(err error) DefaultOngoingUnwind {
 	return DefaultOngoingUnwind{err: err}
 }
 
-func (d DefaultOngoingUnwind) getError() error {
+func (d DefaultOngoingUnwind) GetError() error {
 	return d.err
 }
 

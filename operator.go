@@ -23,7 +23,7 @@ func OperatorError(err error) Operator {
 	return Operator{err: err}
 }
 
-func (o Operator) getError() error {
+func (o Operator) GetError() error {
 	return o.err
 }
 

@@ -11,17 +11,17 @@ type ReturnBody struct {
 }
 
 func ReturnBodyCreate(returnItems ExpressionList, order Order, skip Skip, limit Limit) ReturnBody {
-	if returnItems.getError() != nil {
-		ReturnBodyError(returnItems.getError())
+	if returnItems.GetError() != nil {
+		ReturnBodyError(returnItems.GetError())
 	}
-	if order.getError() != nil {
-		ReturnBodyError(order.getError())
+	if order.GetError() != nil {
+		ReturnBodyError(order.GetError())
 	}
-	if skip.getError() != nil {
-		ReturnBodyError(skip.getError())
+	if skip.GetError() != nil {
+		ReturnBodyError(skip.GetError())
 	}
-	if limit.getError() != nil {
-		ReturnBodyError(limit.getError())
+	if limit.GetError() != nil {
+		ReturnBodyError(limit.GetError())
 	}
 	r := ReturnBody{
 		returnItems: returnItems,
@@ -40,7 +40,7 @@ func ReturnBodyError(err error) ReturnBody {
 	}
 }
 
-func (r ReturnBody) getError() error {
+func (r ReturnBody) GetError() error {
 	return r.err
 }
 

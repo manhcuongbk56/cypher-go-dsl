@@ -22,7 +22,7 @@ func RawStringLiteralError(err error) RawStringLiteral {
 	return RawStringLiteralError(err)
 }
 
-func (s RawStringLiteral) getError() error {
+func (s RawStringLiteral) GetError() error {
 	return s.err
 }
 

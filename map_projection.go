@@ -1,6 +1,9 @@
 package cypher
 
-import "golang.org/x/xerrors"
+import (
+	"golang.org/x/xerrors"
+	"reflect"
+)
 
 type MapProjection struct {
 	ExpressionContainer
@@ -12,8 +15,8 @@ type MapProjection struct {
 }
 
 func MapProjectionCreate(name SymbolicName, content ...interface{}) MapProjection {
-	if name.getError() != nil {
-		return MapProjectionError(name.getError())
+	if name.GetError() != nil {
+		return MapProjectionError(name.GetError())
 	}
 	newContent, err := createNewContent(content...)
 	if err != nil {
@@ -29,11 +32,28 @@ func MapProjectionCreate(name SymbolicName, content ...interface{}) MapProjectio
 	return mapProjection
 }
 
+func MapProjectionCreateWithMapExpression(name SymbolicName, mapExpression MapExpression) MapProjection {
+	if name.GetError() != nil {
+		return MapProjectionError(name.GetError())
+	}
+	if mapExpression.GetError() != nil {
+		return MapProjectionError(mapExpression.GetError())
+	}
+	mapProjection := MapProjection{
+		name:          name,
+		mapExpression: mapExpression,
+		notNil:        true,
+	}
+	mapProjection.key = getAddress(&mapProjection)
+	mapProjection.ExpressionContainer = ExpressionWrap(mapProjection)
+	return mapProjection
+}
+
 func MapProjectionError(err error) MapProjection {
 	return MapProjection{err: err}
 }
 
-func (m MapProjection) getError() error {
+func (m MapProjection) GetError() error {
 	return m.err
 }
 
@@ -44,10 +64,10 @@ func (m MapProjection) accept(visitor *CypherRenderer) {
 	visitor.leave(m)
 }
 
-func (m MapProjection) enter(renderer *CypherRenderer) {
+func (m MapProjection) enter(_ *CypherRenderer) {
 }
 
-func (m MapProjection) leave(renderer *CypherRenderer) {
+func (m MapProjection) leave(_ *CypherRenderer) {
 }
 
 func (m MapProjection) getKey() string {
@@ -62,13 +82,24 @@ func (m MapProjection) GetExpressionType() ExpressionType {
 	return "MapProjection"
 }
 
+func (m MapProjection) And(content ...interface{}) MapProjection {
+	if m.GetError() != nil {
+		return m
+	}
+	newContent, err := createNewContent(content...)
+	if err != nil {
+		return MapProjectionError(err)
+	}
+	return MapProjectionCreateWithMapExpression(m.name, m.mapExpression.AddEntries(newContent))
+}
+
 func contentAt(content []interface{}, i int) interface{} {
 	currentObject := content[i]
 	if expression, isExpression := currentObject.(Expression); isExpression {
 		return NameOrExpression(expression)
 	} else if named, isNamed := currentObject.(Named); isNamed {
 		symbolicName := named.getSymbolicName()
-		if !symbolicName.isNotNil() {
+		if symbolicName.isNotNil() {
 			return symbolicName
 		}
 	}
@@ -127,10 +158,11 @@ func createNewContent(content ...interface{}) ([]Expression, error) {
 		} else if lastExpression == nil {
 			return nil, xerrors.Errorf("map projection create new content: could not determine an expression from the given content!")
 		} else {
-			return nil, xerrors.Errorf("map projection create new content: unknown type cannot be used with an implicit name as map entry")
+			return nil, xerrors.Errorf("map projection create new content: unknown type %s" +
+				" cannot be used with an implicit name as map entry", reflect.TypeOf(lastExpression))
 		}
-		if entry != nil && entry.getError() != nil {
-			return nil, entry.getError()
+		if entry != nil && entry.GetError() != nil {
+			return nil, entry.GetError()
 		}
 		newContent = append(newContent, entry)
 		lastKey = ""

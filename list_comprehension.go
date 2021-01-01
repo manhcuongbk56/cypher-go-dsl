@@ -14,8 +14,8 @@ type ListComprehension struct {
 }
 
 func ListComprehensionCreate(variable SymbolicName, listExpression Expression, where Where, listDefinition Expression) ListComprehension {
-	if variable.getError() != nil {
-		return ListComprehensionError(variable.getError())
+	if variable.GetError() != nil {
+		return ListComprehensionError(variable.GetError())
 	}
 	list := ListComprehension{
 		variable:       variable,
@@ -42,7 +42,7 @@ func ListComprehensionWith(variable SymbolicName) OngoingDefinitionWithVariable 
 	return ListComprehensionBuilderCreate(variable)
 }
 
-func (l ListComprehension) getError() error {
+func (l ListComprehension) GetError() error {
 	return l.err
 }
 

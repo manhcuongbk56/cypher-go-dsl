@@ -11,7 +11,6 @@ type Node struct {
 	key          string
 	notNil       bool
 	err          error
-	self         *Node
 }
 
 func NodeCreate() Node {
@@ -19,14 +18,6 @@ func NodeCreate() Node {
 		notNil: true,
 	}
 	return node
-}
-
-func (node *Node) injectKey() {
-	node.key = getAddress(node)
-}
-
-func (node Node) GetSymbolicName() SymbolicName {
-	return node.symbolicName
 }
 
 func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ...string) Node {
@@ -45,12 +36,10 @@ func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ..
 	}
 	node := Node{
 		notNil:       true,
-		symbolicName: SymbolicName{},
 		properties:   properties,
 		labels:       labels,
 	}
 	node.injectKey()
-	node.self = &node
 	return node
 }
 
@@ -65,7 +54,6 @@ func NodeCreate2(primaryLabel string) Node {
 		notNil: true,
 	}
 	node.injectKey()
-	node.self = &node
 	return node
 }
 
@@ -87,19 +75,25 @@ func NodeCreate3(primaryLabel string, additionalLabel ...string) Node {
 		labels: labels,
 	}
 	node.injectKey()
-	node.self = &node
 	return node
 }
 
 func NodeCreate4(newProperties MapExpression, node Node) Node {
 	newNode := Node{symbolicName: node.symbolicName, labels: node.labels, notNil: true, properties: PropertiesCreate(newProperties)}
 	newNode.injectKey()
-	node.self = &node
 	return newNode
 }
 
 func NodeCreate5(primaryLabel string, properties MapExpression, additionalLabel ...string) Node {
 	return NodeCreate1(primaryLabel, PropertiesCreate(properties), additionalLabel...)
+}
+
+func (node *Node) injectKey() {
+	node.key = getAddress(node)
+}
+
+func (node Node) GetSymbolicName() SymbolicName {
+	return node.symbolicName
 }
 
 func NodeError(err error) Node {
@@ -109,18 +103,10 @@ func NodeError(err error) Node {
 }
 
 func (node Node) getRequiredSymbolicName() SymbolicName {
-	if !node.symbolicName.isNotNil() {
-		node.symbolicName = SymbolicNameUnResolve()
-		node.self.fillRequiredSymbolicName()
+	if node.symbolicName.isNotNil() {
+		return node.symbolicName
 	}
-	return node.symbolicName
-}
-
-func (node *Node) fillRequiredSymbolicName() SymbolicName {
-	if !node.symbolicName.isNotNil() {
-		node.symbolicName = SymbolicNameUnResolve()
-	}
-	return node.symbolicName
+	return SymbolicNameError(errors.New("node get symbolic name:  no name present"))
 }
 
 func (node Node) getSymbolicName() SymbolicName {
@@ -143,7 +129,7 @@ func (node Node) hasSymbolic() bool {
 	return node.symbolicName.isNotNil()
 }
 
-func (node Node) getError() error {
+func (node Node) GetError() error {
 	return node.err
 }
 
@@ -190,8 +176,8 @@ func (node Node) WithRawProperties(keysAndValues ...interface{}) Node {
 	properties := MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
 		properties = NewMapExpression(keysAndValues...)
-		if properties.getError() != nil {
-			return NodeError(properties.getError())
+		if properties.GetError() != nil {
+			return NodeError(properties.GetError())
 		}
 	}
 	return node.WithProperties(properties)
@@ -211,8 +197,8 @@ func (node Node) NamedByString(name string) Node {
 }
 
 func (node Node) Named(name SymbolicName) Node {
-	if name.getError() != nil {
-		return NodeError(name.getError())
+	if name.GetError() != nil {
+		return NodeError(name.GetError())
 	}
 	if !name.isNotNil() {
 		return NodeError(errors.New("node named: symbolic name is required"))
@@ -223,8 +209,8 @@ func (node Node) Named(name SymbolicName) Node {
 
 func (node Node) As(alias string) AliasedExpression {
 	symbolicName := node.getRequiredSymbolicName()
-	if symbolicName.getError() != nil {
-		return AliasedExpressionError(symbolicName.getError())
+	if symbolicName.GetError() != nil {
+		return AliasedExpressionError(symbolicName.GetError())
 	}
 	return ExpressionWrap(symbolicName).As(alias).Get().(AliasedExpression)
 }
@@ -265,7 +251,7 @@ func NodeLabelError(err error) NodeLabel {
 	return NodeLabel{err: err}
 }
 
-func (n NodeLabel) getError() error {
+func (n NodeLabel) GetError() error {
 	return n.err
 }
 

@@ -22,7 +22,7 @@ func NameSpaceCreate(content []string) Namespace {
 	return n
 }
 
-func (n Namespace) getError() error {
+func (n Namespace) GetError() error {
 	return n.err
 }
 

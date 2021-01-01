@@ -9,8 +9,8 @@ type Pattern struct {
 
 func PatternCreate(patternElements []PatternElement) Pattern {
 	for _, element := range patternElements {
-		if element != nil && element.getError() != nil {
-			return Pattern{err: element.getError()}
+		if element != nil && element.GetError() != nil {
+			return Pattern{err: element.GetError()}
 		}
 	}
 	p := Pattern{
@@ -21,7 +21,7 @@ func PatternCreate(patternElements []PatternElement) Pattern {
 	return p
 }
 
-func (p Pattern) getError() error {
+func (p Pattern) GetError() error {
 	return p.err
 }
 

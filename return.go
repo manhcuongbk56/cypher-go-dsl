@@ -9,8 +9,8 @@ type Return struct {
 }
 
 func ReturnCreate(distinctInstance Distinct, body ReturnBody) Return {
-	if body.getError() != nil {
-		return ReturnError(body.getError())
+	if body.GetError() != nil {
+		return ReturnError(body.GetError())
 	}
 	r := Return{
 		distinct: distinctInstance,
@@ -36,7 +36,7 @@ func ReturnError(err error) Return {
 	}
 }
 
-func (r Return) getError() error {
+func (r Return) GetError() error {
 	return r.err
 }
 

@@ -42,7 +42,7 @@ func PatternComprehensionBasedOnNamePath(pattern NamedPath) PatternComprehension
 	return PatternComprehensionBuilderCreate(pattern)
 }
 
-func (p PatternComprehension) getError() error {
+func (p PatternComprehension) GetError() error {
 	return p.err
 }
 
@@ -101,7 +101,7 @@ type PatternComprehensionOngoingDefinitionWithPatternAndWhere interface {
 	AndPattern(pattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere
 	Or(condition Condition) PatternComprehensionOngoingDefinitionWithPatternAndWhere
 	OrPattern(pattern RelationshipPattern) PatternComprehensionOngoingDefinitionWithPatternAndWhere
-	getError() error
+	GetError() error
 }
 
 type PatternComprehensionBuilder struct {
@@ -160,6 +160,6 @@ func (p PatternComprehensionBuilder) OrPattern(pattern RelationshipPattern) Patt
 	return p.Or(RelationshipPatternConditionCreate(pattern))
 }
 
-func (p PatternComprehensionBuilder) getError() error {
+func (p PatternComprehensionBuilder) GetError() error {
 	return p.err
 }

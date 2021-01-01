@@ -23,14 +23,14 @@ func RelationshipCreate(left Node, direction Direction, right Node, types ...str
 }
 
 func RelationshipCreate3(left Node, details RelationshipDetails, right Node) Relationship {
-	if left.getError() != nil {
-		return RelationshipError(left.getError())
+	if left.GetError() != nil {
+		return RelationshipError(left.GetError())
 	}
-	if details.getError() != nil {
-		return RelationshipError(details.getError())
+	if details.GetError() != nil {
+		return RelationshipError(details.GetError())
 	}
-	if right.getError() != nil {
-		return RelationshipError(right.getError())
+	if right.GetError() != nil {
+		return RelationshipError(right.GetError())
 	}
 	r := Relationship{
 		left:    left,
@@ -48,7 +48,7 @@ func RelationshipError(err error) Relationship {
 	}
 }
 
-func (r Relationship) getError() error {
+func (r Relationship) GetError() error {
 	return r.err
 }
 
@@ -137,8 +137,8 @@ func (r Relationship) WithRawProperties(keysAndValues ...interface{}) Relationsh
 	properties := MapExpression{}
 	if keysAndValues != nil && len(keysAndValues) != 0 {
 		properties = NewMapExpression(keysAndValues...)
-		if properties.getError() != nil {
-			return RelationshipError(properties.getError())
+		if properties.GetError() != nil {
+			return RelationshipError(properties.GetError())
 		}
 	}
 	return r.WithProperties(properties)
@@ -153,4 +153,8 @@ func (r Relationship) WithProperties(newProperties MapExpression) Relationship {
 		property = PropertiesCreate(newProperties)
 	}
 	return RelationshipCreate3(r.left, r.details.with(property), r.right)
+}
+
+func (r Relationship) Project(entries ...interface{}) MapProjection {
+	return MapProjectionCreate(r.getRequiredSymbolicName(), entries...)
 }

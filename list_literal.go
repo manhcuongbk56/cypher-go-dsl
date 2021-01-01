@@ -12,8 +12,8 @@ type ListLiteral struct {
 
 func ListLiteralCreate(contents []Literal) ListLiteral {
 	for _, content := range contents {
-		if content != nil && content.getError() != nil {
-			return ListLiteralError(content.getError())
+		if content != nil && content.GetError() != nil {
+			return ListLiteralError(content.GetError())
 		}
 	}
 	list := ListLiteral{
@@ -30,7 +30,7 @@ func ListLiteralError(err error) ListLiteral {
 	}
 }
 
-func (l ListLiteral) getError() error {
+func (l ListLiteral) GetError() error {
 	return l.err
 }
 

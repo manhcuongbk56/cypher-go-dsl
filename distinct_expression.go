@@ -9,8 +9,8 @@ type DistinctExpression struct {
 }
 
 func DistinctExpressionCreate(delegate Expression) DistinctExpression {
-	if delegate != nil && delegate.getError() != nil {
-		return DistinctExpressionError(delegate.getError())
+	if delegate != nil && delegate.GetError() != nil {
+		return DistinctExpressionError(delegate.GetError())
 	}
 	d := DistinctExpression{
 		delegate: delegate,
@@ -25,7 +25,7 @@ func DistinctExpressionError(err error) DistinctExpression {
 	return DistinctExpression{err: err}
 }
 
-func (d DistinctExpression) getError() error {
+func (d DistinctExpression) GetError() error {
 	return d.err
 }
 

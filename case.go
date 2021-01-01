@@ -17,12 +17,12 @@ var GENERIC_CASE = "GenericCase"
 var ENDING_GENERIC_CASE = "EndingGenericCase"
 
 func SimpleCaseCreate(caseExpression Expression, caseWhenThens []CaseWhenThen) Case {
-	if caseExpression != nil && caseExpression.getError() != nil {
-		return Case{err: caseExpression.getError()}
+	if caseExpression != nil && caseExpression.GetError() != nil {
+		return Case{err: caseExpression.GetError()}
 	}
 	for _, caseWhenThen := range caseWhenThens {
-		if caseWhenThen.getError() != nil {
-			return Case{err: caseWhenThen.getError()}
+		if caseWhenThen.GetError() != nil {
+			return Case{err: caseWhenThen.GetError()}
 		}
 	}
 	simpleCase := Case{
@@ -37,8 +37,8 @@ func SimpleCaseCreate(caseExpression Expression, caseWhenThens []CaseWhenThen) C
 }
 
 func SimpleCaseCreate1(caseExpression Expression) Case {
-	if caseExpression != nil && caseExpression.getError() != nil {
-		return Case{err: caseExpression.getError()}
+	if caseExpression != nil && caseExpression.GetError() != nil {
+		return Case{err: caseExpression.GetError()}
 	}
 	simpleCase := Case{
 		caseExpression: caseExpression,
@@ -52,12 +52,12 @@ func SimpleCaseCreate1(caseExpression Expression) Case {
 }
 
 func EndingSimpleCaseCreate(caseExpression Expression, caseWhenThens []CaseWhenThen) Case {
-	if caseExpression != nil && caseExpression.getError() != nil {
-		return Case{err: caseExpression.getError()}
+	if caseExpression != nil && caseExpression.GetError() != nil {
+		return Case{err: caseExpression.GetError()}
 	}
 	for _, caseWhenThen := range caseWhenThens {
-		if caseWhenThen.getError() != nil {
-			return Case{err: caseWhenThen.getError()}
+		if caseWhenThen.GetError() != nil {
+			return Case{err: caseWhenThen.GetError()}
 		}
 	}
 	simpleCase := Case{
@@ -84,8 +84,8 @@ func GenericCaseCreate1() Case {
 
 func GenericCaseCreate(caseWhenThens []CaseWhenThen) Case {
 	for _, caseWhenThen := range caseWhenThens {
-		if caseWhenThen.getError() != nil {
-			return Case{err: caseWhenThen.getError()}
+		if caseWhenThen.GetError() != nil {
+			return Case{err: caseWhenThen.GetError()}
 		}
 	}
 	genericCase := Case{
@@ -100,8 +100,8 @@ func GenericCaseCreate(caseWhenThens []CaseWhenThen) Case {
 
 func EndingGenericCaseCreate(caseWhenThens []CaseWhenThen) Case {
 	for _, caseWhenThen := range caseWhenThens {
-		if caseWhenThen.getError() != nil {
-			return Case{err: caseWhenThen.getError()}
+		if caseWhenThen.GetError() != nil {
+			return Case{err: caseWhenThen.GetError()}
 		}
 	}
 	genericCase := Case{
@@ -118,7 +118,7 @@ func (c Case) When(nextExpression Expression) OngoingWhenThen {
 	return OngoingWhenThenCreate(&c, nextExpression)
 }
 
-func (c Case) getError() error {
+func (c Case) GetError() error {
 	return c.err
 }
 
@@ -170,8 +170,8 @@ func (c Case) getConditionType() string {
 
 func (c Case) ElseDefault(defaultExpression Expression) CaseEnding {
 	caseElse := CaseElseCreate(defaultExpression)
-	if caseElse.getError() != nil {
-		return Case{err: caseElse.getError()}
+	if caseElse.GetError() != nil {
+		return Case{err: caseElse.GetError()}
 	}
 	return c
 }
@@ -202,8 +202,8 @@ type OngoingWhenThen struct {
 }
 
 func OngoingWhenThenCreate(caseInstance *Case, whenExpression Expression) OngoingWhenThen {
-	if whenExpression != nil && whenExpression.getError() != nil {
-		return OngoingWhenThen{err: whenExpression.getError()}
+	if whenExpression != nil && whenExpression.GetError() != nil {
+		return OngoingWhenThen{err: whenExpression.GetError()}
 	}
 	return OngoingWhenThen{whenExpression: whenExpression, caseInstance: caseInstance}
 }
@@ -229,11 +229,11 @@ type CaseWhenThen struct {
 }
 
 func CaseWhenThenCreate(thenExpression Expression, whenExpression Expression) CaseWhenThen {
-	if thenExpression != nil && thenExpression.getError() != nil {
-		return CaseWhenThen{err: thenExpression.getError()}
+	if thenExpression != nil && thenExpression.GetError() != nil {
+		return CaseWhenThen{err: thenExpression.GetError()}
 	}
-	if whenExpression != nil && whenExpression.getError() != nil {
-		return CaseWhenThen{err: whenExpression.getError()}
+	if whenExpression != nil && whenExpression.GetError() != nil {
+		return CaseWhenThen{err: whenExpression.GetError()}
 	}
 	caseWhenThen := CaseWhenThen{
 		thenExpression: thenExpression,
@@ -248,7 +248,7 @@ func (c CaseWhenThen) When(nextExpression Expression) OngoingWhenThen {
 	return OngoingWhenThenCreate(c.caseInstance, nextExpression)
 }
 
-func (c CaseWhenThen) getError() error {
+func (c CaseWhenThen) GetError() error {
 	return c.err
 }
 
@@ -284,15 +284,15 @@ type CaseElse struct {
 }
 
 func CaseElseCreate(elseExpression Expression) CaseElse {
-	if elseExpression != nil && elseExpression.getError() != nil {
-		return CaseElse{err: elseExpression.getError()}
+	if elseExpression != nil && elseExpression.GetError() != nil {
+		return CaseElse{err: elseExpression.GetError()}
 	}
 	caseElse := CaseElse{elseExpression: elseExpression, notNil: true}
 	caseElse.key = getAddress(&caseElse)
 	return caseElse
 }
 
-func (c CaseElse) getError() error {
+func (c CaseElse) GetError() error {
 	return c.err
 }
 

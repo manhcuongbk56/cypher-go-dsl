@@ -21,7 +21,7 @@ func BooleanLiteralCreate(content bool) BooleanLiteral {
 	return b
 }
 
-func (b BooleanLiteral) getError() error {
+func (b BooleanLiteral) GetError() error {
 	return b.err
 }
 

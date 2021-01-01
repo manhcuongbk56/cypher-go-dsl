@@ -19,7 +19,7 @@ func RelationshipChainError(msg string) RelationshipChain {
 	return RelationshipChain{err: errors.New(msg)}
 }
 
-func (r RelationshipChain) getError() error {
+func (r RelationshipChain) GetError() error {
 	return r.err
 }
 

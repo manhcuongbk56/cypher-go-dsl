@@ -8,8 +8,8 @@ type Where struct {
 }
 
 func WhereCreate(condition Condition) Where {
-	if condition != nil && condition.getError() != nil {
-		return WhereError(condition.getError())
+	if condition != nil && condition.GetError() != nil {
+		return WhereError(condition.GetError())
 	}
 	where := Where{
 		condition: condition,
@@ -25,7 +25,7 @@ func WhereError(err error) Where {
 	}
 }
 
-func (w Where) getError() error {
+func (w Where) GetError() error {
 	return w.err
 }
 

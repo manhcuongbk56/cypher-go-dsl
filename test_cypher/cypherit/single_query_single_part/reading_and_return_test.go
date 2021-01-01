@@ -37,7 +37,7 @@ func TestAsteriskShouldWork(t *testing.T) {
 }
 
 func TestAliasedExpressionInReturn(t *testing.T) {
-	unnamedNode := cypher.NewNode("ANode")
+	unnamedNode := cypher.NewNode("ANode").NamedByString("anode")
 	namedNode := cypher.NewNode("AnotherNode").NamedByString("o")
 	statement, err := cypher.MatchElements(unnamedNode, namedNode).
 		Returning(namedNode.As("theOtherNode")).
@@ -46,7 +46,7 @@ func TestAliasedExpressionInReturn(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (:`ANode`), (o:`AnotherNode`) RETURN o AS theOtherNode"
+	expect := "MATCH (anode:`ANode`), (o:`AnotherNode`) RETURN o AS theOtherNode"
 	if query != expect {
 		t.Errorf("\n%s is incorrect \n%s", query, expect)
 	}
@@ -210,7 +210,7 @@ func TestChainedRelations3(t *testing.T) {
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").
-		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y"))
+		RelationshipBetween(cypher.NewNode("SOMETHING").NamedByString("something")).NamedC("y"))
 	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
@@ -218,7 +218,7 @@ func TestChainedRelations3(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`]->(t:`Trip`)<-[x:`WAS_ON`]-(u)-[y]-(:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
+	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`]->(t:`Trip`)<-[x:`WAS_ON`]-(u)-[y]-(something:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
@@ -230,7 +230,7 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").Min(1).Properties(cypher.MapOf("when", cypher.LiteralOf("2019-04-16"))).
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").Max(2).Properties(cypher.MapOf("whatever", cypher.LiteralOf("2020-04-16"))).
-		RelationshipBetween(cypher.NewNode("SOMETHING")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
+		RelationshipBetween(cypher.NewNode("SOMETHING").NamedByString("something")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
 	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
@@ -238,7 +238,7 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`*1.. {when: '2019-04-16'}]->(t:`Trip`)<-[x:`WAS_ON`*..2 {whatever: '2020-04-16'}]-(u)-[y*2..3 {idk: '2021-04-16'}]-(:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
+	expect := "MATCH (u:`User`)-[:`OWNS`]->(b:`Bike`)-[r2:`USED_ON`*1.. {when: '2019-04-16'}]->(t:`Trip`)<-[x:`WAS_ON`*..2 {whatever: '2020-04-16'}]-(u)-[y*2..3 {idk: '2021-04-16'}]-(something:`SOMETHING`) WHERE u.name =~ '.*aName' RETURN b, u"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}

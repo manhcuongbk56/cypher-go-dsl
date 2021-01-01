@@ -40,9 +40,9 @@ func DefaultStatementWithUpdateBuilderCreate2(defaultBuilder *DefaultStatementBu
 	}
 	visitables := make([]Visitable, len(expressions))
 	for i := range expressions {
-		if expressions[i] != nil && expressions[i].getError() != nil {
+		if expressions[i] != nil && expressions[i].GetError() != nil {
 			return DefaultStatementWithUpdateBuilder{
-				err: expressions[i].getError(),
+				err: expressions[i].GetError(),
 			}
 		}
 		visitables[i] = expressions[i]

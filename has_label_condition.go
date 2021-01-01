@@ -12,8 +12,8 @@ type HasLabelCondition struct {
 }
 
 func HasLabelConditionCreate(nodeName SymbolicName, labels ...string) HasLabelCondition {
-	if nodeName.getError() != nil {
-		return HasLabelConditionError(nodeName.getError())
+	if nodeName.GetError() != nil {
+		return HasLabelConditionError(nodeName.GetError())
 	}
 	if !nodeName.isNotNil() {
 		return HasLabelConditionError(errors.New("symbolic name is required"))
@@ -36,8 +36,8 @@ func HasLabelConditionCreate(nodeName SymbolicName, labels ...string) HasLabelCo
 }
 
 func HasLabelConditionCreate1(nodeName SymbolicName, labels []NodeLabel) HasLabelCondition {
-	if nodeName.getError() != nil {
-		return HasLabelConditionError(nodeName.getError())
+	if nodeName.GetError() != nil {
+		return HasLabelConditionError(nodeName.GetError())
 	}
 	if !nodeName.isNotNil() {
 		return HasLabelConditionError(errors.New("symbolic name is required"))
@@ -61,7 +61,7 @@ func HasLabelConditionError(err error) HasLabelCondition {
 	}
 }
 
-func (h HasLabelCondition) getError() error {
+func (h HasLabelCondition) GetError() error {
 	return h.err
 }
 

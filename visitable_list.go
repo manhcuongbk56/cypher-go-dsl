@@ -13,7 +13,7 @@ func FunctionArgumentListCreate(visitables ...Visitable) FunctionArgumentList {
 	return argumentList
 }
 
-func (v FunctionArgumentList) getError() error {
+func (v FunctionArgumentList) GetError() error {
 	return v.err
 }
 

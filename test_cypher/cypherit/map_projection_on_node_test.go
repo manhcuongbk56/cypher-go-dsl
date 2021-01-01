@@ -60,12 +60,19 @@ func TestNested(t *testing.T) {
 		".name, nested: m{.title, __internalNeo4jId__: id(m)}}")
 }
 
-func TestRequiredSymbolicNameShouldBeGenerated(t *testing.T) {
+
+func TestAddedProjections(t *testing.T) {
 	var builder cypher.BuildableStatement
-	person := cypher.NewNode("Person")
+	p := cypher.NewNode("Person").NamedByString("p")
+	m := cypher.NewNode("Movie").NamedByString("m")
+	rel := p.RelationshipTo(m, "ACTED_IN").NamedByString("r")
 	//
 	builder = cypher.
-		MatchElements(person).
-		Returning(person.Project("something"))
-	Assert(t, builder, "")
+		MatchElements(rel).
+		Returning(p.Project("__internalNeo4jId__", cypher.FunctionIdByNode(p), "name").
+			And(rel).
+			And(m).
+			And(p.Property("foo")).
+			And("a", p.Property("x")))
+	Assert(t, builder, "MATCH (p:`Person`)-[r:`ACTED_IN`]->(m:`Movie`) RETURN p{__internalNeo4jId__: id(p), .name, r, m, .foo, a: p.x}")
 }

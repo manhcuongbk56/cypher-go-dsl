@@ -20,8 +20,8 @@ func FunctionInvocationCreate1(definition FunctionDefinition) FunctionInvocation
 func FunctionInvocationCreateWithFunctionName(functionName string, arguments ...Expression) FunctionInvocation {
 	if arguments != nil {
 		for _, expression := range arguments {
-			if expression.getError() != nil {
-				return FunctionInvocationError(expression.getError())
+			if expression.GetError() != nil {
+				return FunctionInvocationError(expression.GetError())
 			}
 		}
 	}
@@ -42,8 +42,8 @@ func FunctionInvocationCreateWithFunctionName(functionName string, arguments ...
 func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expression) FunctionInvocation {
 	if expressions != nil {
 		for _, expression := range expressions {
-			if expression.getError() != nil {
-				return FunctionInvocationError(expression.getError())
+			if expression.GetError() != nil {
+				return FunctionInvocationError(expression.GetError())
 			}
 		}
 	}
@@ -65,8 +65,8 @@ func FunctionInvocationCreate(definition FunctionDefinition, expressions ...Expr
 }
 
 func FunctionInvocationCreateWithPatternElement(definition FunctionDefinition, element PatternElement) FunctionInvocation {
-	if element != nil && element.getError() != nil {
-		return FunctionInvocationError(element.getError())
+	if element != nil && element.GetError() != nil {
+		return FunctionInvocationError(element.GetError())
 	}
 	if element == nil || !element.isNotNil() {
 		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
@@ -84,8 +84,8 @@ func FunctionInvocationCreateWithPatternElement(definition FunctionDefinition, e
 }
 
 func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern Pattern) FunctionInvocation {
-	if pattern.getError() != nil {
-		return FunctionInvocationError(pattern.getError())
+	if pattern.GetError() != nil {
+		return FunctionInvocationError(pattern.GetError())
 	}
 	if !pattern.isNotNil() {
 		return FunctionInvocationError(errors.Errorf("the pattern for %s is required", definition.getImplementationName()))
@@ -107,8 +107,8 @@ func FunctionInvocationCreateWithPattern(definition FunctionDefinition, pattern 
 func FunctionInvocationCreateDistinct(definition FunctionDefinition, expressions ...Expression) FunctionInvocation {
 	if expressions != nil {
 		for _, expression := range expressions {
-			if expression.getError() != nil {
-				return FunctionInvocationError(expression.getError())
+			if expression.GetError() != nil {
+				return FunctionInvocationError(expression.GetError())
 			}
 		}
 	}
@@ -141,7 +141,7 @@ func FunctionInvocationError(err error) FunctionInvocation {
 	}
 }
 
-func (f FunctionInvocation) getError() error {
+func (f FunctionInvocation) GetError() error {
 	return f.err
 }
 

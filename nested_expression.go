@@ -9,8 +9,8 @@ type NestedExpression struct {
 }
 
 func NestedExpressionCreate(delegate Expression) NestedExpression {
-	if delegate != nil && delegate.getError() != nil {
-		return NestedExpressionError(delegate.getError())
+	if delegate != nil && delegate.GetError() != nil {
+		return NestedExpressionError(delegate.GetError())
 	}
 	nested := NestedExpression{
 		delegate: delegate,
@@ -27,7 +27,7 @@ func NestedExpressionError(err error) NestedExpression {
 	}
 }
 
-func (n NestedExpression) getError() error {
+func (n NestedExpression) GetError() error {
 	return n.err
 }
 

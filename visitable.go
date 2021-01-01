@@ -8,7 +8,7 @@ func VisitIfNotNull(dest interface{}, visitor *CypherRenderer) {
 }
 
 type CanHasError interface {
-	getError() error
+	GetError() error
 }
 
 type Visitable interface {

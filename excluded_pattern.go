@@ -9,8 +9,8 @@ type ExcludedPattern struct {
 }
 
 func ExcludedPatternCreate(patternElement PatternElement) ExcludedPattern {
-	if patternElement.getError() != nil {
-		return ExcludedPatternError(patternElement.getError())
+	if patternElement.GetError() != nil {
+		return ExcludedPatternError(patternElement.GetError())
 	}
 	e := ExcludedPattern{
 		patternElement: patternElement,
@@ -27,7 +27,7 @@ func ExcludedPatternError(err error) ExcludedPattern {
 	}
 }
 
-func (e ExcludedPattern) getError() error {
+func (e ExcludedPattern) GetError() error {
 	return e.err
 }
 

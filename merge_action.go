@@ -18,7 +18,7 @@ func MergeActionCreate(mergeType MERGE_TYPE, set Set) MergeAction {
 	return m
 }
 
-func (m MergeAction) getError() error {
+func (m MergeAction) GetError() error {
 	return m.err
 }
 

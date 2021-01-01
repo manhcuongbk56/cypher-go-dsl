@@ -41,7 +41,7 @@ func SymbolicNameError(err error) SymbolicName {
 	}
 }
 
-func (s SymbolicName) getError() error {
+func (s SymbolicName) GetError() error {
 	return s.err
 }
 

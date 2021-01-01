@@ -24,8 +24,8 @@ func TestShouldRenderMultipleMergeWithoutReturn(t *testing.T) {
 	//
 	builder = cypher.
 		CypherMerge(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")).
-		Merge(cypher.NewNode("Other"))
-	Assert(t, builder, "MERGE (u:`User`)-[o:`OWNS`]->(b:`Bike`) MERGE (:`Other`)")
+		Merge(OtherNode())
+	Assert(t, builder, "MERGE (u:`User`)-[o:`OWNS`]->(b:`Bike`) MERGE (other:`Other`)")
 }
 
 func TestShouldRenderMergeReturn(t *testing.T) {
@@ -59,9 +59,9 @@ func TestShouldRenderMultipleMergesReturn(t *testing.T) {
 	r := userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")
 	builder = cypher.
 		CypherMerge(r).
-		Merge(cypher.NewNode("Other")).
+		Merge(OtherNode()).
 		ReturningByNamed(userNode, r)
-	Assert(t, builder, "MERGE (u:`User`)-[o:`OWNS`]->(b:`Bike`) MERGE (:`Other`) RETURN u, o")
+	Assert(t, builder, "MERGE (u:`User`)-[o:`OWNS`]->(b:`Bike`) MERGE (other:`Other`) RETURN u, o")
 }
 
 func TestShouldRenderMergeWithWith(t *testing.T) {

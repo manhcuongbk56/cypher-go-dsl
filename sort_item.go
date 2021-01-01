@@ -9,8 +9,8 @@ type SortItem struct {
 }
 
 func SortItemCreate(expression Expression, direction SortDirectionRaw) SortItem {
-	if expression != nil && expression.getError() != nil {
-		return SortItemError(expression.getError())
+	if expression != nil && expression.GetError() != nil {
+		return SortItemError(expression.GetError())
 	}
 	sortItem := SortItem{
 		expression: expression,
@@ -25,7 +25,7 @@ func SortItemError(err error) SortItem {
 	return SortItem{err: err}
 }
 
-func (item SortItem) getError() error {
+func (item SortItem) GetError() error {
 	return item.err
 }
 
@@ -72,7 +72,7 @@ type SortDirection struct {
 	err    error
 }
 
-func (s SortDirection) getError() error {
+func (s SortDirection) GetError() error {
 	return s.err
 }
 

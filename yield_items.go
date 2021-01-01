@@ -14,8 +14,8 @@ func YieldItemsCreate(expressions []Expression) YieldItems {
 		return YieldItemsError(errors.New("can not yield an empty list of items"))
 	}
 	for _, expression := range expressions {
-		if expression.getError() != nil {
-			return YieldItemsError(expression.getError())
+		if expression.GetError() != nil {
+			return YieldItemsError(expression.GetError())
 		}
 	}
 	yieldItem := YieldItems{
@@ -32,7 +32,7 @@ func YieldItemsError(err error) YieldItems {
 	}
 }
 
-func (e YieldItems) getError() error {
+func (e YieldItems) GetError() error {
 	return e.err
 }
 

@@ -12,8 +12,8 @@ var TRUE_CONDITION = ConstantConditionCreate(TRUE)
 var FALSE_CONDITION = ConstantConditionCreate(FALSE)
 
 func ConstantConditionCreate(value BooleanLiteral) ConstantCondition {
-	if value.getError() != nil {
-		return ConstantConditionError(value.getError())
+	if value.GetError() != nil {
+		return ConstantConditionError(value.GetError())
 	}
 	constantCondition := ConstantCondition{
 		value:  value,
@@ -28,7 +28,7 @@ func ConstantConditionError(err error) ConstantCondition {
 	return ConstantCondition{err: err}
 }
 
-func (c ConstantCondition) getError() error {
+func (c ConstantCondition) GetError() error {
 	return c.err
 }
 

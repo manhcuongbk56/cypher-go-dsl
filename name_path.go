@@ -11,11 +11,11 @@ type NamedPath struct {
 }
 
 func NamedPathCreate(name SymbolicName, pattern RelationshipPattern) NamedPath {
-	if name.getError() != nil {
-		return NamedPathError(name.getError())
+	if name.GetError() != nil {
+		return NamedPathError(name.GetError())
 	}
-	if pattern != nil && pattern.getError() != nil {
-		return NamedPathError(pattern.getError())
+	if pattern != nil && pattern.GetError() != nil {
+		return NamedPathError(pattern.GetError())
 	}
 	n := NamedPath{name: name, pattern: pattern}
 	n.key = getAddress(&n)
@@ -23,11 +23,11 @@ func NamedPathCreate(name SymbolicName, pattern RelationshipPattern) NamedPath {
 }
 
 func NamedPathCreate1(name SymbolicName, algorithm FunctionInvocation) NamedPath {
-	if name.getError() != nil {
-		return NamedPathError(name.getError())
+	if name.GetError() != nil {
+		return NamedPathError(name.GetError())
 	}
-	if algorithm.getError() != nil {
-		return NamedPathError(algorithm.getError())
+	if algorithm.GetError() != nil {
+		return NamedPathError(algorithm.GetError())
 	}
 	n := NamedPath{name: name, pattern: algorithm}
 	n.key = getAddress(&n)
@@ -77,7 +77,7 @@ func NamedPathShortestPathWithName(name SymbolicName, algorithm FunctionDefiniti
 	}
 }
 
-func (n NamedPath) getError() error {
+func (n NamedPath) GetError() error {
 	return n.err
 }
 
@@ -121,12 +121,12 @@ func (n NamedPath) isNotNil() bool {
 //Interface
 type OngoingDefinitionWithName interface {
 	definedByRelationPattern(pattern RelationshipPattern) NamedPath
-	getError() error
+	GetError() error
 }
 
 type OngoingShortestPathDefinitionWithName interface {
 	DefinedBy(relationship Relationship) NamedPath
-	getError() error
+	GetError() error
 }
 
 type NamedPathBuilder struct {
@@ -142,7 +142,7 @@ func (n NamedPathBuilder) definedByRelationPattern(pattern RelationshipPattern) 
 	return NamedPathCreate(n.name, pattern)
 }
 
-func (n NamedPathBuilder) getError() error {
+func (n NamedPathBuilder) GetError() error {
 	return n.err
 }
 
@@ -169,6 +169,6 @@ func (s ShortestPathBuilder) DefinedBy(relationship Relationship) NamedPath {
 	return NamedPathCreate1(s.name, FunctionInvocationCreateWithPatternElement(s.algorithm, relationship))
 }
 
-func (s ShortestPathBuilder) getError() error {
+func (s ShortestPathBuilder) GetError() error {
 	return s.err
 }

@@ -20,7 +20,7 @@ func AsteriskCreate() Asterisk {
 	return asterisk
 }
 
-func (s Asterisk) getError() error {
+func (s Asterisk) GetError() error {
 	return s.err
 }
 

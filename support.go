@@ -1,6 +1,11 @@
 package cypher
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/rs/xid"
+)
+
+var SYMBOLIC_GENERATOR = xid.New()
 
 func ExpressionsToVisitables(expressions []Expression) []Visitable {
 	visitables := make([]Visitable, len(expressions))
@@ -21,3 +26,4 @@ func PatternElementsToVisitables(patterns []PatternElement) []Visitable {
 func getAddress(a interface{}) string {
 	return fmt.Sprintf("%p", a)
 }
+

@@ -22,12 +22,12 @@ func SinglePartQueryCreate(clauses []Visitable, aReturn Return) SinglePartQuery 
 		}
 	}
 	for _, clause := range clauses {
-		if clause != nil && clause.getError() != nil {
-			return SinglePartQueryError(clause.getError())
+		if clause != nil && clause.GetError() != nil {
+			return SinglePartQueryError(clause.GetError())
 		}
 	}
-	if aReturn.getError() != nil {
-		return SinglePartQueryError(aReturn.getError())
+	if aReturn.GetError() != nil {
+		return SinglePartQueryError(aReturn.GetError())
 	}
 	singlePartQuery := SinglePartQuery{
 		precedingClauses: clauses,
@@ -44,7 +44,7 @@ func SinglePartQueryError(err error) SinglePartQuery {
 	}
 }
 
-func (s SinglePartQuery) getError() error {
+func (s SinglePartQuery) GetError() error {
 	return s.err
 }
 

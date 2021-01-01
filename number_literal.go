@@ -42,7 +42,7 @@ func NumberLiteralCreate1(content int) NumberLiteral {
 	return n
 }
 
-func (n NumberLiteral) getError() error {
+func (n NumberLiteral) GetError() error {
 	return n.err
 }
 

@@ -8,8 +8,8 @@ type Properties struct {
 }
 
 func PropertiesCreate(newProperties MapExpression) Properties {
-	if newProperties.getError() != nil {
-		return PropertiesError(newProperties.getError())
+	if newProperties.GetError() != nil {
+		return PropertiesError(newProperties.GetError())
 	}
 	p := Properties{properties: newProperties, notNil: true}
 	p.key = getAddress(&p)
@@ -30,7 +30,7 @@ func (p Properties) getKey() string {
 	return p.key
 }
 
-func (p Properties) getError() error {
+func (p Properties) GetError() error {
 	return p.err
 }
 

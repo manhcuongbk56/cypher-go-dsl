@@ -10,11 +10,11 @@ type Match struct {
 }
 
 func MatchCreate(optional bool, pattern Pattern, optionalWhere Where) Match {
-	if pattern.getError() != nil {
-		return MatchError(pattern.getError())
+	if pattern.GetError() != nil {
+		return MatchError(pattern.GetError())
 	}
-	if optionalWhere.getError() != nil {
-		return MatchError(optionalWhere.getError())
+	if optionalWhere.GetError() != nil {
+		return MatchError(optionalWhere.GetError())
 	}
 	m := Match{
 		optional:      optional,
@@ -30,7 +30,7 @@ func MatchError(err error) Match {
 	return Match{err: err}
 }
 
-func (match Match) getError() error {
+func (match Match) GetError() error {
 	return match.err
 }
 

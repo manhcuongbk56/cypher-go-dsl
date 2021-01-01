@@ -102,7 +102,7 @@ func TestUsingSameWithStepWithoutReassign(t *testing.T) {
 		MatchElements(bikeNode).
 		WithByNamed(bikeNode).
 		OptionalMatch(userNode).
-		OptionalMatch(cypher.NewNode("Trip")).
+		OptionalMatch(cypher.NewNode("Trip").NamedByString("trip")).
 		Returning(cypher.CypherAsterisk()).
 		Build()
 	if err != nil {
@@ -110,7 +110,7 @@ func TestUsingSameWithStepWithoutReassign(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (b:`Bike`) WITH b OPTIONAL MATCH (u:`User`) OPTIONAL MATCH (:`Trip`) RETURN *"
+	expect := "MATCH (b:`Bike`) WITH b OPTIONAL MATCH (u:`User`) OPTIONAL MATCH (trip:`Trip`) RETURN *"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
@@ -121,7 +121,7 @@ func TestUsingSameWithStepWithoutReassignThenUpdate(t *testing.T) {
 		MatchElements(bikeNode).
 		WithByNamed(bikeNode).
 		OptionalMatch(userNode).
-		OptionalMatch(cypher.NewNode("Trip")).
+		OptionalMatch(cypher.NewNode("Trip").NamedByString("trip")).
 		DeleteByString("u").
 		Returning(cypher.CypherAsterisk()).
 		Build()
@@ -130,7 +130,7 @@ func TestUsingSameWithStepWithoutReassignThenUpdate(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (b:`Bike`) WITH b OPTIONAL MATCH (u:`User`) OPTIONAL MATCH (:`Trip`) DELETE u RETURN *"
+	expect := "MATCH (b:`Bike`) WITH b OPTIONAL MATCH (u:`User`) OPTIONAL MATCH (trip:`Trip`) DELETE u RETURN *"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}

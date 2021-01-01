@@ -24,7 +24,7 @@ func RelationshipTypesError(err error) RelationshipTypes {
 	}
 }
 
-func (r RelationshipTypes) getError() error {
+func (r RelationshipTypes) GetError() error {
 	return r.err
 }
 

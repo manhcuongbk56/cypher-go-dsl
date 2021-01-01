@@ -9,8 +9,8 @@ type NodeLabels struct {
 
 func NodeLabelsCreate(values []NodeLabel) NodeLabels {
 	for _, value := range values {
-		if value.getError() != nil {
-			return NodeLabelsError(value.getError())
+		if value.GetError() != nil {
+			return NodeLabelsError(value.GetError())
 		}
 	}
 	n := NodeLabels{
@@ -25,7 +25,7 @@ func NodeLabelsError(err error) NodeLabels {
 	return NodeLabels{err: err}
 }
 
-func (n NodeLabels) getError() error {
+func (n NodeLabels) GetError() error {
 	return n.err
 }
 

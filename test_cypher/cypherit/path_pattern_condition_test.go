@@ -135,7 +135,7 @@ func TestGh113(t *testing.T) {
 	bar := cypher.NewNode("Bar").NamedByString("bar")
 	fooBar := foo.RelationshipTo(bar, "FOOBAR").NamedByString("rel")
 	pc := cypher.ListBasedOn(fooBar).
-		WherePattern(bar.RelationshipTo(cypher.NewNode("ZZZ"), "HAS")).
+		WherePattern(bar.RelationshipTo(cypher.NewNode("ZZZ").NamedByString("zzz"), "HAS")).
 		ReturningByNamed(fooBar, bar)
 
 	statement, err := cypher.MatchElements(foo).
@@ -146,7 +146,7 @@ func TestGh113(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	expect := "MATCH (foo:`Foo`) RETURN foo, [(foo)-[rel:`FOOBAR`]->(bar:`Bar`) WHERE (bar)-[:`HAS`]->(:`ZZZ`) | [rel, bar]]"
+	expect := "MATCH (foo:`Foo`) RETURN foo, [(foo)-[rel:`FOOBAR`]->(bar:`Bar`) WHERE (bar)-[:`HAS`]->(zzz:`ZZZ`) | [rel, bar]]"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}

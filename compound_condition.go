@@ -16,14 +16,14 @@ type CompoundCondition struct {
 }
 
 func CompoundConditionCreate(left Condition, operator Operator, right Condition) CompoundCondition {
-	if left != nil && left.getError() != nil {
-		return CompoundConditionError(left.getError())
+	if left != nil && left.GetError() != nil {
+		return CompoundConditionError(left.GetError())
 	}
-	if operator.getError() != nil {
-		return CompoundConditionError(operator.getError())
+	if operator.GetError() != nil {
+		return CompoundConditionError(operator.GetError())
 	}
-	if right != nil && right.getError() != nil {
-		return CompoundConditionError(right.getError())
+	if right != nil && right.GetError() != nil {
+		return CompoundConditionError(right.GetError())
 	}
 	if left == nil || !left.isNotNil() {
 		return CompoundConditionError(errors.New("left hand side condition is required"))
@@ -68,7 +68,7 @@ func CompoundConditionError(err error) CompoundCondition {
 	}
 }
 
-func (c CompoundCondition) getError() error {
+func (c CompoundCondition) GetError() error {
 	return c.err
 }
 
