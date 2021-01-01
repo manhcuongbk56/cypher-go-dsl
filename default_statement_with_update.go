@@ -224,7 +224,7 @@ func (d DefaultStatementWithUpdateBuilder) Set(expressions ...Expression) Builda
 }
 
 func (d DefaultStatementWithUpdateBuilder) SetWithNamed(variable Named, expression Expression) BuildableStatementAndOngoingMatchAndUpdate {
-	return d.Set(variable.getSymbolicName(), expression)
+	return d.Set(variable.GetSymbolicName(), expression)
 }
 
 func (d DefaultStatementWithUpdateBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {

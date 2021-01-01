@@ -56,14 +56,14 @@ func (r Relationship) isNotNil() bool {
 	return r.notNil
 }
 
-func (r Relationship) getRequiredSymbolicName() SymbolicName {
+func (r Relationship) GetRequiredSymbolicName() SymbolicName {
 	if r.details.symbolicName.isNotNil() {
 		return r.details.symbolicName
 	}
 	return SymbolicNameError(errors.New("relationship get symbolic name:  no name present"))
 }
 
-func (r Relationship) getSymbolicName() SymbolicName {
+func (r Relationship) GetSymbolicName() SymbolicName {
 	return r.details.symbolicName
 }
 
@@ -156,5 +156,5 @@ func (r Relationship) WithProperties(newProperties MapExpression) Relationship {
 }
 
 func (r Relationship) Project(entries ...interface{}) MapProjection {
-	return MapProjectionCreate(r.getRequiredSymbolicName(), entries...)
+	return MapProjectionCreate(r.GetRequiredSymbolicName(), entries...)
 }

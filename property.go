@@ -18,7 +18,7 @@ func PropertyCreate(parentContainer Named, name string) Property {
 	if parentContainer == nil {
 		return PropertyError(errors.New("node or relationship is nil"))
 	}
-	requiredSymbolicName := parentContainer.getRequiredSymbolicName()
+	requiredSymbolicName := parentContainer.GetRequiredSymbolicName()
 	if requiredSymbolicName.GetError() != nil {
 		return PropertyError(requiredSymbolicName.GetError())
 	}

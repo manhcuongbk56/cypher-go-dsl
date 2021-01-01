@@ -13,7 +13,7 @@ import (
  * @param additionalLabels Additional labels
  * @return A new node representation
  */
-func CypherNewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
+func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 	var labels = make([]NodeLabel, 0)
 	labels = append(labels, NodeLabel{value: primaryLabel})
 	for _, label := range additionalLabel {
@@ -26,7 +26,7 @@ func CypherNewNodeWithLabels(primaryLabel string, additionalLabel ...string) Nod
 
 /**
  * Create a new Node representation with at least one label, the "primary" label. This is required. All other labels
- * are optional. This method also takes a map of properties. This allows the returned node object to be used in a
+ * are optional. This method also takes a map of properties. This allows the returned node object to be used In a
  * {@code MATCH} or {@code MERGE} statement.
  *
  * @param primaryLabel     The primary label this node is identified by.
@@ -371,7 +371,7 @@ func ListBasedOn(pattern RelationshipPattern) PatternComprehensionOngoingDefinit
  * @return An ongoing definition.
  * @since 2020.1.1
  */
-func CypherListBasedOnNamed(namedPath NamedPath) PatternComprehensionOngoingDefinitionWithPattern {
+func ListBasedOnNamed(namedPath NamedPath) PatternComprehensionOngoingDefinitionWithPattern {
 	return PatternComprehensionBasedOnNamePath(namedPath)
 }
 
@@ -387,7 +387,7 @@ func CypherListWith(variable SymbolicName) OngoingDefinitionWithVariable {
 }
 
 /**
- * Escapes and quotes the {@code unquotedString} for safe usage in Neo4j-Browser and Shell.
+ * Escapes and quotes the {@code unquotedString} for safe usage In Neo4j-Browser and Shell.
  *
  * @param unquotedString An unquoted string
  * @return A quoted string with special chars escaped.

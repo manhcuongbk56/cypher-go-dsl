@@ -38,7 +38,7 @@ func SubqueryCall(statement Statement) Subquery {
 		validReturn = true
 	}
 	if !validReturn {
-		return SubqueryError(errors.New("only a statement that returns elements, either via return or yield, can be used in a subquery"))
+		return SubqueryError(errors.New("only a statement that returns elements, either via return or yield, can be used In a subquery"))
 	}
 	return SubqueryCreate(statement)
 }

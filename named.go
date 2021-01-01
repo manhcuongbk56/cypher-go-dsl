@@ -2,7 +2,7 @@ package cypher
 
 type Named interface {
 	CanHasError
-	getRequiredSymbolicName() SymbolicName
-	getSymbolicName() SymbolicName
+	GetRequiredSymbolicName() SymbolicName
+	GetSymbolicName() SymbolicName
 	isNotNil() bool
 }

@@ -36,7 +36,7 @@ func (a Arguments) getKey() string {
 func (a Arguments) PrepareVisit(child Visitable) Visitable {
 	expression, isExpression := child.(Expression)
 	if !isExpression {
-		panic("Can not prepare un expression type in expression list")
+		panic("Can not prepare un expression type In expression list")
 	}
 	return NameOrExpression(expression)
 }

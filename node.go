@@ -35,9 +35,9 @@ func NodeCreate1(primaryLabel string, properties Properties, additionalLabels ..
 		labels = append(labels, NodeLabelCreate(label))
 	}
 	node := Node{
-		notNil:       true,
-		properties:   properties,
-		labels:       labels,
+		notNil:     true,
+		properties: properties,
+		labels:     labels,
 	}
 	node.injectKey()
 	return node
@@ -92,24 +92,20 @@ func (node *Node) injectKey() {
 	node.key = getAddress(node)
 }
 
-func (node Node) GetSymbolicName() SymbolicName {
-	return node.symbolicName
-}
-
 func NodeError(err error) Node {
 	return Node{
 		err: err,
 	}
 }
 
-func (node Node) getRequiredSymbolicName() SymbolicName {
+func (node Node) GetRequiredSymbolicName() SymbolicName {
 	if node.symbolicName.isNotNil() {
 		return node.symbolicName
 	}
 	return SymbolicNameError(errors.New("node get symbolic name:  no name present"))
 }
 
-func (node Node) getSymbolicName() SymbolicName {
+func (node Node) GetSymbolicName() SymbolicName {
 	return node.symbolicName
 }
 
@@ -208,7 +204,7 @@ func (node Node) Named(name SymbolicName) Node {
 }
 
 func (node Node) As(alias string) AliasedExpression {
-	symbolicName := node.getRequiredSymbolicName()
+	symbolicName := node.GetRequiredSymbolicName()
 	if symbolicName.GetError() != nil {
 		return AliasedExpressionError(symbolicName.GetError())
 	}
@@ -220,7 +216,7 @@ func (node Node) InternalId() FunctionInvocation {
 }
 
 func (node Node) HasLabels(labelsToQuery ...string) Condition {
-	return HasLabelConditionCreate(node.getRequiredSymbolicName(), labelsToQuery...)
+	return HasLabelConditionCreate(node.GetRequiredSymbolicName(), labelsToQuery...)
 }
 
 func (node Node) Labels() FunctionInvocation {
@@ -228,7 +224,7 @@ func (node Node) Labels() FunctionInvocation {
 }
 
 func (node Node) Project(entries ...interface{}) MapProjection {
-	return MapProjectionCreate(node.getRequiredSymbolicName(), entries...)
+	return MapProjectionCreate(node.GetRequiredSymbolicName(), entries...)
 }
 
 type NodeLabel struct {

@@ -98,7 +98,7 @@ func contentAt(content []interface{}, i int) interface{} {
 	if expression, isExpression := currentObject.(Expression); isExpression {
 		return NameOrExpression(expression)
 	} else if named, isNamed := currentObject.(Named); isNamed {
-		symbolicName := named.getSymbolicName()
+		symbolicName := named.GetSymbolicName()
 		if symbolicName.isNotNil() {
 			return symbolicName
 		}
@@ -158,7 +158,7 @@ func createNewContent(content ...interface{}) ([]Expression, error) {
 		} else if lastExpression == nil {
 			return nil, xerrors.Errorf("map projection create new content: could not determine an expression from the given content!")
 		} else {
-			return nil, xerrors.Errorf("map projection create new content: unknown type %s" +
+			return nil, xerrors.Errorf("map projection create new content: unknown type %s"+
 				" cannot be used with an implicit name as map entry", reflect.TypeOf(lastExpression))
 		}
 		if entry != nil && entry.GetError() != nil {

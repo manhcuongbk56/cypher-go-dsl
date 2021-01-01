@@ -7,7 +7,7 @@ import (
 
 func Test(t *testing.T) {
 	node := NewNode("a")
-	node.getRequiredSymbolicName()
+	node.GetRequiredSymbolicName()
 	fmt.Println("FUCKKK")
 
 }

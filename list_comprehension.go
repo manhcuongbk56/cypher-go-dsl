@@ -21,7 +21,7 @@ func ListComprehensionCreate(variable SymbolicName, listExpression Expression, w
 		variable:       variable,
 		listExpression: listExpression,
 		where:          where,
-		listDefinition: listExpression,
+		listDefinition: listDefinition,
 		notNil:         true,
 	}
 	list.key = getAddress(&list)
@@ -52,9 +52,9 @@ func (l ListComprehension) accept(visitor *CypherRenderer) {
 	IN.accept(visitor)
 	l.listExpression.accept(visitor)
 	VisitIfNotNull(l.where, visitor)
-	if l.listExpression != nil {
+	if l.listDefinition != nil {
 		PIPE.accept(visitor)
-		l.listExpression.accept(visitor)
+		l.listDefinition.accept(visitor)
 	}
 	visitor.leave(l)
 }
@@ -80,18 +80,18 @@ func (l ListComprehension) GetExpressionType() ExpressionType {
 }
 
 type OngoingDefinitionWithVariable interface {
-	in(list Expression) OngoingDefinitionWithList
+	In(list Expression) OngoingDefinitionWithList
 }
 
 type OngoingDefinitionWithList interface {
 	OngoingDefinitionWithoutReturn
-	whereByCondition(condition Condition) OngoingDefinitionWithoutReturn
+	Where(condition Condition) OngoingDefinitionWithoutReturn
 }
 
 type OngoingDefinitionWithoutReturn interface {
-	returningByNamed(variables ...Named) ListComprehension
-	returning(listDefinition ...Expression) ListComprehension
-	returningDefault() ListComprehension
+	ReturningByNamed(variables ...Named) ListComprehension
+	Returning(listDefinition ...Expression) ListComprehension
+	ReturningDefault() ListComprehension
 }
 
 type ListComprehensionBuilder struct {
@@ -107,25 +107,25 @@ func ListComprehensionBuilderCreate(variable SymbolicName) ListComprehensionBuil
 	}
 }
 
-func (l ListComprehensionBuilder) in(list Expression) OngoingDefinitionWithList {
+func (l ListComprehensionBuilder) In(list Expression) OngoingDefinitionWithList {
 	l.listExpression = list
 	return l
 }
 
-func (l ListComprehensionBuilder) returningByNamed(variables ...Named) ListComprehension {
-	return l.returning(CreateSymbolicNameByNamed(variables...)...)
+func (l ListComprehensionBuilder) ReturningByNamed(variables ...Named) ListComprehension {
+	return l.Returning(CreateSymbolicNameByNamed(variables...)...)
 }
 
-func (l ListComprehensionBuilder) returning(expressions ...Expression) ListComprehension {
+func (l ListComprehensionBuilder) Returning(expressions ...Expression) ListComprehension {
 	return ListComprehensionCreate(l.variable, l.listExpression, l.where,
 		ListOrSingleExpression(expressions...))
 }
 
-func (l ListComprehensionBuilder) returningDefault() ListComprehension {
+func (l ListComprehensionBuilder) ReturningDefault() ListComprehension {
 	return ListComprehensionCreate(l.variable, l.listExpression, l.where, nil)
 }
 
-func (l ListComprehensionBuilder) whereByCondition(condition Condition) OngoingDefinitionWithoutReturn {
+func (l ListComprehensionBuilder) Where(condition Condition) OngoingDefinitionWithoutReturn {
 	l.where = WhereCreate(condition)
 	return l
 }

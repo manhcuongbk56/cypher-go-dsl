@@ -99,7 +99,7 @@ func OperationCreate2(op1 Node, operator Operator, nodeLabels ...string) Operati
 		labels = append(labels, NodeLabelCreate(nodeLabel))
 	}
 	o := Operation{
-		left:     op1.getRequiredSymbolicName(),
+		left:     op1.GetRequiredSymbolicName(),
 		operator: operator,
 		right:    NodeLabelsCreate(labels),
 		notNil:   true,

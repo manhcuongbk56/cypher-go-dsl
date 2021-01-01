@@ -281,7 +281,7 @@ func (d DefaultStatementBuilder) SetWithNamed(variable Named, expression Express
 	if expression != nil && expression.GetError() != nil {
 		return DefaultStatementBuilderError(expression.GetError())
 	}
-	return d.Set(variable.getSymbolicName(), expression)
+	return d.Set(variable.GetSymbolicName(), expression)
 }
 
 func (d DefaultStatementBuilder) SetByNode(node Node, labels ...string) BuildableStatementAndOngoingMatchAndUpdate {
@@ -729,5 +729,5 @@ func (o OngoingMergeActionInBuilder) SetWithNamed(variable Named, expression Exp
 	if expression != nil && expression.GetError() != nil {
 		return DefaultStatementBuilderError(expression.GetError())
 	}
-	return o.Set(variable.getSymbolicName(), expression)
+	return o.Set(variable.GetSymbolicName(), expression)
 }

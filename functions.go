@@ -12,7 +12,7 @@ func FunctionIdByNode(node Node) FunctionInvocation {
 	if !node.isNotNil() {
 		return FunctionInvocationError(errors.New("node is required"))
 	}
-	return FunctionInvocationCreate(ID, node.getSymbolicName())
+	return FunctionInvocationCreate(ID, node.GetSymbolicName())
 }
 
 func FunctionIdByRelationship(relationship Relationship) FunctionInvocation {
@@ -22,7 +22,7 @@ func FunctionIdByRelationship(relationship Relationship) FunctionInvocation {
 	if !relationship.isNotNil() {
 		return FunctionInvocationError(errors.New("relationship is required"))
 	}
-	return FunctionInvocationCreate(ID, relationship.getSymbolicName())
+	return FunctionInvocationCreate(ID, relationship.GetSymbolicName())
 }
 
 func FunctionLabels(node Node) FunctionInvocation {
@@ -32,7 +32,7 @@ func FunctionLabels(node Node) FunctionInvocation {
 	if !node.isNotNil() {
 		return FunctionInvocationError(errors.New("node is required"))
 	}
-	return FunctionInvocationCreate(LABELS, node.getSymbolicName())
+	return FunctionInvocationCreate(LABELS, node.GetSymbolicName())
 }
 
 func FunctionType(relationship Relationship) FunctionInvocation {
@@ -42,11 +42,11 @@ func FunctionType(relationship Relationship) FunctionInvocation {
 	if !relationship.isNotNil() {
 		return FunctionInvocationError(errors.New("relationship is required"))
 	}
-	return FunctionInvocationCreate(TYPE, relationship.getSymbolicName())
+	return FunctionInvocationCreate(TYPE, relationship.GetSymbolicName())
 }
 
 func FunctionCount(node Node) FunctionInvocation {
-	return FunctionInvocationCreate(COUNT, node.getSymbolicName())
+	return FunctionInvocationCreate(COUNT, node.GetSymbolicName())
 }
 
 func FunctionCountByExpression(expression Expression) FunctionInvocation {
@@ -54,7 +54,7 @@ func FunctionCountByExpression(expression Expression) FunctionInvocation {
 }
 
 func FunctionCountDistinct(node Node) FunctionInvocation {
-	return FunctionInvocationCreateDistinct(COUNT, node.getSymbolicName())
+	return FunctionInvocationCreateDistinct(COUNT, node.GetSymbolicName())
 }
 
 func FunctionCountDistinctByExpression(expression Expression) FunctionInvocation {
@@ -68,7 +68,7 @@ func FunctionProperties(node Node) FunctionInvocation {
 	if !node.isNotNil() {
 		return FunctionInvocationError(errors.New("node is required"))
 	}
-	return FunctionInvocationCreate(PROPERTIES, node.getSymbolicName())
+	return FunctionInvocationCreate(PROPERTIES, node.GetSymbolicName())
 }
 
 func FunctionPropertiesByRelationship(relationship Relationship) FunctionInvocation {
@@ -78,7 +78,7 @@ func FunctionPropertiesByRelationship(relationship Relationship) FunctionInvocat
 	if !relationship.isNotNil() {
 		return FunctionInvocationError(errors.New("relationship is required"))
 	}
-	return FunctionInvocationCreate(PROPERTIES, relationship.getSymbolicName())
+	return FunctionInvocationCreate(PROPERTIES, relationship.GetSymbolicName())
 }
 
 func FunctionPropertiesByMapExpression(mapExpression MapExpression) FunctionInvocation {
@@ -156,7 +156,7 @@ func FunctionCollectByNamed(variable Named) FunctionInvocation {
 	if variable == nil || !variable.isNotNil() {
 		return FunctionInvocationError(errors.New("function collect by named: the variable parameter is required"))
 	}
-	return FunctionInvocationCreate(COLLECT, variable.getRequiredSymbolicName())
+	return FunctionInvocationCreate(COLLECT, variable.GetRequiredSymbolicName())
 }
 
 func FunctionCollectDistinctByNamed(variable Named) FunctionInvocation {
@@ -166,7 +166,7 @@ func FunctionCollectDistinctByNamed(variable Named) FunctionInvocation {
 	if variable == nil || !variable.isNotNil() {
 		return FunctionInvocationError(errors.New("function collect by named: the variable parameter is required"))
 	}
-	return FunctionInvocationCreateDistinct(COLLECT, variable.getRequiredSymbolicName())
+	return FunctionInvocationCreateDistinct(COLLECT, variable.GetRequiredSymbolicName())
 }
 
 /**
@@ -427,8 +427,8 @@ func FunctionSumDistinct(expression Expression) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression)
  */
-func FunctionRange2Raw(start int, end int) FunctionInvocation {
-	return FunctionRange2(LiteralOf(start), LiteralOf(end))
+func FunctionRangeRaw(start int, end int) FunctionInvocation {
+	return FunctionRange(LiteralOf(start), LiteralOf(end))
 }
 
 /**
@@ -437,8 +437,8 @@ func FunctionRange2Raw(start int, end int) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression, Expression)
  */
-func FunctionRange2(start Expression, end Expression) FunctionInvocation {
-	return FunctionRange3(start, end, nil)
+func FunctionRange(start Expression, end Expression) FunctionInvocation {
+	return FunctionRangeWithStep(start, end, nil)
 }
 
 /**
@@ -451,8 +451,8 @@ func FunctionRange2(start Expression, end Expression) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression, Expression)
  */
-func FunctionRange3Raw(start int, end int, step int) FunctionInvocation {
-	return FunctionRange3(LiteralOf(start), LiteralOf(end), LiteralOf(step))
+func FunctionRangeWithStepRaw(start int, end int, step int) FunctionInvocation {
+	return FunctionRangeWithStep(LiteralOf(start), LiteralOf(end), LiteralOf(step))
 }
 
 /**
@@ -464,7 +464,7 @@ func FunctionRange3Raw(start int, end int, step int) FunctionInvocation {
  * @param step  the range's step
  * @return A function call for {@code range()}
  */
-func FunctionRange3(start Expression, end Expression, step Expression) FunctionInvocation {
+func FunctionRangeWithStep(start Expression, end Expression, step Expression) FunctionInvocation {
 	if start != nil && start.GetError() != nil {
 		return FunctionInvocationError(start.GetError())
 	}
@@ -530,7 +530,7 @@ func FunctionNodes(path NamedPath) FunctionInvocation {
 	if !path.isNotNil() {
 		return FunctionInvocationError(errors.New("functions nodes : path for nodes is required"))
 	}
-	symbolicName := path.getRequiredSymbolicName()
+	symbolicName := path.GetRequiredSymbolicName()
 	if symbolicName.GetError() != nil {
 		return FunctionInvocationError(errors.New("functions nodes : path need to be named"))
 	}
@@ -552,7 +552,7 @@ func FunctionRelationships(path NamedPath) FunctionInvocation {
 	if !path.isNotNil() {
 		return FunctionInvocationError(errors.New("functions relationships : path for relationships is required"))
 	}
-	symbolicName := path.getRequiredSymbolicName()
+	symbolicName := path.GetRequiredSymbolicName()
 	if symbolicName.GetError() != nil {
 		return FunctionInvocationError(errors.New("functions relationships : path need to be named"))
 	}
@@ -574,7 +574,7 @@ func FunctionStartNode(relationship Relationship) FunctionInvocation {
 	if !relationship.isNotNil() {
 		return FunctionInvocationError(errors.New("functions start node : relationship for start node is required"))
 	}
-	symbolicName := relationship.getRequiredSymbolicName()
+	symbolicName := relationship.GetRequiredSymbolicName()
 	if symbolicName.GetError() != nil {
 		return FunctionInvocationError(errors.New("functions start node : relationship need to be named"))
 	}
@@ -596,7 +596,7 @@ func FunctionEndNode(relationship Relationship) FunctionInvocation {
 	if !relationship.isNotNil() {
 		return FunctionInvocationError(errors.New("functions start node : relationship for end node is required"))
 	}
-	symbolicName := relationship.getRequiredSymbolicName()
+	symbolicName := relationship.GetRequiredSymbolicName()
 	if symbolicName.GetError() != nil {
 		return FunctionInvocationError(errors.New("functions start node : relationship need to be named"))
 	}

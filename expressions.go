@@ -2,8 +2,8 @@ package cypher
 
 func NameOrExpression(expression Expression) Expression {
 	named, isNamed := (expression).(Named)
-	if isNamed && named.getSymbolicName().isNotNil() {
-		return named.getSymbolicName()
+	if isNamed && named.GetSymbolicName().isNotNil() {
+		return named.GetSymbolicName()
 	}
 	return expression
 }
@@ -12,7 +12,7 @@ func CreateSymbolicNameByNamed(nameds ...Named) []Expression {
 	expressions := make([]Expression, 0)
 	for _, named := range nameds {
 		if named != nil {
-			expressions = append(expressions, named.getSymbolicName())
+			expressions = append(expressions, named.GetSymbolicName())
 		}
 	}
 	return expressions

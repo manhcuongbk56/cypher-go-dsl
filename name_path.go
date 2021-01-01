@@ -81,14 +81,14 @@ func (n NamedPath) GetError() error {
 	return n.err
 }
 
-func (n NamedPath) getRequiredSymbolicName() SymbolicName {
+func (n NamedPath) GetRequiredSymbolicName() SymbolicName {
 	if n.name.isNotNil() {
 		return n.name
 	}
 	return SymbolicNameError(errors.New("namepath get symbolic name: no name present"))
 }
 
-func (n NamedPath) getSymbolicName() SymbolicName {
+func (n NamedPath) GetSymbolicName() SymbolicName {
 	return n.name
 }
 
