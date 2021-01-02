@@ -137,19 +137,15 @@ func (c Case) accept(visitor *CypherRenderer) {
 }
 
 func (c Case) enter(renderer *CypherRenderer) {
-	if c.caseType == SIMPLE_CASE {
-		renderer.append("CASE ")
+	if c.caseType == GENERIC_CASE || c.caseType == ENDING_GENERIC_CASE {
+		renderer.append("CASE")
 		return
 	}
-	if c.caseType == GENERIC_CASE {
-		renderer.append("CASE")
-	}
+	renderer.append("CASE ")
 }
 
 func (c Case) leave(renderer *CypherRenderer) {
-	if c.caseType == GENERIC_CASE {
-		renderer.append(" END")
-	}
+	renderer.append(" END")
 }
 
 func (c Case) getKey() string {
@@ -173,6 +169,8 @@ func (c Case) ElseDefault(defaultExpression Expression) CaseEnding {
 	if caseElse.GetError() != nil {
 		return Case{err: caseElse.GetError()}
 	}
+	c.caseElse = caseElse
+	c.ExpressionContainer = ExpressionWrap(c)
 	return c
 }
 
@@ -208,7 +206,7 @@ func OngoingWhenThenCreate(caseInstance *Case, whenExpression Expression) Ongoin
 	return OngoingWhenThen{whenExpression: whenExpression, caseInstance: caseInstance}
 }
 
-func (o OngoingWhenThen) then(expression Expression) CaseEnding {
+func (o OngoingWhenThen) Then(expression Expression) CaseEnding {
 	caseWhenThen := CaseWhenThenCreate(o.whenExpression, expression)
 	o.caseInstance.caseWhenThens = append(o.caseInstance.caseWhenThens, caseWhenThen)
 	if o.caseInstance.caseExpression != nil && o.caseInstance.caseExpression.isNotNil() {
@@ -228,7 +226,7 @@ type CaseWhenThen struct {
 	notNil         bool
 }
 
-func CaseWhenThenCreate(thenExpression Expression, whenExpression Expression) CaseWhenThen {
+func CaseWhenThenCreate(whenExpression Expression, thenExpression Expression) CaseWhenThen {
 	if thenExpression != nil && thenExpression.GetError() != nil {
 		return CaseWhenThen{err: thenExpression.GetError()}
 	}

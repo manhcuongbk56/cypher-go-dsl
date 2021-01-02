@@ -399,7 +399,7 @@ func CypherQuote(unquotedString string) string {
 /**
  * @return generic case expression start
  */
-func CypherCaseExpression() Case {
+func GenericCaseExpression() Case {
 	return GenericCaseCreate1()
 }
 
@@ -407,7 +407,7 @@ func CypherCaseExpression() Case {
  * @param expression initial expression for the simple case statement
  * @return simple case expression start
  */
-func CypherCaseExpression1(expression Expression) Case {
+func CaseExpression(expression Expression) Case {
 	return SimpleCaseCreate1(expression)
 }
 
@@ -510,7 +510,7 @@ func CypherSubListUntilByExpression(targetExpression Expression, end Expression)
  * @return A range literal.
  * @since 2020.1.0
  */
-func CypherSubListValueAt(targetExpression Expression, index int) Expression {
+func CypherValueAt(targetExpression Expression, index int) Expression {
 	return ValueAt(targetExpression, NumberLiteralCreate1(index))
 }
 
@@ -522,7 +522,7 @@ func CypherSubListValueAt(targetExpression Expression, index int) Expression {
  * @return A range literal.
  * @since 2020.1.0
  */
-func CypherSubListValueAtByExpression(targetExpression Expression, index Expression) Expression {
+func CypherValueAtByExpression(targetExpression Expression, index Expression) Expression {
 	return ValueAt(targetExpression, index)
 }
 

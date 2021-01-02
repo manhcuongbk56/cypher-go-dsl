@@ -17,7 +17,7 @@ func NamedPathCreate(name SymbolicName, pattern RelationshipPattern) NamedPath {
 	if pattern != nil && pattern.GetError() != nil {
 		return NamedPathError(pattern.GetError())
 	}
-	n := NamedPath{name: name, pattern: pattern}
+	n := NamedPath{name: name, pattern: pattern, notNil: true}
 	n.key = getAddress(&n)
 	return n
 }
@@ -29,7 +29,7 @@ func NamedPathCreate1(name SymbolicName, algorithm FunctionInvocation) NamedPath
 	if algorithm.GetError() != nil {
 		return NamedPathError(algorithm.GetError())
 	}
-	n := NamedPath{name: name, pattern: algorithm}
+	n := NamedPath{name: name, pattern: algorithm, notNil: true}
 	n.key = getAddress(&n)
 	return n
 }
@@ -120,7 +120,7 @@ func (n NamedPath) isNotNil() bool {
 
 //Interface
 type OngoingDefinitionWithName interface {
-	definedByRelationPattern(pattern RelationshipPattern) NamedPath
+	DefinedBy(pattern RelationshipPattern) NamedPath
 	GetError() error
 }
 
@@ -138,7 +138,7 @@ func NamedPathBuilderCreate(name SymbolicName) NamedPathBuilder {
 	return NamedPathBuilder{name: name}
 }
 
-func (n NamedPathBuilder) definedByRelationPattern(pattern RelationshipPattern) NamedPath {
+func (n NamedPathBuilder) DefinedBy(pattern RelationshipPattern) NamedPath {
 	return NamedPathCreate(n.name, pattern)
 }
 

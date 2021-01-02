@@ -44,13 +44,13 @@ func SubList(targetExpression Expression, start Expression, end Expression) List
 	if end != nil && end.GetError() != nil {
 		return ListOperatorError(end.GetError())
 	}
-	if targetExpression == nil || targetExpression.isNotNil() {
+	if targetExpression == nil || !targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
 	}
-	if start == nil || start.isNotNil() {
+	if start == nil || !start.isNotNil() {
 		return ListOperatorError(errors.New("the range's start expression must not be nil"))
 	}
-	if end == nil || end.isNotNil() {
+	if end == nil || !end.isNotNil() {
 		return ListOperatorError(errors.New("the range's end expression must not be nil"))
 	}
 	return listOperatorCreate(targetExpression, start, DOTS, end)
@@ -70,10 +70,10 @@ func SubListFrom(targetExpression Expression, start Expression) ListOperator {
 	if start != nil && start.GetError() != nil {
 		return ListOperatorError(start.GetError())
 	}
-	if targetExpression == nil || targetExpression.isNotNil() {
+	if targetExpression == nil || !targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
 	}
-	if start == nil || start.isNotNil() {
+	if start == nil || !start.isNotNil() {
 		return ListOperatorError(errors.New("the range's start expression must not be nil"))
 	}
 	return listOperatorCreate(targetExpression, start, DOTS, nil)
@@ -93,10 +93,10 @@ func SubListUntil(targetExpression Expression, end Expression) ListOperator {
 	if end != nil && end.GetError() != nil {
 		return ListOperatorError(end.GetError())
 	}
-	if targetExpression == nil || targetExpression.isNotNil() {
+	if targetExpression == nil || !targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
 	}
-	if end == nil || end.isNotNil() {
+	if end == nil || !end.isNotNil() {
 		return ListOperatorError(errors.New("the range's end expression must not be nil"))
 	}
 	return listOperatorCreate(targetExpression, nil, DOTS, end)
@@ -116,10 +116,10 @@ func ValueAt(targetExpression Expression, index Expression) ListOperator {
 	if index != nil && index.GetError() != nil {
 		return ListOperatorError(index.GetError())
 	}
-	if targetExpression == nil || targetExpression.isNotNil() {
+	if targetExpression == nil || !targetExpression.isNotNil() {
 		return ListOperatorError(errors.New("the range's target expression must not be nil"))
 	}
-	if index == nil || index.isNotNil() {
+	if index == nil || !index.isNotNil() {
 		return ListOperatorError(errors.New("the index of the range must not be nil"))
 	}
 	return listOperatorCreate(targetExpression, index, Dot{}, nil)
