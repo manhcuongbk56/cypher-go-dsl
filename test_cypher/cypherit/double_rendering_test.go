@@ -20,7 +20,7 @@ func TestAliasedFunctionsShouldNotBeRenderedTwiceInProjection(t *testing.T) {
 	o := cypher.NewNode("Order").NamedByString("o")
 	li := cypher.NewNode("LineItem").NamedByString("li")
 	hasLineItems := o.RelationshipTo(li).NamedByString("h")
-	netAmount := cypher.FunctionSum(li.Property("price")).Multiply(li.Property("quantity")).As("netAmount")
+	netAmount := cypher.FunctionSum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
 	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.CypherParameter("taxRate")).Get()).As("totalAmount")
 	returning := cypher.MatchElements(hasLineItems).
 		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.CypherParameter("id"))).

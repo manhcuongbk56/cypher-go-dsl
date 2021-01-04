@@ -34,11 +34,11 @@ func (v FunctionArgumentList) PrepareVisit(child Visitable) Visitable {
 }
 
 func (v FunctionArgumentList) accept(visitor *CypherRenderer) {
-	(*visitor).enter(v)
+	visitor.enter(v)
 	for _, expression := range v.expressions {
 		v.PrepareVisit(expression).accept(visitor)
 	}
-	(*visitor).leave(v)
+	visitor.leave(v)
 }
 
 func (v FunctionArgumentList) enter(renderer *CypherRenderer) {

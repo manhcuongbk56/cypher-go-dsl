@@ -39,10 +39,10 @@ func NewRenderer() *CypherRenderer {
 }
 
 func (renderer CypherRenderer) Render(statement Statement) (string, error) {
-	if  statement == nil {
+	if statement == nil {
 		return "", xerrors.New("can not render nil statement")
 	}
-	if  statement.GetError() != nil {
+	if statement.GetError() != nil {
 		return "", statement.GetError()
 	}
 	statement.accept(&renderer)
@@ -80,8 +80,8 @@ func (renderer *CypherRenderer) resolve(name SymbolicName) string {
 func (renderer *CypherRenderer) enter(visitable Visitable) {
 	used := renderer.getAliasedIfSeen(visitable)
 	if renderer.PreEnter(&used) {
-		renderer.currentVisitedElements = push(renderer.currentVisitedElements, visitable.getKey())
-		visitable.enter(renderer)
+		renderer.currentVisitedElements = push(renderer.currentVisitedElements, used.getKey())
+		used.enter(renderer)
 	}
 }
 
@@ -89,7 +89,7 @@ func (renderer *CypherRenderer) leave(visitable Visitable) {
 	used := renderer.getAliasedIfSeen(visitable)
 	current := peek(renderer.currentVisitedElements)
 	if current == (used).getKey() {
-		visitable.leave(renderer)
+		used.leave(renderer)
 		renderer.postLeave(used)
 		renderer.currentVisitedElements = pop(renderer.currentVisitedElements)
 	}
@@ -103,7 +103,7 @@ func (renderer *CypherRenderer) PreEnter(visitable *Visitable) bool {
 	lastAliased := peekAliased(renderer.currentAliasedElements)
 	visited := false
 	if lastAliased != nil {
-		_, visited = renderer.visitableToAliased[lastAliased.getKey()]
+		_, visited = renderer.visitableToAliased[lastAliased.delegate.getKey()]
 	}
 	if renderer.skipNodeContent || visited {
 		return false
@@ -134,7 +134,7 @@ func (renderer *CypherRenderer) postLeave(visitable Visitable) {
 	}
 	if peekAliased(renderer.currentAliasedElements) != nil &&
 		peekAliased(renderer.currentAliasedElements).getKey() == visitable.getKey() {
-		popAliased(renderer.currentAliasedElements)
+		renderer.currentAliasedElements = popAliased(renderer.currentAliasedElements)
 	}
 	renderer.currentLevel = renderer.currentLevel - 1
 }

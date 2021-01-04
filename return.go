@@ -49,10 +49,10 @@ func (r Return) getKey() string {
 }
 
 func (r Return) accept(visitor *CypherRenderer) {
-	(*visitor).enter(r)
+	visitor.enter(r)
 	VisitIfNotNull(r.distinct, visitor)
 	r.body.accept(visitor)
-	(*visitor).leave(r)
+	visitor.leave(r)
 }
 
 func (r Return) enter(renderer *CypherRenderer) {
