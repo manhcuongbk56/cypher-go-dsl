@@ -42,8 +42,8 @@ func TestPatternComprehensionsNested(t *testing.T) {
 	builder = cypher.
 		MatchElements(n).
 		Returning(n.GetRequiredSymbolicName(),
-			cypher.CypherListOf(cypher.ListBasedOn(r_f1).ReturningByNamed(r_f1, o1),
+			cypher.ListOf(cypher.ListBasedOn(r_f1).ReturningByNamed(r_f1, o1),
 				cypher.ListBasedOn(r_e1).ReturningByNamed(r_e1, o1),
-				cypher.ListBasedOn(r_l1).Returning(r_l1.GetRequiredSymbolicName(), l1.GetRequiredSymbolicName(), cypher.CypherListOf(cypher.ListBasedOn(r_l2).ReturningByNamed(r_l2, p2)))))
+				cypher.ListBasedOn(r_l1).Returning(r_l1.GetRequiredSymbolicName(), l1.GetRequiredSymbolicName(), cypher.ListOf(cypher.ListBasedOn(r_l2).ReturningByNamed(r_l2, p2)))))
 	Assert(t, builder, "MATCH (n:`Person`) RETURN n, [[(n)-[r_f1:`FOUNDED`]->(o1:`Organisation`) | [r_f1, o1]], [(n)-[r_e1:`EMPLOYED_BY`]->(o1) | [r_e1, o1]], [(n)-[r_l1:`LIVES_AT`]->(l1:`Location`) | [r_l1, l1, [[(l1)<-[r_l2:`LIVES_AT`]-(p2:`Person`) | [r_l2, p2]]]]]]")
 }

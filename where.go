@@ -38,9 +38,9 @@ func (w Where) getKey() string {
 }
 
 func (w Where) accept(visitor *CypherRenderer) {
-	(*visitor).enter(w)
+	visitor.enter(w)
 	w.condition.accept(visitor)
-	(*visitor).leave(w)
+	visitor.leave(w)
 }
 
 func (w Where) enter(renderer *CypherRenderer) {

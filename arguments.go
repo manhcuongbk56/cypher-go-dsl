@@ -42,15 +42,17 @@ func (a Arguments) PrepareVisit(child Visitable) Visitable {
 }
 
 func (a Arguments) accept(visitor *CypherRenderer) {
-	(*visitor).enter(a)
+	visitor.enter(a)
 	for _, expression := range a.expressions {
 		a.PrepareVisit(expression).accept(visitor)
 	}
-	(*visitor).leave(a)
+	visitor.leave(a)
 }
 
 func (a Arguments) enter(renderer *CypherRenderer) {
+	renderer.append("(")
 }
 
 func (a Arguments) leave(renderer *CypherRenderer) {
+	renderer.append(")")
 }

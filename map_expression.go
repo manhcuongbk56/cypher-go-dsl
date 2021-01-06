@@ -51,7 +51,7 @@ func (m MapExpression) getKey() string {
 
 func NewMapExpression(objects ...interface{}) MapExpression {
 	if len(objects)%2 != 0 {
-		return MapExpressionError(errors.Errorf("number of object input should be product of 2 but it is %defaultBuilder", len(objects)))
+		return MapExpressionError(errors.Errorf("new map expression number of object input should be product of 2 but it is %", len(objects)))
 	}
 	var newContents = make([]Expression, len(objects)/2)
 	var knownKeys = make(map[string]int)
@@ -90,12 +90,12 @@ func (m MapExpression) leave(renderer *CypherRenderer) {
 }
 
 func (m MapExpression) AddEntries(entries []Expression) MapExpression {
-	newContent := make([]Expression, len(m.expressions) + len(entries))
-	for i:= range m.expressions {
+	newContent := make([]Expression, len(m.expressions)+len(entries))
+	for i := range m.expressions {
 		newContent[i] = m.expressions[i]
 	}
-	for i:= range entries {
-		newContent[i + len(m.expressions)] = entries[i]
+	for i := range entries {
+		newContent[i+len(m.expressions)] = entries[i]
 	}
 	return MapExpressionCreate(newContent)
 }

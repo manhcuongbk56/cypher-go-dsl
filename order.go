@@ -31,11 +31,11 @@ func (o Order) getKey() string {
 }
 
 func (o Order) accept(visitor *CypherRenderer) {
-	(*visitor).enter(o)
+	visitor.enter(o)
 	for _, sortItem := range o.sortItems {
 		o.PrepareVisit(sortItem).accept(visitor)
 	}
-	(*visitor).leave(o)
+	visitor.leave(o)
 }
 
 func (o Order) PrepareVisit(visitable Visitable) Visitable {

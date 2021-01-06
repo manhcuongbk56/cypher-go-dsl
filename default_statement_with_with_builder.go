@@ -185,7 +185,7 @@ func (d DefaultStatementWithWithBuilder) Remove(properties ...Property) Buildabl
 }
 
 func (d DefaultStatementWithWithBuilder) Unwinds(expression ...Expression) OngoingUnwind {
-	return d.Unwind(CypherListOf(expression...))
+	return d.Unwind(ListOf(expression...))
 }
 
 func (d DefaultStatementWithWithBuilder) UnwindByString(variable string) OngoingUnwind {

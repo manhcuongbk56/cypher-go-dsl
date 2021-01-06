@@ -56,7 +56,7 @@ func (p ProcedureCall) enter(renderer *CypherRenderer) {
 }
 
 func (p ProcedureCall) leave(renderer *CypherRenderer) {
-	renderer.append(".")
+	renderer.append(" ")
 }
 
 func (p ProcedureCall) getKey() string {
@@ -77,7 +77,7 @@ func (p ProcedureCall) doesReturnElements() bool {
 type OngoingStandaloneCallWithoutArguments interface {
 	BuildableStatement
 	AsFunction
-	withArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments
+	WithArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments
 	YieldSymbolic(name ...SymbolicName) OngoingStandaloneCallWithReturnFields
 	YieldString(yieldedItems ...string) OngoingStandaloneCallWithReturnFields
 	Yield(aliasedResultFields ...AliasedExpression) OngoingStandaloneCallWithReturnFields
@@ -225,7 +225,7 @@ func (s StandaloneCallBuilder) AsFunction() Expression {
 	return FunctionInvocationCreate(FunctionDefinitionDefault{s.procedureName.getQualifiedName()}, s.arguments...)
 }
 
-func (s StandaloneCallBuilder) withArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments {
+func (s StandaloneCallBuilder) WithArgs(arguments ...Expression) OngoingStandaloneCallWithoutArguments {
 	s.arguments = arguments
 	return s
 }

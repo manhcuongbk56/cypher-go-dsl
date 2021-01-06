@@ -21,13 +21,28 @@ func TestAliasedFunctionsShouldNotBeRenderedTwiceInProjection(t *testing.T) {
 	li := cypher.NewNode("LineItem").NamedByString("li")
 	hasLineItems := o.RelationshipTo(li).NamedByString("h")
 	netAmount := cypher.FunctionSum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
-	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.CypherParameter("taxRate")).Get()).As("totalAmount")
+	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.Param("taxRate")).Get()).As("totalAmount")
 	returning := cypher.MatchElements(hasLineItems).
-		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.CypherParameter("id"))).
+		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.Param("id"))).
 		With(o.GetRequiredSymbolicName(), netAmount.Get(), totalAmount.Get()).
 		Returning(o.Project(o.Property("x"),
 			netAmount.Get(),
 			totalAmount.Get(),
-			netAmount.Multiply(cypher.CypherParameter("taxRate")).As("taxAmount").Get()))
+			netAmount.Multiply(cypher.Param("taxRate")).As("taxAmount").Get()))
 	Assert(t, returning, "MATCH (o:`Order`)-[h]->(li:`LineItem`) WHERE o.id = $id WITH o, sum((li.price * li.quantity)) AS netAmount, (netAmount * (1 + $taxRate)) AS totalAmount RETURN o{.x, netAmount: netAmount, totalAmount: totalAmount, taxAmount: (netAmount * $taxRate)}")
+}
+
+func TestAliasedFunctionsShouldNotBeRenderedTwiceInReturn(t *testing.T) {
+	o := cypher.NewNode("Order").NamedByString("o")
+	li := cypher.NewNode("LineItem").NamedByString("li")
+	hasLineItems := o.RelationshipTo(li).NamedByString("h")
+	netAmount := cypher.FunctionSum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
+	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.Param("taxRate")).Get()).As("totalAmount")
+	returning := cypher.MatchElements(hasLineItems).
+		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.Param("id"))).
+		With(o.GetRequiredSymbolicName(), netAmount.Get(), totalAmount.Get()).
+		Returning(
+			netAmount.Get(),
+			totalAmount.Get())
+	Assert(t, returning, "MATCH (o:`Order`)-[h]->(li:`LineItem`) WHERE o.id = $id WITH o, sum((li.price * li.quantity)) AS netAmount, (netAmount * (1 + $taxRate)) AS totalAmount RETURN netAmount, totalAmount")
 }

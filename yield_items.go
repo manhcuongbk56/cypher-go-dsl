@@ -49,11 +49,11 @@ func (e YieldItems) PrepareVisit(child Visitable) Visitable {
 }
 
 func (e YieldItems) accept(visitor *CypherRenderer) {
-	(*visitor).enter(e)
+	visitor.enter(e)
 	for _, expression := range e.expressions {
 		e.PrepareVisit(expression).accept(visitor)
 	}
-	(*visitor).leave(e)
+	visitor.leave(e)
 }
 
 func (e YieldItems) enter(renderer *CypherRenderer) {

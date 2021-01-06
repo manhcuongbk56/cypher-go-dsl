@@ -11,7 +11,7 @@ func TestListComprehensionSimple(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.CypherListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
+			In(cypher.ListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
 			ReturningDefault())
 	Assert(t, builder, "RETURN [a IN [1, 2, 3, 4]]")
 }
@@ -22,7 +22,7 @@ func TestWithReturning(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.CypherListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
+			In(cypher.ListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
 			Returning(name.Remainder(cypher.LiteralOf(2)).Get()))
 	Assert(t, builder, "RETURN [a IN [1, 2, 3, 4] | (a % 2)]")
 }
@@ -33,7 +33,7 @@ func TestWithWhere(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.CypherListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
+			In(cypher.ListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
 			Where(name.Gt(cypher.LiteralOf(2)).Get()).
 			ReturningDefault())
 	Assert(t, builder, "RETURN [a IN [1, 2, 3, 4] WHERE a > 2]")
@@ -45,7 +45,7 @@ func TestWithWhereAndReturning(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.CypherListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
+			In(cypher.ListOf(cypher.LiteralOf(1), cypher.LiteralOf(2), cypher.LiteralOf(3), cypher.LiteralOf(4))).
 			Where(name.Gt(cypher.LiteralOf(2)).Get()).
 			Returning(name.Remainder(cypher.LiteralOf(2)).Get()))
 	Assert(t, builder, "RETURN [a IN [1, 2, 3, 4] WHERE a > 2 | (a % 2)]")

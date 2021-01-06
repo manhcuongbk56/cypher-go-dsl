@@ -10,7 +10,7 @@ func TestDoc3651And(t *testing.T) {
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
 	other := cypher.NewNode("Person").NamedByString("other")
 	statement, err := cypher.MatchElements(timothy, other).
-		WhereConditionContainer(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
+		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
 		AndPattern(timothy.RelationshipFrom(other)).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -25,7 +25,7 @@ func TestDoc3651And(t *testing.T) {
 	}
 	//
 	statement, err = cypher.MatchElements(timothy, other).
-		WhereConditionContainer(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
+		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			AndPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -45,7 +45,7 @@ func TestDoc3651Or(t *testing.T) {
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
 	other := cypher.NewNode("Person").NamedByString("other")
 	statement, err := cypher.MatchElements(timothy, other).
-		WhereConditionContainer(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
+		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
 		OrPattern(timothy.RelationshipFrom(other)).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -60,7 +60,7 @@ func TestDoc3651Or(t *testing.T) {
 	}
 	//
 	statement, err = cypher.MatchElements(timothy, other).
-		WhereConditionContainer(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
+		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			OrPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -80,7 +80,7 @@ func TestDoc3651Xor(t *testing.T) {
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
 	other := cypher.NewNode("Person").NamedByString("other")
 	statement, err := cypher.MatchElements(timothy, other).
-		WhereConditionContainer(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
+		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			XorPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -99,7 +99,7 @@ func TestDoc3652(t *testing.T) {
 	person := cypher.NewNode("Person").NamedByString("person")
 	peter := cypher.NewNode("Person").NamedByString("peter").WithRawProperties("name", cypher.LiteralOf("Peter"))
 	statement, err := cypher.MatchElements(person, peter).
-		Where(cypher.ConditionsNot(person.RelationshipTo(peter))).
+		Where(cypher.ConditionsNotByPattern(person.RelationshipTo(peter))).
 		Returning(person.Property("name"), person.Property("age")).
 		Build()
 	if err != nil {
@@ -177,7 +177,7 @@ func TestAfterWith(t *testing.T) {
 	other := cypher.NewNode("Person").NamedByString("other")
 	statement, err := cypher.MatchElements(timothy, other).
 		WithByNamed(timothy, other).
-		Where(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).Get()).
+		Where(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).Get()).
 		AndPattern(timothy.RelationshipFrom(other)).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
@@ -193,7 +193,7 @@ func TestAfterWith(t *testing.T) {
 	//
 	statement, err = cypher.MatchElements(timothy, other).
 		WithByNamed(timothy, other).
-		Where(other.Property("name").In(cypher.CypherListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).AndPattern(timothy.RelationshipFrom(other)).Get()).
+		Where(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).AndPattern(timothy.RelationshipFrom(other)).Get()).
 		Returning(other.Property("name"), other.Property("age")).
 		Build()
 	if err != nil {

@@ -38,11 +38,11 @@ func (p Pattern) PrepareVisit(visitable Visitable) Visitable {
 }
 
 func (p Pattern) accept(visitor *CypherRenderer) {
-	(*visitor).enter(p)
+	visitor.enter(p)
 	for _, pattern := range p.patternElements {
 		p.PrepareVisit(pattern).accept(visitor)
 	}
-	(*visitor).leave(p)
+	visitor.leave(p)
 }
 
 func (p Pattern) enter(renderer *CypherRenderer) {

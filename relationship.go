@@ -12,6 +12,12 @@ type Relationship struct {
 }
 
 func RelationshipCreate(left Node, direction Direction, right Node, types ...string) Relationship {
+	if left.GetError() != nil {
+		return RelationshipError(left.GetError())
+	}
+	if right.GetError() != nil {
+		return RelationshipError(right.GetError())
+	}
 	relationshipTypes := RelationshipTypes{}
 	if len(types) > 0 {
 		typeSlice := make([]string, 0)

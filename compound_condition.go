@@ -155,7 +155,7 @@ func (c *CompoundCondition) add(chainingOperator Operator, condition Condition) 
 			return *c
 		}
 		if c.operator == chainingOperator && chainingOperator == compoundCondition.operator {
-			if c.canBeFlattenedWith(chainingOperator) {
+			if compoundCondition.canBeFlattenedWith(chainingOperator) {
 				c.conditions = append(c.conditions, compoundCondition.conditions...)
 			} else {
 				c.conditions = append(c.conditions, compoundCondition)
@@ -180,9 +180,9 @@ func (c CompoundCondition) hasCondition() bool {
 		len(c.conditions) == 0)
 }
 
-func (c CompoundCondition) canBeFlattenedWith(operator Operator) bool {
+func (c CompoundCondition) canBeFlattenedWith(operatorBefore Operator) bool {
 	for _, c := range c.conditions {
-		if compound, isCompound := c.(CompoundCondition); isCompound && compound.operator == operator {
+		if compound, isCompound := c.(CompoundCondition); isCompound && compound.operator != operatorBefore {
 			return false
 		}
 	}

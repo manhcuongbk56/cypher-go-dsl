@@ -38,9 +38,9 @@ func (l Limit) getKey() string {
 }
 
 func (l Limit) accept(visitor *CypherRenderer) {
-	(*visitor).enter(l)
+	visitor.enter(l)
 	l.limitAmount.accept(visitor)
-	(*visitor).leave(l)
+	visitor.leave(l)
 }
 
 func (l Limit) enter(renderer *CypherRenderer) {

@@ -27,9 +27,9 @@ func (s Skip) getKey() string {
 }
 
 func (s Skip) accept(visitor *CypherRenderer) {
-	(*visitor).enter(s)
+	visitor.enter(s)
 	s.skipAmount.accept(visitor)
-	(*visitor).leave(s)
+	visitor.leave(s)
 }
 
 func (s Skip) enter(renderer *CypherRenderer) {

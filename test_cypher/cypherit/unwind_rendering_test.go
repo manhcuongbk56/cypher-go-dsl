@@ -15,7 +15,7 @@ func TestUnwindWithoutWith(t *testing.T) {
 		Unwind(rootNode.Labels()).
 		As("label").
 		With(label).
-		Where(label.In(cypher.CypherParameter("fixedLabels")).Not().Get()).
+		Where(label.In(cypher.Param("fixedLabels")).Not().Get()).
 		Returning(cypher.FunctionCollect(label).As("labels").Get())
 	Assert(t, builder, "MATCH (n) WHERE id(n) = 1 UNWIND labels(n) AS label WITH label WHERE NOT (label IN "+
 		"$fixedLabels) RETURN collect(label) AS labels")

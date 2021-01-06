@@ -158,7 +158,7 @@ func CypherName(value string) SymbolicName {
  * @param name The name of the parameter, must not be null
  * @return The new parameter
  */
-func CypherParameter(name string) Parameter {
+func Param(name string) Parameter {
 	return ParameterCreate(name)
 }
 
@@ -275,7 +275,7 @@ func CypherUnwind(expression Expression) OngoingUnwind {
  * @return a new instance of {@link StatementBuilder.OngoingUnwind}
  */
 func CypherUnwindMulti(expressions ...Expression) OngoingUnwind {
-	return DefaultStatementBuilderCreate().Unwind(CypherListOf(expressions...))
+	return DefaultStatementBuilderCreate().Unwind(ListOf(expressions...))
 }
 
 /**
@@ -304,7 +304,7 @@ func MapOf(objects ...interface{}) MapExpression {
  * @param expressions expressions to get combined into a list
  * @return a new instance of {@link ListExpression}
  */
-func CypherListOf(expressions ...Expression) ListExpression {
+func ListOf(expressions ...Expression) ListExpression {
 	return ListExpressionCreate1(expressions...)
 }
 
@@ -527,6 +527,7 @@ func CypherValueAtByExpression(targetExpression Expression, index Expression) Ex
 }
 
 func LiteralOf(object interface{}) Literal {
+	//TODO: maybe we need to handle more literal type
 	if object == nil {
 		return NIL_INSTANCE
 	}
@@ -535,6 +536,9 @@ func LiteralOf(object interface{}) Literal {
 	}
 	if intValue, isInt := object.(int); isInt {
 		return NumberLiteralCreate1(intValue)
+	}
+	if floatValue, isFloat := object.(float64); isFloat {
+		return NumberLiteralCreate2(floatValue)
 	}
 	if literalSlice, isLiteralSlice := object.([]Literal); isLiteralSlice {
 		return ListLiteralCreate(literalSlice)

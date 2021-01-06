@@ -49,8 +49,8 @@ func (b BooleanLiteral) AsString() string {
 }
 
 func (b BooleanLiteral) accept(visitor *CypherRenderer) {
-	(*visitor).enter(b)
-	(*visitor).leave(b)
+	visitor.enter(b)
+	visitor.leave(b)
 }
 
 func (b BooleanLiteral) enter(renderer *CypherRenderer) {

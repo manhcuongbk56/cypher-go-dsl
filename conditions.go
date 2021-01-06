@@ -1,7 +1,16 @@
 package cypher
 
-func ConditionsNot(element PatternElement) Condition {
+import "golang.org/x/xerrors"
+
+func ConditionsNotByPattern(element PatternElement) Condition {
 	return ExcludedPatternCreate(element)
+}
+
+func ConditionsNot(condition Condition) Condition {
+	if condition == nil || !condition.isNotNil() {
+		return CompoundConditionError(xerrors.New("condition not: condition to negate must not be nil"))
+	}
+	return condition.Not().Get()
 }
 
 func ConditionsNoCondition() Condition {

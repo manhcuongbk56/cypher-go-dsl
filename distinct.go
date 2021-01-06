@@ -26,8 +26,8 @@ func (d Distinct) getKey() string {
 }
 
 func (d Distinct) accept(visitor *CypherRenderer) {
-	(*visitor).enter(d)
-	(*visitor).leave(d)
+	visitor.enter(d)
+	visitor.leave(d)
 }
 
 func (d Distinct) enter(renderer *CypherRenderer) {

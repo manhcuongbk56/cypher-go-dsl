@@ -329,7 +329,7 @@ func (d DefaultStatementBuilder) Unwinds(expressions ...Expression) OngoingUnwin
 			return DefaultOngoingUnwindError(expression.GetError())
 		}
 	}
-	return d.Unwind(CypherListOf(expressions...))
+	return d.Unwind(ListOf(expressions...))
 }
 
 func (d DefaultStatementBuilder) UnwindByString(variable string) OngoingUnwind {

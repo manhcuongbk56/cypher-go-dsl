@@ -59,8 +59,8 @@ func TestShouldSupportExpressions(t *testing.T) {
 		MatchElements(person).
 		Returning(person.Project("livesIn",
 			cypher.SubList(cypher.ListBasedOn(person.RelationshipTo(location, "LIVES_IN")).
-				Returning(location.Project("name")), cypher.CypherParameter("personLivedInOffset"),
-				cypher.CypherParameter("personLivedInOffset").Add(cypher.CypherParameter("personLivedInFirst")).Get())))
+				Returning(location.Project("name")), cypher.Param("personLivedInOffset"),
+				cypher.Param("personLivedInOffset").Add(cypher.Param("personLivedInFirst")).Get())))
 
 	Assert(t, builder, "MATCH (person:`Person`) RETURN person{livesIn: [(person)-[:`LIVES_IN`]->(personLivesIn:`Location`) | personLivesIn{.name}][$personLivedInOffset..($personLivedInOffset + $personLivedInFirst)]}")
 }
