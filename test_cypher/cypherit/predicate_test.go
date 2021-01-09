@@ -22,6 +22,18 @@ func TestAllShouldWork(t *testing.T) {
 	Assert(t, builder, "MATCH p = (a)-[*1..3]->(b) WHERE (a.name = 'Alice' AND b.name = 'Daniel' AND all(x IN nodes(p) WHERE x.age > 30)) RETURN p")
 }
 
+func TestAnyShouldWork1(t *testing.T) {
+	var builder cypher.BuildableStatement
+	//
+	a := cypher.AnyNodeNamed("a")
+	builder = cypher.
+		MatchElements(a).
+		Where(nil).
+		Returning(a.Property("name"), a.Property("array"))
+
+	Assert(t, builder, "MATCH (a) WHERE (a.name = 'Eskil' AND any(x IN a.array WHERE x = 'one')) RETURN a.name, a.array")
+}
+
 func TestAnyShouldWork(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//

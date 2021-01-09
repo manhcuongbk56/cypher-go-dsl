@@ -62,7 +62,7 @@ func NewMapExpression(objects ...interface{}) MapExpression {
 		}
 		value, isExpression := objects[i+1].(Expression)
 		if !isExpression {
-			return MapExpressionError(errors.Errorf("object must be expression"))
+			value = LiteralOf(value)
 		}
 		if knownKeys[key] == 1 {
 			return MapExpressionError(errors.Errorf("duplicate key"))
