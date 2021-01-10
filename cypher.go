@@ -151,33 +151,33 @@ func AParam(name string) Parameter {
 }
 
 /**
- * Prepares an optional match statement.
+ * Prepares an optional MatchPhrase statement.
  *
- * @param pattern The patterns to match
- * @return An ongoing match that is used to specify an optional Where and a required return clause
+ * @param pattern The patterns to MatchPhrase
+ * @return An ongoing MatchPhrase that is used to specify an optional Where and a required return clause
  */
 func AnOptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().OptionalMatch(element...)
 }
 
 /**
- * Starts building a statement based on a match clause. Use {@link Cypher#node(String, String...)} and related to
+ * Starts building a statement based on a MatchPhrase clause. Use {@link Cypher#node(String, String...)} and related to
  * retrieve a node or a relationship, which both are pattern elements.
  *
- * @param pattern The patterns to match
- * @return An ongoing match that is used to specify an optional Where and a required return clause
+ * @param pattern The patterns to MatchPhrase
+ * @return An ongoing MatchPhrase that is used to specify an optional Where and a required return clause
  */
 func Match(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
 }
 
 /**
- * Starts building a statement based on a match clause. Use {@link Cypher#node(String, String...)} and related to
+ * Starts building a statement based on a MatchPhrase clause. Use {@link Cypher#node(String, String...)} and related to
  * retrieve a node or a relationship, which both are pattern elements.
  *
  * @param optional A flag whether the {@code MATCH} clause includes the {@code OPTIONAL} keyword.
- * @param pattern  The patterns to match
- * @return An ongoing match that is used to specify an optional Where and a required return clause
+ * @param pattern  The patterns to MatchPhrase
+ * @return An ongoing MatchPhrase that is used to specify an optional Where and a required return clause
  * @since 2020.1.3
  */
 func MatchWithOption(optional bool, element ...PatternElement) OngoingReadingWithoutWhere {
@@ -248,7 +248,7 @@ func Merge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
  * Starts building a statement starting with an {@code UNWIND} clause. The expression needs to be an expression
  * evaluating to a list, otherwise the query will fail.
  *
- * @param expression The expression to unwind
+ * @param expression The expression to UnwindPhrase
  * @return An ongoing {@code UNWIND}.
  */
 func Unwind(expression Expression) OngoingUnwind {
@@ -259,7 +259,7 @@ func Unwind(expression Expression) OngoingUnwind {
  * Starts building a statement starting with an {@code UNWIND} clause. The expressions passed will be turned into a
  * list expression
  *
- * @param expressions expressions to unwind
+ * @param expressions expressions to UnwindPhrase
  * @return a new instance of {@link StatementBuilder.OngoingUnwind}
  */
 func UnwindMulti(expressions ...Expression) OngoingUnwind {
@@ -331,7 +331,7 @@ func UnionAll(statements ...Statement) Statement {
 }
 
 /**
- * A {@literal RETURN} statement without a previous match.
+ * A {@literal RETURN} statement without a previous MatchPhrase.
  *
  * @param expressions The expressions to return
  * @return A buildable statement

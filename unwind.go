@@ -1,6 +1,6 @@
 package cypher
 
-type unwind struct {
+type UnwindPhrase struct {
 	expressionToUnwind Expression
 	variable           string
 	key                string
@@ -8,7 +8,7 @@ type unwind struct {
 	err                error
 }
 
-func unwindCreate(expressionToUnwind Expression, variable string) unwind {
+func unwindCreate(expressionToUnwind Expression, variable string) UnwindPhrase {
 	if expressionToUnwind != nil && expressionToUnwind.GetError() != nil {
 		return unwindError(expressionToUnwind.GetError())
 	}
@@ -18,7 +18,7 @@ func unwindCreate(expressionToUnwind Expression, variable string) unwind {
 	} else {
 		expression = expressionToUnwind
 	}
-	unwind := unwind{
+	unwind := UnwindPhrase{
 		expressionToUnwind: expression,
 		variable:           variable,
 		notNil:             true,
@@ -27,34 +27,34 @@ func unwindCreate(expressionToUnwind Expression, variable string) unwind {
 	return unwind
 }
 
-func unwindError(err error) unwind {
-	return unwind{err: err}
+func unwindError(err error) UnwindPhrase {
+	return UnwindPhrase{err: err}
 }
 
-func (u unwind) GetError() error {
+func (u UnwindPhrase) GetError() error {
 	return u.err
 }
 
-func (u unwind) accept(visitor *CypherRenderer) {
+func (u UnwindPhrase) accept(visitor *CypherRenderer) {
 	visitor.enter(u)
 	u.expressionToUnwind.accept(visitor)
 	visitor.leave(u)
 }
 
-func (u unwind) enter(renderer *CypherRenderer) {
+func (u UnwindPhrase) enter(renderer *CypherRenderer) {
 	renderer.append("UNWIND ")
 }
 
-func (u unwind) leave(renderer *CypherRenderer) {
+func (u UnwindPhrase) leave(renderer *CypherRenderer) {
 	renderer.append(" AS ")
 	renderer.append(u.variable)
 	renderer.append(" ")
 }
 
-func (u unwind) getKey() string {
+func (u UnwindPhrase) getKey() string {
 	return u.key
 }
 
-func (u unwind) isNotNil() bool {
+func (u UnwindPhrase) isNotNil() bool {
 	return u.notNil
 }

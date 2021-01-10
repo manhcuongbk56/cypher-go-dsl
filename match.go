@@ -1,6 +1,6 @@
 package cypher
 
-type match struct {
+type MatchPhrase struct {
 	optional      bool
 	pattern       Pattern
 	optionalWhere Where
@@ -9,14 +9,14 @@ type match struct {
 	err           error
 }
 
-func matchCreate(optional bool, pattern Pattern, optionalWhere Where) match {
+func MatchPhraseCreate(optional bool, pattern Pattern, optionalWhere Where) MatchPhrase {
 	if pattern.GetError() != nil {
 		return matchError(pattern.GetError())
 	}
 	if optionalWhere.GetError() != nil {
 		return matchError(optionalWhere.GetError())
 	}
-	m := match{
+	m := MatchPhrase{
 		optional:      optional,
 		pattern:       pattern,
 		optionalWhere: optionalWhere,
@@ -26,40 +26,40 @@ func matchCreate(optional bool, pattern Pattern, optionalWhere Where) match {
 	return m
 }
 
-func matchError(err error) match {
-	return match{err: err}
+func matchError(err error) MatchPhrase {
+	return MatchPhrase{err: err}
 }
 
-func (match match) GetError() error {
+func (match MatchPhrase) GetError() error {
 	return match.err
 }
 
-func (match match) isNotNil() bool {
+func (match MatchPhrase) isNotNil() bool {
 	return match.notNil
 }
 
-func (match match) isOptional() bool {
+func (match MatchPhrase) isOptional() bool {
 	return match.optional
 }
 
-func (match match) accept(visitor *CypherRenderer) {
+func (match MatchPhrase) accept(visitor *CypherRenderer) {
 	visitor.enter(match)
 	match.pattern.accept(visitor)
 	VisitIfNotNull(match.optionalWhere, visitor)
 	visitor.leave(match)
 }
 
-func (match match) getKey() string {
+func (match MatchPhrase) getKey() string {
 	return match.key
 }
 
-func (match match) enter(renderer *CypherRenderer) {
+func (match MatchPhrase) enter(renderer *CypherRenderer) {
 	if match.isOptional() {
 		renderer.append("OPTIONAL ")
 	}
 	renderer.append("MATCH ")
 }
 
-func (match match) leave(renderer *CypherRenderer) {
+func (match MatchPhrase) leave(renderer *CypherRenderer) {
 	renderer.append(" ")
 }

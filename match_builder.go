@@ -15,12 +15,12 @@ func MatchBuilderCreate(optional bool) MatchBuilder {
 	}
 }
 
-func (builder MatchBuilder) buildMatch() match {
+func (builder MatchBuilder) buildMatch() MatchPhrase {
 	pattern := Pattern{patternElements: builder.patternList}
 	conditionBuilder := builder.conditionBuilder
 	builtCondition := conditionBuilder.buildCondition()
 	if builtCondition == nil || !builtCondition.isNotNil() {
-		return matchCreate(builder.optional, pattern, Where{})
+		return MatchPhraseCreate(builder.optional, pattern, Where{})
 	}
-	return matchCreate(builder.optional, pattern, WhereCreate(builtCondition))
+	return MatchPhraseCreate(builder.optional, pattern, WhereCreate(builtCondition))
 }

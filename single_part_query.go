@@ -17,7 +17,7 @@ func SinglePartQueryCreate(clauses []Visitable, aReturn Return) SinglePartQuery 
 		return SinglePartQueryError(errors.New("required return clause"))
 	}
 	if len(clauses) > 0 {
-		if _, isMatch := clauses[len(clauses)-1].(match); isMatch && !aReturn.isNotNil() {
+		if _, isMatch := clauses[len(clauses)-1].(MatchPhrase); isMatch && !aReturn.isNotNil() {
 			return SinglePartQueryError(errors.New("required return clause"))
 		}
 	}

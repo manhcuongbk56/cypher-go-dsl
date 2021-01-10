@@ -13,7 +13,7 @@ func TestGh48(t *testing.T) {
 	}
 	query, _ := NewRenderer().Render(statement)
 	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {
-		t.Errorf("Query is not match: %s", query)
+		t.Errorf("Query is not MatchPhrase: %s", query)
 	}
 }
 
@@ -29,6 +29,6 @@ func TestGh48(t *testing.T) {
 //	}
 //	query := NewRenderer().Render(statement)
 //	if query != "MATCH (n:`Label`) SET n = {`a`: 'bar', `b`: 'baz'} RETURN n" {
-//		t.Errorf("Query is not match: %s", query)
+//		t.Errorf("Query is not MatchPhrase: %s", query)
 //	}
 //}
