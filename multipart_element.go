@@ -2,13 +2,13 @@ package cypher
 
 type MultiPartElement struct {
 	precedingClauses []Visitable
-	with             With
+	with             with
 	key              string
 	notNil           bool
 	err              error
 }
 
-func MultiPartElementCreate(precedingClauses []Visitable, with With) MultiPartElement {
+func MultiPartElementCreate(precedingClauses []Visitable, with with) MultiPartElement {
 	for _, clause := range precedingClauses {
 		if clause != nil && clause.GetError() != nil {
 			return MultiPartElement{err: clause.GetError()}

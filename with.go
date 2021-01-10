@@ -1,6 +1,6 @@
 package cypher
 
-type With struct {
+type with struct {
 	distinct Distinct
 	body     ReturnBody
 	where    Where
@@ -9,27 +9,27 @@ type With struct {
 	err      error
 }
 
-func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) With {
+func withCreate(distinct bool, returnItems ExpressionList, order Order, skip Skip, limit Limit, where Where) with {
 	if returnItems.GetError() != nil {
-		WithError(returnItems.GetError())
+		withError(returnItems.GetError())
 	}
 	if order.GetError() != nil {
-		WithError(order.GetError())
+		withError(order.GetError())
 	}
 	if skip.GetError() != nil {
-		WithError(skip.GetError())
+		withError(skip.GetError())
 	}
 	if limit.GetError() != nil {
-		WithError(limit.GetError())
+		withError(limit.GetError())
 	}
 	if where.GetError() != nil {
-		WithError(where.GetError())
+		withError(where.GetError())
 	}
 	distinctInstance := Distinct{}
 	if distinct {
 		distinctInstance = DISTINCT_INSTANCE
 	}
-	with := With{
+	with := with{
 		distinct: distinctInstance,
 		body:     ReturnBodyCreate(returnItems, order, skip, limit),
 		where:    where,
@@ -39,17 +39,17 @@ func WithCreate(distinct bool, returnItems ExpressionList, order Order, skip Ski
 	return with
 }
 
-func WithError(err error) With {
-	return With{
+func withError(err error) with {
+	return with{
 		err: err,
 	}
 }
 
-func (with With) GetError() error {
+func (with with) GetError() error {
 	return with.err
 }
 
-func (with With) accept(visitor *CypherRenderer) {
+func (with with) accept(visitor *CypherRenderer) {
 	visitor.enter(with)
 	VisitIfNotNull(with.distinct, visitor)
 	with.body.accept(visitor)
@@ -57,18 +57,18 @@ func (with With) accept(visitor *CypherRenderer) {
 	visitor.leave(with)
 }
 
-func (with With) enter(renderer *CypherRenderer) {
+func (with with) enter(renderer *CypherRenderer) {
 	renderer.append("WITH ")
 }
 
-func (with With) leave(renderer *CypherRenderer) {
+func (with with) leave(renderer *CypherRenderer) {
 	renderer.append(" ")
 }
 
-func (with With) getKey() string {
+func (with with) getKey() string {
 	return with.key
 }
 
-func (with With) isNotNil() bool {
+func (with with) isNotNil() bool {
 	return with.notNil
 }

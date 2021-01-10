@@ -6,7 +6,7 @@ type UpdatingClauseBuilder interface {
 
 //Implement
 
-//Merge
+//merge
 type MergeBuilder struct {
 	patternElements []PatternElement
 	mergeActions    []MergeAction
@@ -30,10 +30,10 @@ func (c MergeBuilder) on(mergeType MERGE_TYPE, expressions ...Expression) (Suppo
 }
 
 func (c MergeBuilder) build() UpdatingClause {
-	return MergeCreate1(PatternCreate(c.patternElements), c.mergeActions)
+	return mergeCreate1(PatternCreate(c.patternElements), c.mergeActions)
 }
 
-//Create
+//create
 type CreateBuilder struct {
 	patternElements []PatternElement
 }
@@ -43,7 +43,7 @@ func CreateBuilderCreate(patternElements []PatternElement) CreateBuilder {
 }
 
 func (c CreateBuilder) build() UpdatingClause {
-	return CreateCreate(PatternCreate(c.patternElements))
+	return createcreate(PatternCreate(c.patternElements))
 }
 
 //Delete

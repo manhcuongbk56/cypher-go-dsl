@@ -24,7 +24,7 @@ func TestUnwindWithoutWith(t *testing.T) {
 func TestShouldRenderLeadingUnwind(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherUnwindMulti(cypher.LiteralOf(1), cypher.CypherLiteralTrue(), cypher.CypherLiteralFalse()).
+	builder = cypher.UnwindMulti(cypher.LiteralOf(1), cypher.LiteralTrue(), cypher.LiteralFalse()).
 		As("n").Returning(cypher.ASymbolic("n"))
 	Assert(t, builder, "UNWIND [1, true, false] AS n RETURN n")
 }
@@ -32,7 +32,7 @@ func TestShouldRenderLeadingUnwind(t *testing.T) {
 func TestShouldRenderLeadingUnwindWithUpdate(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherUnwindMulti(cypher.LiteralOf(1), cypher.CypherLiteralTrue(), cypher.CypherLiteralFalse()).
+	builder = cypher.UnwindMulti(cypher.LiteralOf(1), cypher.LiteralTrue(), cypher.LiteralFalse()).
 		As("n").
 		Merge(bikeNode.WithRawProperties("b", cypher.ASymbolic("n"))).
 		ReturningByNamed(bikeNode)
@@ -42,7 +42,7 @@ func TestShouldRenderLeadingUnwindWithUpdate(t *testing.T) {
 func TestShouldRenderLeadingUnwindWithCreate(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherUnwindMulti(cypher.LiteralOf(1), cypher.CypherLiteralTrue(), cypher.CypherLiteralFalse()).
+	builder = cypher.UnwindMulti(cypher.LiteralOf(1), cypher.LiteralTrue(), cypher.LiteralFalse()).
 		As("n").
 		Create(bikeNode.WithRawProperties("b", cypher.ASymbolic("n"))).
 		ReturningByNamed(bikeNode)

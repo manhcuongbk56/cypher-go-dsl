@@ -8,21 +8,21 @@ import (
 func TestShouldRenderCreateWithoutReturn(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode)
+	builder = cypher.Create(userNode)
 	Assert(t, builder, "CREATE (u:`User`)")
 	//
-	builder = cypher.CypherCreate(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
+	builder = cypher.Create(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "CREATE (u:`User`)-[o:`OWNS`]->(b:`Bike`)")
 }
 
 func TestShouldRenderMultipleCreatesWithoutReturn(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		Create(bikeNode)
 	Assert(t, builder, "CREATE (u:`User`) CREATE (b:`Bike`)")
 	//
-	builder = cypher.CypherCreate(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")).
+	builder = cypher.Create(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")).
 		Create(OtherNode())
 	Assert(t, builder, "CREATE (u:`User`)-[o:`OWNS`]->(b:`Bike`) CREATE (other:`Other`)")
 }
@@ -30,16 +30,16 @@ func TestShouldRenderMultipleCreatesWithoutReturn(t *testing.T) {
 func TestShouldRenderCreateReturn(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		ReturningByNamed(userNode)
 	Assert(t, builder, "CREATE (u:`User`) RETURN u")
 	//
 	r := userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")
-	builder = cypher.CypherCreate(r).
+	builder = cypher.Create(r).
 		ReturningByNamed(userNode, r)
 	Assert(t, builder, "CREATE (u:`User`)-[o:`OWNS`]->(b:`Bike`) RETURN u, o")
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		ReturningByNamed(userNode).
 		OrderBy(userNode.Property("name")).
 		Skip(23).
@@ -50,14 +50,14 @@ func TestShouldRenderCreateReturn(t *testing.T) {
 func TestShouldRenderMultipleCreatesReturn(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		Create(bikeNode).
 		ReturningByNamed(userNode)
 	Assert(t, builder, "CREATE (u:`User`) CREATE (b:`Bike`) RETURN u")
 	//
 	r := userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")
 	builder = cypher.
-		CypherCreate(r).
+		Create(r).
 		Create(OtherNode()).
 		ReturningByNamed(userNode, r)
 	Assert(t, builder, "CREATE (u:`User`)-[o:`OWNS`]->(b:`Bike`) CREATE (other:`Other`) RETURN u, o")
@@ -66,13 +66,13 @@ func TestShouldRenderMultipleCreatesReturn(t *testing.T) {
 func TestShouldRenderCreateWithWith(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		WithByNamed(userNode).
 		ReturningByNamed(userNode)
 	Assert(t, builder, "CREATE (u:`User`) WITH u RETURN u")
 	//
 	builder = cypher.
-		CypherCreate(userNode).
+		Create(userNode).
 		WithByNamed(userNode).
 		Set(userNode.Property("x").To(cypher.LiteralOf("y")))
 	Assert(t, builder, "CREATE (u:`User`) WITH u SET u.x = 'y'")

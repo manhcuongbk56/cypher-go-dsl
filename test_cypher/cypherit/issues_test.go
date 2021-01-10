@@ -28,7 +28,7 @@ func TestGh167(t *testing.T) {
 	builder = cypher.
 		Match(aFl, lFr).
 		WithDistinctByNamed(resume, locStart, app).
-		Match(resume.RelationshipTo(offer.WithRawProperties("is_valid", cypher.CypherLiteralTrue()), "IN_COHORT_OF").
+		Match(resume.RelationshipTo(offer.WithRawProperties("is_valid", cypher.LiteralTrue()), "IN_COHORT_OF").
 			RelationshipTo(cypher.AnyNodeNamed("app"), "IN")).
 		WithDistinctByNamed(resume, locStart, app, offer).
 		Match(offer.RelationshipTo(startN, "FOR")).
@@ -47,7 +47,7 @@ func TestGh174(t *testing.T) {
 	builder = cypher.
 		Match(r.RelationshipTo(o, "FOR")).
 		Where(r.HasLabels("LastResume").Not().Get()).
-		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.CypherLiteralFalse()).IsEqualTo(cypher.CypherLiteralFalse()).
+		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
 			And(r.HasLabels("InvalidStatus").Not().Get()).
 			Or(o.Property("valid_only").IsTrue().And(r.HasLabels("InvalidStatus")).Get()).Get()).
 		ReturningDistinctByNamed(r, o)
@@ -63,7 +63,7 @@ func TestGh184(t *testing.T) {
 	builder = cypher.
 		Match(r.RelationshipFrom(u, "HAS")).
 		Where(r.HasLabels("LastResume").Not().Get()).
-		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.CypherLiteralFalse()).IsEqualTo(cypher.CypherLiteralFalse()).
+		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
 			And(r.HasLabels("InvalidStatus").Not().Get()).
 			Or(o.Property("valid_only").IsTrue().And(r.HasLabels("ValidStatus")).Get()).Get()).
 		And(r.Property("is_internship").IsTrue().
@@ -139,11 +139,11 @@ func TestGh197(t *testing.T) {
 		cypher.LiteralOf("b"),
 		cypher.LiteralOf("1"),
 		cypher.LiteralOf("99"))
-	builder = cypher.CypherUnwind(list).
+	builder = cypher.Unwind(list).
 		As("val").
 		Returning(cypher.FunctionMax(cypher.ASymbolic("val")))
 	Assert(t, builder, "UNWIND [1, 'a', NULL, 0.2, 'b', '1', '99'] AS val RETURN max(val)")
-	builder = cypher.CypherUnwind(list).
+	builder = cypher.Unwind(list).
 		As("val").
 		Returning(cypher.FunctionMin(cypher.ASymbolic("val")))
 	Assert(t, builder, "UNWIND [1, 'a', NULL, 0.2, 'b', '1', '99'] AS val RETURN min(val)")
@@ -227,7 +227,7 @@ func TestGh84(t *testing.T) {
 	child := cypher.ANode("Child").NamedByString("child")
 	//
 	builder = cypher.
-		CypherCall("apoc.create.relationship").
+		ACall("apoc.create.relationship").
 		WithArgs(parent.GetRequiredSymbolicName(), cypher.LiteralOf("ChildEdge"), cypher.MapOf("score", cypher.LiteralOf(0.33), "weight", cypher.LiteralOf(1.7)), child.GetRequiredSymbolicName()).
 		YieldString("rel")
 	Assert(t, builder, "CALL apoc.create.relationship(parent, 'ChildEdge', {score: 0.33, weight: 1.7}, child) YIELD rel")
@@ -258,6 +258,6 @@ func TestMapKeysShouldBeEscapedIfNecessary(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
 	builder = cypher.
-		CypherReturning(cypher.MapOf("key 1", cypher.CypherLiteralTrue(), "key 2", cypher.CypherLiteralFalse()))
+		CypherReturning(cypher.MapOf("key 1", cypher.LiteralTrue(), "key 2", cypher.LiteralFalse()))
 	Assert(t, builder, "RETURN {`key 1`: true, `key 2`: false}")
 }

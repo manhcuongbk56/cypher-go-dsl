@@ -247,7 +247,7 @@ func TestMultipleEmptyConditionsMustCollapse2(t *testing.T) {
 func TestMultipleEmptyConditionsMustCollapse3(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		WhereConditionContainer(cypher.ConditionsNoCondition().And(userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()).Or(cypher.ConditionsNoCondition())).
+		WhereConditionContainer(cypher.ConditionsNoCondition().And(userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()).Or(cypher.ConditionsNoCondition())).
 		And(cypher.ConditionsNoCondition().And(cypher.ConditionsNoCondition()).Or(cypher.ConditionsNoCondition()).Get()).
 		ReturningByNamed(userNode).
 		Build()
@@ -264,7 +264,7 @@ func TestMultipleEmptyConditionsMustCollapse3(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse4(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
+	have := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.Or(no).Or(have)).
@@ -283,7 +283,7 @@ func TestMultipleEmptyConditionsMustCollapse4(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse5(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
+	have := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.And(have).Or(no)).
@@ -302,7 +302,7 @@ func TestMultipleEmptyConditionsMustCollapse5(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse6(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
+	have := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.Or(no)).
@@ -322,8 +322,8 @@ func TestMultipleEmptyConditionsMustCollapse6(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse7(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
-	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
+	a := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
+	b := userNode.Property("b").IsEqualTo(cypher.LiteralFalse()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.And(a).Or(no)).
@@ -343,8 +343,8 @@ func TestMultipleEmptyConditionsMustCollapse7(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse8(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
-	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
+	a := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
+	b := userNode.Property("b").IsEqualTo(cypher.LiteralFalse()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.Or(no).Or(a).And(b)).
@@ -363,8 +363,8 @@ func TestMultipleEmptyConditionsMustCollapse8(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse9(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
-	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
-	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
+	a := userNode.Property("a").IsEqualTo(cypher.LiteralTrue()).Get()
+	b := userNode.Property("b").IsEqualTo(cypher.LiteralFalse()).Get()
 	statement, err := cypher.
 		Match(userNode).
 		WhereConditionContainer(no.Or(a).Or(no).And(b).Or(no)).

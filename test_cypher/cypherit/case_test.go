@@ -13,7 +13,7 @@ func TestSimpleCase(t *testing.T) {
 		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
-			Then(cypher.CypherLiteralTrue())).
+			Then(cypher.LiteralTrue())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE n.value WHEN 'blubb' THEN true END RETURN n")
@@ -27,8 +27,8 @@ func TestSimpleCaseWithElse(t *testing.T) {
 		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
-			Then(cypher.CypherLiteralTrue()).
-			ElseDefault(cypher.CypherLiteralFalse())).
+			Then(cypher.LiteralTrue()).
+			ElseDefault(cypher.LiteralFalse())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE n.value WHEN 'blubb' THEN true ELSE false END RETURN n")
@@ -42,9 +42,9 @@ func TestSimpleCaseWithMultipleWhenThen(t *testing.T) {
 		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
-			Then(cypher.CypherLiteralTrue()).
+			Then(cypher.LiteralTrue()).
 			When(cypher.LiteralOf("bla")).
-			Then(cypher.CypherLiteralFalse())).
+			Then(cypher.LiteralFalse())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE n.value WHEN 'blubb' THEN true WHEN 'bla' THEN false END RETURN n")
@@ -58,9 +58,9 @@ func TestSimpleCaseWithMultipleWhenThenAndElse(t *testing.T) {
 		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
-			Then(cypher.CypherLiteralTrue()).
+			Then(cypher.LiteralTrue()).
 			When(cypher.LiteralOf("bla")).
-			Then(cypher.CypherLiteralFalse()).
+			Then(cypher.LiteralFalse()).
 			ElseDefault(cypher.LiteralOf(1))).
 		ReturningByNamed(node)
 
@@ -75,7 +75,7 @@ func TestGenericCase(t *testing.T) {
 		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
-			Then(cypher.CypherLiteralTrue())).
+			Then(cypher.LiteralTrue())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE WHEN n.value = 'blubb' THEN true END RETURN n")
@@ -89,8 +89,8 @@ func TestGenericCaseWithElse(t *testing.T) {
 		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
-			Then(cypher.CypherLiteralTrue()).
-			ElseDefault(cypher.CypherLiteralFalse())).
+			Then(cypher.LiteralTrue()).
+			ElseDefault(cypher.LiteralFalse())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE WHEN n.value = 'blubb' THEN true ELSE false END RETURN n")
@@ -104,9 +104,9 @@ func TestGenericCaseWithMultipleWhenThen(t *testing.T) {
 		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
-			Then(cypher.CypherLiteralTrue()).
+			Then(cypher.LiteralTrue()).
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("bla")).Get()).
-			Then(cypher.CypherLiteralFalse())).
+			Then(cypher.LiteralFalse())).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`) WHERE CASE WHEN n.value = 'blubb' THEN true WHEN n.value = 'bla' THEN false END RETURN n")
@@ -120,9 +120,9 @@ func TestGenericCaseWithMultipleWhenThenAndElse(t *testing.T) {
 		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
-			Then(cypher.CypherLiteralTrue()).
+			Then(cypher.LiteralTrue()).
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("bla")).Get()).
-			Then(cypher.CypherLiteralFalse()).
+			Then(cypher.LiteralFalse()).
 			ElseDefault(cypher.LiteralOf(1))).
 		ReturningByNamed(node)
 

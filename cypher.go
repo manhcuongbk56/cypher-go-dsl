@@ -6,7 +6,7 @@ import (
 )
 
 /**
- * Create a new Node representation with at least one label, the "primary" label. This is required. All other labels
+ * create a new Node representation with at least one label, the "primary" label. This is required. All other labels
  * are optional.
  *
  * @param primaryLabel     The primary label this node is identified by.
@@ -25,7 +25,7 @@ func NewNodeWithLabels(primaryLabel string, additionalLabel ...string) Node {
 }
 
 /**
- * Create a new Node representation with at least one label, the "primary" label. This is required. All other labels
+ * create a new Node representation with at least one label, the "primary" label. This is required. All other labels
  * are optional. This method also takes a map of properties. This allows the returned node object to be used In a
  * {@code MATCH} or {@code MERGE} statement.
  *
@@ -180,7 +180,7 @@ func Match(element ...PatternElement) OngoingReadingWithoutWhere {
  * @return An ongoing match that is used to specify an optional Where and a required return clause
  * @since 2020.1.3
  */
-func CypherMatchDefault(optional bool, element ...PatternElement) OngoingReadingWithoutWhere {
+func MatchWithOption(optional bool, element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().MatchDefault(optional, element...)
 }
 
@@ -191,7 +191,7 @@ func CypherMatchDefault(optional bool, element ...PatternElement) OngoingReading
  * @param <T>     The type of the next step
  * @return An ongoing {@code CREATE} that can be used to specify {@code WITH} and {@code RETURNING} etc.
  */
-func CypherCreate(patterns ...PatternElement) OngoingUpdateAndExposesSet {
+func Create(patterns ...PatternElement) OngoingUpdateAndExposesSet {
 	return DefaultStatementBuilderCreate().Create(patterns...)
 }
 
@@ -204,7 +204,7 @@ func CypherCreate(patterns ...PatternElement) OngoingUpdateAndExposesSet {
  * @return An ongoing with clause.
  * @since 2020.1.2
  */
-func CypherWithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
+func WithByString(variables ...string) OrderableOngoingReadingAndWithWithoutWhere {
 	return DefaultStatementBuilderCreate().WithByString(variables...)
 }
 
@@ -217,7 +217,7 @@ func CypherWithByString(variables ...string) OrderableOngoingReadingAndWithWitho
  * @return An ongoing with clause.
  * @since 2020.1.2
  */
-func CypherWithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
+func WithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithoutWhere {
 	return DefaultStatementBuilderCreate().WithByNamed(variables...)
 }
 
@@ -229,7 +229,7 @@ func CypherWithByNamed(variables ...Named) OrderableOngoingReadingAndWithWithout
  * @param expressions One ore more aliased expressions.
  * @return An ongoing with clause.
  */
-func CypherWith(variables ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
+func With(variables ...Expression) OrderableOngoingReadingAndWithWithoutWhere {
 	return DefaultStatementBuilderCreate().With(variables...)
 }
 
@@ -240,7 +240,7 @@ func CypherWith(variables ...Expression) OrderableOngoingReadingAndWithWithoutWh
  * @param <T>     The type of the next step
  * @return An ongoing {@code MERGE} that can be used to specify {@code WITH} and {@code RETURNING} etc.
  */
-func CypherMerge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
+func Merge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
 	return DefaultStatementBuilderCreate().Merge(patterns...)
 }
 
@@ -251,7 +251,7 @@ func CypherMerge(patterns ...PatternElement) OngoingUpdateAndExposesSet {
  * @param expression The expression to unwind
  * @return An ongoing {@code UNWIND}.
  */
-func CypherUnwind(expression Expression) OngoingUnwind {
+func Unwind(expression Expression) OngoingUnwind {
 	return DefaultStatementBuilderCreate().Unwind(expression)
 }
 
@@ -262,7 +262,7 @@ func CypherUnwind(expression Expression) OngoingUnwind {
  * @param expressions expressions to unwind
  * @return a new instance of {@link StatementBuilder.OngoingUnwind}
  */
-func CypherUnwindMulti(expressions ...Expression) OngoingUnwind {
+func UnwindMulti(expressions ...Expression) OngoingUnwind {
 	return DefaultStatementBuilderCreate().Unwind(ListOf(expressions...))
 }
 
@@ -272,7 +272,7 @@ func CypherUnwindMulti(expressions ...Expression) OngoingUnwind {
  * @param expression The expression by which things should be sorted
  * @return A sort item, providing means to specify ascending or descending order
  */
-func CypherSort(expression Expression) SortItem {
+func Sort(expression Expression) SortItem {
 	return SortItemCreate(expression, UNDEFINED)
 }
 
@@ -299,14 +299,14 @@ func ListOf(expressions ...Expression) ListExpression {
 /**
  * @return The {@literal true} literal.
  */
-func CypherLiteralTrue() BooleanLiteral {
+func LiteralTrue() BooleanLiteral {
 	return TRUE
 }
 
 /**
  * @return The {@literal false} literal.
  */
-func CypherLiteralFalse() BooleanLiteral {
+func LiteralFalse() BooleanLiteral {
 	return FALSE
 }
 
@@ -316,7 +316,7 @@ func CypherLiteralFalse() BooleanLiteral {
  * @param statements the statements to union.
  * @return A union statement.
  */
-func CypherUnion(statements ...Statement) Statement {
+func Union(statements ...Statement) Statement {
 	return unionImpl(false, statements...)
 }
 
@@ -326,7 +326,7 @@ func CypherUnion(statements ...Statement) Statement {
  * @param statements the statements to union.
  * @return A union statement.
  */
-func CypherUnionAll(statements ...Statement) Statement {
+func UnionAll(statements ...Statement) Statement {
 	return unionImpl(true, statements...)
 }
 
@@ -380,7 +380,7 @@ func CypherListWith(variable SymbolicName) OngoingDefinitionWithVariable {
  * @param unquotedString An unquoted string
  * @return A quoted string with special chars escaped.
  */
-func CypherQuote(unquotedString string) string {
+func AQuote(unquotedString string) string {
 	return StringLiteralCreate(unquotedString).AsString()
 }
 
@@ -399,11 +399,11 @@ func CaseExpression(expression Expression) Case {
 	return SimpleCaseCreate1(expression)
 }
 
-func CypherCallSimple(procedureName string) OngoingStandaloneCallWithoutArguments {
+func ACallSimple(procedureName string) OngoingStandaloneCallWithoutArguments {
 	if procedureName == "" {
 		return StandaloneCallBuilderError(errors.New("the procedure name must not be nil or empty"))
 	}
-	return CypherCall(strings.Split(procedureName, "\\.")...)
+	return ACall(strings.Split(procedureName, "\\.")...)
 }
 
 /**
@@ -412,7 +412,7 @@ func CypherCallSimple(procedureName string) OngoingStandaloneCallWithoutArgument
  * @param namespaceAndProcedure The procedure name of the procedure to call.
  * @return An ongoing definition of a call
  */
-func CypherCall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArguments {
+func ACall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArguments {
 	return StatementCall(namespaceAndProcedure...)
 }
 
@@ -425,7 +425,7 @@ func CypherCall(namespaceAndProcedure ...string) OngoingStandaloneCallWithoutArg
  * @since 2020.1.2
  * @return A new ongoing read without any further conditions or returns.
  */
-func CypherCallByStatement(subquery Statement) OngoingReadingWithoutWhere {
+func ACallByStatement(subquery Statement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Call(subquery)
 }
 
@@ -438,7 +438,7 @@ func CypherCallByStatement(subquery Statement) OngoingReadingWithoutWhere {
  * @return A range literal.
  * @since 2020.1.0
  */
-func CypherSubList(targetExpression Expression, start int, end int) Expression {
+func ASubList(targetExpression Expression, start int, end int) Expression {
 	return SubList(targetExpression, NumberLiteralCreate1(start), NumberLiteralCreate1(end))
 }
 
@@ -462,7 +462,7 @@ func CypherSubListFrom(targetExpression Expression, start int) Expression {
  * @return A range literal.
  * @since 2020.1.0
  */
-func CypherSubListFromByExpression(targetExpression Expression, start Expression) Expression {
+func ASubListFromByExpression(targetExpression Expression, start Expression) Expression {
 	return SubListFrom(targetExpression, start)
 }
 
@@ -474,7 +474,7 @@ func CypherSubListFromByExpression(targetExpression Expression, start Expression
  * @return A range literal.
  * @since 2020.1.0
  */
-func CypherSubListUntil(targetExpression Expression, end int) Expression {
+func ASubListUntil(targetExpression Expression, end int) Expression {
 	return SubListUntil(targetExpression, NumberLiteralCreate1(end))
 }
 

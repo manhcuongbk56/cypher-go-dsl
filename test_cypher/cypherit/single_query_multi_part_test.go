@@ -28,7 +28,7 @@ func TestSimpleWith(t *testing.T) {
 
 func TestShouldRendererLeadingWith(t *testing.T) {
 	statement, err := cypher.
-		CypherWith(cypher.AParam("listOfPropertyMaps").As("p").Get()).
+		With(cypher.AParam("listOfPropertyMaps").As("p").Get()).
 		UnwindByString("p").As("item").
 		ReturningByString("item").
 		Build()

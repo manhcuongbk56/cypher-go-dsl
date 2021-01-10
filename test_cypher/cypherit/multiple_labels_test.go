@@ -21,6 +21,6 @@ func TestCreateWithMultipleLabels(t *testing.T) {
 	node := cypher.NewNodeWithLabels("a", "b", "c").NamedByString("n")
 	//
 	builder = cypher.
-		CypherCreate(node)
+		Create(node)
 	Assert(t, builder, "CREATE (n:`a`:`b`:`c`)")
 }

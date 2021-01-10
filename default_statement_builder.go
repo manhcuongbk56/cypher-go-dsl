@@ -50,7 +50,7 @@ func (d DefaultStatementBuilder) WhereConditionContainer(container ConditionCont
 	return d.Where(container.Get())
 }
 
-func (d DefaultStatementBuilder) AddWith(with With) DefaultStatementBuilder {
+func (d DefaultStatementBuilder) AddWith(with with) DefaultStatementBuilder {
 	if d.err != nil {
 		return DefaultStatementBuilderError(d.err)
 	}

@@ -22,6 +22,6 @@ func (d DefaultOngoingUnwind) GetError() error {
 }
 
 func (d DefaultOngoingUnwind) As(variable string) OngoingReading {
-	d.defaultBuilder.currentSinglePartElements = append(d.defaultBuilder.currentSinglePartElements, UnwindCreate(d.expressionToUnwind, variable))
+	d.defaultBuilder.currentSinglePartElements = append(d.defaultBuilder.currentSinglePartElements, unwindCreate(d.expressionToUnwind, variable))
 	return d.defaultBuilder
 }

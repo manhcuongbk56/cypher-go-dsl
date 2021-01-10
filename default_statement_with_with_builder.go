@@ -23,9 +23,9 @@ func DefaultStatementWithWithBuilderError(err error) DefaultStatementWithWithBui
 	return DefaultStatementWithWithBuilder{err: err}
 }
 
-func (d *DefaultStatementWithWithBuilder) buildWith() With {
+func (d *DefaultStatementWithWithBuilder) buildWith() with {
 	if len(d.returnList) == 0 {
-		return With{}
+		return with{}
 	}
 	returnItems := ExpressionListCreate(d.returnList)
 	condition := d.conditionBuilder.buildCondition()
@@ -36,7 +36,7 @@ func (d *DefaultStatementWithWithBuilder) buildWith() With {
 	} else {
 		where = WhereCreate(condition)
 	}
-	returnedWith := WithCreate(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
+	returnedWith := withCreate(d.distinct, returnItems, d.orderBuilder.BuildOrder(), d.orderBuilder.skip,
 		d.orderBuilder.limit, where)
 	d.returnList = nil
 	d.orderBuilder.reset()

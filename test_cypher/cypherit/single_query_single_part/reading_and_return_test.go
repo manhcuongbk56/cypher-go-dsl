@@ -280,7 +280,7 @@ func TestSizeOfRelationshipChain(t *testing.T) {
 
 func TestSortOrderDefault(t *testing.T) {
 	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
-		OrderBySortItem(cypher.CypherSort(userNode.Property("name"))).Build()
+		OrderBySortItem(cypher.Sort(userNode.Property("name"))).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
 		return
@@ -294,7 +294,7 @@ func TestSortOrderDefault(t *testing.T) {
 
 func TestSortOrderAscending(t *testing.T) {
 	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
-		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Ascending()).Build()
+		OrderBySortItem(cypher.Sort(userNode.Property("name")).Ascending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
 		return
@@ -308,7 +308,7 @@ func TestSortOrderAscending(t *testing.T) {
 
 func TestSortOrderDescending(t *testing.T) {
 	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
-		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending()).Build()
+		OrderBySortItem(cypher.Sort(userNode.Property("name")).Descending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
 		return
@@ -322,8 +322,8 @@ func TestSortOrderDescending(t *testing.T) {
 
 func TestSortOrderConcatenation(t *testing.T) {
 	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
-		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending(),
-			cypher.CypherSort(userNode.Property("age")).Ascending()).Build()
+		OrderBySortItem(cypher.Sort(userNode.Property("name")).Descending(),
+			cypher.Sort(userNode.Property("age")).Ascending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
 		return

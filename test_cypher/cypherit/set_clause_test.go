@@ -8,7 +8,7 @@ import (
 func TestShouldRenderSetAfterCreate(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		Set(userNode.Property("p").To(cypher.LiteralOf("Hallo, Welt")))
 	Assert(t, builder, "CREATE (u:`User`) SET u.p = 'Hallo, Welt'")
 }
@@ -16,7 +16,7 @@ func TestShouldRenderSetAfterCreate(t *testing.T) {
 func TestShouldRenderSetAfterMerge(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherMerge(userNode).
+	builder = cypher.Merge(userNode).
 		Set(userNode.Property("p").To(cypher.LiteralOf("Hallo, Welt")))
 	Assert(t, builder, "MERGE (u:`User`) SET u.p = 'Hallo, Welt'")
 }
@@ -24,7 +24,7 @@ func TestShouldRenderSetAfterMerge(t *testing.T) {
 func TestShouldRenderSetAfterCreateAndWith(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherCreate(userNode).
+	builder = cypher.Create(userNode).
 		WithByNamed(userNode).
 		Set(userNode.Property("p").To(cypher.LiteralOf("Hallo, Welt")))
 	Assert(t, builder, "CREATE (u:`User`) WITH u SET u.p = 'Hallo, Welt'")
@@ -33,7 +33,7 @@ func TestShouldRenderSetAfterCreateAndWith(t *testing.T) {
 func TestShouldRenderSetAfterMergeAndWith(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherMerge(userNode).
+	builder = cypher.Merge(userNode).
 		WithByNamed(userNode).
 		Set(userNode.Property("p").To(cypher.LiteralOf("Hallo, Welt")))
 	Assert(t, builder, "MERGE (u:`User`) WITH u SET u.p = 'Hallo, Welt'")

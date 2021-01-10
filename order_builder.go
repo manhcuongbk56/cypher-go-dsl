@@ -19,7 +19,7 @@ func (o *OrderBuilder) OrderBySortItem(item ...SortItem) {
 }
 
 func (o *OrderBuilder) OrderByExpression(expression Expression) {
-	o.lastSortItem = CypherSort(expression)
+	o.lastSortItem = Sort(expression)
 }
 
 func (o *OrderBuilder) And(expression Expression) {

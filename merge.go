@@ -1,6 +1,6 @@
 package cypher
 
-type Merge struct {
+type merge struct {
 	pattern               Pattern
 	onCreateOrMatchEvents []Visitable
 	key                   string
@@ -10,11 +10,11 @@ type Merge struct {
 
 var BLANK = RawStringLiteralCreate(" ")
 
-func MergeCreate(pattern Pattern) Merge {
+func mergeCreate(pattern Pattern) merge {
 	if pattern.GetError() != nil {
-		return MergeError(pattern.GetError())
+		return mergeError(pattern.GetError())
 	}
-	m := Merge{
+	m := merge{
 		pattern:               pattern,
 		onCreateOrMatchEvents: make([]Visitable, 0),
 		notNil:                true,
@@ -23,13 +23,13 @@ func MergeCreate(pattern Pattern) Merge {
 	return m
 }
 
-func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
+func mergeCreate1(pattern Pattern, mergeActions []MergeAction) merge {
 	if pattern.GetError() != nil {
-		return MergeError(pattern.GetError())
+		return mergeError(pattern.GetError())
 	}
 	for _, action := range mergeActions {
 		if action.GetError() != nil {
-			return MergeError(action.GetError())
+			return mergeError(action.GetError())
 		}
 	}
 	onCreateOrMatchEvents := make([]Visitable, 0)
@@ -37,7 +37,7 @@ func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
 	for _, mergeAction := range mergeActions {
 		onCreateOrMatchEvents = append(onCreateOrMatchEvents, mergeAction)
 	}
-	m := Merge{
+	m := merge{
 		pattern:               pattern,
 		onCreateOrMatchEvents: onCreateOrMatchEvents,
 		notNil:                true,
@@ -46,19 +46,19 @@ func MergeCreate1(pattern Pattern, mergeActions []MergeAction) Merge {
 	return m
 }
 
-func MergeError(err error) Merge {
-	return Merge{err: err}
+func mergeError(err error) merge {
+	return merge{err: err}
 }
 
-func (m Merge) hasEvent() bool {
+func (m merge) hasEvent() bool {
 	return len(m.onCreateOrMatchEvents) > 0
 }
 
-func (m Merge) GetError() error {
+func (m merge) GetError() error {
 	return m.err
 }
 
-func (m Merge) accept(visitor *CypherRenderer) {
+func (m merge) accept(visitor *CypherRenderer) {
 	visitor.enter(m)
 	m.pattern.accept(visitor)
 	for _, event := range m.onCreateOrMatchEvents {
@@ -67,24 +67,24 @@ func (m Merge) accept(visitor *CypherRenderer) {
 	visitor.leave(m)
 }
 
-func (m Merge) enter(renderer *CypherRenderer) {
+func (m merge) enter(renderer *CypherRenderer) {
 	renderer.append("MERGE ")
 }
 
-func (m Merge) leave(renderer *CypherRenderer) {
+func (m merge) leave(renderer *CypherRenderer) {
 	if !m.hasEvent() {
 		renderer.append(" ")
 	}
 }
 
-func (m Merge) getKey() string {
+func (m merge) getKey() string {
 	return m.key
 }
 
-func (m Merge) isNotNil() bool {
+func (m merge) isNotNil() bool {
 	return m.notNil
 }
 
-func (m Merge) isUpdatingClause() bool {
+func (m merge) isUpdatingClause() bool {
 	panic("implement me")
 }

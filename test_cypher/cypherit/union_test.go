@@ -30,7 +30,7 @@ func TestShouldRenderUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement4 := cypher.CypherUnion(statement1, statement2, statement3)
+	statement4 := cypher.Union(statement1, statement2, statement3)
 	AssertStatement(t, statement4, "MATCH (b:`Bike`) WHERE b.a = 'A' RETURN b UNION MATCH (b) WHERE b.b = 'B' RETURN b UNION"+
 		" MATCH (b) WHERE b.c = 'C' RETURN b")
 }
@@ -52,7 +52,7 @@ func TestShouldRenderAllUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement3 := cypher.CypherUnionAll(statement1, statement2)
+	statement3 := cypher.UnionAll(statement1, statement2)
 	AssertStatement(t, statement3, "MATCH (b:`Bike`) WHERE b.a = 'A' RETURN b UNION ALL MATCH (b) WHERE b.b = 'B' RETURN b")
 }
 
@@ -73,7 +73,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement := cypher.CypherUnionAll(statement1, statement2)
+	statement := cypher.UnionAll(statement1, statement2)
 	statement3, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("c").IsEqualTo(cypher.LiteralOf("C"))).
 		ReturningByNamed(bikeNode).
@@ -90,7 +90,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement = cypher.CypherUnionAll(statement, statement3, statement4)
+	statement = cypher.UnionAll(statement, statement3, statement4)
 	AssertStatement(t, statement, "MATCH (b:`Bike`) WHERE b.a = 'A' RETURN b UNION ALL MATCH (b) WHERE b.b = 'B' RETURN b "+
 		"UNION ALL MATCH (b) WHERE b.c = 'C' RETURN b UNION ALL MATCH (b) WHERE b.d = 'D' RETURN"+
 		" b")
@@ -113,7 +113,7 @@ func TestShouldNotMix(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement := cypher.CypherUnionAll(statement1, statement2)
+	statement := cypher.UnionAll(statement1, statement2)
 	statement3, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("c").IsEqualTo(cypher.LiteralOf("C"))).
 		ReturningByNamed(bikeNode).
@@ -122,6 +122,6 @@ func TestShouldNotMix(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement = cypher.CypherUnion(statement, statement3)
+	statement = cypher.Union(statement, statement3)
 	AssertStatementError(t, statement, "cannot mix union and union all")
 }

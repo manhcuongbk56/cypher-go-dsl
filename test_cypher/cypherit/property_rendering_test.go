@@ -16,7 +16,7 @@ func TestShouldRenderNodeProperties(t *testing.T) {
 		builder = cypher.Match(nodeWithProperties).
 			Returning(cypher.AnAsterisk())
 		Assert(t, builder, "MATCH (test:`Test` {a: 'b'}) RETURN *")
-		builder = cypher.CypherMerge(nodeWithProperties).
+		builder = cypher.Merge(nodeWithProperties).
 			Returning(cypher.AnAsterisk())
 		Assert(t, builder, "MERGE (test:`Test` {a: 'b'}) RETURN *")
 	}
