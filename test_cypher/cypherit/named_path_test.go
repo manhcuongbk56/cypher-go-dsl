@@ -9,11 +9,11 @@ func TestDoc3148(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
 	namePath := cypher.
-		CypherPathByString("p").
+		APath("p").
 		DefinedBy(cypher.AnyNodeNamed("michael").
 			WithRawProperties("name", cypher.LiteralOf("Michael Douglas")).
 			RelationshipTo(cypher.AnyNode()))
-	builder = cypher.MatchElements(namePath).
+	builder = cypher.Match(namePath).
 		ReturningByNamed(namePath)
 
 	Assert(t, builder, "MATCH p = (michael {name: 'Michael Douglas'})-->() RETURN p")
@@ -23,7 +23,7 @@ func TestShouldWorkInListComprehensions(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
 	namePath := cypher.
-		CypherPathByString("p").
+		APath("p").
 		DefinedBy(cypher.AnyNodeNamed("n").
 			RelationshipTo(cypher.AnyNode(), "LIKES", "OWNS").
 			Unbounded())

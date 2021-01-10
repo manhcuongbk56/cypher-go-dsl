@@ -7,7 +7,7 @@ import (
 
 func TestEqualWithStringLiteral(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(cypher.LiteralOf("Test"))).
 		ReturningByNamed(userNode).
 		Build()
@@ -24,7 +24,7 @@ func TestEqualWithStringLiteral(t *testing.T) {
 
 func TestEqualWithNumberLiteral(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("age").IsEqualTo(cypher.LiteralOf(21))).
 		ReturningByNamed(userNode).
 		Build()

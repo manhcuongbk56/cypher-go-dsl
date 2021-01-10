@@ -10,14 +10,14 @@ func TestShouldRenderNodeProperties(t *testing.T) {
 	//
 	nodes := make([]cypher.Node, 0)
 	nodes = append(nodes, cypher.NewNodeWithProperties("Test", cypher.MapOf("a", cypher.LiteralOf("b"))).NamedByString("test"))
-	nodes = append(nodes, cypher.NewNode("Test").NamedByString("test").WithProperties(cypher.MapOf("a", cypher.LiteralOf("b"))))
-	nodes = append(nodes, cypher.NewNode("Test").NamedByString("test").WithRawProperties("a", cypher.LiteralOf("b")))
+	nodes = append(nodes, cypher.ANode("Test").NamedByString("test").WithProperties(cypher.MapOf("a", cypher.LiteralOf("b"))))
+	nodes = append(nodes, cypher.ANode("Test").NamedByString("test").WithRawProperties("a", cypher.LiteralOf("b")))
 	for _, nodeWithProperties := range nodes {
-		builder = cypher.MatchElements(nodeWithProperties).
-			Returning(cypher.CypherAsterisk())
+		builder = cypher.Match(nodeWithProperties).
+			Returning(cypher.AnAsterisk())
 		Assert(t, builder, "MATCH (test:`Test` {a: 'b'}) RETURN *")
 		builder = cypher.CypherMerge(nodeWithProperties).
-			Returning(cypher.CypherAsterisk())
+			Returning(cypher.AnAsterisk())
 		Assert(t, builder, "MERGE (test:`Test` {a: 'b'}) RETURN *")
 	}
 }
@@ -25,9 +25,9 @@ func TestShouldRenderNodeProperties(t *testing.T) {
 func TestNestedProperties(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	node := cypher.NewNode("Test").NamedByString("test").WithRawProperties("outer", cypher.MapOf("a", cypher.LiteralOf("b")))
-	builder = cypher.MatchElements(node).
-		Returning(cypher.CypherAsterisk())
+	node := cypher.ANode("Test").NamedByString("test").WithRawProperties("outer", cypher.MapOf("a", cypher.LiteralOf("b")))
+	builder = cypher.Match(node).
+		Returning(cypher.AnAsterisk())
 	Assert(t, builder, "MATCH (test:`Test` {outer: {a: 'b'}}) RETURN *")
 }
 
@@ -35,7 +35,7 @@ func TestShouldNotRenderPropertiesInReturn(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
 	nodeWithProperties := bikeNode.WithRawProperties("a", cypher.LiteralOf("b"))
-	builder = cypher.MatchElements(nodeWithProperties, nodeWithProperties.RelationshipFrom(userNode, "OWNS")).
+	builder = cypher.Match(nodeWithProperties, nodeWithProperties.RelationshipFrom(userNode, "OWNS")).
 		ReturningByNamed(nodeWithProperties)
 	Assert(t, builder, "MATCH (b:`Bike` {a: 'b'}), (b)<-[:`OWNS`]-(u:`User`) RETURN b")
 }

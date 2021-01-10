@@ -7,7 +7,7 @@ import (
 
 func TestListComprehensionSimple(t *testing.T) {
 	var builder cypher.BuildableStatement
-	name := cypher.CypherName("a")
+	name := cypher.ASymbolic("a")
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
@@ -18,7 +18,7 @@ func TestListComprehensionSimple(t *testing.T) {
 
 func TestWithReturning(t *testing.T) {
 	var builder cypher.BuildableStatement
-	name := cypher.CypherName("a")
+	name := cypher.ASymbolic("a")
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
@@ -29,7 +29,7 @@ func TestWithReturning(t *testing.T) {
 
 func TestWithWhere(t *testing.T) {
 	var builder cypher.BuildableStatement
-	name := cypher.CypherName("a")
+	name := cypher.ASymbolic("a")
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
@@ -41,7 +41,7 @@ func TestWithWhere(t *testing.T) {
 
 func TestWithWhereAndReturning(t *testing.T) {
 	var builder cypher.BuildableStatement
-	name := cypher.CypherName("a")
+	name := cypher.ASymbolic("a")
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
@@ -53,7 +53,7 @@ func TestWithWhereAndReturning(t *testing.T) {
 
 func TestSomeMoreExample(t *testing.T) {
 	var builder cypher.BuildableStatement
-	name := cypher.CypherName("x")
+	name := cypher.ASymbolic("x")
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).

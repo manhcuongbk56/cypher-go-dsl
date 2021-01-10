@@ -5,12 +5,12 @@ import (
 	"testing"
 )
 
-var bikeNode = cypher.NewNode("Bike").NamedByString("b")
-var userNode = cypher.NewNode("User").NamedByString("u")
+var bikeNode = cypher.ANode("Bike").NamedByString("b")
+var userNode = cypher.ANode("User").NamedByString("u")
 
 func TestSimpleWith(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+		Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		Where(userNode.Property("a").IsNull().Get()).
 		WithByNamed(bikeNode, userNode).
 		ReturningByNamed(bikeNode).
@@ -28,7 +28,7 @@ func TestSimpleWith(t *testing.T) {
 
 func TestShouldRendererLeadingWith(t *testing.T) {
 	statement, err := cypher.
-		CypherWith(cypher.Param("listOfPropertyMaps").As("p").Get()).
+		CypherWith(cypher.AParam("listOfPropertyMaps").As("p").Get()).
 		UnwindByString("p").As("item").
 		ReturningByString("item").
 		Build()
@@ -44,9 +44,9 @@ func TestShouldRendererLeadingWith(t *testing.T) {
 }
 
 func TestSimpleWithChained(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
+	tripNode := cypher.ANode("Trip").NamedByString("t")
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+		Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		Where(userNode.Property("a").IsNull().Get()).
 		WithByNamed(bikeNode, userNode).
 		Match(tripNode).
@@ -67,7 +67,7 @@ func TestSimpleWithChained(t *testing.T) {
 
 func TestDeletingSimpleWith(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+		Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		Where(userNode.Property("a").IsNull().Get()).
 		DeleteByNamed(userNode).
 		WithByNamed(bikeNode, userNode).
@@ -86,7 +86,7 @@ func TestDeletingSimpleWith(t *testing.T) {
 
 func TestDeletingSimpleWithReverse(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+		Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		Where(userNode.Property("a").IsNull().Get()).
 		WithByNamed(bikeNode, userNode).
 		DeleteByNamed(userNode).
@@ -104,9 +104,9 @@ func TestDeletingSimpleWithReverse(t *testing.T) {
 }
 
 func TestMixedClauseWithWith(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
+	tripNode := cypher.ANode("Trip").NamedByString("t")
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+		Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		Match(tripNode).
 		DeleteByNamed(tripNode).
 		WithByNamed(bikeNode, tripNode).

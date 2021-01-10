@@ -6,10 +6,10 @@ import (
 )
 
 func TestDoc3651And(t *testing.T) {
-	timothy := cypher.NewNode("Person").NamedByString("timothy").
+	timothy := cypher.ANode("Person").NamedByString("timothy").
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
-	other := cypher.NewNode("Person").NamedByString("other")
-	statement, err := cypher.MatchElements(timothy, other).
+	other := cypher.ANode("Person").NamedByString("other")
+	statement, err := cypher.Match(timothy, other).
 		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
 		AndPattern(timothy.RelationshipFrom(other)).
 		Returning(other.Property("name"), other.Property("age")).
@@ -24,7 +24,7 @@ func TestDoc3651And(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(timothy, other).
+	statement, err = cypher.Match(timothy, other).
 		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			AndPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
@@ -41,10 +41,10 @@ func TestDoc3651And(t *testing.T) {
 }
 
 func TestDoc3651Or(t *testing.T) {
-	timothy := cypher.NewNode("Person").NamedByString("timothy").
+	timothy := cypher.ANode("Person").NamedByString("timothy").
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
-	other := cypher.NewNode("Person").NamedByString("other")
-	statement, err := cypher.MatchElements(timothy, other).
+	other := cypher.ANode("Person").NamedByString("other")
+	statement, err := cypher.Match(timothy, other).
 		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter")))).
 		OrPattern(timothy.RelationshipFrom(other)).
 		Returning(other.Property("name"), other.Property("age")).
@@ -59,7 +59,7 @@ func TestDoc3651Or(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(timothy, other).
+	statement, err = cypher.Match(timothy, other).
 		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			OrPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
@@ -76,10 +76,10 @@ func TestDoc3651Or(t *testing.T) {
 }
 
 func TestDoc3651Xor(t *testing.T) {
-	timothy := cypher.NewNode("Person").NamedByString("timothy").
+	timothy := cypher.ANode("Person").NamedByString("timothy").
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
-	other := cypher.NewNode("Person").NamedByString("other")
-	statement, err := cypher.MatchElements(timothy, other).
+	other := cypher.ANode("Person").NamedByString("other")
+	statement, err := cypher.Match(timothy, other).
 		WhereConditionContainer(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).
 			XorPattern(timothy.RelationshipFrom(other))).
 		Returning(other.Property("name"), other.Property("age")).
@@ -96,9 +96,9 @@ func TestDoc3651Xor(t *testing.T) {
 }
 
 func TestDoc3652(t *testing.T) {
-	person := cypher.NewNode("Person").NamedByString("person")
-	peter := cypher.NewNode("Person").NamedByString("peter").WithRawProperties("name", cypher.LiteralOf("Peter"))
-	statement, err := cypher.MatchElements(person, peter).
+	person := cypher.ANode("Person").NamedByString("person")
+	peter := cypher.ANode("Person").NamedByString("peter").WithRawProperties("name", cypher.LiteralOf("Peter"))
+	statement, err := cypher.Match(person, peter).
 		Where(cypher.ConditionsNotByPattern(person.RelationshipTo(peter))).
 		Returning(person.Property("name"), person.Property("age")).
 		Build()
@@ -114,8 +114,8 @@ func TestDoc3652(t *testing.T) {
 }
 
 func TestDoc3653(t *testing.T) {
-	person := cypher.NewNode("Person").NamedByString("n")
-	statement, err := cypher.MatchElements(person).
+	person := cypher.ANode("Person").NamedByString("n")
+	statement, err := cypher.Match(person).
 		WherePattern(person.RelationshipBetween(cypher.AnyNode().WithRawProperties("name", cypher.LiteralOf("Timothy")), "KNOWS")).
 		Returning(person.Property("name"), person.Property("age")).
 		Build()
@@ -131,14 +131,14 @@ func TestDoc3653(t *testing.T) {
 }
 
 func TestGh113(t *testing.T) {
-	foo := cypher.NewNode("Foo").NamedByString("foo")
-	bar := cypher.NewNode("Bar").NamedByString("bar")
+	foo := cypher.ANode("Foo").NamedByString("foo")
+	bar := cypher.ANode("Bar").NamedByString("bar")
 	fooBar := foo.RelationshipTo(bar, "FOOBAR").NamedByString("rel")
 	pc := cypher.ListBasedOn(fooBar).
-		WherePattern(bar.RelationshipTo(cypher.NewNode("ZZZ").NamedByString("zzz"), "HAS")).
+		WherePattern(bar.RelationshipTo(cypher.ANode("ZZZ").NamedByString("zzz"), "HAS")).
 		ReturningByNamed(fooBar, bar)
 
-	statement, err := cypher.MatchElements(foo).
+	statement, err := cypher.Match(foo).
 		Returning(foo.GetSymbolicName(), pc).
 		Build()
 	if err != nil {
@@ -153,9 +153,9 @@ func TestGh113(t *testing.T) {
 }
 
 func TestDoc3654(t *testing.T) {
-	person := cypher.NewNode("Person").NamedByString("n")
+	person := cypher.ANode("Person").NamedByString("n")
 	pathPattern := person.RelationshipTo(cypher.AnyNode()).NamedByString("r")
-	statement, err := cypher.MatchElements(pathPattern).
+	statement, err := cypher.Match(pathPattern).
 		WhereConditionContainer(person.Property("name").IsEqualTo(cypher.LiteralOf("Andy"))).
 		And(cypher.FunctionType(pathPattern).MatchesPattern("K.*").Get()).
 		Returning(cypher.FunctionType(pathPattern), pathPattern.Property("since")).
@@ -172,10 +172,10 @@ func TestDoc3654(t *testing.T) {
 }
 
 func TestAfterWith(t *testing.T) {
-	timothy := cypher.NewNode("Person").NamedByString("timothy").
+	timothy := cypher.ANode("Person").NamedByString("timothy").
 		WithRawProperties("name", cypher.LiteralOf("Timothy"))
-	other := cypher.NewNode("Person").NamedByString("other")
-	statement, err := cypher.MatchElements(timothy, other).
+	other := cypher.ANode("Person").NamedByString("other")
+	statement, err := cypher.Match(timothy, other).
 		WithByNamed(timothy, other).
 		Where(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).Get()).
 		AndPattern(timothy.RelationshipFrom(other)).
@@ -191,7 +191,7 @@ func TestAfterWith(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(timothy, other).
+	statement, err = cypher.Match(timothy, other).
 		WithByNamed(timothy, other).
 		Where(other.Property("name").In(cypher.ListOf(cypher.LiteralOf("Andy"), cypher.LiteralOf("Peter"))).AndPattern(timothy.RelationshipFrom(other)).Get()).
 		Returning(other.Property("name"), other.Property("age")).
@@ -208,9 +208,9 @@ func TestAfterWith(t *testing.T) {
 }
 
 func TestInPatternComprehensions(t *testing.T) {
-	a := cypher.NewNode("Person").WithRawProperties("name", cypher.LiteralOf("Keanu Reeves")).NamedByString("a")
+	a := cypher.ANode("Person").WithRawProperties("name", cypher.LiteralOf("Keanu Reeves")).NamedByString("a")
 	b := cypher.AnyNodeNamed("b")
-	statement, err := cypher.MatchElements(a).
+	statement, err := cypher.Match(a).
 		Returning(
 			cypher.ListBasedOn(a.RelationshipBetween(b)).
 				Where(b.HasLabels("Movie").And(b.Property("released").IsNotNull().Get()).Get()).
@@ -227,7 +227,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(a).
+	statement, err = cypher.Match(a).
 		Returning(
 			cypher.ListBasedOn(a.RelationshipBetween(b)).
 				Where(b.HasLabels("Movie").
@@ -247,7 +247,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(a).
+	statement, err = cypher.Match(a).
 		Returning(
 			cypher.ListBasedOn(a.RelationshipBetween(b)).
 				Where(b.HasLabels("Movie")).
@@ -267,7 +267,7 @@ func TestInPatternComprehensions(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 	//
-	statement, err = cypher.MatchElements(a).
+	statement, err = cypher.Match(a).
 		Returning(
 			cypher.ListBasedOn(a.RelationshipBetween(b)).
 				Where(b.HasLabels("Movie")).

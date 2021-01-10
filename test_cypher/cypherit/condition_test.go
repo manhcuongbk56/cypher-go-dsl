@@ -7,7 +7,7 @@ import (
 
 func TestConditionChainingAnd(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(cypher.LiteralOf("Test")).
 			And(userNode.Property("age").IsEqualTo(cypher.LiteralOf(21)).Get())).
 		ReturningByNamed(userNode).
@@ -25,7 +25,7 @@ func TestConditionChainingAnd(t *testing.T) {
 
 func TestConditionChainingOr(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(cypher.LiteralOf("Test")).
 			Or(userNode.Property("age").IsEqualTo(cypher.LiteralOf(21)).Get())).
 		ReturningByNamed(userNode).
@@ -43,7 +43,7 @@ func TestConditionChainingOr(t *testing.T) {
 
 func TestNestedCondition1(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		ReturningByNamed(userNode).
@@ -61,7 +61,7 @@ func TestNestedCondition1(t *testing.T) {
 
 func TestNestedCondition2(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		Or(cypher.ConditionsIsFalse()).
@@ -80,7 +80,7 @@ func TestNestedCondition2(t *testing.T) {
 
 func TestNestedCondition3(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		Or(cypher.ConditionsIsFalse()).
@@ -100,7 +100,7 @@ func TestNestedCondition3(t *testing.T) {
 
 func TestNestedCondition4(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		Or(cypher.ConditionsIsFalse().And(cypher.ConditionsIsTrue()).Get()).
@@ -119,7 +119,7 @@ func TestNestedCondition4(t *testing.T) {
 
 func TestNestedCondition5(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		Or(cypher.ConditionsIsFalse().And(cypher.ConditionsIsTrue()).Get()).
@@ -139,7 +139,7 @@ func TestNestedCondition5(t *testing.T) {
 
 func TestNestedCondition6(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue())).
 		Or(cypher.ConditionsIsFalse().Or(cypher.ConditionsIsTrue()).Get()).
@@ -158,7 +158,7 @@ func TestNestedCondition6(t *testing.T) {
 
 func TestNestedCondition7(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsIsTrue().Or(cypher.ConditionsIsFalse()).
 			And(cypher.ConditionsIsTrue()).Or(cypher.ConditionsIsFalse().Or(cypher.ConditionsIsTrue()).Get())).
 		ReturningByNamed(userNode).
@@ -176,7 +176,7 @@ func TestNestedCondition7(t *testing.T) {
 
 func TestConditionChainingXor(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(cypher.LiteralOf("Test")).
 			Xor(userNode.Property("age").IsEqualTo(cypher.LiteralOf(21)).Get())).
 		ReturningByNamed(userNode).
@@ -194,7 +194,7 @@ func TestConditionChainingXor(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsNoCondition().Or(cypher.ConditionsNoCondition())).
 		And(cypher.ConditionsNoCondition().And(cypher.ConditionsNoCondition()).Or(cypher.ConditionsNoCondition()).Get()).
 		ReturningByNamed(userNode).
@@ -212,7 +212,7 @@ func TestMultipleEmptyConditionsMustCollapse(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse1(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsNoCondition().Or(cypher.ConditionsNoCondition())).
 		ReturningByNamed(userNode).
 		Build()
@@ -229,7 +229,7 @@ func TestMultipleEmptyConditionsMustCollapse1(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse2(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsNoCondition().And(cypher.ConditionsNoCondition()).Or(cypher.ConditionsNoCondition())).
 		ReturningByNamed(userNode).
 		Build()
@@ -246,7 +246,7 @@ func TestMultipleEmptyConditionsMustCollapse2(t *testing.T) {
 
 func TestMultipleEmptyConditionsMustCollapse3(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(cypher.ConditionsNoCondition().And(userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()).Or(cypher.ConditionsNoCondition())).
 		And(cypher.ConditionsNoCondition().And(cypher.ConditionsNoCondition()).Or(cypher.ConditionsNoCondition()).Get()).
 		ReturningByNamed(userNode).
@@ -266,7 +266,7 @@ func TestMultipleEmptyConditionsMustCollapse4(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
 	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.Or(no).Or(have)).
 		ReturningByNamed(userNode).
 		Build()
@@ -285,7 +285,7 @@ func TestMultipleEmptyConditionsMustCollapse5(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
 	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.And(have).Or(no)).
 		ReturningByNamed(userNode).
 		Build()
@@ -304,7 +304,7 @@ func TestMultipleEmptyConditionsMustCollapse6(t *testing.T) {
 	no := cypher.ConditionsNoCondition()
 	have := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.Or(no)).
 		And(have).
 		ReturningByNamed(userNode).
@@ -325,7 +325,7 @@ func TestMultipleEmptyConditionsMustCollapse7(t *testing.T) {
 	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.And(a).Or(no)).
 		And(no.And(b).Or(no).Get()).
 		ReturningByNamed(userNode).
@@ -346,7 +346,7 @@ func TestMultipleEmptyConditionsMustCollapse8(t *testing.T) {
 	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.Or(no).Or(a).And(b)).
 		ReturningByNamed(userNode).
 		Build()
@@ -366,7 +366,7 @@ func TestMultipleEmptyConditionsMustCollapse9(t *testing.T) {
 	a := userNode.Property("a").IsEqualTo(cypher.CypherLiteralTrue()).Get()
 	b := userNode.Property("b").IsEqualTo(cypher.CypherLiteralFalse()).Get()
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(no.Or(a).Or(no).And(b).Or(no)).
 		ReturningByNamed(userNode).
 		Build()
@@ -385,7 +385,7 @@ func TestChainingOnWhere(t *testing.T) {
 	test := cypher.LiteralOf("Test")
 	foobar := cypher.LiteralOf("foobar")
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		ReturningByNamed(userNode).
 		Build()
@@ -400,7 +400,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
 		ReturningByNamed(userNode).
@@ -416,7 +416,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
@@ -433,7 +433,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		Or(userNode.Property("name").IsEqualTo(test).Get()).
 		ReturningByNamed(userNode).
@@ -449,7 +449,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		Or(userNode.Property("name").IsEqualTo(test).Get()).
 		Or(userNode.Property("name").IsEqualTo(test).Get()).
@@ -466,7 +466,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
 		Or(userNode.Property("name").IsEqualTo(foobar).Get()).
@@ -484,7 +484,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		Or(userNode.Property("name").IsEqualTo(foobar).Get()).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
@@ -502,7 +502,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test)).
 		Or(userNode.Property("name").IsEqualTo(foobar).Get()).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
@@ -521,7 +521,7 @@ func TestChainingOnWhere(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsNotNull()).
 		And(userNode.Property("name").IsEqualTo(test).Get()).
 		Or(userNode.Property("age").IsEqualTo(cypher.LiteralOf(21)).Get()).
@@ -543,7 +543,7 @@ func TestChainingOnCondition(t *testing.T) {
 	foobar := cypher.LiteralOf("foobar")
 	bazbar := cypher.LiteralOf("bazbar")
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get()).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get())).
@@ -560,7 +560,7 @@ func TestChainingOnCondition(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			And(userNode.Property("name").IsEqualTo(bazbar).Get()).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get()).
@@ -578,7 +578,7 @@ func TestChainingOnCondition(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			And(userNode.Property("name").IsEqualTo(bazbar).
 				And(userNode.Property("name").IsEqualTo(foobar).Get()).Get())).
@@ -595,7 +595,7 @@ func TestChainingOnCondition(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			And(userNode.Property("name").IsEqualTo(bazbar).Get()).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get()).
@@ -613,7 +613,7 @@ func TestChainingOnCondition(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			And(userNode.Property("name").IsEqualTo(bazbar).Get()).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get()).
@@ -637,7 +637,7 @@ func TestChainingCombined(t *testing.T) {
 	foobar := cypher.LiteralOf("foobar")
 	bazbar := cypher.LiteralOf("bazbar")
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(test).
 			And(userNode.Property("name").IsEqualTo(bazbar).Get()).
 			Or(userNode.Property("name").IsEqualTo(foobar).Get()).
@@ -661,7 +661,7 @@ func TestChainingCombined(t *testing.T) {
 
 func TestNegatedCondition(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsNotNull().Not()).
 		ReturningByNamed(userNode).
 		Build()
@@ -678,7 +678,7 @@ func TestNegatedCondition(t *testing.T) {
 
 func TestNoConditionShouldNotBeRendered(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Where(cypher.ConditionsNoCondition()).
 		ReturningByNamed(userNode).
 		Build()
@@ -693,7 +693,7 @@ func TestNoConditionShouldNotBeRendered(t *testing.T) {
 	}
 	//
 	statement, err = cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		WhereConditionContainer(userNode.Property("name").IsEqualTo(cypher.LiteralOf("test"))).
 		And(cypher.ConditionsNoCondition().Or(cypher.ConditionsNoCondition()).Get()).
 		ReturningByNamed(userNode).

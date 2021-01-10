@@ -7,8 +7,8 @@ import (
 
 func TestSimple(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
-		Match(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(bikeNode).
+		Match(userNode, cypher.ANode("U").NamedByString("o")).
 		ReturningByNamed(bikeNode).
 		Build()
 	if err != nil {
@@ -24,8 +24,8 @@ func TestSimple(t *testing.T) {
 
 func TestSimpleWhere(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
-		Match(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(bikeNode).
+		Match(userNode, cypher.ANode("U").NamedByString("o")).
 		Where(userNode.Property("a").IsNull().Get()).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -42,9 +42,9 @@ func TestSimpleWhere(t *testing.T) {
 
 func TestMultiWhere(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
+		Match(bikeNode).
 		Where(bikeNode.Property("a").IsNotNull().Get()).
-		Match(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(userNode, cypher.ANode("U").NamedByString("o")).
 		Where(userNode.Property("a").IsNull().Get()).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -61,10 +61,10 @@ func TestMultiWhere(t *testing.T) {
 
 func TestMultiWhereMultiConditions(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
+		Match(bikeNode).
 		Where(bikeNode.Property("a").IsNotNull().Get()).
 		And(bikeNode.Property("b").IsNull().Get()).
-		Match(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(userNode, cypher.ANode("U").NamedByString("o")).
 		Where(userNode.Property("a").IsNull().Or(userNode.InternalId().IsEqualTo(cypher.LiteralOf(4711)).Get()).Get()).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -81,8 +81,8 @@ func TestMultiWhereMultiConditions(t *testing.T) {
 
 func TestOptionalMatch(t *testing.T) {
 	statement, err := cypher.
-		OptionalMatch(bikeNode).
-		Match(userNode, cypher.NewNode("U").NamedByString("o")).
+		AnOptionalMatch(bikeNode).
+		Match(userNode, cypher.ANode("U").NamedByString("o")).
 		Where(userNode.Property("a").IsNull().Get()).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -99,11 +99,11 @@ func TestOptionalMatch(t *testing.T) {
 
 func TestUsingSameWithStepWithoutReassign(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
+		Match(bikeNode).
 		WithByNamed(bikeNode).
 		OptionalMatch(userNode).
-		OptionalMatch(cypher.NewNode("Trip").NamedByString("trip")).
-		Returning(cypher.CypherAsterisk()).
+		OptionalMatch(cypher.ANode("Trip").NamedByString("trip")).
+		Returning(cypher.AnAsterisk()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -118,12 +118,12 @@ func TestUsingSameWithStepWithoutReassign(t *testing.T) {
 
 func TestUsingSameWithStepWithoutReassignThenUpdate(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
+		Match(bikeNode).
 		WithByNamed(bikeNode).
 		OptionalMatch(userNode).
-		OptionalMatch(cypher.NewNode("Trip").NamedByString("trip")).
+		OptionalMatch(cypher.ANode("Trip").NamedByString("trip")).
 		DeleteByString("u").
-		Returning(cypher.CypherAsterisk()).
+		Returning(cypher.AnAsterisk()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -138,10 +138,10 @@ func TestUsingSameWithStepWithoutReassignThenUpdate(t *testing.T) {
 
 func TestQueryPartsShouldBeExtractableInQueries(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(cypher.NewNode("S1").NamedByString("n")).
-		Where(cypher.CypherProperty("n", "a").IsEqualTo(cypher.LiteralOf("A")).Get()).
+		Match(cypher.ANode("S1").NamedByString("n")).
+		Where(cypher.AProperty("n", "a").IsEqualTo(cypher.LiteralOf("A")).Get()).
 		WithByString("n").
-		Match(cypher.AnyNodeNamed("n").RelationshipTo(cypher.NewNode("S2").NamedByString("m"), "SOMEHOW_RELATED")).
+		Match(cypher.AnyNodeNamed("n").RelationshipTo(cypher.ANode("S2").NamedByString("m"), "SOMEHOW_RELATED")).
 		WithByString("n", "m").
 		ReturningByString("n", "m").
 		Build()
@@ -158,8 +158,8 @@ func TestQueryPartsShouldBeExtractableInQueries(t *testing.T) {
 
 func TestOptionalNext(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(bikeNode).
-		OptionalMatch(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(bikeNode).
+		OptionalMatch(userNode, cypher.ANode("U").NamedByString("o")).
 		Where(userNode.Property("a").IsNull().Get()).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -176,8 +176,8 @@ func TestOptionalNext(t *testing.T) {
 
 func TestOptionalMatchThenDelete(t *testing.T) {
 	buildableStatement := cypher.
-		MatchElements(bikeNode).
-		OptionalMatch(userNode, cypher.NewNode("U").NamedByString("o")).
+		Match(bikeNode).
+		OptionalMatch(userNode, cypher.ANode("U").NamedByString("o")).
 		DeleteByNamed(userNode, bikeNode)
 	Assert(t, buildableStatement, "MATCH (b:`Bike`) OPTIONAL MATCH (u:`User`), (o:`U`) DELETE u, b")
 }

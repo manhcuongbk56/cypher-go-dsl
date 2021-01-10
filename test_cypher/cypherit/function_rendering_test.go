@@ -7,7 +7,7 @@ import (
 
 func TestInWhereClause(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Where(userNode.InternalId().IsEqualTo(cypher.LiteralOf(1)).Get()).
 		ReturningByNamed(userNode).
 		Build()
@@ -24,7 +24,7 @@ func TestInWhereClause(t *testing.T) {
 
 func TestInReturnClause(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Returning(cypher.FunctionCount(userNode)).
 		Build()
 	if err != nil {
@@ -40,7 +40,7 @@ func TestInReturnClause(t *testing.T) {
 
 func TestInReturnClauseWithDistinct(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Returning(cypher.FunctionCountDistinct(userNode)).
 		Build()
 	if err != nil {
@@ -56,7 +56,7 @@ func TestInReturnClauseWithDistinct(t *testing.T) {
 
 func TestAliasedInReturnClause(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Returning(cypher.FunctionCount(userNode).As("cnt").Get()).
 		Build()
 	if err != nil {
@@ -72,7 +72,7 @@ func TestAliasedInReturnClause(t *testing.T) {
 
 func TestShouldSupportMoreThanOneArgument(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Returning(cypher.FunctionCoalesce(userNode.Property("a"), userNode.Property("b"), cypher.LiteralOf("¯\\_(ツ)_/¯"))).
 		Build()
 	if err != nil {
@@ -89,7 +89,7 @@ func TestShouldSupportMoreThanOneArgument(t *testing.T) {
 
 func TestLiteralShouldDealWithNil(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode).
+		Match(userNode).
 		Returning(cypher.FunctionCoalesce(cypher.LiteralOf(nil), userNode.Property("field")).As("p").Get()).
 		Build()
 	if err != nil {
@@ -104,12 +104,12 @@ func TestLiteralShouldDealWithNil(t *testing.T) {
 }
 
 func TestFunctionBaseOnRelationship(t *testing.T) {
-	relationShip := cypher.NewNode("Person").NamedByString("bacon").
+	relationShip := cypher.ANode("Person").NamedByString("bacon").
 		WithRawProperties("name", cypher.LiteralOf("Kevin Bacon")).
-		RelationshipBetween(cypher.NewNode("Person").NamedByString("meg").WithRawProperties("name", cypher.LiteralOf("Meg Ryan"))).
+		RelationshipBetween(cypher.ANode("Person").NamedByString("meg").WithRawProperties("name", cypher.LiteralOf("Meg Ryan"))).
 		Unbounded()
 	statement, err := cypher.
-		MatchElements(cypher.CypherShortestPathByString("p").DefinedBy(relationShip)).
+		Match(cypher.AShortestPath("p").DefinedBy(relationShip)).
 		ReturningByString("p").
 		Build()
 	if err != nil {

@@ -38,7 +38,11 @@ func NewNodeWithProperties(primaryLabel string, properties MapExpression, additi
 	return NodeCreate5(primaryLabel, properties, additionalLabel...)
 }
 
-func NewNode(primaryLabel string) Node {
+/**
+ * @param symbolicName The new symbolic name
+ * @return A node matching any node with the symbolic the given {@code symbolicName}.
+ */
+func ANode(primaryLabel string) Node {
 	return NodeCreate2(primaryLabel)
 }
 
@@ -56,24 +60,8 @@ func AnyNodeNamed(name string) Node {
 /**
  * @return The {@code *} wildcard literal.
  */
-func CypherAsterisk() Asterisk {
+func AnAsterisk() Asterisk {
 	return ASTERISK
-}
-
-/**
- * @param symbolicName The new symbolic name
- * @return A node matching any node with the symbolic the given {@code symbolicName}.
- */
-func CypherAnyNode1(symbolicName string) Node {
-	return NodeCreate().NamedByString(symbolicName)
-}
-
-/**
- * @param symbolicName The new symbolic name
- * @return A node matching any node with the symbolic the given {@code symbolicName}.
- */
-func CypherAnyNode2(symbolicName SymbolicName) Node {
-	return NodeCreate().Named(symbolicName)
 }
 
 /**
@@ -83,8 +71,8 @@ func CypherAnyNode2(symbolicName SymbolicName) Node {
  * @param name          The name of the property to dereference
  * @return A new property
  */
-func CypherProperty(containerName string, name string) Property {
-	return CypherPropertyByExpression(CypherName(containerName), name)
+func AProperty(containerName string, name string) Property {
+	return APropertyByExpression(ASymbolic(containerName), name)
 }
 
 /**
@@ -94,7 +82,7 @@ func CypherProperty(containerName string, name string) Property {
  * @param name       The name of the property to dereference
  * @return A new property.
  */
-func CypherPropertyByExpression(expression Expression, name string) Property {
+func APropertyByExpression(expression Expression, name string) Property {
 	return PropertyCreate2(expression, name)
 }
 
@@ -105,7 +93,7 @@ func CypherPropertyByExpression(expression Expression, name string) Property {
  * @return An ongoing definition of a named path
  * @since 1.1
  */
-func CypherPathByString(name string) OngoingDefinitionWithName {
+func APath(name string) OngoingDefinitionWithName {
 	return NamedPathBuilderWithNameByString(name)
 }
 
@@ -116,7 +104,7 @@ func CypherPathByString(name string) OngoingDefinitionWithName {
  * @return An ongoing definition of a named path
  * @since 1.1
  */
-func CypherPath(name SymbolicName) OngoingDefinitionWithName {
+func APathBySymbolic(name SymbolicName) OngoingDefinitionWithName {
 	return NamedPathBuilderWithName(name)
 }
 
@@ -127,7 +115,7 @@ func CypherPath(name SymbolicName) OngoingDefinitionWithName {
  * @return An ongoing definition of a named path
  * @since 1.1.1
  */
-func CypherShortestPathByString(name string) OngoingShortestPathDefinitionWithName {
+func AShortestPath(name string) OngoingShortestPathDefinitionWithName {
 	return NamedPathShortestPathWithNameByString(name, SHORTEST_PATH)
 }
 
@@ -138,7 +126,7 @@ func CypherShortestPathByString(name string) OngoingShortestPathDefinitionWithNa
  * @return An ongoing definition of a named path
  * @since 1.1.1
  */
-func CypherShortestPath(name SymbolicName) OngoingShortestPathDefinitionWithName {
+func AShortestPathBySymbolic(name SymbolicName) OngoingShortestPathDefinitionWithName {
 	return NamedPathShortestPathWithName(name, SHORTEST_PATH)
 }
 
@@ -148,7 +136,7 @@ func CypherShortestPath(name SymbolicName) OngoingShortestPathDefinitionWithName
  * @param value The value of the symbolic name
  * @return A new symbolic name
  */
-func CypherName(value string) SymbolicName {
+func ASymbolic(value string) SymbolicName {
 	return SymbolicNameCreate(value)
 }
 
@@ -158,7 +146,7 @@ func CypherName(value string) SymbolicName {
  * @param name The name of the parameter, must not be null
  * @return The new parameter
  */
-func Param(name string) Parameter {
+func AParam(name string) Parameter {
 	return ParameterCreate(name)
 }
 
@@ -168,7 +156,7 @@ func Param(name string) Parameter {
  * @param pattern The patterns to match
  * @return An ongoing match that is used to specify an optional Where and a required return clause
  */
-func OptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
+func AnOptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().OptionalMatch(element...)
 }
 
@@ -179,7 +167,7 @@ func OptionalMatch(element ...PatternElement) OngoingReadingWithoutWhere {
  * @param pattern The patterns to match
  * @return An ongoing match that is used to specify an optional Where and a required return clause
  */
-func MatchElements(element ...PatternElement) OngoingReadingWithoutWhere {
+func Match(element ...PatternElement) OngoingReadingWithoutWhere {
 	return DefaultStatementBuilderCreate().Match(element...)
 }
 

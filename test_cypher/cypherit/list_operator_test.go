@@ -39,11 +39,11 @@ func TestSubListShouldWork(t *testing.T) {
 
 func TestShouldWorkWithMapProjections(t *testing.T) {
 	var builder cypher.BuildableStatement
-	person := cypher.NewNode("Person").NamedByString("person")
-	location := cypher.NewNode("Location").NamedByString("personLivesIn")
+	person := cypher.ANode("Person").NamedByString("person")
+	location := cypher.ANode("Location").NamedByString("personLivesIn")
 	//
 	builder = cypher.
-		MatchElements(person).
+		Match(person).
 		Returning(person.Project("livesIn", cypher.CypherValueAt(cypher.ListBasedOn(person.RelationshipTo(location, "LIVES_IN")).
 			Returning(location.Project("name")), 0)))
 
@@ -52,15 +52,15 @@ func TestShouldWorkWithMapProjections(t *testing.T) {
 
 func TestShouldSupportExpressions(t *testing.T) {
 	var builder cypher.BuildableStatement
-	person := cypher.NewNode("Person").NamedByString("person")
-	location := cypher.NewNode("Location").NamedByString("personLivesIn")
+	person := cypher.ANode("Person").NamedByString("person")
+	location := cypher.ANode("Location").NamedByString("personLivesIn")
 	//
 	builder = cypher.
-		MatchElements(person).
+		Match(person).
 		Returning(person.Project("livesIn",
 			cypher.SubList(cypher.ListBasedOn(person.RelationshipTo(location, "LIVES_IN")).
-				Returning(location.Project("name")), cypher.Param("personLivedInOffset"),
-				cypher.Param("personLivedInOffset").Add(cypher.Param("personLivedInFirst")).Get())))
+				Returning(location.Project("name")), cypher.AParam("personLivedInOffset"),
+				cypher.AParam("personLivedInOffset").Add(cypher.AParam("personLivedInFirst")).Get())))
 
 	Assert(t, builder, "MATCH (person:`Person`) RETURN person{livesIn: [(person)-[:`LIVES_IN`]->(personLivesIn:`Location`) | personLivesIn{.name}][$personLivedInOffset..($personLivedInOffset + $personLivedInFirst)]}")
 }

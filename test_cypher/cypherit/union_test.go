@@ -6,7 +6,7 @@ import (
 )
 
 func TestShouldRenderUnions(t *testing.T) {
-	statement1, err := cypher.MatchElements(bikeNode).
+	statement1, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("a").IsEqualTo(cypher.LiteralOf("A"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -14,7 +14,7 @@ func TestShouldRenderUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement2, err := cypher.MatchElements(bikeNode).
+	statement2, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("b").IsEqualTo(cypher.LiteralOf("B"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -22,7 +22,7 @@ func TestShouldRenderUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement3, err := cypher.MatchElements(bikeNode).
+	statement3, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("c").IsEqualTo(cypher.LiteralOf("C"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -36,7 +36,7 @@ func TestShouldRenderUnions(t *testing.T) {
 }
 
 func TestShouldRenderAllUnions(t *testing.T) {
-	statement1, err := cypher.MatchElements(bikeNode).
+	statement1, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("a").IsEqualTo(cypher.LiteralOf("A"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -44,7 +44,7 @@ func TestShouldRenderAllUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement2, err := cypher.MatchElements(bikeNode).
+	statement2, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("b").IsEqualTo(cypher.LiteralOf("B"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -57,7 +57,7 @@ func TestShouldRenderAllUnions(t *testing.T) {
 }
 
 func TestShouldAppendToExistingUnions(t *testing.T) {
-	statement1, err := cypher.MatchElements(bikeNode).
+	statement1, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("a").IsEqualTo(cypher.LiteralOf("A"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -65,7 +65,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement2, err := cypher.MatchElements(bikeNode).
+	statement2, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("b").IsEqualTo(cypher.LiteralOf("B"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -74,7 +74,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 		return
 	}
 	statement := cypher.CypherUnionAll(statement1, statement2)
-	statement3, err := cypher.MatchElements(bikeNode).
+	statement3, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("c").IsEqualTo(cypher.LiteralOf("C"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -82,7 +82,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement4, err := cypher.MatchElements(bikeNode).
+	statement4, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("d").IsEqualTo(cypher.LiteralOf("D"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -97,7 +97,7 @@ func TestShouldAppendToExistingUnions(t *testing.T) {
 }
 
 func TestShouldNotMix(t *testing.T) {
-	statement1, err := cypher.MatchElements(bikeNode).
+	statement1, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("a").IsEqualTo(cypher.LiteralOf("A"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -105,7 +105,7 @@ func TestShouldNotMix(t *testing.T) {
 		t.Errorf("error when build query\n %s", err)
 		return
 	}
-	statement2, err := cypher.MatchElements(bikeNode).
+	statement2, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("b").IsEqualTo(cypher.LiteralOf("B"))).
 		ReturningByNamed(bikeNode).
 		Build()
@@ -114,7 +114,7 @@ func TestShouldNotMix(t *testing.T) {
 		return
 	}
 	statement := cypher.CypherUnionAll(statement1, statement2)
-	statement3, err := cypher.MatchElements(bikeNode).
+	statement3, err := cypher.Match(bikeNode).
 		WhereConditionContainer(bikeNode.Property("c").IsEqualTo(cypher.LiteralOf("C"))).
 		ReturningByNamed(bikeNode).
 		Build()

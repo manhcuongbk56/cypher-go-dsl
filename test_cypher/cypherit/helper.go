@@ -54,5 +54,5 @@ func AssertStatementError(t *testing.T, statement cypher.Statement, expectError 
 }
 
 func OtherNode() cypher.Node {
-	return cypher.NewNode("Other").NamedByString("other")
+	return cypher.ANode("Other").NamedByString("other")
 }

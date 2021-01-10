@@ -7,10 +7,10 @@ import (
 
 func TestSimpleCase(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
 			Then(cypher.CypherLiteralTrue())).
@@ -21,10 +21,10 @@ func TestSimpleCase(t *testing.T) {
 
 func TestSimpleCaseWithElse(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
 			Then(cypher.CypherLiteralTrue()).
@@ -36,10 +36,10 @@ func TestSimpleCaseWithElse(t *testing.T) {
 
 func TestSimpleCaseWithMultipleWhenThen(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
 			Then(cypher.CypherLiteralTrue()).
@@ -52,10 +52,10 @@ func TestSimpleCaseWithMultipleWhenThen(t *testing.T) {
 
 func TestSimpleCaseWithMultipleWhenThenAndElse(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.CaseExpression(node.Property("value")).
 			When(cypher.LiteralOf("blubb")).
 			Then(cypher.CypherLiteralTrue()).
@@ -69,10 +69,10 @@ func TestSimpleCaseWithMultipleWhenThenAndElse(t *testing.T) {
 
 func TestGenericCase(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
 			Then(cypher.CypherLiteralTrue())).
@@ -83,10 +83,10 @@ func TestGenericCase(t *testing.T) {
 
 func TestGenericCaseWithElse(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
 			Then(cypher.CypherLiteralTrue()).
@@ -98,10 +98,10 @@ func TestGenericCaseWithElse(t *testing.T) {
 
 func TestGenericCaseWithMultipleWhenThen(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
 			Then(cypher.CypherLiteralTrue()).
@@ -114,10 +114,10 @@ func TestGenericCaseWithMultipleWhenThen(t *testing.T) {
 
 func TestGenericCaseWithMultipleWhenThenAndElse(t *testing.T) {
 	var builder cypher.BuildableStatement
-	node := cypher.NewNode("a").NamedByString("n")
+	node := cypher.ANode("a").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Where(cypher.GenericCaseExpression().
 			When(node.Property("value").IsEqualTo(cypher.LiteralOf("blubb")).Get()).
 			Then(cypher.CypherLiteralTrue()).
@@ -135,7 +135,7 @@ func TestCanGetAliasedInReturn(t *testing.T) {
 	node := cypher.AnyNodeNamed("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		Returning(cypher.CaseExpression(node.Property("eyes")).
 			When(cypher.LiteralOf("blue")).
 			Then(cypher.LiteralOf(1)).

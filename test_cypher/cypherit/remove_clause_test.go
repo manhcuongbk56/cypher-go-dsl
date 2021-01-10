@@ -6,12 +6,12 @@ import (
 )
 
 func TestShouldRenderRemoveOnNodes(t *testing.T) {
-	builder := cypher.MatchElements(userNode).
+	builder := cypher.Match(userNode).
 		RemoveByNode(userNode, "A", "B").
 		ReturningByNamed(userNode)
 	Assert(t, builder, "MATCH (u:`User`) REMOVE u:`A`:`B` RETURN u")
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		WithByNamed(userNode).
 		SetByNode(userNode, "A", "B").
 		RemoveByNode(userNode, "C", "D").
@@ -22,12 +22,12 @@ func TestShouldRenderRemoveOnNodes(t *testing.T) {
 func TestShouldRenderRemoveOfProperties(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		Remove(userNode.Property("a"), userNode.Property("b")).
 		ReturningByNamed(userNode)
 	Assert(t, builder, "MATCH (u:`User`) REMOVE u.a, u.b RETURN u")
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		WithByNamed(userNode).
 		Remove(userNode.Property("a")).
 		Remove(userNode.Property("b")).

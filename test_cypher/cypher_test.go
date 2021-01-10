@@ -6,10 +6,10 @@ import (
 )
 
 func TestRenderSimpleQuery(t *testing.T) {
-	device := cypher.NewNode("Device").NamedByString("d").WithRawProperties("entity.id", cypher.StringLiteralCreate("7d729555-0d61-46ae-ab79-ce43e72f751b"))
-	customer := cypher.NewNode("Customer").NamedByString("c")
+	device := cypher.ANode("Device").NamedByString("d").WithRawProperties("entity.id", cypher.StringLiteralCreate("7d729555-0d61-46ae-ab79-ce43e72f751b"))
+	customer := cypher.ANode("Customer").NamedByString("c")
 	relation := device.RelationshipTo(customer, "HAS")
-	statement, _ := cypher.MatchElements(relation).
+	statement, _ := cypher.Match(relation).
 		Returning(customer.GetSymbolicName()).
 		Build()
 	query, _ := cypher.NewRenderer().Render(statement)
@@ -19,10 +19,10 @@ func TestRenderSimpleQuery(t *testing.T) {
 }
 
 func TestRenderComplexQuery(t *testing.T) {
-	device := cypher.NewNode("Farm").NamedByString("b")
-	customer := cypher.NewNode("Customer").NamedByString("c")
+	device := cypher.ANode("Farm").NamedByString("b")
+	customer := cypher.ANode("Customer").NamedByString("c")
 	relation := device.RelationshipTo(customer, "HAS")
-	statement, _ := cypher.MatchElements(relation).
+	statement, _ := cypher.Match(relation).
 		Returning(customer.GetSymbolicName()).
 		Build()
 	query, _ := cypher.NewRenderer().Render(statement)

@@ -81,7 +81,7 @@ func TestShouldRenderCreateWithWith(t *testing.T) {
 func TestMatchShouldExposeCreate(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		Create(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "MATCH (u:`User`) CREATE (u)-[o:`OWNS`]->(b:`Bike`)")
 }
@@ -89,7 +89,7 @@ func TestMatchShouldExposeCreate(t *testing.T) {
 func TestWithShouldExposeCreate(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		WithDistinctByNamed(userNode).
 		Create(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "MATCH (u:`User`) WITH DISTINCT u CREATE (u)-[o:`OWNS`]->(b:`Bike`)")

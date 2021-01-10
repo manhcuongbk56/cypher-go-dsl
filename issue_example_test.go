@@ -3,8 +3,8 @@ package cypher
 import "testing"
 
 func TestGh48(t *testing.T) {
-	n := NewNode("Label").NamedByString("n")
-	statement, err := MatchElements(n).
+	n := ANode("Label").NamedByString("n")
+	statement, err := Match(n).
 		SetWithNamed(n, MapOf("a", StringLiteralCreate("bar"), "b", StringLiteralCreate("baz"))).
 		ReturningByNamed(n).
 		Build()
@@ -20,7 +20,7 @@ func TestGh48(t *testing.T) {
 //func TestGh51(t *testing.T) {
 //	n := CypherAnyNode1("n")
 //	foobarProp := proper
-//	statement, err := MatchElements(n).
+//	statement, err := Match(n).
 //		SetWithNamed(n, MapOf("a", StringLiteralCreate("bar"), "b", StringLiteralCreate("baz"))).
 //		ReturningByNamed(n).
 //		Build()

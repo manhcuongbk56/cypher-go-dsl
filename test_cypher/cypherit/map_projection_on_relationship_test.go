@@ -8,24 +8,24 @@ import (
 
 func TestProjectionSimpleOnRelationship(t *testing.T) {
 	var builder cypher.BuildableStatement
-	p := cypher.NewNode("Person").NamedByString("p")
-	m := cypher.NewNode("Movie").NamedByString("m")
+	p := cypher.ANode("Person").NamedByString("p")
+	m := cypher.ANode("Movie").NamedByString("m")
 	rel := p.RelationshipTo(m, "ACTED_IN").NamedByString("r")
 	//
 	builder = cypher.
-		MatchElements(rel).
+		Match(rel).
 		Returning(rel.Project("__internalNeo4jId__", cypher.FunctionIdByRelationship(rel), "roles"))
 	Assert(t, builder, "MATCH (p:`Person`)-[r:`ACTED_IN`]->(m:`Movie`) RETURN r{__internalNeo4jId__: id(r), .roles}")
 }
 
 func TestNestedOnRelationship(t *testing.T) {
 	var builder cypher.BuildableStatement
-	p := cypher.NewNode("Person").NamedByString("p")
-	m := cypher.NewNode("Movie").NamedByString("m")
+	p := cypher.ANode("Person").NamedByString("p")
+	m := cypher.ANode("Movie").NamedByString("m")
 	rel := p.RelationshipTo(m, "ACTED_IN").NamedByString("r")
 	//
 	builder = cypher.
-		MatchElements(rel).
+		Match(rel).
 		Returning(m.Project("title", "roles", rel.Project("__internalNeo4jId__", cypher.FunctionIdByRelationship(rel), "roles")))
 	Assert(t, builder, "MATCH (p:`Person`)-[r:`ACTED_IN`]->(m:`Movie`) RETURN m{.title, roles: r{__internalNeo4jId__: id(r), .roles}}")
 }
@@ -35,11 +35,10 @@ func TestAsterisk(t *testing.T) {
 	n := cypher.AnyNodeNamed("n")
 	//
 	builder = cypher.
-		MatchElements(n).
-		Returning(n.Project(cypher.CypherAsterisk()))
+		Match(n).
+		Returning(n.Project(cypher.AnAsterisk()))
 	Assert(t, builder, "MATCH (n) RETURN n{.*}")
 }
-
 
 func TestProjectInvalid(t *testing.T) {
 	var expect = "map projection create new content: unknown type cypher.FunctionInvocation cannot be used with an implicit name as map entry"
@@ -64,4 +63,3 @@ func TestProjectInvalid(t *testing.T) {
 		return
 	}
 }
-

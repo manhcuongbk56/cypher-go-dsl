@@ -82,7 +82,7 @@ func TestShouldRenderMergeWithWith(t *testing.T) {
 func TestMatchShouldExposeMerge(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		Merge(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "MATCH (u:`User`) MERGE (u)-[o:`OWNS`]->(b:`Bike`)")
 }
@@ -90,7 +90,7 @@ func TestMatchShouldExposeMerge(t *testing.T) {
 func TestWithShouldExposeMerge(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.MatchElements(userNode).
+	builder = cypher.Match(userNode).
 		WithDistinctByNamed(userNode).
 		Merge(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o"))
 	Assert(t, builder, "MATCH (u:`User`) WITH DISTINCT u MERGE (u)-[o:`OWNS`]->(b:`Bike`)")
@@ -99,12 +99,12 @@ func TestWithShouldExposeMerge(t *testing.T) {
 func TestMixedCreateAndMerge(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
+	tripNode := cypher.ANode("Trip").NamedByString("t")
 	builder = cypher.CypherCreate(userNode).
 		Merge(userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")).
 		WithDistinctByNamed(bikeNode).
 		Merge(tripNode.RelationshipFrom(bikeNode, "USED_ON")).
-		Returning(cypher.CypherAsterisk())
+		Returning(cypher.AnAsterisk())
 	Assert(t, builder, "CREATE (u:`User`) MERGE (u)-[o:`OWNS`]->(b:`Bike`) WITH DISTINCT b MERGE (t:`Trip`)<-[:`USED_ON`]-(b) RETURN *")
 }
 

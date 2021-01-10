@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-var bikeNode = cypher.NewNode("Bike").NamedByString("b")
-var userNode = cypher.NewNode("User").NamedByString("u")
+var bikeNode = cypher.ANode("Bike").NamedByString("b")
+var userNode = cypher.ANode("User").NamedByString("u")
 
 func TestUnrelatedNode(t *testing.T) {
-	statement, err := cypher.MatchElements(bikeNode, userNode, cypher.NewNode("U").NamedByString("o")).
+	statement, err := cypher.Match(bikeNode, userNode, cypher.ANode("U").NamedByString("o")).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -23,8 +23,8 @@ func TestUnrelatedNode(t *testing.T) {
 }
 
 func TestAsteriskShouldWork(t *testing.T) {
-	statement, err := cypher.MatchElements(bikeNode, userNode, cypher.NewNode("U").NamedByString("o")).
-		Returning(cypher.CypherAsterisk()).
+	statement, err := cypher.Match(bikeNode, userNode, cypher.ANode("U").NamedByString("o")).
+		Returning(cypher.AnAsterisk()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -37,9 +37,9 @@ func TestAsteriskShouldWork(t *testing.T) {
 }
 
 func TestAliasedExpressionInReturn(t *testing.T) {
-	unnamedNode := cypher.NewNode("ANode").NamedByString("anode")
-	namedNode := cypher.NewNode("AnotherNode").NamedByString("o")
-	statement, err := cypher.MatchElements(unnamedNode, namedNode).
+	unnamedNode := cypher.ANode("ANode").NamedByString("anode")
+	namedNode := cypher.ANode("AnotherNode").NamedByString("o")
+	statement, err := cypher.Match(unnamedNode, namedNode).
 		Returning(namedNode.As("theOtherNode")).
 		Build()
 	if err != nil {
@@ -53,7 +53,7 @@ func TestAliasedExpressionInReturn(t *testing.T) {
 }
 
 func TestSimpleRelationship(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS")).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS")).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -67,7 +67,7 @@ func TestSimpleRelationship(t *testing.T) {
 }
 
 func TestMultipleRelationshipTypes(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS", "RIDES")).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS", "RIDES")).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -82,7 +82,7 @@ func TestMultipleRelationshipTypes(t *testing.T) {
 
 func TestRelationshipWithProperties(t *testing.T) {
 	statement, err := cypher.
-		MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").
+		Match(userNode.RelationshipTo(bikeNode, "OWNS").
 			WithProperties(cypher.MapOf("boughtOn", cypher.LiteralOf("2019-04-16")))).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
@@ -97,7 +97,7 @@ func TestRelationshipWithProperties(t *testing.T) {
 }
 
 func TestRelationshipWithMinimumLength(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").Min(3)).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS").Min(3)).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -112,7 +112,7 @@ func TestRelationshipWithMinimumLength(t *testing.T) {
 }
 
 func TestRelationshipWithMaximumLength(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").Max(5)).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS").Max(5)).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -126,7 +126,7 @@ func TestRelationshipWithMaximumLength(t *testing.T) {
 }
 
 func TestRelationshipWithLength(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").Length(3, 5)).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS").Length(3, 5)).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -140,7 +140,7 @@ func TestRelationshipWithLength(t *testing.T) {
 }
 
 func TestRelationshipWithLengthAndProperties(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode.RelationshipTo(bikeNode, "OWNS").Length(3, 5).WithProperties(cypher.MapOf("boughtOn", cypher.LiteralOf("2019-04-16")))).
+	statement, err := cypher.Match(userNode.RelationshipTo(bikeNode, "OWNS").Length(3, 5).WithProperties(cypher.MapOf("boughtOn", cypher.LiteralOf("2019-04-16")))).
 		ReturningByNamed(bikeNode, userNode).
 		Build()
 	if err != nil {
@@ -155,7 +155,7 @@ func TestRelationshipWithLengthAndProperties(t *testing.T) {
 
 func TestSimpleRelationshipWithReturn(t *testing.T) {
 	owns := userNode.RelationshipTo(bikeNode, "OWNS").NamedByString("o")
-	statement, err := cypher.MatchElements(owns).
+	statement, err := cypher.Match(owns).
 		ReturningByNamed(bikeNode, userNode, owns).
 		Build()
 	if err != nil {
@@ -169,8 +169,8 @@ func TestSimpleRelationshipWithReturn(t *testing.T) {
 }
 
 func TestChainedRelations1(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
-	statementBuilder := cypher.MatchElements(userNode.
+	tripNode := cypher.ANode("Trip").NamedByString("t")
+	statementBuilder := cypher.Match(userNode.
 		RelationshipTo(bikeNode, "OWNS").NamedByString("r1").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
 	expression := userNode.Property("name").MatchesPattern(".*aName").Get()
@@ -187,8 +187,8 @@ func TestChainedRelations1(t *testing.T) {
 }
 
 func TestChainedRelations2(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
-	statementBuilder := cypher.MatchElements(userNode.
+	tripNode := cypher.ANode("Trip").NamedByString("t")
+	statementBuilder := cypher.Match(userNode.
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2"))
 	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
@@ -205,12 +205,12 @@ func TestChainedRelations2(t *testing.T) {
 }
 
 func TestChainedRelations3(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
-	statementBuilder := cypher.MatchElements(userNode.
+	tripNode := cypher.ANode("Trip").NamedByString("t")
+	statementBuilder := cypher.Match(userNode.
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").
-		RelationshipBetween(cypher.NewNode("SOMETHING").NamedByString("something")).NamedC("y"))
+		RelationshipBetween(cypher.ANode("SOMETHING").NamedByString("something")).NamedC("y"))
 	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
@@ -225,12 +225,12 @@ func TestChainedRelations3(t *testing.T) {
 }
 
 func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
-	tripNode := cypher.NewNode("Trip").NamedByString("t")
-	statementBuilder := cypher.MatchElements(userNode.
+	tripNode := cypher.ANode("Trip").NamedByString("t")
+	statementBuilder := cypher.Match(userNode.
 		RelationshipTo(bikeNode, "OWNS").
 		RelationshipTo(tripNode, "USED_ON").NamedC("r2").Min(1).Properties(cypher.MapOf("when", cypher.LiteralOf("2019-04-16"))).
 		RelationshipFrom(userNode, "WAS_ON").NamedC("x").Max(2).Properties(cypher.MapOf("whatever", cypher.LiteralOf("2020-04-16"))).
-		RelationshipBetween(cypher.NewNode("SOMETHING").NamedByString("something")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
+		RelationshipBetween(cypher.ANode("SOMETHING").NamedByString("something")).NamedC("y").Length(2, 3).Properties(cypher.MapOf("idk", cypher.LiteralOf("2021-04-16"))))
 	expression := cypher.ExpressionWrap(userNode.Property("name")).MatchesPattern(".*aName").Get()
 	statement, err := statementBuilder.Where(expression).ReturningByNamed(bikeNode, userNode).Build()
 	if err != nil {
@@ -245,8 +245,8 @@ func TestChainedRelationshipWithPropertiesAndLength(t *testing.T) {
 }
 
 func TestSizeOfRelationship(t *testing.T) {
-	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
-	expression := cypher.ExpressionWrap(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	statementBuilder := cypher.Match(cypher.AnyNodeNamed("a"))
+	expression := cypher.ExpressionWrap(cypher.AProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
 		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
@@ -262,8 +262,8 @@ func TestSizeOfRelationship(t *testing.T) {
 }
 
 func TestSizeOfRelationshipChain(t *testing.T) {
-	statementBuilder := cypher.MatchElements(cypher.AnyNodeNamed("a"))
-	expression := cypher.ExpressionWrap(cypher.CypherProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
+	statementBuilder := cypher.Match(cypher.AnyNodeNamed("a"))
+	expression := cypher.ExpressionWrap(cypher.AProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
 		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode()).RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
@@ -279,7 +279,7 @@ func TestSizeOfRelationshipChain(t *testing.T) {
 }
 
 func TestSortOrderDefault(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(cypher.CypherSort(userNode.Property("name"))).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -293,7 +293,7 @@ func TestSortOrderDefault(t *testing.T) {
 }
 
 func TestSortOrderAscending(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Ascending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -307,7 +307,7 @@ func TestSortOrderAscending(t *testing.T) {
 }
 
 func TestSortOrderDescending(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -321,7 +321,7 @@ func TestSortOrderDescending(t *testing.T) {
 }
 
 func TestSortOrderConcatenation(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(cypher.CypherSort(userNode.Property("name")).Descending(),
 			cypher.CypherSort(userNode.Property("age")).Ascending()).Build()
 	if err != nil {
@@ -336,7 +336,7 @@ func TestSortOrderConcatenation(t *testing.T) {
 }
 
 func TestSortOrderDefaultExpression(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBy(userNode.Property("name")).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -350,7 +350,7 @@ func TestSortOrderDefaultExpression(t *testing.T) {
 }
 
 func TestSortOrderAscendingExpression(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(userNode.Property("name").Ascending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -364,7 +364,7 @@ func TestSortOrderAscendingExpression(t *testing.T) {
 }
 
 func TestSortOrderDescendingExpression(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBySortItem(userNode.Property("name").Descending()).Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -378,7 +378,7 @@ func TestSortOrderDescendingExpression(t *testing.T) {
 }
 
 func TestSortOrderConcatenationExpression(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		OrderBy(userNode.Property("name")).Descending().
 		And(userNode.Property("age")).Ascending().
 		Build()
@@ -394,7 +394,7 @@ func TestSortOrderConcatenationExpression(t *testing.T) {
 }
 
 func TestSkip(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		Skip(1).
 		Build()
 	if err != nil {
@@ -409,7 +409,7 @@ func TestSkip(t *testing.T) {
 }
 
 func TestLimit(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		Limit(1).
 		Build()
 	if err != nil {
@@ -424,7 +424,7 @@ func TestLimit(t *testing.T) {
 }
 
 func TestSkipAndLimit(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningByNamed(userNode).
 		Skip(1).
 		Limit(1).
 		Build()
@@ -440,7 +440,7 @@ func TestSkipAndLimit(t *testing.T) {
 }
 
 func TestDistinct(t *testing.T) {
-	statement, err := cypher.MatchElements(userNode).ReturningDistinctByNamed(userNode).
+	statement, err := cypher.Match(userNode).ReturningDistinctByNamed(userNode).
 		Skip(1).
 		Limit(1).
 		Build()

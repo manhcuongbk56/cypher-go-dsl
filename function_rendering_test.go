@@ -5,8 +5,8 @@ import (
 )
 
 func TestCountInReturnClause(t *testing.T) {
-	userNode := NewNode("User").NamedByString("u")
-	statement, err := MatchElements(userNode).Returning(FunctionCount(userNode)).Build()
+	userNode := ANode("User").NamedByString("u")
+	statement, err := Match(userNode).Returning(FunctionCount(userNode)).Build()
 	if err != nil {
 		t.Errorf("error when rendering statement: %s", err)
 	}

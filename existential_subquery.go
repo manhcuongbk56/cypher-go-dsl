@@ -2,13 +2,13 @@ package cypher
 
 type ExistentialSubquery struct {
 	ConditionContainer
-	fragment Match
+	fragment match
 	key      string
 	notNil   bool
 	err      error
 }
 
-func ExistentialSubqueryCreate(fragment Match) ExistentialSubquery {
+func ExistentialSubqueryCreate(fragment match) ExistentialSubquery {
 	if fragment.GetError() != nil {
 		return ExistentialSubqueryError(fragment.GetError())
 	}
@@ -27,7 +27,7 @@ func ExistentialSubqueryError(err error) ExistentialSubquery {
 	}
 }
 
-func ExistentialSubqueryExists(fragment Match) ExistentialSubquery {
+func ExistentialSubqueryExists(fragment match) ExistentialSubquery {
 	return ExistentialSubqueryCreate(fragment)
 }
 

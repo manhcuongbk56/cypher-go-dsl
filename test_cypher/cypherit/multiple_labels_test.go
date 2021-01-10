@@ -10,7 +10,7 @@ func TestMatchWithMultipleLabels(t *testing.T) {
 	node := cypher.NewNodeWithLabels("a", "b", "c").NamedByString("n")
 	//
 	builder = cypher.
-		MatchElements(node).
+		Match(node).
 		ReturningByNamed(node)
 
 	Assert(t, builder, "MATCH (n:`a`:`b`:`c`) RETURN n")
