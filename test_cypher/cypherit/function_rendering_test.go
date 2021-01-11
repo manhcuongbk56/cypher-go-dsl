@@ -122,3 +122,23 @@ func TestFunctionBaseOnRelationship(t *testing.T) {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
 	}
 }
+
+func TestFunctionBaseOnRelationship_RawProperties(t *testing.T) {
+	relationShip := cypher.ANode("Person").NamedByString("bacon").
+		WithRawProperties("name", "Kevin Bacon").
+		RelationshipBetween(cypher.ANode("Person").NamedByString("meg").WithRawProperties("name", cypher.LiteralOf("Meg Ryan"))).
+		Unbounded()
+	statement, err := cypher.
+		Match(cypher.AShortestPath("p").DefinedBy(relationShip)).
+		ReturningByString("p").
+		Build()
+	if err != nil {
+		t.Errorf("error when build query\n %s", err)
+		return
+	}
+	query, _ := cypher.NewRenderer().Render(statement)
+	expect := "MATCH p = shortestPath((bacon:`Person` {name: 'Kevin Bacon'})-[*]-(meg:`Person` {name: 'Meg Ryan'})) RETURN p"
+	if query != expect {
+		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)
+	}
+}
