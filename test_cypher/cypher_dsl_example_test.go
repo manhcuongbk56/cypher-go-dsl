@@ -22,7 +22,7 @@ func TestDefaultStatementBuilder_OptionalMatch(t *testing.T) {
 	statement, _ := cypher.Match(farm).
 		Where(cypher.ConditionsNotByPattern(farm.RelationshipFrom(cypher.AnyNode(), "HAS"))).
 		WithByString("b").
-		OptionalMatch(farm.RelationshipTo(cypher.CypherAnyNode1("p"), "HAS")).
+		OptionalMatch(farm.RelationshipTo(cypher.AnyNodeNamed("p"), "HAS")).
 		ReturningByString("b", "p").
 		Build()
 	query, _ := cypher.NewRenderer().Render(statement)
