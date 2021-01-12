@@ -46,7 +46,6 @@ func (e ExistentialSubquery) enter(renderer *CypherRenderer) {
 }
 
 func (e ExistentialSubquery) leave(renderer *CypherRenderer) {
-	//FIXME: It may be wrong.
 	renderer.append("}")
 }
 
