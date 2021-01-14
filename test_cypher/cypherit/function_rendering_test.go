@@ -80,7 +80,6 @@ func TestShouldSupportMoreThanOneArgument(t *testing.T) {
 		return
 	}
 	query, _ := cypher.NewRenderer().Render(statement)
-	//TODO: some thing went wrong with escape letter
 	expect := "MATCH (u:`User`) RETURN coalesce(u.a, u.b, '¯\\\\_(ツ)_/¯')"
 	if query != expect {
 		t.Errorf("\n%s is incorrect, expect is \n%s", query, expect)

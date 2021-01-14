@@ -6,13 +6,13 @@ import (
 
 func TestShouldEscapeContent(t *testing.T) {
 	origin := "A\\B\\\\Ca'bc123\\"
-	literal := StringLiteral{content: origin}
+	literal := StringLiteralCreate(origin)
 	escaped := literal.AsString()
-	if escaped != "'A\\\\B\\\\\\\\Ca\\'bc123\\\\'" {
+	expected := "'A\\\\B\\\\\\\\Ca\\'bc123\\\\'"
+	if escaped != expected {
 		t.Errorf("escaped is not match:\n %s", escaped)
 	}
 }
-
 
 func TestShouldEscapeEmptyString(t *testing.T) {
 	inputs := make([][]string, 0)

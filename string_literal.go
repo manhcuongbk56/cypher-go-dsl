@@ -1,6 +1,7 @@
 package cypher
 
 import (
+	"fmt"
 	"regexp"
 )
 
@@ -13,6 +14,11 @@ type StringLiteral struct {
 }
 
 var RESERVED_CHARS, _ = regexp.Compile("([" + regexp.QuoteMeta("\\'\"") + "])")
+var CHARACTER_MAP = map[string]string{
+	"\\": "\\\\",
+	"\"": "\\\"",
+	"'":  "\\'",
+}
 var QUOTED_LITERAL_FORMAT = "'%s'"
 
 func StringLiteralCreate(content string) StringLiteral {
@@ -38,32 +44,12 @@ func (s StringLiteral) isNotNil() bool {
 }
 
 func escapeStringLiteral(value string) string {
-	//TODO: need review
 	if value == "" {
 		return value
 	}
-	allStringSubmatchIndex := RESERVED_CHARS.FindAllStringSubmatchIndex(value, -1)
-	var submachtArray []int
-	for _, s := range allStringSubmatchIndex {
-
-		submachtArray = append(submachtArray, s[0])
-	}
-	if len(submachtArray) == 0 {
-
-		return value
-	}
-	result := ""
-	firstIndex := 0
-	for _, s1 := range submachtArray {
-		if value[s1:s1+1] == "'" {
-			result = result + value[firstIndex:s1] + "\\\\"
-		} else {
-			result = result + value[firstIndex:s1] + "\\\\\\"
-		}
-		firstIndex = s1
-	}
-	result = "'" + result + value[firstIndex:] + "'"
-	return result
+	return RESERVED_CHARS.ReplaceAllStringFunc(value, func(s string) string {
+		return CHARACTER_MAP[s]
+	})
 }
 
 func (s StringLiteral) getKey() string {
@@ -79,7 +65,7 @@ func (s StringLiteral) GetContent() interface{} {
 }
 
 func (s StringLiteral) AsString() string {
-	return escapeStringLiteral(s.content)
+	return fmt.Sprintf(QUOTED_LITERAL_FORMAT, escapeStringLiteral(s.content))
 }
 
 func (s StringLiteral) accept(visitor *CypherRenderer) {
