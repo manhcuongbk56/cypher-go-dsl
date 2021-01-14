@@ -38,11 +38,32 @@ func (s StringLiteral) isNotNil() bool {
 }
 
 func escapeStringLiteral(value string) string {
-	//TODO: need more time to escape string
+	//TODO: need review
 	if value == "" {
 		return value
 	}
-	return "'" + value + "'"
+	allStringSubmatchIndex := RESERVED_CHARS.FindAllStringSubmatchIndex(value, -1)
+	var submachtArray []int
+	for _, s := range allStringSubmatchIndex {
+
+		submachtArray = append(submachtArray, s[0])
+	}
+	if len(submachtArray) == 0 {
+
+		return value
+	}
+	result := ""
+	firstIndex := 0
+	for _, s1 := range submachtArray {
+		if value[s1:s1+1] == "'" {
+			result = result + value[firstIndex:s1] + "\\\\"
+		} else {
+			result = result + value[firstIndex:s1] + "\\\\\\"
+		}
+		firstIndex = s1
+	}
+	result = "'" + result + value[firstIndex:] + "'"
+	return result
 }
 
 func (s StringLiteral) getKey() string {
