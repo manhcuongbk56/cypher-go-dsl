@@ -39,7 +39,7 @@ func (k KeyValueMapEntry) accept(visitor *CypherRenderer) {
 }
 
 func (k KeyValueMapEntry) enter(renderer *CypherRenderer) {
-	renderer.append(escapeIfNecessary(k.entryKey)).append(": ")
+	renderer.append(EscapeIfNecessary(k.entryKey)).append(": ")
 }
 
 func (k KeyValueMapEntry) leave(renderer *CypherRenderer) {
