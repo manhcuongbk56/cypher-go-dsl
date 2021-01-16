@@ -151,49 +151,6 @@ const RelTypSeparator = "|"
 const RelTypeStart = ":"
 const NodeLabelStart = ":"
 
-func enterRelationshipTypes(renderer *CypherRenderer, visitable Visitable) {
-	relationshipTypes := visitable.(RelationshipTypes)
-	typeWithPrefix := make([]string, 0)
-	for _, typeRaw := range relationshipTypes.values {
-		if typeRaw == "" {
-			continue
-		}
-		typeWithPrefix = append(typeWithPrefix, RelTypeStart+typeRaw)
-	}
-	renderer.append(strings.Join(typeWithPrefix, RelTypSeparator))
-}
-
-func enterRelationshipDetail(renderer *CypherRenderer, visitable Visitable) {
-	details := visitable.(RelationshipDetails)
-	direction := details.direction
-	renderer.append(direction.symbolLeft)
-	if details.hasContent() {
-		renderer.append("[")
-	}
-}
-
-func leaveRelationshipDetail(renderer *CypherRenderer, visitable Visitable) {
-	details := visitable.(RelationshipDetails)
-	direction := details.direction
-	if details.hasContent() {
-		renderer.append("]")
-	}
-	renderer.append(direction.symbolRight)
-}
-
-func enterSkip(renderer *CypherRenderer, visitable Visitable) {
-	renderer.append(" SKIP ")
-}
-
-func enterLimit(renderer *CypherRenderer, visitable Visitable) {
-	renderer.append(" LIMIT ")
-}
-
-func enterLiteral(renderer *CypherRenderer, visitable Visitable) {
-	literal := visitable.(Literal)
-	renderer.append(literal.AsString())
-}
-
 func push(queue []string, element string) []string {
 	queue = append(queue, element)
 	return queue
