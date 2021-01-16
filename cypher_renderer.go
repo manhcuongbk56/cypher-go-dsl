@@ -4,6 +4,7 @@ import (
 	"github.com/rs/xid"
 	"golang.org/x/xerrors"
 	"strings"
+	"unicode"
 )
 
 type CypherRenderer struct {
@@ -229,4 +230,26 @@ func peekAliased(queue []AliasedExpression) *AliasedExpression {
 		return &queue[len(queue)-1]
 	}
 	return nil
+}
+
+func escapeName(name string) string {
+	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
+}
+
+func EscapeIfNecessary(name string) string {
+	//TODO: maybe need to implement this
+	if len(strings.TrimSpace(name)) == 0 || isIdentifier(name) {
+		return name
+	}
+	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
+}
+
+func isIdentifier(name string) bool {
+	for i, c := range name {
+		if !unicode.IsLetter(c) && c != '_' && (i == 0 || !unicode.IsDigit(c)) {
+			return false
+		}
+	}
+	return name != ""
+
 }

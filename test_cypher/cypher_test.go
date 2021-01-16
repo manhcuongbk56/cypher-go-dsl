@@ -13,7 +13,7 @@ func TestRenderSimpleQuery(t *testing.T) {
 		Returning(customer.GetSymbolicName()).
 		Build()
 	query, _ := cypher.NewRenderer().Render(statement)
-	if query != "MATCH (d:`Device` {entity.id: '7d729555-0d61-46ae-ab79-ce43e72f751b'})-[:`HAS`]->(c:`Customer`) RETURN c" {
+	if query != "MATCH (d:`Device` {`entity.id`: '7d729555-0d61-46ae-ab79-ce43e72f751b'})-[:`HAS`]->(c:`Customer`) RETURN c" {
 		t.Errorf("query is not match:\n %s", query)
 	}
 }

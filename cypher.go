@@ -2,8 +2,6 @@ package cypher
 
 import (
 	"errors"
-	"go/token"
-	"regexp"
 	"strings"
 )
 
@@ -537,23 +535,6 @@ func LiteralOf(object interface{}) Literal {
 		return BooleanLiteralCreate(booleanValue)
 	}
 	return StringLiteralError(errors.New("cypher literal of: unsupported literal type"))
-}
-
-func escapeName(name string) string {
-	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
-}
-
-func EscapeIfNecessary(name string) string {
-	//TODO: maybe need to implement this
-	if len(strings.TrimSpace(name)) == 0 || token.IsIdentifier(name) {
-		return name
-	}
-	r1, _ := regexp.Compile(" ")
-	r2, _ := regexp.Compile("`")
-	if r1.MatchString(name) || r2.MatchString(name) {
-		return "`" + strings.ReplaceAll(name, "`", "``") + "`"
-	}
-	return name
 }
 
 func unionImpl(unionAll bool, statements ...Statement) Statement {
