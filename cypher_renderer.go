@@ -194,7 +194,6 @@ func escapeName(name string) string {
 }
 
 func EscapeIfNecessary(name string) string {
-	//TODO: maybe need to implement this
 	if len(strings.TrimSpace(name)) == 0 || isIdentifier(name) {
 		return name
 	}
