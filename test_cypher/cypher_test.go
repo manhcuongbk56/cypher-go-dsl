@@ -34,3 +34,19 @@ func TestRenderComplexQuery(t *testing.T) {
 func TestWithCountFunction(t *testing.T) {
 
 }
+
+func TestEscapeIfNecessary(t *testing.T) {
+	inputs := make([][]string, 0)
+	inputs = append(inputs, []string{" ", " "})
+	inputs = append(inputs, []string{"a", "a"})
+	inputs = append(inputs, []string{"ALabel", "ALabel"})
+	inputs = append(inputs, []string{"A Label", "`A Label`"})
+	inputs = append(inputs, []string{"`A `Label", "```A ``Label`"})
+	inputs = append(inputs, []string{"Spring Data Neo4j⚡️RX", "`Spring Data Neo4j⚡️RX`"})
+	for _, input := range inputs {
+		escaped := cypher.EscapeIfNecessary(input[0])
+		if escaped != input[1] {
+			t.Errorf("escaped is not match:\n %s, expect is:\n %s", escaped, input[1])
+		}
+	}
+}

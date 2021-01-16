@@ -70,7 +70,7 @@ func (renderer *CypherRenderer) resolve(name SymbolicName) string {
 	if _, isExist := renderer.resolvedSymbolicNames[name]; !isExist {
 		value := name.value
 		if len(value) > 0 {
-			return escapeIfNecessary(value)
+			return EscapeIfNecessary(value)
 		}
 		return renderer.guid.String()
 	}

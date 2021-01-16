@@ -70,14 +70,14 @@ func (aliased AliasedExpression) getKey() string {
 
 func (aliased AliasedExpression) enter(renderer *CypherRenderer) {
 	if _, visited := renderer.visitableToAliased[aliased.delegate.getKey()]; visited {
-		renderer.append(escapeIfNecessary(aliased.alias))
+		renderer.append(EscapeIfNecessary(aliased.alias))
 	}
 }
 
 func (aliased AliasedExpression) leave(renderer *CypherRenderer) {
 	if _, visited := renderer.visitableToAliased[aliased.delegate.getKey()]; !visited {
 		renderer.append(" AS ")
-		renderer.append(escapeIfNecessary(aliased.alias))
+		renderer.append(EscapeIfNecessary(aliased.alias))
 	}
 }
 

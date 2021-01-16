@@ -36,7 +36,7 @@ func (p PropertyLookup) enter(renderer *CypherRenderer) {
 		renderer.append(p.GetPropertyKeyName())
 		return
 	}
-	renderer.append(escapeIfNecessary(p.GetPropertyKeyName()))
+	renderer.append(EscapeIfNecessary(p.GetPropertyKeyName()))
 }
 
 func (p PropertyLookup) leave(renderer *CypherRenderer) {
