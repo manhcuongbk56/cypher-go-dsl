@@ -25,7 +25,7 @@ func TestInWhereClause(t *testing.T) {
 func TestInReturnClause(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		Returning(cypher.FunctionCount(userNode)).
+		Returning(cypher.Count(userNode)).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -41,7 +41,7 @@ func TestInReturnClause(t *testing.T) {
 func TestInReturnClauseWithDistinct(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		Returning(cypher.FunctionCountDistinct(userNode)).
+		Returning(cypher.CountDistinct(userNode)).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -57,7 +57,7 @@ func TestInReturnClauseWithDistinct(t *testing.T) {
 func TestAliasedInReturnClause(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		Returning(cypher.FunctionCount(userNode).As("cnt").Get()).
+		Returning(cypher.Count(userNode).As("cnt").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -73,7 +73,7 @@ func TestAliasedInReturnClause(t *testing.T) {
 func TestShouldSupportMoreThanOneArgument(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		Returning(cypher.FunctionCoalesce(userNode.Property("a"), userNode.Property("b"), cypher.LiteralOf("¯\\_(ツ)_/¯"))).
+		Returning(cypher.Coalesce(userNode.Property("a"), userNode.Property("b"), cypher.LiteralOf("¯\\_(ツ)_/¯"))).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -89,7 +89,7 @@ func TestShouldSupportMoreThanOneArgument(t *testing.T) {
 func TestLiteralShouldDealWithNil(t *testing.T) {
 	statement, err := cypher.
 		Match(userNode).
-		Returning(cypher.FunctionCoalesce(cypher.LiteralOf(nil), userNode.Property("field")).As("p").Get()).
+		Returning(cypher.Coalesce(cypher.LiteralOf(nil), userNode.Property("field")).As("p").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)

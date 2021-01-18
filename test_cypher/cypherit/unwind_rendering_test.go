@@ -16,7 +16,7 @@ func TestUnwindWithoutWith(t *testing.T) {
 		As("label").
 		With(label).
 		Where(label.In(cypher.AParam("fixedLabels")).Not().Get()).
-		Returning(cypher.FunctionCollect(label).As("labels").Get())
+		Returning(cypher.Collect(label).As("labels").Get())
 	Assert(t, builder, "MATCH (n) WHERE id(n) = 1 UNWIND labels(n) AS label WITH label WHERE NOT (label IN "+
 		"$fixedLabels) RETURN collect(label) AS labels")
 }
@@ -52,7 +52,7 @@ func TestShouldRenderLeadingUnwindWithCreate(t *testing.T) {
 func TestShouldRenderUnwind(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	collected := cypher.FunctionCollectByNamed(bikeNode).As("collected").Get()
+	collected := cypher.CollectByNamed(bikeNode).As("collected").Get()
 	builder = cypher.Match(bikeNode).
 		With(collected).
 		Unwind(collected).As("x").

@@ -21,7 +21,7 @@ func TestShouldRenderMap(t *testing.T) {
 	//
 	builder = cypher.
 		Match(cypher.AnyNodeNamed("n")).
-		Returning(cypher.FunctionPoint(cypher.MapOf(
+		Returning(cypher.Point(cypher.MapOf(
 			"latitude", cypher.AParam("latitude"),
 			"longitude", cypher.AParam("longitude"),
 			"crs", cypher.LiteralOf(4326))))
@@ -34,8 +34,8 @@ func TestShouldRenderPointFunction(t *testing.T) {
 	n := cypher.AnyNodeNamed("n")
 	builder = cypher.
 		Match(n).
-		WhereConditionContainer(cypher.FunctionDistance(n.Property("location"),
-			cypher.FunctionPointByParameter(cypher.AParam("point.point"))).
+		WhereConditionContainer(cypher.Distance(n.Property("location"),
+			cypher.PointByParameter(cypher.AParam("point.point"))).
 			Gt(cypher.AParam("point.distance"))).
 		ReturningByNamed(n)
 	Assert(t, builder, "MATCH (n) WHERE distance(n.location, point($point.point)) > $point.distance RETURN n")

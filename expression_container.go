@@ -133,7 +133,7 @@ func (e ExpressionContainer) In(haystack Expression) ConditionContainer {
 }
 
 func (e ExpressionContainer) IsEmpty() ConditionContainer {
-	e.expression = FunctionSize(e.expression)
+	e.expression = Size(e.expression)
 	return e.IsEqualTo(NumberLiteralCreate1(0))
 }
 

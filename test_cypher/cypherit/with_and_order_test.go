@@ -16,7 +16,7 @@ func TestOrderOnWithShouldWork(t *testing.T) {
 		OrderBySortItem(cypher.Sort(cypher.AProperty("m", "title")),
 			cypher.Sort(cypher.AProperty("p", "name"))).
 		Returning(cypher.AProperty("m", "title").As("movie").Get(),
-			cypher.FunctionCollect(cypher.AProperty("p", "name")).As("actors").Get())
+			cypher.Collect(cypher.AProperty("p", "name")).As("actors").Get())
 	Assert(t, builder, "MATCH (m:`Movie`)<-[r:`ACTED_IN`]-(p:`Person`) WITH m, p ORDER BY m.title, p.name RETURN m.title AS movie, collect(p.name) AS actors")
 }
 
@@ -31,6 +31,6 @@ func TestConcatenatedOrdering(t *testing.T) {
 		OrderBySortItem(cypher.Sort(cypher.AProperty("m", "title")).Ascending(),
 			cypher.Sort(cypher.AProperty("p", "name")).Ascending()).
 		Returning(cypher.AProperty("m", "title").As("movie").Get(),
-			cypher.FunctionCollect(cypher.AProperty("p", "name")).As("actors").Get())
+			cypher.Collect(cypher.AProperty("p", "name")).As("actors").Get())
 	Assert(t, builder, "MATCH (m:`Movie`)<-[r:`ACTED_IN`]-(p:`Person`) WITH m, p ORDER BY m.title ASC, p.name ASC RETURN m.title AS movie, collect(p.name) AS actors")
 }

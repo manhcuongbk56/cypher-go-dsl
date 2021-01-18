@@ -57,7 +57,7 @@ func TestSomeMoreExample(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.FunctionRange(cypher.LiteralOf(0), cypher.LiteralOf(10))).
+			In(cypher.Range(cypher.LiteralOf(0), cypher.LiteralOf(10))).
 			Where(name.Remainder(cypher.LiteralOf(2)).IsEqualTo(cypher.LiteralOf(0)).Get()).
 			Returning(name.Pow(cypher.LiteralOf(3)).Get()).
 			As("result").Get())
@@ -65,7 +65,7 @@ func TestSomeMoreExample(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.FunctionRange(cypher.LiteralOf(0), cypher.LiteralOf(10))).
+			In(cypher.Range(cypher.LiteralOf(0), cypher.LiteralOf(10))).
 			Where(name.Remainder(cypher.LiteralOf(2)).IsEqualTo(cypher.LiteralOf(0)).Get()).
 			ReturningDefault().
 			As("result").Get())
@@ -73,7 +73,7 @@ func TestSomeMoreExample(t *testing.T) {
 	//
 	builder = cypher.
 		CypherReturning(cypher.CypherListWith(name).
-			In(cypher.FunctionRange(cypher.LiteralOf(0), cypher.LiteralOf(10))).
+			In(cypher.Range(cypher.LiteralOf(0), cypher.LiteralOf(10))).
 			Returning(name.Pow(cypher.LiteralOf(3)).Get()).
 			As("result").Get())
 	Assert(t, builder, "RETURN [x IN range(0, 10) | x^3] AS result")

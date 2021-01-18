@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func FunctionIdByNode(node Node) FunctionInvocation {
+func IdByNode(node Node) FunctionInvocation {
 	if node.GetError() != nil {
 		return FunctionInvocationError(node.err)
 	}
@@ -15,7 +15,7 @@ func FunctionIdByNode(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(ID, node.GetSymbolicName())
 }
 
-func FunctionIdByRelationship(relationship Relationship) FunctionInvocation {
+func IdByRelationship(relationship Relationship) FunctionInvocation {
 	if relationship.GetError() != nil {
 		return FunctionInvocationError(relationship.err)
 	}
@@ -25,7 +25,7 @@ func FunctionIdByRelationship(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(ID, relationship.GetSymbolicName())
 }
 
-func FunctionLabels(node Node) FunctionInvocation {
+func Labels(node Node) FunctionInvocation {
 	if node.GetError() != nil {
 		return FunctionInvocationError(node.err)
 	}
@@ -45,19 +45,19 @@ func FunctionType(relationship Relationship) FunctionInvocation {
 	return FunctionInvocationCreate(TYPE, relationship.GetSymbolicName())
 }
 
-func FunctionCount(node Node) FunctionInvocation {
+func Count(node Node) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, node.GetSymbolicName())
 }
 
-func FunctionCountByExpression(expression Expression) FunctionInvocation {
+func CountByExpression(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(COUNT, expression)
 }
 
-func FunctionCountDistinct(node Node) FunctionInvocation {
+func CountDistinct(node Node) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(COUNT, node.GetSymbolicName())
 }
 
-func FunctionCountDistinctByExpression(expression Expression) FunctionInvocation {
+func CountDistinctByExpression(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreateDistinct(COUNT, expression)
 }
 
@@ -81,31 +81,31 @@ func FunctionPropertiesByRelationship(relationship Relationship) FunctionInvocat
 	return FunctionInvocationCreate(PROPERTIES, relationship.GetSymbolicName())
 }
 
-func FunctionPropertiesByMapExpression(mapExpression MapExpression) FunctionInvocation {
+func PropertiesByMapExpression(mapExpression MapExpression) FunctionInvocation {
 	return FunctionInvocationCreate(PROPERTIES, mapExpression)
 }
 
-func FunctionCoalesce(expression ...Expression) FunctionInvocation {
+func Coalesce(expression ...Expression) FunctionInvocation {
 	return FunctionInvocationCreate(COALESCE, expression...)
 }
 
-func FunctionToLower(expression Expression) FunctionInvocation {
+func ToLower(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(TO_LOWER, expression)
 }
 
-func FunctionSize(expression Expression) FunctionInvocation {
+func Size(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(SIZE, expression)
 }
 
-func FunctionSizeByPattern(pattern RelationshipPattern) FunctionInvocation {
+func SizeByPattern(pattern RelationshipPattern) FunctionInvocation {
 	return FunctionInvocationCreateWithPatternElement(SIZE, pattern)
 }
 
-func FunctionExists(expression Expression) FunctionInvocation {
+func Exists(expression Expression) FunctionInvocation {
 	return FunctionInvocationCreate(EXISTS, expression)
 }
 
-func FunctionDistance(point1 Expression, point2 Expression) FunctionInvocation {
+func Distance(point1 Expression, point2 Expression) FunctionInvocation {
 	if point1 != nil && point1.GetError() != nil {
 		return FunctionInvocationError(point1.GetError())
 	}
@@ -121,35 +121,35 @@ func FunctionDistance(point1 Expression, point2 Expression) FunctionInvocation {
 	return FunctionInvocationCreate(DISTANCE, point1, point2)
 }
 
-func FunctionPoint(parameterMap MapExpression) FunctionInvocation {
+func Point(parameterMap MapExpression) FunctionInvocation {
 	if parameterMap.GetError() != nil {
 		return FunctionInvocationError(parameterMap.GetError())
 	}
 	return FunctionInvocationCreate(POINT, parameterMap)
 }
 
-func FunctionPointByParameter(parameter Parameter) FunctionInvocation {
+func PointByParameter(parameter Parameter) FunctionInvocation {
 	if parameter.GetError() != nil {
 		return FunctionInvocationError(parameter.GetError())
 	}
 	return FunctionInvocationCreate(POINT, parameter)
 }
 
-func FunctionAvg(expression Expression) FunctionInvocation {
+func Avg(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
 	return FunctionInvocationCreate(AVG, expression)
 }
 
-func FunctionAvgDistinct(expression Expression) FunctionInvocation {
+func AvgDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
 	return FunctionInvocationCreateDistinct(AVG, expression)
 }
 
-func FunctionCollectByNamed(variable Named) FunctionInvocation {
+func CollectByNamed(variable Named) FunctionInvocation {
 	if variable != nil && variable.GetError() != nil {
 		return FunctionInvocationError(variable.GetError())
 	}
@@ -159,7 +159,7 @@ func FunctionCollectByNamed(variable Named) FunctionInvocation {
 	return FunctionInvocationCreate(COLLECT, variable.GetRequiredSymbolicName())
 }
 
-func FunctionCollectDistinctByNamed(variable Named) FunctionInvocation {
+func CollectDistinctByNamed(variable Named) FunctionInvocation {
 	if variable != nil && variable.GetError() != nil {
 		return FunctionInvocationError(variable.GetError())
 	}
@@ -176,7 +176,7 @@ func FunctionCollectDistinctByNamed(variable Named) FunctionInvocation {
  * @param expression The things to collect
  * @return A function call for {@code collect()}
  */
-func FunctionCollect(expression Expression) FunctionInvocation {
+func Collect(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -190,7 +190,7 @@ func FunctionCollect(expression Expression) FunctionInvocation {
  * @param expression The things to collect
  * @return A function call for {@code collect()}
  */
-func FunctionCollectDistinct(expression Expression) FunctionInvocation {
+func CollectDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -204,7 +204,7 @@ func FunctionCollectDistinct(expression Expression) FunctionInvocation {
  * @param expression A list from which the maximum element value is returned
  * @return A function call for {@code max()}
  */
-func FunctionMax(expression Expression) FunctionInvocation {
+func Max(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -218,7 +218,7 @@ func FunctionMax(expression Expression) FunctionInvocation {
  * @param expression A list from which the maximum element value is returned
  * @return A function call for {@code max()}
  */
-func FunctionMaxDistinct(expression Expression) FunctionInvocation {
+func MaxDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -232,7 +232,7 @@ func FunctionMaxDistinct(expression Expression) FunctionInvocation {
  * @param expression A list from which the minimum element value is returned
  * @return A function call for {@code min()}
  */
-func FunctionMin(expression Expression) FunctionInvocation {
+func Min(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -246,7 +246,7 @@ func FunctionMin(expression Expression) FunctionInvocation {
  * @param expression A list from which the minimum element value is returned
  * @return A function call for {@code min()}
  */
-func FunctionMinDistinct(expression Expression) FunctionInvocation {
+func MinDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -261,7 +261,7 @@ func FunctionMinDistinct(expression Expression) FunctionInvocation {
  * @param percentile A numeric value between 0.0 and 1.0
  * @return A function call for {@code percentileCont()}
  */
-func FunctionPercentileCont(expression Expression, percentile float64) FunctionInvocation {
+func PercentileCont(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -282,7 +282,7 @@ func FunctionPercentileCont(expression Expression, percentile float64) FunctionI
  * @param percentile A numeric value between 0.0 and 1.0
  * @return A function call for {@code percentileCont()}
  */
-func FunctionPercentileContDistinct(expression Expression, percentile float64) FunctionInvocation {
+func PercentileContDistinct(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -303,7 +303,7 @@ func FunctionPercentileContDistinct(expression Expression, percentile float64) F
  * @param percentile A numeric value between 0.0 and 1.0
  * @return A function call for {@code percentileDisc()}
  */
-func FunctionPercentileDisc(expression Expression, percentile float64) FunctionInvocation {
+func PercentileDisc(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -324,7 +324,7 @@ func FunctionPercentileDisc(expression Expression, percentile float64) FunctionI
  * @param percentile A numeric value between 0.0 and 1.0
  * @return A function call for {@code percentileDisc()}
  */
-func FunctionPercentileDiscDistinct(expression Expression, percentile float64) FunctionInvocation {
+func PercentileDiscDistinct(expression Expression, percentile float64) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -344,7 +344,7 @@ func FunctionPercentileDiscDistinct(expression Expression, percentile float64) F
  * @param expression A numeric expression
  * @return A function call for {@code stDev()}
  */
-func FunctionStDev(expression Expression) FunctionInvocation {
+func StDev(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -358,7 +358,7 @@ func FunctionStDev(expression Expression) FunctionInvocation {
  * @param expression A numeric expression
  * @return A function call for {@code stDev()}
  */
-func FunctionStDevDistinct(expression Expression) FunctionInvocation {
+func StDevDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -372,7 +372,7 @@ func FunctionStDevDistinct(expression Expression) FunctionInvocation {
  * @param expression A numeric expression
  * @return A function call for {@code stDevP()}
  */
-func FunctionStDevP(expression Expression) FunctionInvocation {
+func StDevP(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -386,7 +386,7 @@ func FunctionStDevP(expression Expression) FunctionInvocation {
  * @param expression A numeric expression
  * @return A function call for {@code stDevP()}
  */
-func FunctionStDevPDistinct(expression Expression) FunctionInvocation {
+func StDevPDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -400,7 +400,7 @@ func FunctionStDevPDistinct(expression Expression) FunctionInvocation {
  * @param expression An expression Returning a OperationSet of numeric values
  * @return A function call for {@code sum()}
  */
-func FunctionSum(expression Expression) FunctionInvocation {
+func Sum(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -414,7 +414,7 @@ func FunctionSum(expression Expression) FunctionInvocation {
  * @param expression An expression Returning a OperationSet of numeric values
  * @return A function call for {@code sum()}
  */
-func FunctionSumDistinct(expression Expression) FunctionInvocation {
+func SumDistinct(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -427,8 +427,8 @@ func FunctionSumDistinct(expression Expression) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression)
  */
-func FunctionRangeRaw(start int, end int) FunctionInvocation {
-	return FunctionRange(LiteralOf(start), LiteralOf(end))
+func RangeRaw(start int, end int) FunctionInvocation {
+	return Range(LiteralOf(start), LiteralOf(end))
 }
 
 /**
@@ -437,8 +437,8 @@ func FunctionRangeRaw(start int, end int) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression, Expression)
  */
-func FunctionRange(start Expression, end Expression) FunctionInvocation {
-	return FunctionRangeWithStep(start, end, nil)
+func Range(start Expression, end Expression) FunctionInvocation {
+	return RangeWithStep(start, end, nil)
 }
 
 /**
@@ -451,8 +451,8 @@ func FunctionRange(start Expression, end Expression) FunctionInvocation {
  * @return A function call for {@code range()}
  * @see #range(Expression, Expression, Expression)
  */
-func FunctionRangeWithStepRaw(start int, end int, step int) FunctionInvocation {
-	return FunctionRangeWithStep(LiteralOf(start), LiteralOf(end), LiteralOf(step))
+func RangeWithStepRaw(start int, end int, step int) FunctionInvocation {
+	return RangeWithStep(LiteralOf(start), LiteralOf(end), LiteralOf(step))
 }
 
 /**
@@ -464,7 +464,7 @@ func FunctionRangeWithStepRaw(start int, end int, step int) FunctionInvocation {
  * @param step  the range's step
  * @return A function call for {@code range()}
  */
-func FunctionRangeWithStep(start Expression, end Expression, step Expression) FunctionInvocation {
+func RangeWithStep(start Expression, end Expression, step Expression) FunctionInvocation {
 	if start != nil && start.GetError() != nil {
 		return FunctionInvocationError(start.GetError())
 	}
@@ -494,7 +494,7 @@ func FunctionRangeWithStep(start Expression, end Expression, step Expression) Fu
  * @param expression A list from which the head element is returned
  * @return A function call for {@code head()}
  */
-func FunctionHead(expression Expression) FunctionInvocation {
+func Head(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -508,7 +508,7 @@ func FunctionHead(expression Expression) FunctionInvocation {
  * @param expression A list from which the last element is returned
  * @return A function call for {@code last()}
  */
-func FunctionLast(expression Expression) FunctionInvocation {
+func Last(expression Expression) FunctionInvocation {
 	if expression != nil && expression.GetError() != nil {
 		return FunctionInvocationError(expression.GetError())
 	}
@@ -523,7 +523,7 @@ func FunctionLast(expression Expression) FunctionInvocation {
  * @return A function call for {@code nodes()} on a path.
  * @since 1.1
  */
-func FunctionNodes(path NamedPath) FunctionInvocation {
+func Nodes(path NamedPath) FunctionInvocation {
 	if path.GetError() != nil {
 		return FunctionInvocationError(path.GetError())
 	}
@@ -545,7 +545,7 @@ func FunctionNodes(path NamedPath) FunctionInvocation {
  * @return A function call for {@code relationships()} on a path.
  * @since 2020.0.2
  */
-func FunctionRelationships(path NamedPath) FunctionInvocation {
+func Relationships(path NamedPath) FunctionInvocation {
 	if path.GetError() != nil {
 		return FunctionInvocationError(path.GetError())
 	}
@@ -567,7 +567,7 @@ func FunctionRelationships(path NamedPath) FunctionInvocation {
  * @return A function call for {@code startNode()} on a path.
  * @since 2020.0.2
  */
-func FunctionStartNode(relationship Relationship) FunctionInvocation {
+func StartNode(relationship Relationship) FunctionInvocation {
 	if relationship.GetError() != nil {
 		return FunctionInvocationError(relationship.GetError())
 	}
@@ -589,7 +589,7 @@ func FunctionStartNode(relationship Relationship) FunctionInvocation {
  * @return A function call for {@code endNode()} on a path.
  * @since 2020.0.2
  */
-func FunctionEndNode(relationship Relationship) FunctionInvocation {
+func EndNode(relationship Relationship) FunctionInvocation {
 	if relationship.GetError() != nil {
 		return FunctionInvocationError(relationship.GetError())
 	}
@@ -611,7 +611,7 @@ func FunctionEndNode(relationship Relationship) FunctionInvocation {
  * @return A function call for {@code date()}.
  * @since 2020.1.0
  */
-func FunctionDate() FunctionInvocation {
+func Date() FunctionInvocation {
 	return FunctionInvocationCreate1(DATE)
 }
 
@@ -625,7 +625,7 @@ func FunctionDate() FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionCalendarDate(year int, month int, day int) FunctionInvocation {
+func CalendarDate(year int, month int, day int) FunctionInvocation {
 	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "month", LiteralOf(month), "day", LiteralOf(day)))
 }
 
@@ -639,7 +639,7 @@ func FunctionCalendarDate(year int, month int, day int) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionWeekDate(year int, week int, dayOfWeek int) FunctionInvocation {
+func WeekDate(year int, week int, dayOfWeek int) FunctionInvocation {
 	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "week", LiteralOf(week), "dayOfWeek", LiteralOf(dayOfWeek)))
 }
 
@@ -653,7 +653,7 @@ func FunctionWeekDate(year int, week int, dayOfWeek int) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionQuarterDate(year int, quarter int, dayOfQuarter int) FunctionInvocation {
+func QuarterDate(year int, quarter int, dayOfQuarter int) FunctionInvocation {
 	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "quarter", LiteralOf(quarter), "dayOfQuarter", LiteralOf(dayOfQuarter)))
 }
 
@@ -666,7 +666,7 @@ func FunctionQuarterDate(year int, quarter int, dayOfQuarter int) FunctionInvoca
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionOrdinalDate(year int, ordinalDay int) FunctionInvocation {
+func OrdinalDate(year int, ordinalDay int) FunctionInvocation {
 	return FunctionInvocationCreate(DATE, MapOf("year", LiteralOf(year), "ordinalDay", LiteralOf(ordinalDay)))
 }
 
@@ -679,7 +679,7 @@ func FunctionOrdinalDate(year int, ordinalDay int) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionDateWithComponents(components MapExpression) FunctionInvocation {
+func DateWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -698,7 +698,7 @@ func FunctionDateWithComponents(components MapExpression) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionDateWithTemporal(temporalValue string) FunctionInvocation {
+func DateWithTemporal(temporalValue string) FunctionInvocation {
 	if temporalValue == "" {
 		return FunctionInvocationError(errors.New("functions date with temporal :temporal is required"))
 	}
@@ -714,7 +714,7 @@ func FunctionDateWithTemporal(temporalValue string) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionDateWithExpression(temporalValue Expression) FunctionInvocation {
+func DateWithExpression(temporalValue Expression) FunctionInvocation {
 	if temporalValue.GetError() != nil {
 		return FunctionInvocationError(temporalValue.GetError())
 	}
@@ -727,11 +727,11 @@ func FunctionDateWithExpression(temporalValue Expression) FunctionInvocation {
 /**
  * Creates a function invocation for {@code datetime({})}.
  * See <a href="https://neo4j.com/docs/cypher-manual/current/functions/temporal/datetime/">datetime</a>.
- *
+ *FunctionRelationships
  * @return A function call for {@code datetime({})}.
  * @since 2020.1.0
  */
-func FunctionDatetime() FunctionInvocation {
+func Datetime() FunctionInvocation {
 	return FunctionInvocationCreate(DATETIME)
 }
 
@@ -744,7 +744,7 @@ func FunctionDatetime() FunctionInvocation {
  * @return A function call for {@code datetime({})}.
  * @since 2020.1.0
  */
-func FunctionDateTimeWithComponents(components MapExpression) FunctionInvocation {
+func DateTimeWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -763,7 +763,7 @@ func FunctionDateTimeWithComponents(components MapExpression) FunctionInvocation
  * @return A function call for {@code datetime({})}.
  * @since 2020.1.0
  */
-func FunctionDateTimeWithTemporal(temporalValue string) FunctionInvocation {
+func DateTimeWithTemporal(temporalValue string) FunctionInvocation {
 	if temporalValue == "" {
 		return FunctionInvocationError(errors.New("functions datetime with temporal :temporal is required"))
 	}
@@ -779,7 +779,7 @@ func FunctionDateTimeWithTemporal(temporalValue string) FunctionInvocation {
  * @return A function call for {@code date({})}.
  * @since 2020.1.0
  */
-func FunctionDateTimeWithExpression(temporalValue Expression) FunctionInvocation {
+func DateTimeWithExpression(temporalValue Expression) FunctionInvocation {
 	if temporalValue.GetError() != nil {
 		return FunctionInvocationError(temporalValue.GetError())
 	}
@@ -796,7 +796,7 @@ func FunctionDateTimeWithExpression(temporalValue Expression) FunctionInvocation
  * @return A function call for {@code localdatetime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalDatetime() FunctionInvocation {
+func LocalDatetime() FunctionInvocation {
 	return FunctionInvocationCreate(LOCALDATETIME)
 }
 
@@ -808,7 +808,7 @@ func FunctionLocalDatetime() FunctionInvocation {
  * @return A function call for {@code localdatetime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalDateTimeWithTimezone(location *time.Location) FunctionInvocation {
+func LocalDateTimeWithTimezone(location *time.Location) FunctionInvocation {
 	if location == nil {
 		return FunctionInvocationError(errors.New("functions localdatetime with timezone :timezone is required"))
 	}
@@ -824,7 +824,7 @@ func FunctionLocalDateTimeWithTimezone(location *time.Location) FunctionInvocati
  * @return A function call for {@code localdatetime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalDateTimeWithComponents(components MapExpression) FunctionInvocation {
+func LocalDateTimeWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -843,7 +843,7 @@ func FunctionLocalDateTimeWithComponents(components MapExpression) FunctionInvoc
  * @return A function call for {@code localdatetime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalDateTimeWithTemporal(temporalValue string) FunctionInvocation {
+func LocalDateTimeWithTemporal(temporalValue string) FunctionInvocation {
 	if temporalValue == "" {
 		return FunctionInvocationError(errors.New("functions localdatetime with temporal :temporal is required"))
 	}
@@ -859,7 +859,7 @@ func FunctionLocalDateTimeWithTemporal(temporalValue string) FunctionInvocation 
  * @return A function call for {@code localdatetime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalDateTimeWithExpression(temporalValue Expression) FunctionInvocation {
+func LocalDateTimeWithExpression(temporalValue Expression) FunctionInvocation {
 	if temporalValue.GetError() != nil {
 		return FunctionInvocationError(temporalValue.GetError())
 	}
@@ -876,7 +876,7 @@ func FunctionLocalDateTimeWithExpression(temporalValue Expression) FunctionInvoc
  * @return A function call for {@code localtime({})}.
  * @since 2020.1.0
  */
-func FunctionLocaltime() FunctionInvocation {
+func Localtime() FunctionInvocation {
 	return FunctionInvocationCreate(LOCALTIME)
 }
 
@@ -887,7 +887,7 @@ func FunctionLocaltime() FunctionInvocation {
  * @return A function call for {@code localtime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalTimeWithTimezone(location *time.Location) FunctionInvocation {
+func LocalTimeWithTimezone(location *time.Location) FunctionInvocation {
 	if location == nil {
 		return FunctionInvocationError(errors.New("functions localtime with timezone :timezone is required"))
 	}
@@ -903,7 +903,7 @@ func FunctionLocalTimeWithTimezone(location *time.Location) FunctionInvocation {
  * @return A function call for {@code localtime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalTimeWithComponents(components MapExpression) FunctionInvocation {
+func LocalTimeWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -922,7 +922,7 @@ func FunctionLocalTimeWithComponents(components MapExpression) FunctionInvocatio
  * @return A function call for {@code localtime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalTimeWithTemporal(temporalValue string) FunctionInvocation {
+func LocalTimeWithTemporal(temporalValue string) FunctionInvocation {
 	if temporalValue == "" {
 		return FunctionInvocationError(errors.New("functions localtime with temporal :temporal is required"))
 	}
@@ -938,7 +938,7 @@ func FunctionLocalTimeWithTemporal(temporalValue string) FunctionInvocation {
  * @return A function call for {@code localtime({})}.
  * @since 2020.1.0
  */
-func FunctionLocalTimeWithExpression(temporalValue Expression) FunctionInvocation {
+func LocalTimeWithExpression(temporalValue Expression) FunctionInvocation {
 	if temporalValue.GetError() != nil {
 		return FunctionInvocationError(temporalValue.GetError())
 	}
@@ -955,7 +955,7 @@ func FunctionLocalTimeWithExpression(temporalValue Expression) FunctionInvocatio
  * @return A function call for {@code time({})}.
  * @since 2020.1.0
  */
-func FunctionTime() FunctionInvocation {
+func Time() FunctionInvocation {
 	return FunctionInvocationCreate(TIME)
 }
 
@@ -967,7 +967,7 @@ func FunctionTime() FunctionInvocation {
  * @return A function call for {@code time({})}.
  * @since 2020.1.0
  */
-func FunctionTimeWithTimeZone(location *time.Location) FunctionInvocation {
+func TimeWithTimeZone(location *time.Location) FunctionInvocation {
 	if location == nil {
 		return FunctionInvocationError(errors.New("functions time with timezone :timezone is required"))
 	}
@@ -983,7 +983,7 @@ func FunctionTimeWithTimeZone(location *time.Location) FunctionInvocation {
  * @return A function call for {@code time({})}.
  * @since 2020.1.0
  */
-func FunctionTimeWithComponents(components MapExpression) FunctionInvocation {
+func TimeWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -1002,7 +1002,7 @@ func FunctionTimeWithComponents(components MapExpression) FunctionInvocation {
  * @return A function call for {@code time({})}.
  * @since 2020.1.0
  */
-func FunctionTimeWithTemporal(temporalValue string) FunctionInvocation {
+func TimeWithTemporal(temporalValue string) FunctionInvocation {
 	if temporalValue == "" {
 		return FunctionInvocationError(errors.New("functions time with temporal :temporal is required"))
 	}
@@ -1018,7 +1018,7 @@ func FunctionTimeWithTemporal(temporalValue string) FunctionInvocation {
  * @return A function call for {@code time({})}.
  * @since 2020.1.0
  */
-func FunctionTimeWithExpression(temporalValue Expression) FunctionInvocation {
+func TimeWithExpression(temporalValue Expression) FunctionInvocation {
 	if temporalValue.GetError() != nil {
 		return FunctionInvocationError(temporalValue.GetError())
 	}
@@ -1037,7 +1037,7 @@ func FunctionTimeWithExpression(temporalValue Expression) FunctionInvocation {
  * @return A function call for {@code duration({})}.
  * @since 2020.1.0
  */
-func FunctionDurationWithComponents(components MapExpression) FunctionInvocation {
+func DurationWithComponents(components MapExpression) FunctionInvocation {
 	if components.GetError() != nil {
 		return FunctionInvocationError(components.GetError())
 	}
@@ -1056,7 +1056,7 @@ func FunctionDurationWithComponents(components MapExpression) FunctionInvocation
  * @return A function call for {@code duration({})}.
  * @since 2020.1.0
  */
-func FunctionDurationWithTemporal(temporalAmount string) FunctionInvocation {
+func DurationWithTemporal(temporalAmount string) FunctionInvocation {
 	if temporalAmount == "" {
 		return FunctionInvocationError(errors.New("functions duration with temporal :temporal is required"))
 	}
@@ -1072,7 +1072,7 @@ func FunctionDurationWithTemporal(temporalAmount string) FunctionInvocation {
  * @return A function call for {@code duration({})}.
  * @since 2020.1.0
  */
-func FunctionDurationWithExpression(temporalAmount Expression) FunctionInvocation {
+func DurationWithExpression(temporalAmount Expression) FunctionInvocation {
 	if temporalAmount.GetError() != nil {
 		return FunctionInvocationError(temporalAmount.GetError())
 	}
@@ -1089,7 +1089,7 @@ func FunctionDurationWithExpression(temporalAmount Expression) FunctionInvocatio
  * @return A function call for {@code shortestPath({})}.
  * @since 2020.0.0
  */
-func FunctionShortestPath(relationship Relationship) FunctionInvocation {
+func ShortestPath(relationship Relationship) FunctionInvocation {
 	if relationship.GetError() != nil {
 		return FunctionInvocationError(relationship.GetError())
 	}

@@ -32,7 +32,7 @@ func TestGh167(t *testing.T) {
 			RelationshipTo(cypher.AnyNodeNamed("app"), "IN")).
 		WithDistinctByNamed(resume, locStart, app, offer).
 		Match(offer.RelationshipTo(startN, "FOR")).
-		Where(cypher.FunctionIdByNode(startN).In(cypher.AParam("start_ids")).Get()).
+		Where(cypher.IdByNode(startN).In(cypher.AParam("start_ids")).Get()).
 		ReturningDistinctByNamed(resume, locStart, app, offer, startN)
 	Assert(t, builder, "MATCH (app:`Location` {uuid: $app_uuid})<-[:`PART_OF`*0..3]-(loc_start:`Location`), (loc_start)<-[:`IN`|`IN_ANALYTICS`]-(r:`Resume`) WITH DISTINCT r, "+
 		"loc_start, app MATCH (r)-[:`IN_COHORT_OF`]->(o:`Offer` {is_valid: true})-[:`IN`]->(app) WITH DISTINCT r, "+
@@ -47,7 +47,7 @@ func TestGh174(t *testing.T) {
 	builder = cypher.
 		Match(r.RelationshipTo(o, "FOR")).
 		Where(r.HasLabels("LastResume").Not().Get()).
-		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
+		And(cypher.Coalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
 			And(r.HasLabels("InvalidStatus").Not().Get()).
 			Or(o.Property("valid_only").IsTrue().And(r.HasLabels("InvalidStatus")).Get()).Get()).
 		ReturningDistinctByNamed(r, o)
@@ -63,14 +63,14 @@ func TestGh184(t *testing.T) {
 	builder = cypher.
 		Match(r.RelationshipFrom(u, "HAS")).
 		Where(r.HasLabels("LastResume").Not().Get()).
-		And(cypher.FunctionCoalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
+		And(cypher.Coalesce(o.Property("valid_only"), cypher.LiteralFalse()).IsEqualTo(cypher.LiteralFalse()).
 			And(r.HasLabels("InvalidStatus").Not().Get()).
 			Or(o.Property("valid_only").IsTrue().And(r.HasLabels("ValidStatus")).Get()).Get()).
 		And(r.Property("is_internship").IsTrue().
-			And(cypher.FunctionSizeByPattern(r.RelationshipTo(cypher.AnyNode(), "PART_OF")).IsEmpty().Get()).
+			And(cypher.SizeByPattern(r.RelationshipTo(cypher.AnyNode(), "PART_OF")).IsEmpty().Get()).
 			Not().Get()).
 		And(r.Property("is_sandwich_training").IsTrue().
-			And(cypher.FunctionSizeByPattern(r.RelationshipTo(cypher.AnyNode(), "PART_OF")).IsEmpty().Get()).
+			And(cypher.SizeByPattern(r.RelationshipTo(cypher.AnyNode(), "PART_OF")).IsEmpty().Get()).
 			Not().Get()).
 		ReturningDistinctByNamed(r, o)
 	Assert(t, builder, "MATCH (r:`Resume`)<-[:`HAS`]-(u:`UserSearchable`) "+
@@ -107,7 +107,7 @@ func TestGh187(t *testing.T) {
 	//
 	builder = cypher.
 		Match(r.RelationshipFrom(u, "HAS")).
-		With(cypher.FunctionHead(cypher.FunctionCollect(r.GetRequiredSymbolicName())).As("r").Get()).
+		With(cypher.Head(cypher.Collect(r.GetRequiredSymbolicName())).As("r").Get()).
 		ReturningByNamed(r)
 	Assert(t, builder, "MATCH (r:`Resume`)<-[:`HAS`]-(u:`User`) WITH head(collect(r)) AS r RETURN r")
 }
@@ -119,7 +119,7 @@ func TestGh188(t *testing.T) {
 	//
 	builder = cypher.
 		Match(r.RelationshipFrom(u, "HAS")).
-		Returning(cypher.FunctionCountDistinctByExpression(r.GetRequiredSymbolicName()).As("r").Get())
+		Returning(cypher.CountDistinctByExpression(r.GetRequiredSymbolicName()).As("r").Get())
 	Assert(t, builder, "MATCH (r:`Resume`)<-[:`HAS`]-(u:`User`) RETURN count(DISTINCT r) AS r")
 }
 
@@ -129,7 +129,7 @@ func TestGh197(t *testing.T) {
 	//AVG
 	builder = cypher.
 		Match(n).
-		Returning(cypher.FunctionAvg(n.Property("age")))
+		Returning(cypher.Avg(n.Property("age")))
 	Assert(t, builder, "MATCH (n:`Person`) RETURN avg(n.age)")
 	//MAX/MIN
 	list := cypher.ListOf(cypher.LiteralOf(1),
@@ -141,34 +141,34 @@ func TestGh197(t *testing.T) {
 		cypher.LiteralOf("99"))
 	builder = cypher.Unwind(list).
 		As("val").
-		Returning(cypher.FunctionMax(cypher.ASymbolic("val")))
+		Returning(cypher.Max(cypher.ASymbolic("val")))
 	Assert(t, builder, "UNWIND [1, 'a', NULL, 0.2, 'b', '1', '99'] AS val RETURN max(val)")
 	builder = cypher.Unwind(list).
 		As("val").
-		Returning(cypher.FunctionMin(cypher.ASymbolic("val")))
+		Returning(cypher.Min(cypher.ASymbolic("val")))
 	Assert(t, builder, "UNWIND [1, 'a', NULL, 0.2, 'b', '1', '99'] AS val RETURN min(val)")
 
 	//percentileCont/percentileDisc
 	builder = cypher.Match(n).
-		Returning(cypher.FunctionPercentileCont(n.Property("age"), 0.4))
+		Returning(cypher.PercentileCont(n.Property("age"), 0.4))
 	Assert(t, builder, "MATCH (n:`Person`) RETURN percentileCont(n.age, 0.4)")
 	builder = cypher.Match(n).
-		Returning(cypher.FunctionPercentileDisc(n.Property("age"), 0.5))
+		Returning(cypher.PercentileDisc(n.Property("age"), 0.5))
 	Assert(t, builder, "MATCH (n:`Person`) RETURN percentileDisc(n.age, 0.5)")
 
 	//stDev/stDevP
 	builder = cypher.Match(n).
 		Where(n.Property("name").In(cypher.ListOf(cypher.LiteralOf("A"), cypher.LiteralOf("B"), cypher.LiteralOf("C"))).Get()).
-		Returning(cypher.FunctionStDev(n.Property("age")))
+		Returning(cypher.StDev(n.Property("age")))
 	Assert(t, builder, "MATCH (n:`Person`) WHERE n.name IN ['A', 'B', 'C'] RETURN stDev(n.age)")
 	builder = cypher.Match(n).
 		Where(n.Property("name").In(cypher.ListOf(cypher.LiteralOf("A"), cypher.LiteralOf("B"), cypher.LiteralOf("C"))).Get()).
-		Returning(cypher.FunctionStDevP(n.Property("age")))
+		Returning(cypher.StDevP(n.Property("age")))
 	Assert(t, builder, "MATCH (n:`Person`) WHERE n.name IN ['A', 'B', 'C'] RETURN stDevP(n.age)")
 	// sum
 	builder = cypher.Match(n).
-		With(cypher.ListOf(cypher.MapOf("type", n.GetRequiredSymbolicName(), "nb", cypher.FunctionSum(n.GetRequiredSymbolicName()))).As("counts").Get()).
-		Returning(cypher.FunctionSum(n.Property("age")))
+		With(cypher.ListOf(cypher.MapOf("type", n.GetRequiredSymbolicName(), "nb", cypher.Sum(n.GetRequiredSymbolicName()))).As("counts").Get()).
+		Returning(cypher.Sum(n.Property("age")))
 	Assert(t, builder, "MATCH (n:`Person`) WITH [{type: n, nb: sum(n)}] AS counts RETURN sum(n.age)")
 }
 
@@ -217,7 +217,7 @@ func TestGh44(t *testing.T) {
 	//
 	builder = cypher.
 		Match(n).
-		Returning(cypher.FunctionCollectDistinctByNamed(n).As("distinctNodes").Get())
+		Returning(cypher.CollectDistinctByNamed(n).As("distinctNodes").Get())
 	Assert(t, builder, "MATCH (n) RETURN collect(DISTINCT n) AS distinctNodes")
 }
 

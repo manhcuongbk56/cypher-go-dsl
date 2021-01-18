@@ -15,7 +15,7 @@ func TestAllShouldWork(t *testing.T) {
 	builder = cypher.Match(p).
 		Where(cypher.AProperty("a", "name").IsEqualTo(cypher.LiteralOf("Alice")).Get()).
 		And(cypher.AProperty("b", "name").IsEqualTo(cypher.LiteralOf("Daniel")).Get()).
-		And(cypher.PredicateAll("x").In(cypher.FunctionNodes(p)).
+		And(cypher.PredicateAll("x").In(cypher.Nodes(p)).
 			Where(cypher.AProperty("x", "age").Gt(cypher.LiteralOf(30)).Get())).
 		ReturningByNamed(p)
 
@@ -59,7 +59,7 @@ func TestNoneShouldWork(t *testing.T) {
 		Where(cypher.AProperty("a", "name").IsEqualTo(cypher.LiteralOf("Alice")).Get()).
 		And(cypher.
 			PredicateNone("x").
-			In(cypher.FunctionNodes(p)).
+			In(cypher.Nodes(p)).
 			Where(cypher.AProperty("x", "age").IsEqualTo(cypher.LiteralOf(25)).Get())).
 		ReturningByNamed(p)
 
@@ -77,7 +77,7 @@ func TestSingleShouldWork(t *testing.T) {
 		Where(cypher.AProperty("n", "name").IsEqualTo(cypher.LiteralOf("Alice")).Get()).
 		And(cypher.
 			PredicateSingle("var").
-			In(cypher.FunctionNodes(p)).
+			In(cypher.Nodes(p)).
 			Where(cypher.AProperty("var", "eyes").IsEqualTo(cypher.LiteralOf("blue")).Get())).
 		ReturningByNamed(p)
 

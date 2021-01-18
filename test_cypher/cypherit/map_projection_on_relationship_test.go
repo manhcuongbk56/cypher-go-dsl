@@ -14,7 +14,7 @@ func TestProjectionSimpleOnRelationship(t *testing.T) {
 	//
 	builder = cypher.
 		Match(rel).
-		Returning(rel.Project("__internalNeo4jId__", cypher.FunctionIdByRelationship(rel), "roles"))
+		Returning(rel.Project("__internalNeo4jId__", cypher.IdByRelationship(rel), "roles"))
 	Assert(t, builder, "MATCH (p:`Person`)-[r:`ACTED_IN`]->(m:`Movie`) RETURN r{__internalNeo4jId__: id(r), .roles}")
 }
 
@@ -26,7 +26,7 @@ func TestNestedOnRelationship(t *testing.T) {
 	//
 	builder = cypher.
 		Match(rel).
-		Returning(m.Project("title", "roles", rel.Project("__internalNeo4jId__", cypher.FunctionIdByRelationship(rel), "roles")))
+		Returning(m.Project("title", "roles", rel.Project("__internalNeo4jId__", cypher.IdByRelationship(rel), "roles")))
 	Assert(t, builder, "MATCH (p:`Person`)-[r:`ACTED_IN`]->(m:`Movie`) RETURN m{.title, roles: r{__internalNeo4jId__: id(r), .roles}}")
 }
 
@@ -43,7 +43,7 @@ func TestAsterisk(t *testing.T) {
 func TestProjectInvalid(t *testing.T) {
 	var expect = "map projection create new content: unknown type cypher.FunctionInvocation cannot be used with an implicit name as map entry"
 	n := cypher.AnyNodeNamed("n")
-	mapProjection := n.Project(cypher.FunctionIdByNode(n))
+	mapProjection := n.Project(cypher.IdByNode(n))
 	if mapProjection.GetError() == nil {
 		t.Error("expect error but got nil")
 		return
@@ -53,7 +53,7 @@ func TestProjectInvalid(t *testing.T) {
 		return
 	}
 	//
-	mapProjection = n.Project("a", cypher.MapOf("a", cypher.LiteralOf("b")), cypher.FunctionIdByNode(n))
+	mapProjection = n.Project("a", cypher.MapOf("a", cypher.LiteralOf("b")), cypher.IdByNode(n))
 	if mapProjection.GetError() == nil {
 		t.Error("expect error but got nil")
 		return

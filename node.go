@@ -212,7 +212,7 @@ func (node Node) As(alias string) AliasedExpression {
 }
 
 func (node Node) InternalId() FunctionInvocation {
-	return FunctionIdByNode(node)
+	return IdByNode(node)
 }
 
 func (node Node) HasLabels(labelsToQuery ...string) Condition {
@@ -220,7 +220,7 @@ func (node Node) HasLabels(labelsToQuery ...string) Condition {
 }
 
 func (node Node) Labels() FunctionInvocation {
-	return FunctionLabels(node)
+	return Labels(node)
 }
 
 func (node Node) Project(entries ...interface{}) MapProjection {

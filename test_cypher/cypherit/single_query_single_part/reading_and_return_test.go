@@ -248,7 +248,7 @@ func TestSizeOfRelationship(t *testing.T) {
 	statementBuilder := cypher.Match(cypher.AnyNodeNamed("a"))
 	expression := cypher.ExpressionWrap(cypher.AProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
-		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode())).As("fof").Get()).
+		Returning(cypher.SizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)
@@ -265,7 +265,7 @@ func TestSizeOfRelationshipChain(t *testing.T) {
 	statementBuilder := cypher.Match(cypher.AnyNodeNamed("a"))
 	expression := cypher.ExpressionWrap(cypher.AProperty("a", "name")).IsEqualTo(cypher.LiteralOf("Alice")).Get()
 	statement, err := statementBuilder.Where(expression).
-		Returning(cypher.FunctionSizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode()).RelationshipTo(cypher.AnyNode())).As("fof").Get()).
+		Returning(cypher.SizeByPattern(cypher.AnyNodeNamed("a").RelationshipTo(cypher.AnyNode()).RelationshipTo(cypher.AnyNode())).As("fof").Get()).
 		Build()
 	if err != nil {
 		t.Errorf("error when build query\n %s", err)

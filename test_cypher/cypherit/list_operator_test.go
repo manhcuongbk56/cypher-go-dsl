@@ -8,7 +8,7 @@ import (
 func TestValueAtShouldWork(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherReturning(cypher.CypherValueAt(cypher.FunctionRangeRaw(0, 10), 3))
+	builder = cypher.CypherReturning(cypher.CypherValueAt(cypher.RangeRaw(0, 10), 3))
 
 	Assert(t, builder, "RETURN range(0, 10)[3]")
 }
@@ -16,7 +16,7 @@ func TestValueAtShouldWork(t *testing.T) {
 func TestSubListUntilShouldWork(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherReturning(cypher.ASubListUntil(cypher.FunctionRangeRaw(0, 10), 3))
+	builder = cypher.CypherReturning(cypher.ASubListUntil(cypher.RangeRaw(0, 10), 3))
 
 	Assert(t, builder, "RETURN range(0, 10)[..3]")
 }
@@ -24,7 +24,7 @@ func TestSubListUntilShouldWork(t *testing.T) {
 func TestSubListFromShouldWork(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherReturning(cypher.CypherSubListFrom(cypher.FunctionRangeRaw(0, 10), -3))
+	builder = cypher.CypherReturning(cypher.CypherSubListFrom(cypher.RangeRaw(0, 10), -3))
 
 	Assert(t, builder, "RETURN range(0, 10)[-3..]")
 }
@@ -32,7 +32,7 @@ func TestSubListFromShouldWork(t *testing.T) {
 func TestSubListShouldWork(t *testing.T) {
 	var builder cypher.BuildableStatement
 	//
-	builder = cypher.CypherReturning(cypher.ASubList(cypher.FunctionRangeRaw(0, 10), 2, 4))
+	builder = cypher.CypherReturning(cypher.ASubList(cypher.RangeRaw(0, 10), 2, 4))
 
 	Assert(t, builder, "RETURN range(0, 10)[2..4]")
 }

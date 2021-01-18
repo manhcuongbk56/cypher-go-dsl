@@ -20,7 +20,7 @@ func TestAliasedFunctionsShouldNotBeRenderedTwiceInProjection(t *testing.T) {
 	o := cypher.ANode("Order").NamedByString("o")
 	li := cypher.ANode("LineItem").NamedByString("li")
 	hasLineItems := o.RelationshipTo(li).NamedByString("h")
-	netAmount := cypher.FunctionSum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
+	netAmount := cypher.Sum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
 	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.AParam("taxRate")).Get()).As("totalAmount")
 	returning := cypher.Match(hasLineItems).
 		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.AParam("id"))).
@@ -36,7 +36,7 @@ func TestAliasedFunctionsShouldNotBeRenderedTwiceInReturn(t *testing.T) {
 	o := cypher.ANode("Order").NamedByString("o")
 	li := cypher.ANode("LineItem").NamedByString("li")
 	hasLineItems := o.RelationshipTo(li).NamedByString("h")
-	netAmount := cypher.FunctionSum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
+	netAmount := cypher.Sum(li.Property("price").Multiply(li.Property("quantity")).Get()).As("netAmount")
 	totalAmount := netAmount.Multiply(cypher.LiteralOf(1).Add(cypher.AParam("taxRate")).Get()).As("totalAmount")
 	returning := cypher.Match(hasLineItems).
 		WhereConditionContainer(o.Property("id").IsEqualTo(cypher.AParam("id"))).

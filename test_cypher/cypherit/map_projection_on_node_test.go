@@ -11,12 +11,12 @@ func TestProjectionSimple(t *testing.T) {
 	n := cypher.AnyNodeNamed("n")
 	builder = cypher.
 		Match(n).
-		Returning(n.Project("__internalNeo4jId__", cypher.FunctionIdByNode(n), "name"))
+		Returning(n.Project("__internalNeo4jId__", cypher.IdByNode(n), "name"))
 	Assert(t, builder, "MATCH (n) RETURN n{__internalNeo4jId__: id(n), .name}")
 	//
 	builder = cypher.
 		Match(n).
-		Returning(n.Project("name", "__internalNeo4jId__", cypher.FunctionIdByNode(n)))
+		Returning(n.Project("name", "__internalNeo4jId__", cypher.IdByNode(n)))
 	Assert(t, builder, "MATCH (n) RETURN n{.name, __internalNeo4jId__: id(n)}")
 }
 
@@ -30,19 +30,19 @@ func TestDoc21221(t *testing.T) {
 	builder = cypher.
 		Match(actor.WithRawProperties("name", cypher.LiteralOf("Tom Hanks")).
 			RelationshipTo(movie, "ACTED_IN")).
-		Returning(actor.Project("name", "realName", "movies", cypher.FunctionCollect(movie.Project("title", "released"))))
+		Returning(actor.Project("name", "realName", "movies", cypher.Collect(movie.Project("title", "released"))))
 	Assert(t, builder, expected)
 	//
 	builder = cypher.
 		Match(actor.WithRawProperties("name", cypher.LiteralOf("Tom Hanks")).
 			RelationshipTo(movie, "ACTED_IN")).
-		Returning(actor.Project("name", "realName", "movies", cypher.FunctionCollect(movie.Project(movie.Property("title"), movie.Property("released")))))
+		Returning(actor.Project("name", "realName", "movies", cypher.Collect(movie.Project(movie.Property("title"), movie.Property("released")))))
 	Assert(t, builder, expected)
 	//
 	builder = cypher.
 		Match(actor.WithRawProperties("name", cypher.LiteralOf("Tom Hanks")).
 			RelationshipTo(movie, "ACTED_IN")).
-		Returning(actor.Project("name", "realName", "movies", cypher.FunctionCollect(movie.Project("title", "year", movie.Property("released")))))
+		Returning(actor.Project("name", "realName", "movies", cypher.Collect(movie.Project("title", "year", movie.Property("released")))))
 	Assert(t, builder, "MATCH (actor:`Person` {name: 'Tom Hanks'})-[:`ACTED_IN`]->(movie:`Movie`) RETURN actor{"+
 		".name, .realName, movies: collect(movie{.title, year: movie.released})}")
 }
@@ -54,8 +54,8 @@ func TestNested(t *testing.T) {
 	//
 	builder = cypher.
 		Match(n.RelationshipTo(m, "ACTED_IN")).
-		Returning(n.Project("__internalNeo4jId__", cypher.FunctionIdByNode(n), "name", "nested",
-			m.Project("title", "__internalNeo4jId__", cypher.FunctionIdByNode(m))))
+		Returning(n.Project("__internalNeo4jId__", cypher.IdByNode(n), "name", "nested",
+			m.Project("title", "__internalNeo4jId__", cypher.IdByNode(m))))
 	Assert(t, builder, "MATCH (p:`Person`)-[:`ACTED_IN`]->(m:`Movie`) RETURN p{__internalNeo4jId__: id(p), "+
 		".name, nested: m{.title, __internalNeo4jId__: id(m)}}")
 }
@@ -68,7 +68,7 @@ func TestAddedProjections(t *testing.T) {
 	//
 	builder = cypher.
 		Match(rel).
-		Returning(p.Project("__internalNeo4jId__", cypher.FunctionIdByNode(p), "name").
+		Returning(p.Project("__internalNeo4jId__", cypher.IdByNode(p), "name").
 			And(rel).
 			And(m).
 			And(p.Property("foo")).
