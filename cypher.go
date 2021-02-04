@@ -308,6 +308,22 @@ func ListOfRaw(elements ...interface{}) ListExpression {
 	return ListExpressionCreate1(expressions...)
 }
 
+func SortItemsOfRaw(elements ...string) []SortItem {
+	sortItems := make([]SortItem, len(elements))
+	for index, element := range elements {
+		sortElements := strings.Split(element, " ")
+		literal := LiteralOf(sortElements[0])
+		direction := UNDEFINED
+		if sortElements[1] == "ASC" {
+			direction = ASC
+		}else if sortElements[1] == "DESC" {
+			direction = DESC
+		}
+		sortItems[index] = SortItemCreate(literal, direction)
+	}
+	return sortItems
+}
+
 /**
  * @return The {@literal true} literal.
  */
