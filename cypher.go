@@ -296,6 +296,18 @@ func ListOf(expressions ...Expression) ListExpression {
 	return ListExpressionCreate1(expressions...)
 }
 
+func ListOfRaw(elements ...interface{}) ListExpression {
+	expressions := make([]Expression, len(elements))
+	for index, element := range elements {
+		literal := LiteralOf(element)
+		if literal.GetError() != nil {
+			return ListExpressionError(literal.GetError())
+		}
+		expressions[index] = LiteralOf(element)
+	}
+	return ListExpressionCreate1(expressions...)
+}
+
 /**
  * @return The {@literal true} literal.
  */
