@@ -21,6 +21,7 @@ func ListLiteralCreate(contents []Literal) ListLiteral {
 	}
 	list.key = getAddress(&list)
 	list.ExpressionContainer = ExpressionWrap(list)
+	list.notNil = true
 	return list
 }
 
@@ -36,15 +37,21 @@ func (l ListLiteral) GetError() error {
 
 func (l ListLiteral) accept(visitor *CypherRenderer) {
 	visitor.enter(l)
+	for i, literal := range l.content {
+		if(i > 0) {
+			visitor.append(", ")
+		}
+		literal.accept(visitor)
+	}
 	visitor.leave(l)
 }
 
 func (l ListLiteral) enter(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append("[")
 }
 
 func (l ListLiteral) leave(renderer *CypherRenderer) {
-	panic("implement me")
+	renderer.append("]")
 }
 
 func (l ListLiteral) getKey() string {
